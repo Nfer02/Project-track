@@ -9,7 +9,7 @@ const font = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "ObraTrack",
+  title: "ProjectTrack",
   description: "Gestión financiera de proyectos para autónomos",
 }
 

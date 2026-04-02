@@ -1,8 +1,8 @@
-# ObraTrack Implementation Plan
+# ProjectTrack Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build ObraTrack, a SaaS financiero para autónomos que gestiona obras/proyectos, facturas (con OCR), y visualiza rentabilidad en tiempo real.
+**Goal:** Build ProjectTrack, a SaaS financiero para autónomos que gestiona obras/proyectos, facturas (con OCR), y visualiza rentabilidad en tiempo real.
 
 **Architecture:** Next.js 15 App Router con Server Components para lectura, Server Actions para mutaciones, y Client Components solo para formularios/uploaders/modales. Supabase maneja auth, storage y base de datos (PostgreSQL via Prisma). Sin Zustand ni React Query en MVP.
 
@@ -13,7 +13,7 @@
 ## File Structure
 
 ```
-obratrack/
+project-track/
 ├── app/
 │   ├── (marketing)/
 │   │   ├── layout.tsx
@@ -116,7 +116,7 @@ obratrack/
 - [ ] **Step 1: Crear el proyecto**
 
 ```bash
-cd C:\Users\ASUS\.claude\projects\obratrack
+cd C:\Users\ASUS\.claude\projects\project-track
 pnpm create next-app@latest . --typescript --tailwind --eslint --app --src-dir=no --import-alias="@/*"
 ```
 
@@ -163,7 +163,7 @@ const font = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "ObraTrack",
+  title: "ProjectTrack",
   description: "Gestión financiera de proyectos para autónomos",
 }
 
@@ -775,7 +775,7 @@ export default function OnboardingPage() {
     <div className="flex min-h-screen items-center justify-center bg-muted/30">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Bienvenido a ObraTrack</CardTitle>
+          <CardTitle>Bienvenido a ProjectTrack</CardTitle>
           <CardDescription>Crea tu espacio de trabajo para empezar</CardDescription>
         </CardHeader>
         <CardContent>
@@ -864,7 +864,7 @@ export default function Sidebar({ workspace }: { workspace: Workspace | null }) 
   return (
     <aside className="flex w-64 flex-col border-r bg-background">
       <div className="flex h-16 items-center border-b px-6">
-        <span className="font-bold text-primary">ObraTrack</span>
+        <span className="font-bold text-primary">ProjectTrack</span>
       </div>
       <div className="px-4 py-2 text-xs font-medium text-muted-foreground truncate">
         {workspace?.name}
@@ -2153,11 +2153,11 @@ export async function inviteMember(formData: FormData) {
   const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/invite?token=${token}`
 
   await resend.emails.send({
-    from: "ObraTrack <noreply@obratrack.app>",
+    from: "ProjectTrack <noreply@project-track.app>",
     to: email,
-    subject: `Te han invitado a ${owner.workspace.name} en ObraTrack`,
+    subject: `Te han invitado a ${owner.workspace.name} en ProjectTrack`,
     html: `
-      <p>Has sido invitado a unirte al espacio de trabajo <strong>${owner.workspace.name}</strong> en ObraTrack como <strong>${role}</strong>.</p>
+      <p>Has sido invitado a unirte al espacio de trabajo <strong>${owner.workspace.name}</strong> en ProjectTrack como <strong>${role}</strong>.</p>
       <p><a href="${inviteUrl}">Aceptar invitación</a></p>
       <p>Este enlace expira en 7 días.</p>
     `,
@@ -2335,7 +2335,7 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_PRO_PRICE_ID=price_...
 ```
 
-Para obtener `STRIPE_PRO_PRICE_ID`: Stripe Dashboard → Products → Crear "ObraTrack PRO" con precio mensual → copiar Price ID.
+Para obtener `STRIPE_PRO_PRICE_ID`: Stripe Dashboard → Products → Crear "ProjectTrack PRO" con precio mensual → copiar Price ID.
 
 - [ ] **Step 2: Crear `lib/stripe.ts`**
 
@@ -2540,7 +2540,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
     <div className="min-h-screen">
       <header className="border-b">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <span className="text-xl font-bold text-primary">ObraTrack</span>
+          <span className="text-xl font-bold text-primary">ProjectTrack</span>
           <nav className="flex items-center gap-4">
             <a href="/pricing" className="text-sm text-muted-foreground hover:text-foreground">Precios</a>
             <a href="/sign-in" className="text-sm text-muted-foreground hover:text-foreground">Entrar</a>
@@ -2552,7 +2552,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
       </header>
       {children}
       <footer className="border-t py-8 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} ObraTrack
+        © {new Date().getFullYear()} ProjectTrack
       </footer>
     </div>
   )
@@ -2582,7 +2582,7 @@ export default function LandingPage() {
           Controla la rentabilidad<br />de tus obras al instante
         </h1>
         <p className="mt-6 text-lg text-muted-foreground">
-          ObraTrack es la herramienta financiera para autónomos y pequeñas empresas constructoras.
+          ProjectTrack es la herramienta financiera para autónomos y pequeñas empresas constructoras.
           Registra facturas con OCR, visualiza presupuesto vs. real y toma decisiones con datos.
         </p>
         <div className="mt-10 flex justify-center gap-4">
@@ -2848,12 +2848,12 @@ echo ".env.local" >> .gitignore
 - [ ] **Step 3: Subir a GitHub**
 
 ```bash
-gh repo create obratrack --private --source=. --push
+gh repo create project-track --private --source=. --push
 ```
 
 - [ ] **Step 4: Conectar con Vercel**
 
-Ir a [vercel.com/new](https://vercel.com/new) → Import desde GitHub → seleccionar `obratrack`.
+Ir a [vercel.com/new](https://vercel.com/new) → Import desde GitHub → seleccionar `project-track`.
 
 Framework: **Next.js** (auto-detectado). Root directory: `/`.
 
@@ -2873,18 +2873,18 @@ STRIPE_WEBHOOK_SECRET      # crear nuevo webhook en Stripe apuntando al dominio 
 STRIPE_PRO_PRICE_ID
 RESEND_API_KEY
 ANTHROPIC_API_KEY
-NEXT_PUBLIC_APP_URL        # https://obratrack.vercel.app (o dominio personalizado)
+NEXT_PUBLIC_APP_URL        # https://project-track.vercel.app (o dominio personalizado)
 INVITATION_JWT_SECRET
 SUPABASE_WEBHOOK_SECRET
 ```
 
 - [ ] **Step 6: Actualizar webhook de Supabase**
 
-En Supabase Dashboard → Database → Webhooks: actualizar la URL del webhook de auth a `https://obratrack.vercel.app/api/webhooks/supabase`.
+En Supabase Dashboard → Database → Webhooks: actualizar la URL del webhook de auth a `https://project-track.vercel.app/api/webhooks/supabase`.
 
 - [ ] **Step 7: Actualizar webhook de Stripe**
 
-En Stripe Dashboard → Developers → Webhooks: añadir endpoint `https://obratrack.vercel.app/api/webhooks/stripe` con eventos:
+En Stripe Dashboard → Developers → Webhooks: añadir endpoint `https://project-track.vercel.app/api/webhooks/stripe` con eventos:
 - `checkout.session.completed`
 - `customer.subscription.updated`
 - `customer.subscription.deleted`
