@@ -18,6 +18,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,19 +26,21 @@ import {
 } from "@/components/ui/form"
 import type { ProjectFormValues } from "@/app/(dashboard)/projects/actions"
 
+const decimalRule = (v?: string) => !v || /^\d+(\.\d{1,2})?$/.test(v)
+
 const schema = z.object({
-  name: z.string().min(1, "El nombre es requerido"),
+  name: z.string().min(1, "El nombre es obligatorio"),
   clientName: z.string().optional(),
   description: z.string().optional(),
   status: z.enum(["ACTIVE", "COMPLETED", "ARCHIVED"]),
-  budget: z
+  projectValue: z.string().optional().refine(decimalRule, "Formato inválido (ej: 5000.00)"),
+  budget: z.string().optional().refine(decimalRule, "Formato inválido (ej: 1500.00)"),
+  currency: z.string().min(1),
+  paymentMethod: z.string().optional(),
+  numberOfPayments: z
     .string()
     .optional()
-    .refine(
-      (v) => !v || /^\d+(\.\d{1,2})?$/.test(v),
-      "Formato inválido (ej: 1500.00)"
-    ),
-  currency: z.string().min(1),
+    .refine((v) => !v || /^\d+$/.test(v), "Debe ser un número entero"),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
 })
@@ -50,11 +53,13 @@ const STATUS_OPTIONS = [
   { value: "ARCHIVED", label: "Archivado" },
 ]
 
-const CURRENCY_OPTIONS = [
-  { value: "USD", label: "USD — Dólar" },
-  { value: "EUR", label: "EUR — Euro" },
-  { value: "ARS", label: "ARS — Peso argentino" },
-  { value: "GBP", label: "GBP — Libra esterlina" },
+const PAYMENT_METHOD_OPTIONS = [
+  { value: "Transferencia bancaria", label: "Transferencia bancaria" },
+  { value: "Efectivo", label: "Efectivo" },
+  { value: "Tarjeta de crédito/débito", label: "Tarjeta de crédito/débito" },
+  { value: "Bizum", label: "Bizum" },
+  { value: "PayPal", label: "PayPal" },
+  { value: "Otro", label: "Otro" },
 ]
 
 interface ProjectFormProps {
@@ -77,8 +82,11 @@ export function ProjectForm({
       clientName: "",
       description: "",
       status: "ACTIVE",
+      projectValue: "",
       budget: "",
-      currency: "USD",
+      currency: "EUR",
+      paymentMethod: "",
+      numberOfPayments: "",
       startDate: "",
       endDate: "",
       ...defaultValues,
@@ -92,170 +100,234 @@ export function ProjectForm({
     try {
       const result = await onSubmit(values as ProjectFormValues)
       if (result && "error" in result) setServerError(result.error)
-    } catch {
-      setServerError("Ocurrió un error. Intentá de nuevo.")
+    } catch (err) {
+      // redirect() en Next.js lanza un error especial — no interceptar
+      if ((err as { digest?: string })?.digest?.startsWith("NEXT_REDIRECT")) throw err
+      setServerError("Ocurrió un error. Inténtalo de nuevo.")
     }
   }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-5"
-      >
-        {/* Nombre */}
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nombre del proyecto *</FormLabel>
-              <FormControl>
-                <Input placeholder="Ej: Rediseño web Empresa X" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
 
-        {/* Cliente */}
-        <FormField
-          control={form.control}
-          name="clientName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Cliente</FormLabel>
-              <FormControl>
-                <Input placeholder="Ej: Empresa X S.A." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* ── Información básica ───────────────────────────────── */}
+        <div className="space-y-4">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            Información básica
+          </p>
 
-        {/* Descripción */}
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Descripción</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Descripción opcional del proyecto..."
-                  rows={3}
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Estado + Moneda */}
-        <div className="grid grid-cols-2 gap-4">
-          {/* Estado */}
-          <Controller
+          <FormField
             control={form.control}
-            name="status"
-            render={({ field, fieldState }) => (
+            name="name"
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>Estado</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Seleccioná estado" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {STATUS_OPTIONS.map((o) => (
-                      <SelectItem key={o.value} value={o.value}>
-                        {o.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldState.error && (
-                  <p className="text-destructive text-sm">{fieldState.error.message}</p>
-                )}
+                <FormLabel>Nombre del proyecto *</FormLabel>
+                <FormControl>
+                  <Input placeholder="Ej: Rediseño web Empresa X" {...field} />
+                </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* Moneda */}
-          <Controller
+          <FormField
             control={form.control}
-            name="currency"
-            render={({ field, fieldState }) => (
+            name="clientName"
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>Moneda</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Moneda" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CURRENCY_OPTIONS.map((o) => (
-                      <SelectItem key={o.value} value={o.value}>
-                        {o.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldState.error && (
-                  <p className="text-destructive text-sm">{fieldState.error.message}</p>
-                )}
+                <FormLabel>Cliente</FormLabel>
+                <FormControl>
+                  <Input placeholder="Ej: Empresa X S.A." {...field} />
+                </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Descripción</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Descripción opcional del proyecto..."
+                    rows={3}
+                    className="resize-none"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid grid-cols-2 gap-4">
+            <Controller
+              control={form.control}
+              name="status"
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Estado</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Selecciona estado" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {STATUS_OPTIONS.map((o) => (
+                        <SelectItem key={o.value} value={o.value}>
+                          {o.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.error && (
+                    <p className="text-destructive text-sm">{fieldState.error.message}</p>
+                  )}
+                </FormItem>
+              )}
+            />
+
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Fecha inicio</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="endDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Fecha fin</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Presupuesto */}
-        <FormField
-          control={form.control}
-          name="budget"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Presupuesto</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  inputMode="decimal"
-                  placeholder="Ej: 5000.00"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* ── Información económica ─────────────────────────────── */}
+        <div className="space-y-4 pt-2 border-t">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground pt-2">
+            Información económica
+          </p>
 
-        {/* Fechas */}
-        <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="startDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Fecha inicio</FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="endDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Fecha fin</FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="projectValue"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Valor del contrato (€)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      inputMode="decimal"
+                      placeholder="Ej: 5000.00"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>Lo que cobras al cliente</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="budget"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Presupuesto de materiales (€)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      inputMode="decimal"
+                      placeholder="Ej: 800.00"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>Lo que prevés gastar</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        {/* ── Condiciones de pago ───────────────────────────────── */}
+        <div className="space-y-4 pt-2 border-t">
+          <div className="pt-2">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Condiciones de pago
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Cada pago acordado será una factura. La fecha de vencimiento de cada factura determina cuándo se marca como vencida.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <Controller
+              control={form.control}
+              name="paymentMethod"
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Forma de pago</FormLabel>
+                  <Select value={field.value ?? ""} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Selecciona forma de pago" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PAYMENT_METHOD_OPTIONS.map((o) => (
+                        <SelectItem key={o.value} value={o.value}>
+                          {o.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.error && (
+                    <p className="text-destructive text-sm">{fieldState.error.message}</p>
+                  )}
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="numberOfPayments"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Número de pagos</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="36"
+                      placeholder="Ej: 3"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>Cuántos pagos acordados</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         {serverError && (

@@ -26,15 +26,15 @@ import {
 import type { InvoiceFormValues } from "@/app/(dashboard)/invoices/actions"
 
 const schema = z.object({
-  number: z.string().min(1, "El número es requerido"),
+  number: z.string().min(1, "El número es obligatorio"),
   description: z.string().optional(),
   amount: z
     .string()
-    .min(1, "El monto es requerido")
+    .min(1, "El importe es obligatorio")
     .refine((v) => /^\d+(\.\d{1,2})?$/.test(v), "Formato inválido (ej: 1500.00)"),
   currency: z.string().min(1),
   status: z.enum(["DRAFT", "PENDING", "PAID", "OVERDUE", "CANCELLED"]),
-  issueDate: z.string().min(1, "La fecha de emisión es requerida"),
+  issueDate: z.string().min(1, "La fecha de emisión es obligatoria"),
   dueDate: z.string().optional(),
   paidDate: z.string().optional(),
   notes: z.string().optional(),
@@ -48,13 +48,6 @@ const STATUS_OPTIONS = [
   { value: "PAID", label: "Pagada" },
   { value: "OVERDUE", label: "Vencida" },
   { value: "CANCELLED", label: "Cancelada" },
-]
-
-const CURRENCY_OPTIONS = [
-  { value: "USD", label: "USD — Dólar" },
-  { value: "EUR", label: "EUR — Euro" },
-  { value: "ARS", label: "ARS — Peso argentino" },
-  { value: "GBP", label: "GBP — Libra esterlina" },
 ]
 
 interface InvoiceFormProps {
@@ -78,7 +71,7 @@ export function InvoiceForm({
       number: "",
       description: "",
       amount: "",
-      currency: "USD",
+      currency: "EUR",
       status: "PENDING",
       issueDate: new Date().toISOString().slice(0, 10),
       dueDate: "",
@@ -96,8 +89,10 @@ export function InvoiceForm({
     try {
       const result = await onSubmit(values as InvoiceFormValues)
       if (result && "error" in result) setServerError(result.error)
-    } catch {
-      setServerError("Ocurrió un error. Intentá de nuevo.")
+    } catch (err) {
+      // redirect() en Next.js lanza un error especial — no interceptar
+      if ((err as { digest?: string })?.digest?.startsWith("NEXT_REDIRECT")) throw err
+      setServerError("Ocurrió un error. Inténtalo de nuevo.")
     }
   }
 
@@ -167,52 +162,25 @@ export function InvoiceForm({
           )}
         />
 
-        {/* Monto + Moneda */}
-        <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="amount"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Monto *</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    inputMode="decimal"
-                    placeholder="Ej: 2500.00"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <Controller
-            control={form.control}
-            name="currency"
-            render={({ field, fieldState }) => (
-              <FormItem>
-                <FormLabel>Moneda</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Moneda" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CURRENCY_OPTIONS.map((o) => (
-                      <SelectItem key={o.value} value={o.value}>
-                        {o.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldState.error && (
-                  <p className="text-destructive text-sm">{fieldState.error.message}</p>
-                )}
-              </FormItem>
-            )}
-          />
-        </div>
+        {/* Importe (EUR fijo) */}
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Importe (€) *</FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  inputMode="decimal"
+                  placeholder="Ej: 2500.00"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         {/* Fechas */}
         <div className="grid grid-cols-2 gap-4">
@@ -251,7 +219,7 @@ export function InvoiceForm({
             name="paidDate"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Fecha de pago</FormLabel>
+                <FormLabel>Fecha de cobro</FormLabel>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>

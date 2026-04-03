@@ -88,10 +88,13 @@ model Project {
   clientName  String?
   description String?
   status      ProjectStatus @default(ACTIVE)
-  budget      Decimal?      @db.Decimal(12, 2)
-  currency    String        @default("USD")
-  startDate   DateTime?
-  endDate     DateTime?
+  projectValue     Decimal?      @db.Decimal(12, 2)
+  budget           Decimal?      @db.Decimal(12, 2)
+  currency         String        @default("EUR")
+  paymentMethod    String?
+  numberOfPayments Int?
+  startDate        DateTime?
+  endDate          DateTime?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 

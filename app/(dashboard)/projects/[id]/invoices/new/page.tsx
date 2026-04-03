@@ -44,7 +44,7 @@ export default async function NewInvoicePage({ params }: Props) {
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">Nueva factura</h1>
         <p className="text-sm text-muted-foreground">
-          Añadí una factura al proyecto <span className="font-medium text-foreground">{project.name}</span>.
+          Añade una factura al proyecto <span className="font-medium text-foreground">{project.name}</span>.
         </p>
       </div>
 

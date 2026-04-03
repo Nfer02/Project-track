@@ -97,10 +97,10 @@ export default async function ProjectDetailPage({ params }: Props) {
       {/* Stats del proyecto */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="rounded-xl border bg-card p-4 space-y-1">
-          <p className="text-xs text-muted-foreground">Presupuesto</p>
+          <p className="text-xs text-muted-foreground">Valor del contrato</p>
           <p className="text-lg font-semibold">
-            {project.budget
-              ? formatCurrency(Number(project.budget), project.currency)
+            {project.projectValue
+              ? formatCurrency(Number(project.projectValue), project.currency)
               : "—"}
           </p>
         </div>
@@ -111,12 +111,32 @@ export default async function ProjectDetailPage({ params }: Props) {
           </p>
         </div>
         <div className="rounded-xl border bg-card p-4 space-y-1">
+          <p className="text-xs text-muted-foreground">Presup. materiales</p>
+          <p className="text-lg font-semibold">
+            {project.budget
+              ? formatCurrency(Number(project.budget), project.currency)
+              : "—"}
+          </p>
+        </div>
+        <div className="rounded-xl border bg-card p-4 space-y-1">
+          <p className="text-xs text-muted-foreground">Forma de pago</p>
+          <p className="text-base font-semibold">
+            {project.paymentMethod
+              ? `${project.paymentMethod}${project.numberOfPayments ? ` (${project.numberOfPayments} pagos)` : ""}`
+              : "—"}
+          </p>
+        </div>
+      </div>
+
+      {/* Fechas */}
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 -mt-2">
+        <div className="rounded-xl border bg-card p-4 space-y-1">
           <p className="text-xs text-muted-foreground">Inicio</p>
-          <p className="text-lg font-semibold">{formatDate(project.startDate)}</p>
+          <p className="text-base font-semibold">{formatDate(project.startDate)}</p>
         </div>
         <div className="rounded-xl border bg-card p-4 space-y-1">
           <p className="text-xs text-muted-foreground">Fin estimado</p>
-          <p className="text-lg font-semibold">{formatDate(project.endDate)}</p>
+          <p className="text-base font-semibold">{formatDate(project.endDate)}</p>
         </div>
       </div>
 
@@ -145,7 +165,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             <div className="space-y-1">
               <p className="text-sm font-medium">Sin facturas</p>
               <p className="text-sm text-muted-foreground">
-                Añadí facturas para registrar los ingresos de este proyecto.
+                Añade facturas para registrar los ingresos de este proyecto.
               </p>
             </div>
           </div>

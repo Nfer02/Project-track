@@ -19,7 +19,7 @@ import {
 import { createWorkspace } from "../actions"
 
 const schema = z.object({
-  name: z.string().min(2, "Ingresá tu nombre completo"),
+  name: z.string().min(2, "Ingresa tu nombre completo"),
   workspaceName: z.string().min(2, "Nombre del workspace muy corto"),
 })
 
@@ -105,7 +105,7 @@ export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Paso 1 de 2</p>
                 </div>
                 <h1 className="text-2xl font-semibold tracking-tight">Bienvenido a ProjectTrack</h1>
-                <p className="text-sm text-muted-foreground">¿Cómo te llamás?</p>
+                <p className="text-sm text-muted-foreground">¿Cómo te llamas?</p>
               </div>
 
               <FormField

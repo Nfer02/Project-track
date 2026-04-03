@@ -11,8 +11,11 @@ export type ProjectFormValues = {
   clientName?: string
   description?: string
   status: ProjectStatus
+  projectValue?: string
   budget?: string
   currency: string
+  paymentMethod?: string
+  numberOfPayments?: string
   startDate?: string
   endDate?: string
 }
@@ -33,8 +36,11 @@ export async function createProject(values: ProjectFormValues) {
       clientName: values.clientName || null,
       description: values.description || null,
       status: values.status,
+      projectValue: values.projectValue ? parseFloat(values.projectValue) : null,
       budget: values.budget ? parseFloat(values.budget) : null,
       currency: values.currency,
+      paymentMethod: values.paymentMethod || null,
+      numberOfPayments: values.numberOfPayments ? parseInt(values.numberOfPayments) : null,
       startDate: values.startDate ? new Date(values.startDate) : null,
       endDate: values.endDate ? new Date(values.endDate) : null,
     },
@@ -47,7 +53,6 @@ export async function createProject(values: ProjectFormValues) {
 export async function updateProject(id: string, values: ProjectFormValues) {
   const { workspace } = await requireWorkspace()
 
-  // Verificar que el proyecto pertenece al workspace
   const project = await prisma.project.findFirst({
     where: { id, workspaceId: workspace.id },
   })
@@ -60,8 +65,11 @@ export async function updateProject(id: string, values: ProjectFormValues) {
       clientName: values.clientName || null,
       description: values.description || null,
       status: values.status,
+      projectValue: values.projectValue ? parseFloat(values.projectValue) : null,
       budget: values.budget ? parseFloat(values.budget) : null,
       currency: values.currency,
+      paymentMethod: values.paymentMethod || null,
+      numberOfPayments: values.numberOfPayments ? parseInt(values.numberOfPayments) : null,
       startDate: values.startDate ? new Date(values.startDate) : null,
       endDate: values.endDate ? new Date(values.endDate) : null,
     },
