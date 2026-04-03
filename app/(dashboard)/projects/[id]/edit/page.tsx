@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
+import { ProjectForm } from "@/components/app/project-form"
 import { updateProject } from "../../actions"
 import { toDateInputValue } from "@/lib/format"
 
@@ -24,19 +25,40 @@ export default async function EditProjectPage({ params }: Props) {
   if (!project) notFound()
 
   return (
-    <div className="p-6 max-w-2xl space-y-4">
-      <h1 className="text-2xl font-bold">Editar: {project.name}</h1>
-      <p>Proyecto cargado OK. Campos:</p>
-      <ul className="text-sm space-y-1">
-        <li>name: {project.name}</li>
-        <li>clientName: {project.clientName ?? "null"}</li>
-        <li>budget: {project.budget ? String(project.budget) : "null"}</li>
-        <li>projectValue: {project.projectValue ? String(project.projectValue) : "null"}</li>
-        <li>paymentMethod: {project.paymentMethod ?? "null"}</li>
-        <li>numberOfPayments: {project.numberOfPayments ?? "null"}</li>
-        <li>currency: {project.currency}</li>
-      </ul>
-      <p className="text-muted-foreground text-xs">Si ves esto, el error está en ProjectForm.</p>
+    <div className="flex flex-col gap-6 p-6 max-w-2xl">
+      <div className="flex items-center gap-3">
+        <Button variant="ghost" size="sm" className="-ml-1" render={<Link href={`/projects/${project.id}`} />}>
+          <ArrowLeft className="h-4 w-4 mr-1" />
+          {project.name}
+        </Button>
+      </div>
+
+      <div className="space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Editar proyecto</h1>
+        <p className="text-sm text-muted-foreground">
+          Actualiza los datos del proyecto.
+        </p>
+      </div>
+
+      <div className="rounded-xl border bg-card p-6">
+        <ProjectForm
+          defaultValues={{
+            name: project.name,
+            clientName: project.clientName ?? "",
+            description: project.description ?? "",
+            status: project.status,
+            projectValue: project.projectValue ? String(Number(project.projectValue)) : "",
+            budget: project.budget ? String(Number(project.budget)) : "",
+            currency: project.currency,
+            paymentMethod: project.paymentMethod ?? "",
+            numberOfPayments: project.numberOfPayments ? String(project.numberOfPayments) : "",
+            startDate: toDateInputValue(project.startDate),
+            endDate: toDateInputValue(project.endDate),
+          }}
+          onSubmit={(values) => updateProject(project.id, values)}
+          submitLabel="Guardar cambios"
+        />
+      </div>
     </div>
   )
 }

@@ -288,7 +288,7 @@ export function ProjectForm({
               render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>Forma de pago</FormLabel>
-                  <Select value={field.value ?? ""} onValueChange={field.onChange}>
+                  <Select value={field.value || undefined} onValueChange={field.onChange}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Selecciona forma de pago" />
                     </SelectTrigger>
