@@ -1,7 +1,11 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  // Prisma y pg se resuelven en el servidor, no en el bundle del cliente
+  serverExternalPackages: ["@prisma/client", "@prisma/adapter-pg", "pg"],
 
-export default nextConfig;
+  // No exponer "X-Powered-By: Next.js" en producción
+  poweredByHeader: false,
+}
+
+export default nextConfig
