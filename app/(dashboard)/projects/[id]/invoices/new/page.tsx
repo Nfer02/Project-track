@@ -4,11 +4,8 @@ import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
-import { InvoiceForm } from "@/components/app/invoice-form"
-import {
-  createInvoice,
-  getNextInvoiceNumber,
-} from "@/app/(dashboard)/invoices/actions"
+import { getNextInvoiceNumber } from "@/app/(dashboard)/invoices/actions"
+import { NewInvoiceForm } from "./new-invoice-form"
 
 interface Props {
   params: Promise<{ id: string }>
@@ -20,35 +17,17 @@ export default async function NewInvoicePage({ params }: Props) {
   const ctx = await getCurrentWorkspace()
   if (!ctx) redirect("/login")
 
-  let project
-  let nextNumber
-  try {
-    project = await prisma.project.findFirst({
-      where: { id: projectId, workspaceId: ctx.workspace.id },
-    })
-    if (!project) notFound()
-    nextNumber = await getNextInvoiceNumber(projectId)
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    return (
-      <div className="p-6 max-w-2xl">
-        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4">
-          <p className="text-sm font-medium text-destructive">Error al cargar:</p>
-          <pre className="text-xs mt-2 whitespace-pre-wrap break-all">{msg}</pre>
-        </div>
-      </div>
-    )
-  }
+  const project = await prisma.project.findFirst({
+    where: { id: projectId, workspaceId: ctx.workspace.id },
+  })
+  if (!project) notFound()
+
+  const nextNumber = await getNextInvoiceNumber(projectId)
 
   return (
     <div className="flex flex-col gap-6 p-6 max-w-2xl">
       <div className="flex items-center gap-3">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="-ml-1"
-          render={<Link href={`/projects/${projectId}`} />}
-        >
+        <Button variant="ghost" size="sm" className="-ml-1" render={<Link href={`/projects/${projectId}`} />}>
           <ArrowLeft className="h-4 w-4 mr-1" />
           {project.name}
         </Button>
@@ -61,17 +40,10 @@ export default async function NewInvoicePage({ params }: Props) {
         </p>
       </div>
 
-      <div className="rounded-xl border bg-card p-6">
-        <InvoiceForm
-          defaultValues={{
-            number: nextNumber,
-            currency: project.currency,
-          }}
-          numberReadOnly
-          onSubmit={(values) => createInvoice(projectId, values)}
-          submitLabel="Crear factura"
-        />
-      </div>
+      <NewInvoiceForm
+        projectId={projectId}
+        defaultValues={{ number: nextNumber, currency: project.currency }}
+      />
     </div>
   )
 }

@@ -18,7 +18,7 @@ export default function NewProjectPage() {
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">Nuevo proyecto</h1>
         <p className="text-sm text-muted-foreground">
-          Completá los datos del proyecto. Solo el nombre es obligatorio.
+          Completa los datos del proyecto. Solo el nombre es obligatorio.
         </p>
       </div>
 
