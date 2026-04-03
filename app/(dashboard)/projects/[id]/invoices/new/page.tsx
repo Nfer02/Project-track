@@ -20,12 +20,25 @@ export default async function NewInvoicePage({ params }: Props) {
   const ctx = await getCurrentWorkspace()
   if (!ctx) redirect("/login")
 
-  const project = await prisma.project.findFirst({
-    where: { id: projectId, workspaceId: ctx.workspace.id },
-  })
-  if (!project) notFound()
-
-  const nextNumber = await getNextInvoiceNumber(projectId)
+  let project
+  let nextNumber
+  try {
+    project = await prisma.project.findFirst({
+      where: { id: projectId, workspaceId: ctx.workspace.id },
+    })
+    if (!project) notFound()
+    nextNumber = await getNextInvoiceNumber(projectId)
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    return (
+      <div className="p-6 max-w-2xl">
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4">
+          <p className="text-sm font-medium text-destructive">Error al cargar:</p>
+          <pre className="text-xs mt-2 whitespace-pre-wrap break-all">{msg}</pre>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6 max-w-2xl">

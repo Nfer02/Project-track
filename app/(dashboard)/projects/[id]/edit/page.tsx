@@ -18,9 +18,22 @@ export default async function EditProjectPage({ params }: Props) {
   const ctx = await getCurrentWorkspace()
   if (!ctx) redirect("/login")
 
-  const project = await prisma.project.findFirst({
-    where: { id, workspaceId: ctx.workspace.id },
-  })
+  let project
+  try {
+    project = await prisma.project.findFirst({
+      where: { id, workspaceId: ctx.workspace.id },
+    })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    return (
+      <div className="p-6 max-w-2xl">
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4">
+          <p className="text-sm font-medium text-destructive">Error al cargar el proyecto:</p>
+          <pre className="text-xs mt-2 whitespace-pre-wrap break-all">{msg}</pre>
+        </div>
+      </div>
+    )
+  }
 
   if (!project) notFound()
 
