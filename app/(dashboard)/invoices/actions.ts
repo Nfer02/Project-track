@@ -36,29 +36,36 @@ export async function getNextInvoiceNumber(projectId: string): Promise<string> {
   return String(num + 1).padStart(3, "0")
 }
 
-export async function createInvoice(projectId: string, values: InvoiceFormValues) {
+export async function createInvoice(
+  projectId: string,
+  values: InvoiceFormValues
+): Promise<{ error: string } | void> {
   const { workspace } = await requireWorkspace()
 
-  // Verificar que el proyecto pertenece al workspace
   const project = await prisma.project.findFirst({
     where: { id: projectId, workspaceId: workspace.id },
   })
-  if (!project) redirect("/projects")
+  if (!project) return { error: "Proyecto no encontrado" }
 
-  await prisma.invoice.create({
-    data: {
-      projectId,
-      number: values.number,
-      description: values.description || null,
-      amount: parseFloat(values.amount),
-      currency: values.currency,
-      status: values.status,
-      issueDate: new Date(values.issueDate),
-      dueDate: values.dueDate ? new Date(values.dueDate) : null,
-      paidDate: values.paidDate ? new Date(values.paidDate) : null,
-      notes: values.notes || null,
-    },
-  })
+  try {
+    await prisma.invoice.create({
+      data: {
+        projectId,
+        number: values.number,
+        description: values.description || null,
+        amount: parseFloat(values.amount),
+        currency: values.currency,
+        status: values.status,
+        issueDate: new Date(values.issueDate),
+        dueDate: values.dueDate ? new Date(values.dueDate) : null,
+        paidDate: values.paidDate ? new Date(values.paidDate) : null,
+        notes: values.notes || null,
+      },
+    })
+  } catch (err) {
+    console.error("[createInvoice] DB error:", err)
+    return { error: "No se pudo guardar la factura. Inténtalo de nuevo." }
+  }
 
   revalidatePath(`/projects/${projectId}`)
   revalidatePath("/invoices")
@@ -69,28 +76,33 @@ export async function updateInvoice(
   invoiceId: string,
   projectId: string,
   values: InvoiceFormValues
-) {
+): Promise<{ error: string } | void> {
   const { workspace } = await requireWorkspace()
 
   const invoice = await prisma.invoice.findFirst({
     where: { id: invoiceId, project: { workspaceId: workspace.id } },
   })
-  if (!invoice) redirect(`/projects/${projectId}`)
+  if (!invoice) return { error: "Factura no encontrada" }
 
-  await prisma.invoice.update({
-    where: { id: invoiceId },
-    data: {
-      number: values.number,
-      description: values.description || null,
-      amount: parseFloat(values.amount),
-      currency: values.currency,
-      status: values.status,
-      issueDate: new Date(values.issueDate),
-      dueDate: values.dueDate ? new Date(values.dueDate) : null,
-      paidDate: values.paidDate ? new Date(values.paidDate) : null,
-      notes: values.notes || null,
-    },
-  })
+  try {
+    await prisma.invoice.update({
+      where: { id: invoiceId },
+      data: {
+        number: values.number,
+        description: values.description || null,
+        amount: parseFloat(values.amount),
+        currency: values.currency,
+        status: values.status,
+        issueDate: new Date(values.issueDate),
+        dueDate: values.dueDate ? new Date(values.dueDate) : null,
+        paidDate: values.paidDate ? new Date(values.paidDate) : null,
+        notes: values.notes || null,
+      },
+    })
+  } catch (err) {
+    console.error("[updateInvoice] DB error:", err)
+    return { error: "No se pudo actualizar la factura. Inténtalo de nuevo." }
+  }
 
   revalidatePath(`/projects/${projectId}`)
   revalidatePath(`/projects/${projectId}/invoices/${invoiceId}`)

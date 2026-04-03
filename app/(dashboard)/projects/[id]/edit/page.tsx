@@ -37,7 +37,7 @@ export default async function EditProjectPage({ params }: Props) {
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">Editar proyecto</h1>
         <p className="text-sm text-muted-foreground">
-          Actualizá los datos del proyecto.
+          Actualiza los datos del proyecto.
         </p>
       </div>
 
@@ -48,8 +48,11 @@ export default async function EditProjectPage({ params }: Props) {
             clientName: project.clientName ?? "",
             description: project.description ?? "",
             status: project.status,
+            projectValue: project.projectValue ? String(Number(project.projectValue)) : "",
             budget: project.budget ? String(Number(project.budget)) : "",
             currency: project.currency,
+            paymentMethod: project.paymentMethod ?? "",
+            numberOfPayments: project.numberOfPayments ? String(project.numberOfPayments) : "",
             startDate: toDateInputValue(project.startDate),
             endDate: toDateInputValue(project.endDate),
           }}
