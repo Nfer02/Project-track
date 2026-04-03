@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useForm, Controller } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Loader2 } from "lucide-react"
@@ -101,7 +101,6 @@ export function ProjectForm({
       const result = await onSubmit(values as ProjectFormValues)
       if (result && "error" in result) setServerError(result.error)
     } catch (err) {
-      // redirect() en Next.js lanza un error especial — no interceptar
       if ((err as { digest?: string })?.digest?.startsWith("NEXT_REDIRECT")) throw err
       setServerError("Ocurrió un error. Inténtalo de nuevo.")
     }
@@ -165,10 +164,10 @@ export function ProjectForm({
           />
 
           <div className="grid grid-cols-2 gap-4">
-            <Controller
+            <FormField
               control={form.control}
               name="status"
-              render={({ field, fieldState }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Estado</FormLabel>
                   <Select value={field.value} onValueChange={field.onChange}>
@@ -183,9 +182,7 @@ export function ProjectForm({
                       ))}
                     </SelectContent>
                   </Select>
-                  {fieldState.error && (
-                    <p className="text-destructive text-sm">{fieldState.error.message}</p>
-                  )}
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -282,10 +279,10 @@ export function ProjectForm({
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <Controller
+            <FormField
               control={form.control}
               name="paymentMethod"
-              render={({ field, fieldState }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Forma de pago</FormLabel>
                   <Select value={field.value || undefined} onValueChange={field.onChange}>
@@ -300,9 +297,7 @@ export function ProjectForm({
                       ))}
                     </SelectContent>
                   </Select>
-                  {fieldState.error && (
-                    <p className="text-destructive text-sm">{fieldState.error.message}</p>
-                  )}
+                  <FormMessage />
                 </FormItem>
               )}
             />

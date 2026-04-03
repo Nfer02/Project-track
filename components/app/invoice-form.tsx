@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useForm, Controller } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Loader2 } from "lucide-react"
@@ -121,10 +121,10 @@ export function InvoiceForm({
             )}
           />
 
-          <Controller
+          <FormField
             control={form.control}
             name="status"
-            render={({ field, fieldState }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Estado</FormLabel>
                 <Select value={field.value} onValueChange={field.onChange}>
@@ -139,9 +139,7 @@ export function InvoiceForm({
                     ))}
                   </SelectContent>
                 </Select>
-                {fieldState.error && (
-                  <p className="text-destructive text-sm">{fieldState.error.message}</p>
-                )}
+                <FormMessage />
               </FormItem>
             )}
           />
