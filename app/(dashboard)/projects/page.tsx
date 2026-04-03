@@ -14,7 +14,7 @@ import { formatCurrency } from "@/lib/format"
 
 export default async function ProjectsPage() {
   const ctx = await getCurrentWorkspace()
-  if (!ctx) redirect("/login")
+  if (!ctx) redirect("/onboarding")
 
   const projects = await prisma.project.findMany({
     where: { workspaceId: ctx.workspace.id },

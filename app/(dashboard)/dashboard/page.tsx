@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
 export const metadata: Metadata = {
   title: "Dashboard — ProjectTrack",
@@ -59,16 +60,7 @@ export default async function DashboardPage() {
   const ctx = await getCurrentWorkspace()
 
   if (!ctx) {
-    return (
-      <div className="flex flex-col gap-8 p-6 max-w-5xl">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">
-            Configurá tu workspace para ver estadísticas.
-          </p>
-        </div>
-      </div>
-    )
+    redirect("/onboarding")
   }
 
   const data = await getDashboardData(ctx.workspace.id)

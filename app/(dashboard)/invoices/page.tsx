@@ -13,7 +13,7 @@ import { formatCurrency, formatDate } from "@/lib/format"
 
 export default async function InvoicesPage() {
   const ctx = await getCurrentWorkspace()
-  if (!ctx) redirect("/login")
+  if (!ctx) redirect("/onboarding")
 
   const invoices = await prisma.invoice.findMany({
     where: { project: { workspaceId: ctx.workspace.id } },
