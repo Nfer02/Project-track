@@ -19,9 +19,9 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 export const metadata = {
-  title: "ProjectTrack — Gestión financiera para autónomos",
+  title: "ProjectTrack — Gestión financiera para autónomos y freelancers",
   description:
-    "Llevá el control de tus proyectos, facturas e ingresos en un solo lugar. Diseñado para freelancers y autónomos.",
+    "Lleva el control de tus proyectos, facturas e ingresos en un solo lugar. Diseñado para freelancers y autónomos en España y Latinoamérica.",
 }
 
 const FEATURES = [
@@ -70,9 +70,10 @@ const FEATURES = [
 ]
 
 const FREE_FEATURES = [
-  { label: "Hasta 3 proyectos", included: true },
-  { label: "Facturas ilimitadas", included: true },
-  { label: "Dashboard financiero", included: true },
+  { label: "1 proyecto activo", included: true },
+  { label: "Hasta 10 facturas/mes", included: true },
+  { label: "Dashboard básico", included: true },
+  { label: "Proyectos ilimitados", included: false },
   { label: "Upload + OCR con IA", included: false },
   { label: "Colaboradores", included: false },
   { label: "Soporte prioritario", included: false },
@@ -84,6 +85,7 @@ const PRO_FEATURES = [
   { label: "Dashboard financiero avanzado", included: true },
   { label: "Upload + OCR con IA (Claude)", included: true },
   { label: "Colaboradores (hasta 10)", included: true },
+  { label: "Exportación a PDF", included: true },
   { label: "Soporte prioritario", included: true },
 ]
 
@@ -172,7 +174,7 @@ export default async function LandingPage() {
 
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
               ProjectTrack te ayuda a gestionar proyectos, facturas e ingresos en un
-              solo lugar. Menos planillas, más tiempo para lo que importa.
+              solo lugar. Diseñado para autónomos y freelancers en España y Latinoamérica.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -342,10 +344,10 @@ export default async function LandingPage() {
                     <Badge className="ml-auto text-xs">Recomendado</Badge>
                   </div>
                   <div className="flex items-end gap-1 mb-1">
-                    <span className="text-4xl font-black">$12</span>
+                    <span className="text-4xl font-black">€13,99</span>
                     <span className="text-muted-foreground text-sm mb-1">/ mes</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Para profesionales</p>
+                  <p className="text-xs text-muted-foreground">Para profesionales y equipos</p>
                 </div>
 
                 <ul className="space-y-2.5 mb-8 flex-1">
