@@ -90,13 +90,13 @@ export function ExpenseForm({
       amount: "",
       currency: "EUR",
       category: "",
-      status: "PENDING",
+      status: "PENDING" as const,
       issueDate: new Date().toISOString().slice(0, 10),
       dueDate: "",
       paidDate: "",
       isDeclared: true,
       notes: "",
-      ...defaultValues,
+      ...(defaultValues as Partial<FormValues>),
     },
   })
 
