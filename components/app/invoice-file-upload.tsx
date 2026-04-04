@@ -69,7 +69,7 @@ export function InvoiceFileUpload({ invoiceId, onSuccess }: InvoiceFileUploadPro
         setResult(data as UploadResult)
         onSuccess?.(data as UploadResult)
       } catch {
-        setError("Error de red. Verificá tu conexión e intentá de nuevo.")
+        setError("Error de red. Verifica tu conexión e inténtalo de nuevo.")
       } finally {
         setIsUploading(false)
       }
@@ -132,7 +132,7 @@ export function InvoiceFileUpload({ invoiceId, onSuccess }: InvoiceFileUploadPro
 
         <div className="text-center space-y-1">
           <p className="text-sm font-medium">
-            {isUploading ? "Analizando documento..." : "Arrastrá un archivo o hacé clic"}
+            {isUploading ? "Analizando documento..." : "Arrastra un archivo o haz clic"}
           </p>
           <p className="text-xs text-muted-foreground">
             PDF, JPEG, PNG, WEBP — máx. {MAX_MB} MB

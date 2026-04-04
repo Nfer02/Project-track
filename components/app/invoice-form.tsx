@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Loader2 } from "lucide-react"
+import { OcrUpload, type OcrData } from "@/components/app/ocr-upload"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -102,6 +103,17 @@ export function InvoiceForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
+
+        {/* OCR Upload */}
+        <OcrUpload
+          onExtracted={(data: OcrData) => {
+            if (data.description) form.setValue("description", data.description)
+            if (data.amount) form.setValue("amount", String(data.amount))
+            if (data.issueDate) form.setValue("issueDate", data.issueDate)
+            if (data.dueDate) form.setValue("dueDate", data.dueDate)
+            if (data.notes) form.setValue("notes", data.notes)
+          }}
+        />
 
         {/* Número + Estado */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

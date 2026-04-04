@@ -79,8 +79,8 @@ export default async function DashboardPage() {
       label: "Ingresos del mes",
       value:
         data.revenueThisMonth > 0
-          ? formatCurrency(data.revenueThisMonth, "USD")
-          : "$0",
+          ? formatCurrency(data.revenueThisMonth, "EUR")
+          : "0 €",
       sub:
         data.revenueThisMonth > 0
           ? "Facturas cobradas este mes"
@@ -93,8 +93,8 @@ export default async function DashboardPage() {
       label: "Gastos del mes",
       value:
         data.expensesThisMonth > 0
-          ? formatCurrency(data.expensesThisMonth, "USD")
-          : "$0",
+          ? formatCurrency(data.expensesThisMonth, "EUR")
+          : "0 €",
       sub:
         data.expensesThisMonth > 0
           ? "Gastos registrados este mes"
@@ -193,7 +193,7 @@ export default async function DashboardPage() {
                 Todos los proyectos — últimos 6 meses
               </p>
             </div>
-            <RevenueBarChart data={data.monthlyData} currency="USD" />
+            <RevenueBarChart data={data.monthlyData} currency="EUR" />
           </div>
 
           {/* Resumen financiero — 1/3 */}
@@ -224,7 +224,7 @@ export default async function DashboardPage() {
                       <span className="text-muted-foreground">{label}</span>
                     </div>
                     <span className="font-medium tabular-nums">
-                      {formatCurrency(value, "USD")}
+                      {formatCurrency(value, "EUR")}
                     </span>
                   </div>
                 </div>

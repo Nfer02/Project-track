@@ -34,7 +34,7 @@ interface TooltipProps {
   currency?: string
 }
 
-function CustomTooltip({ active, payload, label, currency = "USD" }: TooltipProps) {
+function CustomTooltip({ active, payload, label, currency = "EUR" }: TooltipProps) {
   if (!active || !payload?.length) return null
   const total = payload.reduce((s, p) => s + (p.value ?? 0), 0)
   return (
@@ -60,7 +60,7 @@ function CustomTooltip({ active, payload, label, currency = "USD" }: TooltipProp
   )
 }
 
-export function RevenueBarChart({ data, currency = "USD" }: RevenueBarChartProps) {
+export function RevenueBarChart({ data, currency = "EUR" }: RevenueBarChartProps) {
   if (data.every((d) => d.paid === 0 && d.pending === 0 && d.overdue === 0)) {
     return (
       <div className="flex h-40 items-center justify-center text-sm text-muted-foreground">

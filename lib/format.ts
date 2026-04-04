@@ -2,7 +2,7 @@
  * Formatea un número como moneda.
  * Ej: formatCurrency(1500, "USD") → "$1,500.00"
  */
-export function formatCurrency(amount: number, currency = "USD"): string {
+export function formatCurrency(amount: number, currency = "EUR"): string {
   return new Intl.NumberFormat("es-ES", {
     style: "currency",
     currency,

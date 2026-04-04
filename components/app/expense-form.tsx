@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Loader2, Plus, Trash2 } from "lucide-react"
+import { OcrUpload, type OcrData } from "@/components/app/ocr-upload"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -158,6 +159,18 @@ export function ExpenseForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
+        {/* OCR Upload */}
+        <OcrUpload
+          onExtracted={(data: OcrData) => {
+            if (data.vendorName) form.setValue("vendorName", data.vendorName)
+            if (data.description) form.setValue("description", data.description)
+            if (data.amount) form.setValue("amount", String(data.amount))
+            if (data.issueDate) form.setValue("issueDate", data.issueDate)
+            if (data.dueDate) form.setValue("dueDate", data.dueDate)
+            if (data.notes) form.setValue("notes", data.notes)
+          }}
+        />
+
         {/* Numero (oculto) */}
         <input type="hidden" {...form.register("number")} />
         <input type="hidden" {...form.register("currency")} />
@@ -329,21 +342,18 @@ export function ExpenseForm({
           {allocations.map((alloc, idx) => (
             <div key={idx} className="flex items-end gap-2">
               <div className="flex-1">
-                <Select
-                  value={alloc.projectId || undefined}
-                  onValueChange={(v) => updateAllocation(idx, { projectId: v ?? "" })}
+                <select
+                  value={alloc.projectId}
+                  onChange={(e) => updateAllocation(idx, { projectId: e.target.value })}
+                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecciona proyecto" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {projects.map((p) => (
-                      <SelectItem key={p.id} value={p.id}>
-                        {p.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  <option value="">Selecciona proyecto</option>
+                  {projects.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="w-32">
                 <Input
