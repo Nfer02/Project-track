@@ -16,6 +16,7 @@ import { FadeIn } from "@/components/landing/fade-in"
 import { FeatureTabs } from "@/components/landing/feature-tabs"
 import { Testimonials } from "@/components/landing/testimonials"
 import { UserTypes } from "@/components/landing/user-types"
+import { AppShowcase } from "@/components/landing/app-showcase"
 
 export const metadata = {
   title: "ProjectTrack — Gestion de proyectos y control financiero para autonomos",
@@ -176,6 +177,27 @@ export default async function LandingPage() {
               ))}
             </div>
           </FadeIn>
+        </section>
+
+        {/* --------------------------------------------------------------- */}
+        {/* App Showcase                                                    */}
+        {/* --------------------------------------------------------------- */}
+        <section className="py-16 sm:py-24 bg-muted/20">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
+            <FadeIn>
+              <div className="text-center mb-10">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+                  Mira lo que puedes hacer
+                </h2>
+                <p className="text-muted-foreground max-w-xl mx-auto">
+                  Dashboard profesional, control de gastos, OCR inteligente y mucho más
+                </p>
+              </div>
+            </FadeIn>
+            <FadeIn delay={150}>
+              <AppShowcase />
+            </FadeIn>
+          </div>
         </section>
 
         {/* --------------------------------------------------------------- */}
