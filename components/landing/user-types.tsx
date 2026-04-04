@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Building2, Palette, Wrench } from "lucide-react"
+import { Building2, Palette, Wrench, Camera } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
 interface UserType {
@@ -31,11 +31,18 @@ const userTypes: UserType[] = [
       "Registra gastos sobre la marcha, escanea tickets con el móvil y llega preparado al trimestre.",
     color: "text-blue-600 bg-blue-500/10",
   },
+  {
+    Icon: Camera,
+    title: "Fotografía, vídeo y eventos",
+    description:
+      "Cada evento es un proyecto. Controla equipo, desplazamientos y proveedores con visión clara de lo que ganas.",
+    color: "text-rose-600 bg-rose-500/10",
+  },
 ]
 
 export function UserTypes() {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {userTypes.map(({ Icon, title, description, color }) => (
         <Link
           key={title}
