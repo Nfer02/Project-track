@@ -22,7 +22,7 @@ export default async function NewInvoicePage({ params }: Props) {
   })
   if (!project) notFound()
 
-  const nextNumber = await getNextInvoiceNumber(projectId)
+  const nextNumber = await getNextInvoiceNumber(ctx.workspace.id, "INCOME")
 
   return (
     <div className="flex flex-col gap-6 p-6 max-w-2xl">
