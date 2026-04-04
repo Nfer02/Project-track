@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Loader2, Plus, Trash2 } from "lucide-react"
+import { Divide, Loader2, Plus, Trash2 } from "lucide-react"
 import { OcrUpload, type OcrData } from "@/components/app/ocr-upload"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -25,6 +25,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { formatCurrency } from "@/lib/format"
+import { cn } from "@/lib/utils"
 import type { ExpenseFormValues } from "@/app/(dashboard)/invoices/actions"
 
 const schema = z.object({
@@ -63,13 +65,14 @@ const STATUS_OPTIONS = [
   { value: "PAID", label: "Pagado" },
 ]
 
-type Allocation = { projectId: string; amount: string; notes?: string }
+type Allocation = { projectId: string; amount: string; percentage?: string; notes?: string }
 
 interface ExpenseFormProps {
   defaultValues?: Partial<ExpenseFormValues>
   projects: { id: string; name: string }[]
   onSubmit: (values: ExpenseFormValues) => Promise<void | { error: string }>
   submitLabel?: string
+  preAssignedProjectId?: string
 }
 
 export function ExpenseForm({
@@ -77,11 +80,14 @@ export function ExpenseForm({
   projects,
   onSubmit,
   submitLabel = "Guardar",
+  preAssignedProjectId,
 }: ExpenseFormProps) {
   const [serverError, setServerError] = useState<string | null>(null)
-  const [allocations, setAllocations] = useState<Allocation[]>(
-    (defaultValues?.allocations as Allocation[] | undefined) ?? [],
-  )
+  const [allocations, setAllocations] = useState<Allocation[]>(() => {
+    if (preAssignedProjectId) return []
+    const initial = (defaultValues?.allocations as Allocation[] | undefined) ?? []
+    return initial.map((a) => ({ ...a, percentage: "" }))
+  })
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -112,9 +118,10 @@ export function ExpenseForm({
     0,
   )
   const unallocated = Math.max(0, totalAmount - allocTotal)
+  const allocPercent = totalAmount > 0 ? Math.min(100, (allocTotal / totalAmount) * 100) : 0
 
   function addAllocation() {
-    setAllocations((prev) => [...prev, { projectId: "", amount: "" }])
+    setAllocations((prev) => [...prev, { projectId: "", amount: "", percentage: "" }])
   }
 
   function removeAllocation(index: number) {
@@ -127,13 +134,29 @@ export function ExpenseForm({
     )
   }
 
+  function splitEvenly() {
+    if (allocations.length === 0 || totalAmount <= 0) return
+    const perProject = (totalAmount / allocations.length).toFixed(2)
+    const pct = (100 / allocations.length).toFixed(1)
+    setAllocations((prev) =>
+      prev.map((a) => ({ ...a, amount: perProject, percentage: pct })),
+    )
+  }
+
   async function handleSubmit(values: FormValues) {
     setServerError(null)
 
-    // Validar asignaciones
-    const validAllocations = allocations.filter(
-      (a) => a.projectId && parseFloat(a.amount || "0") > 0,
-    )
+    // Build allocations to send (strip percentage, it's UI-only)
+    let validAllocations: { projectId: string; amount: string; notes?: string }[]
+
+    if (preAssignedProjectId) {
+      validAllocations = [{ projectId: preAssignedProjectId, amount: values.amount }]
+    } else {
+      validAllocations = allocations
+        .filter((a) => a.projectId && parseFloat(a.amount || "0") > 0)
+        .map(({ projectId, amount, notes }) => ({ projectId, amount, notes }))
+    }
+
     const sumAlloc = validAllocations.reduce(
       (s, a) => s + parseFloat(a.amount || "0"),
       0,
@@ -167,6 +190,7 @@ export function ExpenseForm({
             if (data.vendorName) form.setValue("vendorName", data.vendorName)
             if (data.description) form.setValue("description", data.description)
             if (data.amount) form.setValue("amount", String(data.amount))
+            if (data.vatAmount) form.setValue("vatAmount", String(data.vatAmount))
             if (data.issueDate) form.setValue("issueDate", data.issueDate)
             if (data.dueDate) form.setValue("dueDate", data.dueDate)
             if (data.notes) form.setValue("notes", data.notes)
@@ -350,73 +374,160 @@ export function ExpenseForm({
           />
         )}
 
-        {/* ── Asignar a proyectos ─────────────────────────────── */}
-        <div className="space-y-3 pt-2 border-t">
-          <div className="pt-2">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Asignar a proyectos
-            </p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Indica cuanto de este gasto corresponde a cada proyecto
+        {/* ── Info: pre-assigned project ─────────────────────── */}
+        {preAssignedProjectId && (
+          <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
+            <p className="text-sm text-muted-foreground">
+              Este gasto se asignara completo al proyecto{" "}
+              <span className="font-medium text-foreground">
+                {projects.find((p) => p.id === preAssignedProjectId)?.name ?? "seleccionado"}
+              </span>.
             </p>
           </div>
+        )}
 
-          {allocations.map((alloc, idx) => (
-            <div key={idx} className="flex items-end gap-2">
-              <div className="flex-1">
-                <select
-                  value={alloc.projectId}
-                  onChange={(e) => updateAllocation(idx, { projectId: e.target.value })}
-                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        {/* ── Asignar a proyectos ─────────────────────────────── */}
+        {!preAssignedProjectId && (
+          <div className="space-y-3 pt-2 border-t">
+            <div className="pt-2">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                Asignar a proyectos
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Indica cuanto de este gasto corresponde a cada proyecto
+              </p>
+            </div>
+
+            {/* Total amount reference */}
+            {totalAmount > 0 && (
+              <p className="text-sm font-medium">
+                Importe total:{" "}
+                <span className="text-primary">
+                  {formatCurrency(totalAmount, "EUR")}
+                </span>
+              </p>
+            )}
+
+            {/* Allocation rows */}
+            {allocations.map((alloc, idx) => (
+              <div key={idx} className="flex items-end gap-2">
+                <div className="flex-1">
+                  <label className="text-xs text-muted-foreground">Proyecto</label>
+                  <select
+                    value={alloc.projectId}
+                    onChange={(e) =>
+                      updateAllocation(idx, { projectId: e.target.value })
+                    }
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <option value="">Selecciona proyecto</option>
+                    {projects.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="w-28">
+                  <label className="text-xs text-muted-foreground">Importe</label>
+                  <Input
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="0.00"
+                    value={alloc.amount}
+                    onChange={(e) => {
+                      const amt = e.target.value
+                      const pct =
+                        totalAmount > 0
+                          ? ((parseFloat(amt || "0") / totalAmount) * 100).toFixed(1)
+                          : "0"
+                      updateAllocation(idx, { amount: amt, percentage: pct })
+                    }}
+                  />
+                </div>
+                <div className="w-20">
+                  <label className="text-xs text-muted-foreground">%</label>
+                  <Input
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="0.0"
+                    value={alloc.percentage ?? ""}
+                    onChange={(e) => {
+                      const pct = e.target.value
+                      const amt =
+                        totalAmount > 0
+                          ? ((parseFloat(pct || "0") / 100) * totalAmount).toFixed(2)
+                          : "0"
+                      updateAllocation(idx, { amount: amt, percentage: pct })
+                    }}
+                  />
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeAllocation(idx)}
                 >
-                  <option value="">Selecciona proyecto</option>
-                  {projects.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
-                </select>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
-              <div className="w-32">
-                <Input
-                  type="text"
-                  inputMode="decimal"
-                  placeholder="Importe"
-                  value={alloc.amount}
-                  onChange={(e) =>
-                    updateAllocation(idx, { amount: e.target.value })
-                  }
-                />
-              </div>
+            ))}
+
+            {/* Action buttons */}
+            <div className="flex items-center gap-2 flex-wrap">
               <Button
                 type="button"
-                variant="ghost"
-                size="icon"
-                onClick={() => removeAllocation(idx)}
+                variant="outline"
+                size="sm"
+                onClick={addAllocation}
+                disabled={projects.length === 0}
               >
-                <Trash2 className="h-4 w-4" />
+                <Plus className="mr-1 h-4 w-4" />
+                Anadir proyecto
               </Button>
+
+              {allocations.length >= 2 && totalAmount > 0 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={splitEvenly}
+                >
+                  <Divide className="mr-1 h-4 w-4" />
+                  Repartir equitativamente
+                </Button>
+              )}
             </div>
-          ))}
 
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={addAllocation}
-            disabled={projects.length === 0}
-          >
-            <Plus className="mr-1 h-4 w-4" />
-            Anadir proyecto
-          </Button>
-
-          {totalAmount > 0 && (
-            <p className="text-xs text-muted-foreground">
-              Asignado: EUR{allocTotal.toFixed(2)} / EUR{totalAmount.toFixed(2)} —{" "}
-              Sin asignar: EUR{unallocated.toFixed(2)} (gasto general)
-            </p>
-          )}
-        </div>
+            {/* Progress bar and summary */}
+            {totalAmount > 0 && allocations.length > 0 && (
+              <div className="space-y-2">
+                <div className="h-2 rounded-full bg-muted overflow-hidden">
+                  <div
+                    className={cn(
+                      "h-full rounded-full transition-all",
+                      allocPercent >= 100
+                        ? "bg-emerald-500"
+                        : allocPercent >= 70
+                          ? "bg-amber-500"
+                          : "bg-primary",
+                    )}
+                    style={{ width: `${Math.min(100, allocPercent)}%` }}
+                  />
+                </div>
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>
+                    Asignado: {formatCurrency(allocTotal, "EUR")} (
+                    {allocPercent.toFixed(0)}%)
+                  </span>
+                  <span>
+                    Sin asignar: {formatCurrency(unallocated, "EUR")} (gasto general)
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* isDeclared */}
         <FormField

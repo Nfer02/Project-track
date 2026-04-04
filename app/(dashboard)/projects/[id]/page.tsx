@@ -241,14 +241,20 @@ export default async function ProjectDetailPage({ params }: Props) {
 
       {/* Gastos asignados a este proyecto */}
       <div className="space-y-3">
-        <h2 className="text-base font-semibold">
-          Gastos asignados a este proyecto
-          {expenseAllocations.length > 0 && (
-            <span className="ml-2 text-sm font-normal text-muted-foreground">
-              ({expenseAllocations.length})
-            </span>
-          )}
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-base font-semibold">
+            Gastos asignados a este proyecto
+            {expenseAllocations.length > 0 && (
+              <span className="ml-2 text-sm font-normal text-muted-foreground">
+                ({expenseAllocations.length})
+              </span>
+            )}
+          </h2>
+          <Button size="sm" render={<Link href={`/projects/${project.id}/expenses/new`} />}>
+            <Plus className="h-4 w-4 mr-1" />
+            Nuevo gasto
+          </Button>
+        </div>
 
         {expenseAllocations.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-12 gap-3 text-center">

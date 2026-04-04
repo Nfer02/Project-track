@@ -8,6 +8,9 @@ export type OcrData = {
   invoiceNumber?: string | null
   issueDate?: string | null
   dueDate?: string | null
+  baseAmount?: number | null
+  vatRate?: number | null
+  vatAmount?: number | null
   amount?: number | null
   currency?: string | null
   description?: string | null
