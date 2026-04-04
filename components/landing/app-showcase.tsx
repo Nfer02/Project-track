@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import {
   BarChart3,
@@ -221,7 +221,7 @@ function OcrMockup() {
   )
 }
 
-const MOCKUPS: Record<string, () => JSX.Element> = {
+const MOCKUPS: Record<string, () => React.ReactElement> = {
   dashboard: DashboardMockup,
   projects: ProjectsMockup,
   expenses: ExpensesMockup,
