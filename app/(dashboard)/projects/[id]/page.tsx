@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
-import { ArrowLeft, Pencil, Trash2, ReceiptText, Plus, BarChart2 } from "lucide-react"
+import { ArrowLeft, Pencil, Trash2, ReceiptText, Plus, BarChart2, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
@@ -17,7 +17,7 @@ export default async function ProjectDetailPage({ params }: Props) {
   const { id } = await params
 
   const ctx = await getCurrentWorkspace()
-  if (!ctx) redirect("/login")
+  if (!ctx) redirect("/onboarding")
 
   const project = await prisma.project.findFirst({
     where: { id, workspaceId: ctx.workspace.id },
@@ -30,10 +30,19 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   if (!project) notFound()
 
+  const expenseAllocations = await prisma.expenseAllocation.findMany({
+    where: { projectId: id },
+    include: {
+      invoice: { select: { number: true, vendorName: true, category: true, issueDate: true, status: true, currency: true } },
+    },
+    orderBy: { createdAt: "desc" },
+  })
+
   const totalInvoiced = project.invoices.reduce(
     (sum, inv) => sum + Number(inv.amount),
     0
   )
+  const totalExpenses = expenseAllocations.reduce((s, a) => s + Number(a.amount), 0)
   const pendingInvoices = project.invoices.filter(
     (inv) => inv.status === "PENDING" || inv.status === "OVERDUE"
   )
@@ -95,7 +104,7 @@ export default async function ProjectDetailPage({ params }: Props) {
       </div>
 
       {/* Stats del proyecto */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
         <div className="rounded-xl border bg-card p-4 space-y-1">
           <p className="text-xs text-muted-foreground">Valor del contrato</p>
           <p className="text-lg font-semibold">
@@ -119,11 +128,19 @@ export default async function ProjectDetailPage({ params }: Props) {
           </p>
         </div>
         <div className="rounded-xl border bg-card p-4 space-y-1">
+          <p className="text-xs text-muted-foreground">Gastos asignados</p>
+          <p className="text-lg font-semibold">
+            {totalExpenses > 0
+              ? formatCurrency(totalExpenses, project.currency)
+              : "\u2014"}
+          </p>
+        </div>
+        <div className="rounded-xl border bg-card p-4 space-y-1">
           <p className="text-xs text-muted-foreground">Forma de pago</p>
           <p className="text-base font-semibold">
             {project.paymentMethod
               ? `${project.paymentMethod}${project.numberOfPayments ? ` (${project.numberOfPayments} pagos)` : ""}`
-              : "—"}
+              : "\u2014"}
           </p>
         </div>
       </div>
@@ -213,6 +230,61 @@ export default async function ProjectDetailPage({ params }: Props) {
                     </td>
                     <td className="px-4 py-3">
                       <InvoiceStatusBadge status={inv.status} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Gastos asignados a este proyecto */}
+      <div className="space-y-3">
+        <h2 className="text-base font-semibold">
+          Gastos asignados a este proyecto
+          {expenseAllocations.length > 0 && (
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
+              ({expenseAllocations.length})
+            </span>
+          )}
+        </h2>
+
+        {expenseAllocations.length === 0 ? (
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-12 gap-3 text-center">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+              <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-medium">Sin gastos asignados</p>
+              <p className="text-sm text-muted-foreground">
+                Los gastos se asignan desde las facturas de tipo gasto.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="rounded-xl border overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="border-b bg-muted/50">
+                <tr>
+                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">N.&#xba; Factura</th>
+                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Proveedor</th>
+                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground hidden sm:table-cell">Categoria</th>
+                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground hidden md:table-cell">Fecha</th>
+                  <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">Importe asignado</th>
+                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Estado</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {expenseAllocations.map((alloc) => (
+                  <tr key={alloc.id} className="hover:bg-muted/30 transition-colors">
+                    <td className="px-4 py-3 font-mono text-xs">#{alloc.invoice.number}</td>
+                    <td className="px-4 py-3 text-xs font-medium">{alloc.invoice.vendorName ?? "\u2014"}</td>
+                    <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell text-xs">{alloc.invoice.category ?? "\u2014"}</td>
+                    <td className="px-4 py-3 text-muted-foreground hidden md:table-cell text-xs">{formatDate(alloc.invoice.issueDate)}</td>
+                    <td className="px-4 py-3 text-right font-medium text-sm">{formatCurrency(Number(alloc.amount), project.currency)}</td>
+                    <td className="px-4 py-3">
+                      <InvoiceStatusBadge status={alloc.invoice.status} />
                     </td>
                   </tr>
                 ))}

@@ -42,7 +42,7 @@ export default async function NewInvoicePage({ params }: Props) {
 
       <NewInvoiceForm
         projectId={projectId}
-        defaultValues={{ number: nextNumber, currency: project.currency }}
+        defaultValues={{ number: nextNumber, currency: project.currency, isDeclared: project.isDeclared }}
       />
     </div>
   )

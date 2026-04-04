@@ -18,6 +18,7 @@ export type ProjectFormValues = {
   numberOfPayments?: string
   startDate?: string
   endDate?: string
+  isDeclared: boolean
 }
 
 async function requireWorkspace() {
@@ -43,6 +44,7 @@ export async function createProject(values: ProjectFormValues) {
       numberOfPayments: values.numberOfPayments ? parseInt(values.numberOfPayments) : null,
       startDate: values.startDate ? new Date(values.startDate) : null,
       endDate: values.endDate ? new Date(values.endDate) : null,
+      isDeclared: values.isDeclared,
     },
   })
 
@@ -72,6 +74,7 @@ export async function updateProject(id: string, values: ProjectFormValues) {
       numberOfPayments: values.numberOfPayments ? parseInt(values.numberOfPayments) : null,
       startDate: values.startDate ? new Date(values.startDate) : null,
       endDate: values.endDate ? new Date(values.endDate) : null,
+      isDeclared: values.isDeclared,
     },
   })
 

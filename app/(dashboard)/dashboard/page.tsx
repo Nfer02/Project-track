@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 export const metadata: Metadata = {
   title: "Dashboard — ProjectTrack",
 }
-import { TrendingUp, FolderOpen, ReceiptText, Clock, Plus } from "lucide-react"
+import { TrendingUp, FolderOpen, ReceiptText, Clock, Plus, ShoppingCart } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { getCurrentWorkspace } from "@/lib/workspace"
@@ -26,29 +26,38 @@ async function getDashboardData(workspaceId: string) {
     }),
     prisma.invoice.findMany({
       where: { project: { workspaceId } },
-      select: { status: true, amount: true, issueDate: true, currency: true },
+      select: { status: true, amount: true, issueDate: true, currency: true, type: true },
       orderBy: { issueDate: "asc" },
     }),
   ])
 
-  const { totalPaid, totalPending, totalOverdue } = buildInvoiceSummary(allInvoices)
-  const monthlyData = buildMonthlyData(allInvoices, 6)
+  const incomeInvoices = allInvoices.filter((i) => i.type === "INCOME")
+  const expenseInvoices = allInvoices.filter((i) => i.type === "EXPENSE")
 
-  // Ingresos del mes actual
+  const { totalPaid, totalPending, totalOverdue } = buildInvoiceSummary(incomeInvoices)
+  const monthlyData = buildMonthlyData(incomeInvoices, 6)
+
+  // Ingresos del mes actual (solo INCOME)
   const now = new Date()
   const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-  const revenueThisMonth = allInvoices
+  const revenueThisMonth = incomeInvoices
     .filter(
       (i) => i.status === "PAID" && new Date(i.issueDate) >= firstOfMonth
     )
     .reduce((s, i) => s + Number(i.amount), 0)
 
+  // Gastos del mes actual
+  const expensesThisMonth = expenseInvoices
+    .filter((i) => new Date(i.issueDate) >= firstOfMonth)
+    .reduce((s, i) => s + Number(i.amount), 0)
+
   return {
     activeProjects,
     recentProjects,
-    pendingCount: allInvoices.filter((i) => i.status === "PENDING").length,
-    overdueCount: allInvoices.filter((i) => i.status === "OVERDUE").length,
+    pendingCount: incomeInvoices.filter((i) => i.status === "PENDING").length,
+    overdueCount: incomeInvoices.filter((i) => i.status === "OVERDUE").length,
     revenueThisMonth,
+    expensesThisMonth,
     totalPaid,
     totalPending,
     totalOverdue,
@@ -80,11 +89,24 @@ export default async function DashboardPage() {
       color: "text-emerald-600 dark:text-emerald-400",
     },
     {
+      label: "Gastos del mes",
+      value:
+        data.expensesThisMonth > 0
+          ? formatCurrency(data.expensesThisMonth, "USD")
+          : "$0",
+      sub:
+        data.expensesThisMonth > 0
+          ? "Gastos registrados este mes"
+          : "Sin gastos este mes",
+      icon: ShoppingCart,
+      color: "text-orange-600 dark:text-orange-400",
+    },
+    {
       label: "Proyectos activos",
       value: String(data.activeProjects),
       sub:
         data.activeProjects === 0
-          ? "Creá tu primer proyecto"
+          ? "Crea tu primer proyecto"
           : `${data.activeProjects} en curso`,
       icon: FolderOpen,
       color: "text-primary",
@@ -121,7 +143,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
         {STATS.map(({ label, value, sub, icon: Icon, color }) => (
           <Card key={label}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -147,7 +169,7 @@ export default async function DashboardPage() {
           <div className="space-y-1">
             <p className="text-sm font-medium">No hay proyectos todavía</p>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Creá tu primer proyecto para empezar a registrar ingresos y
+              Crea tu primer proyecto para empezar a registrar ingresos y
               facturas.
             </p>
           </div>

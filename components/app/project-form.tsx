@@ -43,6 +43,7 @@ const schema = z.object({
     .refine((v) => !v || /^\d+$/.test(v), "Debe ser un número entero"),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
+  isDeclared: z.boolean(),
 })
 
 type FormValues = z.infer<typeof schema>
@@ -89,6 +90,7 @@ export function ProjectForm({
       numberOfPayments: "",
       startDate: "",
       endDate: "",
+      isDeclared: true,
       ...defaultValues,
     },
   })
@@ -216,6 +218,28 @@ export function ProjectForm({
               />
             </div>
           </div>
+
+          {/* Proyecto declarado */}
+          <FormField
+            control={form.control}
+            name="isDeclared"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-3 rounded-lg border p-3">
+                <FormControl>
+                  <input
+                    type="checkbox"
+                    checked={field.value}
+                    onChange={field.onChange}
+                    className="h-4 w-4 rounded border-input accent-primary"
+                  />
+                </FormControl>
+                <div className="space-y-0.5">
+                  <FormLabel className="text-sm font-medium">Proyecto declarado</FormLabel>
+                  <FormDescription className="text-xs">Desactiva si este proyecto se trabaja en negro (no se declara)</FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
         </div>
 
         {/* ── Información económica ─────────────────────────────── */}

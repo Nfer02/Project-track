@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
-import { ArrowLeft, TrendingUp, CheckCircle2, Clock, AlertCircle } from "lucide-react"
+import { ArrowLeft, TrendingUp, CheckCircle2, Clock, AlertCircle, ShoppingCart, Wallet } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
@@ -18,7 +18,7 @@ export default async function ProjectFinancesPage({ params }: Props) {
   const { id } = await params
 
   const ctx = await getCurrentWorkspace()
-  if (!ctx) redirect("/login")
+  if (!ctx) redirect("/onboarding")
 
   const project = await prisma.project.findFirst({
     where: { id, workspaceId: ctx.workspace.id },
@@ -32,12 +32,19 @@ export default async function ProjectFinancesPage({ params }: Props) {
 
   if (!project) notFound()
 
+  const expenseAllocations = await prisma.expenseAllocation.findMany({
+    where: { projectId: id },
+    include: { invoice: { select: { status: true } } },
+  })
+  const totalExpenses = expenseAllocations.reduce((s, a) => s + Number(a.amount), 0)
+
   const invoices = project.invoices
   const { totalInvoiced, totalPaid, totalPending, totalOverdue } =
     buildInvoiceSummary(invoices)
   const monthlyData = buildMonthlyData(invoices, 6)
   const statusCounts = buildStatusCounts(invoices)
   const budget = project.budget ? Number(project.budget) : null
+  const netProfit = totalPaid - totalExpenses
 
   const SUMMARY_CARDS = [
     {
@@ -68,6 +75,20 @@ export default async function ProjectFinancesPage({ params }: Props) {
       color: "text-destructive",
       bg: "bg-destructive/5",
     },
+    {
+      label: "Gastos asignados",
+      value: formatCurrency(totalExpenses, project.currency),
+      icon: ShoppingCart,
+      color: "text-orange-600 dark:text-orange-400",
+      bg: "bg-orange-500/5",
+    },
+    {
+      label: "Beneficio neto",
+      value: formatCurrency(netProfit, project.currency),
+      icon: Wallet,
+      color: netProfit >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-destructive",
+      bg: netProfit >= 0 ? "bg-emerald-500/5" : "bg-destructive/5",
+    },
   ]
 
   return (
@@ -93,7 +114,7 @@ export default async function ProjectFinancesPage({ params }: Props) {
       </div>
 
       {/* Cards resumen */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {SUMMARY_CARDS.map(({ label, value, icon: Icon, color, bg }) => (
           <div key={label} className="rounded-xl border bg-card p-4 space-y-2">
             <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${bg}`}>
@@ -113,7 +134,7 @@ export default async function ProjectFinancesPage({ params }: Props) {
           <h2 className="text-sm font-semibold mb-4">Uso del presupuesto</h2>
           <BudgetProgress
             budget={budget}
-            invoiced={totalInvoiced}
+            invoiced={totalExpenses}
             currency={project.currency}
           />
         </div>

@@ -18,6 +18,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,6 +38,7 @@ const schema = z.object({
   issueDate: z.string().min(1, "La fecha de emisión es obligatoria"),
   dueDate: z.string().optional(),
   paidDate: z.string().optional(),
+  isDeclared: z.boolean(),
   notes: z.string().optional(),
 })
 
@@ -76,6 +78,7 @@ export function InvoiceForm({
       issueDate: new Date().toISOString().slice(0, 10),
       dueDate: "",
       paidDate: "",
+      isDeclared: true,
       notes: "",
       ...defaultValues,
     },
@@ -226,6 +229,28 @@ export function InvoiceForm({
             )}
           />
         )}
+
+        {/* Declaracion trimestral */}
+        <FormField
+          control={form.control}
+          name="isDeclared"
+          render={({ field }) => (
+            <FormItem className="flex items-center gap-3 rounded-lg border p-3">
+              <FormControl>
+                <input
+                  type="checkbox"
+                  checked={field.value}
+                  onChange={field.onChange}
+                  className="h-4 w-4 rounded border-input accent-primary"
+                />
+              </FormControl>
+              <div className="space-y-0.5">
+                <FormLabel className="text-sm font-medium">Incluir en declaracion trimestral</FormLabel>
+                <FormDescription className="text-xs">Desactiva si este ingreso no se va a declarar</FormDescription>
+              </div>
+            </FormItem>
+          )}
+        />
 
         {/* Notas */}
         <FormField
