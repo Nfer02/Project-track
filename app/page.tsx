@@ -80,11 +80,11 @@ const STARTER_FEATURES = [
   { label: "Dashboard financiero", included: true },
   { label: "OCR inteligente", included: false },
   { label: "Estimación fiscal", included: false },
-  { label: "Soporte prioritario", included: false },
+  { label: "Reparto de gastos entre proyectos", included: false },
 ]
 
 const PRO_FEATURES = [
-  { label: "Hasta 3 usuarios", included: true },
+  { label: "Hasta 5 usuarios", included: true },
   { label: "Proyectos ilimitados", included: true },
   { label: "Registros ilimitados", included: true },
   { label: "OCR inteligente (escanear gastos con IA)", included: true },
@@ -93,16 +93,6 @@ const PRO_FEATURES = [
   { label: "Estimación fiscal automática (IVA + IRPF)", included: true },
   { label: "Reportes para el contador", included: true },
   { label: "Soporte por email", included: true },
-]
-
-const BUSINESS_FEATURES = [
-  { label: "Usuarios ilimitados", included: true },
-  { label: "Todo lo de PRO", included: true },
-  { label: "Presupuestos de obra con partidas", included: true, soon: true },
-  { label: "Control de costes por partida", included: true, soon: true },
-  { label: "Certificaciones parciales", included: true, soon: true },
-  { label: "Integraciones bancarias", included: true, soon: true },
-  { label: "Soporte prioritario", included: true },
 ]
 
 const STEPS = [
@@ -309,7 +299,7 @@ export default async function LandingPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
               {/* Plan Starter */}
               <div className="rounded-2xl border bg-card p-6 flex flex-col">
                 <div className="mb-6">
@@ -360,7 +350,7 @@ export default async function LandingPage() {
                     <span className="text-sm font-semibold uppercase tracking-wider text-primary">
                       Pro
                     </span>
-                    <Badge className="ml-auto text-xs">Más popular</Badge>
+                    <Badge className="ml-auto text-xs">Recomendado</Badge>
                   </div>
                   <div className="flex items-end gap-1 mb-1">
                     <span className="text-4xl font-black">14,99 &euro;</span>
@@ -383,49 +373,6 @@ export default async function LandingPage() {
                 <Button render={<Link href="/register" />}>
                   <Sparkles className="mr-2 h-4 w-4" />
                   Prueba PRO
-                </Button>
-              </div>
-
-              {/* Plan Business */}
-              <div className="rounded-2xl border border-amber-500/50 bg-card p-6 flex flex-col relative overflow-hidden">
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute right-0 top-0 h-32 w-32 bg-amber-500/5 blur-2xl rounded-full -translate-y-1/2 translate-x-1/2"
-                />
-                <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Building2 className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                    <span className="text-sm font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-                      Business
-                    </span>
-                  </div>
-                  <div className="flex items-end gap-1 mb-1">
-                    <span className="text-4xl font-black">29,99 &euro;</span>
-                    <span className="text-muted-foreground text-sm mb-1">/ mes</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Para profesionales y estudios
-                  </p>
-                </div>
-
-                <ul className="space-y-2.5 mb-8 flex-1">
-                  {BUSINESS_FEATURES.map(({ label, soon }) => (
-                    <li key={label} className="flex items-center gap-2.5 text-sm">
-                      <Check className="h-4 w-4 text-amber-500 shrink-0" />
-                      <span>
-                        {label}
-                        {soon && (
-                          <span className="ml-1.5 text-[10px] font-medium uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded-full">
-                            Próximamente
-                          </span>
-                        )}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Button variant="outline" disabled className="opacity-70">
-                  Próximamente
                 </Button>
               </div>
             </div>

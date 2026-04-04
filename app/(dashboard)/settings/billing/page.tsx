@@ -19,7 +19,7 @@ import { formatDate } from "@/lib/format"
 const STARTER_FEATURES = [
   "1 usuario",
   "Hasta 3 proyectos",
-  "20 facturas/mes",
+  "20 registros/mes",
   "Control de gastos básico",
   "Dashboard financiero",
   "Reportes trimestrales",
@@ -28,37 +28,20 @@ const STARTER_FEATURES = [
 const STARTER_NOT_INCLUDED = [
   "OCR inteligente",
   "Estimación fiscal",
+  "Reparto de gastos entre proyectos",
   "Colaboradores",
-  "Soporte prioritario",
 ]
 
 const PRO_FEATURES = [
-  "Hasta 3 usuarios",
+  "Hasta 5 usuarios",
   "Proyectos ilimitados",
-  "Facturas ilimitadas",
-  "OCR inteligente (subir facturas con IA)",
+  "Registros ilimitados",
+  "OCR inteligente (escanear gastos con IA)",
   "Reparto de gastos entre proyectos",
   "Dashboard financiero avanzado",
   "Estimación fiscal automática (IVA + IRPF)",
   "Reportes para el contador",
   "Soporte por email",
-]
-
-const BUSINESS_FEATURES = [
-  "Usuarios ilimitados",
-  "Todo lo de PRO",
-  "Presupuestos de obra con partidas",
-  "Control de costes por partida",
-  "Certificaciones parciales",
-  "Integraciones bancarias",
-  "Soporte prioritario",
-]
-
-const BUSINESS_COMING_SOON = [
-  "Presupuestos de obra con partidas",
-  "Control de costes por partida",
-  "Certificaciones parciales",
-  "Integraciones bancarias",
 ]
 
 const STATUS_LABEL: Record<string, string> = {
@@ -170,8 +153,8 @@ export default async function BillingPage({
         </div>
       )}
 
-      {/* Planes — tres cards lado a lado */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Planes — dos cards lado a lado */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl">
         {/* Plan Starter */}
         <div
           className={`rounded-xl border-2 bg-card overflow-hidden flex flex-col ${
@@ -239,7 +222,7 @@ export default async function BillingPage({
                 </span>
               ) : (
                 <span className="text-[10px] font-semibold uppercase tracking-wider bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
-                  Más popular
+                  Recomendado
                 </span>
               )}
             </div>
@@ -273,55 +256,6 @@ export default async function BillingPage({
           )}
         </div>
 
-        {/* Plan Business */}
-        <div className="rounded-xl border-2 border-amber-500/50 bg-card overflow-hidden flex flex-col">
-          <div className="p-5 space-y-2 bg-gradient-to-r from-amber-500/5 to-orange-500/5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Building2 className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                <h2 className="text-lg font-bold">Business</h2>
-              </div>
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black">29,99 &euro;</span>
-              <span className="text-sm text-muted-foreground">/ mes</span>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Para profesionales y estudios
-            </p>
-          </div>
-
-          <div className="border-t p-5 flex-1">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-              Todo incluido
-            </p>
-            <div className="space-y-2.5">
-              {BUSINESS_FEATURES.map((f) => (
-                <div key={f} className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-amber-500 shrink-0" />
-                  <span className="text-sm">
-                    {f}
-                    {BUSINESS_COMING_SOON.includes(f) && (
-                      <span className="ml-1.5 text-[10px] font-medium uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded-full">
-                        Próximamente
-                      </span>
-                    )}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="border-t p-4">
-            <button
-              disabled
-              className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400 px-4 py-2 text-sm font-medium cursor-not-allowed opacity-70"
-            >
-              <Mail className="h-4 w-4" />
-              Próximamente
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   )
