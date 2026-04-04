@@ -1,74 +1,93 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import {
-  BarChart3,
-  FileText,
   FolderKanban,
-  Users,
-  Zap,
-  Sparkles,
-  CheckCircle2,
-  XCircle,
-  ArrowRight,
   TrendingUp,
-  Clock,
-  Shield,
-  Building2,
+  ShoppingCart,
+  BarChart3,
+  Calculator,
+  ArrowRight,
+  Sparkles,
   Check,
   X,
+  Zap,
+  Shield,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Typewriter } from "@/components/landing/typewriter"
+import { FadeIn } from "@/components/landing/fade-in"
+import { FeatureTabs } from "@/components/landing/feature-tabs"
+import { Testimonials } from "@/components/landing/testimonials"
+import { UserTypes } from "@/components/landing/user-types"
 
 export const metadata = {
-  title: "ProjectTrack — Gestión de proyectos y control financiero para autónomos",
+  title: "ProjectTrack — Gestion de proyectos y control financiero para autonomos",
   description:
-    "Controla tus proyectos, ingresos, gastos y obligaciones fiscales en un solo lugar. Diseñado para autónomos y pequeñas empresas en España.",
+    "Controla tus proyectos, ingresos, gastos y obligaciones fiscales en un solo lugar. Disenado para autonomos y pequenas empresas en Espana.",
 }
 
-const FEATURES = [
+const FEATURE_TABS = [
   {
+    label: "Proyectos",
     icon: FolderKanban,
-    title: "Proyectos organizados",
     description:
-      "Crea proyectos, asigna presupuestos y haz seguimiento del estado de cada uno. Nunca mas pierdes el hilo de tu trabajo.",
-    color: "text-primary bg-primary/10",
+      "Organiza tus proyectos con presupuesto, cliente, fechas y estado. Visualiza la rentabilidad de cada uno en tiempo real.",
+    highlights: [
+      "Valor del contrato y presupuesto de materiales",
+      "Estado del proyecto (activo, completado, archivado)",
+      "Forma de pago y numero de cobros acordados",
+      "IVA e IRPF configurables por proyecto",
+    ],
   },
   {
-    icon: FileText,
-    title: "Control de ingresos y cobros",
-    description:
-      "Registra lo que cobras a cada cliente, controla pagos pendientes y recibe alertas de vencimiento. Todo organizado por proyecto.",
-    color: "text-emerald-600 bg-emerald-500/10",
-  },
-  {
-    icon: BarChart3,
-    title: "Dashboard financiero",
-    description:
-      "Visualiza tus ingresos mensuales, pendientes y vencidos en un gráfico claro. Toma decisiones con datos reales.",
-    color: "text-violet-600 bg-violet-500/10",
-  },
-  {
-    icon: Zap,
-    title: "OCR inteligente con IA",
-    description:
-      "Sube una foto o PDF de un gasto y la IA extrae todos los datos: base, IVA, proveedor y fecha. Sin escribir nada.",
-    color: "text-amber-600 bg-amber-500/10",
-  },
-  {
+    label: "Ingresos",
     icon: TrendingUp,
-    title: "Estimación fiscal automática",
     description:
-      "Calcula tu IVA repercutido, soportado e IRPF estimado cada trimestre. Llega preparado a la declaración.",
-    color: "text-rose-600 bg-rose-500/10",
+      "Registra lo que cobras a cada cliente. Controla pagos pendientes, marca cobros y recibe alertas de vencimiento.",
+    highlights: [
+      "Control de cobros pendientes y vencidos",
+      "Forma de pago por ingreso",
+      "Alerta cuando se acerca el vencimiento",
+      "Marcado de cobros declarables",
+    ],
   },
   {
-    icon: Shield,
-    title: "Seguro y privado",
+    label: "Gastos",
+    icon: ShoppingCart,
     description:
-      "Tus datos se almacenan con cifrado en Supabase. Solo tu (y quien invites) tienes acceso a tu información.",
-    color: "text-slate-600 bg-slate-500/10",
+      "Registra compras y gastos del negocio. Reparte un gasto entre varios proyectos para saber cuanto te cuesta cada obra.",
+    highlights: [
+      "Reparto inteligente entre proyectos",
+      "Categorias: material, herramientas, subcontrata...",
+      "OCR: escanea el ticket y se rellena solo",
+      "Gastos generales del negocio separados",
+    ],
+  },
+  {
+    label: "Dashboard",
+    icon: BarChart3,
+    description:
+      "Graficos profesionales de ingresos vs gastos, beneficio neto, gastos por categoria y reserva fiscal del trimestre.",
+    highlights: [
+      "Ingresos vs gastos mensual",
+      "Beneficio bruto y neto tras impuestos",
+      "Gastos por categoria (donut)",
+      "Gauge de reserva fiscal (IVA + IRPF)",
+    ],
+  },
+  {
+    label: "Fiscal",
+    icon: Calculator,
+    description:
+      "Estimacion automatica de IVA e IRPF trimestral. Sabe cuanto reservar para Hacienda y cuando toca presentar.",
+    highlights: [
+      "IVA repercutido y soportado",
+      "Pago fraccionado IRPF (20%)",
+      "Alerta de fecha de presentacion",
+      "Reportes exportables para el contador",
+    ],
   },
 ]
 
@@ -76,10 +95,10 @@ const STARTER_FEATURES = [
   { label: "1 usuario", included: true },
   { label: "Hasta 3 proyectos", included: true },
   { label: "20 registros/mes", included: true },
-  { label: "Control de gastos básico", included: true },
+  { label: "Control de gastos basico", included: true },
   { label: "Dashboard financiero", included: true },
   { label: "OCR inteligente", included: false },
-  { label: "Estimación fiscal", included: false },
+  { label: "Estimacion fiscal", included: false },
   { label: "Reparto de gastos entre proyectos", included: false },
 ]
 
@@ -90,28 +109,9 @@ const PRO_FEATURES = [
   { label: "OCR inteligente (escanear gastos con IA)", included: true },
   { label: "Reparto de gastos entre proyectos", included: true },
   { label: "Dashboard financiero avanzado", included: true },
-  { label: "Estimación fiscal automática (IVA + IRPF)", included: true },
+  { label: "Estimacion fiscal automatica (IVA + IRPF)", included: true },
   { label: "Reportes para el contador", included: true },
   { label: "Soporte por email", included: true },
-]
-
-const STEPS = [
-  {
-    step: "01",
-    title: "Crea tu workspace",
-    description: "Regístrate gratis y configura tu espacio de trabajo en menos de 2 minutos.",
-  },
-  {
-    step: "02",
-    title: "Agrega tus proyectos",
-    description: "Carga los proyectos activos con su cliente, presupuesto y fechas estimadas.",
-  },
-  {
-    step: "03",
-    title: "Controla tus finanzas",
-    description:
-      "Registra ingresos, gastos y cobros. El dashboard te muestra la rentabilidad en tiempo real.",
-  },
 ]
 
 export default async function LandingPage() {
@@ -126,8 +126,10 @@ export default async function LandingPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {/* --- Header --------------------------------------------------- */}
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md">
+      {/* ----------------------------------------------------------------- */}
+      {/* Header                                                            */}
+      {/* ----------------------------------------------------------------- */}
+      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-lg transition-colors">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2 font-bold text-base">
             <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-extrabold">
@@ -143,13 +145,16 @@ export default async function LandingPage() {
             <a href="#pricing" className="hover:text-foreground transition-colors">
               Precios
             </a>
+            <Link href="/faq" className="hover:text-foreground transition-colors">
+              FAQ
+            </Link>
           </nav>
 
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" render={<Link href="/login" />}>
-              Iniciar sesión
+              Iniciar sesion
             </Button>
-            <Button size="sm" render={<Link href="/register" />}>
+            <Button size="sm" className="rounded-full" render={<Link href="/register" />}>
               Empieza gratis
             </Button>
           </div>
@@ -157,258 +162,359 @@ export default async function LandingPage() {
       </header>
 
       <main className="flex-1">
-        {/* --- Hero ---------------------------------------------------- */}
+        {/* --------------------------------------------------------------- */}
+        {/* Hero                                                            */}
+        {/* --------------------------------------------------------------- */}
         <section className="relative overflow-hidden py-20 sm:py-28">
-          {/* Gradiente decorativo */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10"
-          >
-            <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[900px] rounded-full bg-primary/5 blur-3xl" />
+          {/* Radial gradient background */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+            <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[600px] w-[1000px] rounded-full bg-primary/6 blur-3xl" />
+            <div className="absolute left-1/4 bottom-0 h-[300px] w-[500px] rounded-full bg-primary/4 blur-3xl" />
           </div>
 
           <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
             <Badge variant="secondary" className="mb-6 inline-flex items-center gap-1.5">
               <TrendingUp className="h-3 w-3" />
-              Para autónomos y pymes en España
+              Para autonomos y pymes en Espana
             </Badge>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
-              Tu negocio freelance,{" "}
-              <span className="text-primary">bajo control</span>
+              Tus proyectos y finanzas,{" "}
+              <span className="text-primary">
+                <Typewriter
+                  words={[
+                    "bajo control",
+                    "organizados",
+                    "sin sorpresas",
+                    "en un solo lugar",
+                  ]}
+                />
+              </span>
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-              Gestiona tus proyectos, controla ingresos y gastos, y ten
-              siempre claro cuánto reservar para Hacienda. Diseñado para
-              autónomos y pequeñas empresas en España.
+              Gestiona tus proyectos, controla ingresos y gastos, y ten siempre
+              claro cuanto reservar para Hacienda.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button size="lg" render={<Link href="/register" />} className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                className="w-full sm:w-auto rounded-full"
+                render={<Link href="/register" />}
+              >
                 Empieza gratis
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button
-                variant="outline"
+                variant="ghost"
                 size="lg"
-                render={<Link href="/login" />}
                 className="w-full sm:w-auto"
+                render={<a href="#features" />}
               >
-                Ya tengo cuenta
+                Ver funciones &darr;
               </Button>
             </div>
 
-            <p className="mt-4 text-xs text-muted-foreground">
-              Sin tarjeta de crédito - Plan gratuito para siempre
+            <p className="mt-5 text-xs text-muted-foreground">
+              Sin tarjeta de credito &middot; Plan gratuito para siempre
             </p>
           </div>
         </section>
 
-        {/* --- Stats strip -------------------------------------------- */}
-        <section className="border-y bg-muted/30">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 py-8 grid grid-cols-3 gap-6 text-center">
-            {[
-              { value: "3 min", label: "para configurar tu workspace" },
-              { value: "100%", label: "datos cifrados y privados" },
-              { value: "0 €", label: "para empezar" },
-            ].map(({ value, label }) => (
-              <div key={label}>
-                <p className="text-2xl sm:text-3xl font-bold text-foreground tabular-nums">
-                  {value}
-                </p>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1">{label}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* --- How it works ------------------------------------------- */}
-        <section className="py-20 sm:py-24">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-                Empieza en 3 pasos
-              </h2>
-              <p className="text-muted-foreground">
-                Sin setup complicado. En minutos tienes todo funcionando.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {STEPS.map(({ step, title, description }) => (
-                <div key={step} className="relative">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-4xl font-black text-primary/20 tabular-nums leading-none">
-                      {step}
-                    </span>
-                    <h3 className="font-semibold text-base">{title}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {description}
+        {/* --------------------------------------------------------------- */}
+        {/* Stats strip                                                     */}
+        {/* --------------------------------------------------------------- */}
+        <section className="border-y bg-muted/20">
+          <FadeIn>
+            <div className="mx-auto max-w-4xl px-4 sm:px-6 py-10 grid grid-cols-3 gap-6 text-center">
+              {[
+                { value: "3 min", label: "para configurar" },
+                { value: "+2M", label: "autonomos en Espana (mercado)" },
+                { value: "0 \u20AC", label: "para empezar" },
+              ].map(({ value, label }) => (
+                <div key={label}>
+                  <p className="text-2xl sm:text-3xl font-bold text-foreground tabular-nums">
+                    {value}
+                  </p>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                    {label}
                   </p>
                 </div>
               ))}
             </div>
+          </FadeIn>
+        </section>
+
+        {/* --------------------------------------------------------------- */}
+        {/* Feature Tabs                                                    */}
+        {/* --------------------------------------------------------------- */}
+        <section id="features" className="py-20 sm:py-28">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
+            <FadeIn>
+              <div className="text-center mb-14">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+                  Todo lo que puedes hacer con ProjectTrack
+                </h2>
+                <p className="text-muted-foreground max-w-xl mx-auto">
+                  Desde controlar proyectos hasta preparar el trimestre
+                </p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={100}>
+              <FeatureTabs tabs={FEATURE_TABS} />
+            </FadeIn>
           </div>
         </section>
 
-        {/* --- Features ----------------------------------------------- */}
-        <section id="features" className="py-20 sm:py-24 bg-muted/20">
+        {/* --------------------------------------------------------------- */}
+        {/* User Types                                                      */}
+        {/* --------------------------------------------------------------- */}
+        <section className="py-20 sm:py-28 bg-muted/20">
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-                Todo lo que necesitas
-              </h2>
-              <p className="text-muted-foreground max-w-xl mx-auto">
-                Desde gestionar proyectos hasta controlar gastos e impuestos,
-                ProjectTrack centraliza todo tu negocio.
-              </p>
-            </div>
+            <FadeIn>
+              <div className="text-center mb-14">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+                  Disenado para tu sector
+                </h2>
+                <p className="text-muted-foreground max-w-xl mx-auto">
+                  Da igual a que te dediques. Si gestionas proyectos y necesitas
+                  controlar tus finanzas, ProjectTrack es para ti.
+                </p>
+              </div>
+            </FadeIn>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {FEATURES.map(({ icon: Icon, title, description, color }) => (
-                <div
-                  key={title}
-                  className="rounded-xl border bg-card p-5 flex flex-col gap-3 hover:shadow-sm transition-shadow"
-                >
-                  <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${color}`}>
-                    <Icon className="h-4.5 w-4.5" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-sm mb-1">{title}</h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
+            <FadeIn delay={100}>
+              <UserTypes />
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* --------------------------------------------------------------- */}
+        {/* Testimonials                                                    */}
+        {/* --------------------------------------------------------------- */}
+        <section className="py-20 sm:py-28">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
+            <FadeIn>
+              <div className="text-center mb-14">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+                  Lo que dicen nuestros usuarios
+                </h2>
+                <p className="text-muted-foreground max-w-xl mx-auto">
+                  Autonomos y pymes que ya controlan sus proyectos y finanzas
+                </p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={100}>
+              <Testimonials />
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* --------------------------------------------------------------- */}
+        {/* How it works                                                    */}
+        {/* --------------------------------------------------------------- */}
+        <section className="py-20 sm:py-28 bg-muted/20">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
+            <FadeIn>
+              <div className="text-center mb-14">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+                  Empieza en 3 pasos
+                </h2>
+                <p className="text-muted-foreground">
+                  Sin setup complicado. En minutos tienes todo funcionando.
+                </p>
+              </div>
+            </FadeIn>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  step: "01",
+                  title: "Crea tu workspace",
+                  description:
+                    "Registrate gratis y configura tu espacio de trabajo en menos de 2 minutos.",
+                },
+                {
+                  step: "02",
+                  title: "Agrega tus proyectos",
+                  description:
+                    "Carga los proyectos activos con su cliente, presupuesto y fechas estimadas.",
+                },
+                {
+                  step: "03",
+                  title: "Controla tus finanzas",
+                  description:
+                    "Registra ingresos, gastos y cobros. El dashboard te muestra la rentabilidad en tiempo real.",
+                },
+              ].map(({ step, title, description }, i) => (
+                <FadeIn key={step} delay={i * 200}>
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-4xl font-black text-primary/20 tabular-nums leading-none">
+                        {step}
+                      </span>
+                      <h3 className="font-semibold text-base">{title}</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       {description}
                     </p>
                   </div>
-                </div>
+                </FadeIn>
               ))}
             </div>
           </div>
         </section>
 
-        {/* --- Pricing ------------------------------------------------ */}
-        <section id="pricing" className="py-20 sm:py-24">
+        {/* --------------------------------------------------------------- */}
+        {/* Pricing                                                         */}
+        {/* --------------------------------------------------------------- */}
+        <section id="pricing" className="py-20 sm:py-28">
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-                Planes y precios
-              </h2>
-              <p className="text-muted-foreground">
-                Empieza gratis. Mejora cuando lo necesites.
-              </p>
-            </div>
+            <FadeIn>
+              <div className="text-center mb-14">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+                  Planes y precios
+                </h2>
+                <p className="text-muted-foreground">
+                  Empieza gratis. Mejora cuando lo necesites.
+                </p>
+              </div>
+            </FadeIn>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
               {/* Plan Starter */}
-              <div className="rounded-2xl border bg-card p-6 flex flex-col">
-                <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Zap className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                      Starter
-                    </span>
-                  </div>
-                  <div className="flex items-end gap-1 mb-1">
-                    <span className="text-4xl font-black">0 &euro;</span>
-                    <span className="text-muted-foreground text-sm mb-1">/ mes</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Para empezar a gestionar tus proyectos
-                  </p>
-                </div>
-
-                <ul className="space-y-2.5 mb-8 flex-1">
-                  {STARTER_FEATURES.map(({ label, included }) => (
-                    <li key={label} className="flex items-center gap-2.5 text-sm">
-                      {included ? (
-                        <Check className="h-4 w-4 text-emerald-500 shrink-0" />
-                      ) : (
-                        <X className="h-4 w-4 text-muted-foreground/30 shrink-0" />
-                      )}
-                      <span className={included ? "" : "text-muted-foreground/50 line-through"}>
-                        {label}
+              <FadeIn delay={0}>
+                <div className="rounded-2xl border bg-card p-6 flex flex-col h-full">
+                  <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Zap className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                        Starter
                       </span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Button variant="outline" render={<Link href="/register" />}>
-                  Empieza gratis
-                </Button>
-              </div>
-
-              {/* Plan PRO - Destacado */}
-              <div className="rounded-2xl border-2 border-primary bg-card p-6 flex flex-col relative overflow-hidden">
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute right-0 top-0 h-32 w-32 bg-primary/5 blur-2xl rounded-full -translate-y-1/2 translate-x-1/2"
-                />
-                <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Sparkles className="h-4 w-4 text-primary" />
-                    <span className="text-sm font-semibold uppercase tracking-wider text-primary">
-                      Pro
-                    </span>
-                    <Badge className="ml-auto text-xs">Recomendado</Badge>
+                    </div>
+                    <div className="flex items-end gap-1 mb-1">
+                      <span className="text-4xl font-black">0 &euro;</span>
+                      <span className="text-muted-foreground text-sm mb-1">/ mes</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Para empezar a gestionar tus proyectos
+                    </p>
                   </div>
-                  <div className="flex items-end gap-1 mb-1">
-                    <span className="text-4xl font-black">14,99 &euro;</span>
-                    <span className="text-muted-foreground text-sm mb-1">/ mes</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Todo lo que necesitas para tu negocio
-                  </p>
+
+                  <ul className="space-y-2.5 mb-8 flex-1">
+                    {STARTER_FEATURES.map(({ label, included }) => (
+                      <li key={label} className="flex items-center gap-2.5 text-sm">
+                        {included ? (
+                          <Check className="h-4 w-4 text-emerald-500 shrink-0" />
+                        ) : (
+                          <X className="h-4 w-4 text-muted-foreground/30 shrink-0" />
+                        )}
+                        <span
+                          className={
+                            included ? "" : "text-muted-foreground/50 line-through"
+                          }
+                        >
+                          {label}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Button
+                    variant="outline"
+                    className="rounded-full"
+                    render={<Link href="/register" />}
+                  >
+                    Empieza gratis
+                  </Button>
                 </div>
+              </FadeIn>
 
-                <ul className="space-y-2.5 mb-8 flex-1">
-                  {PRO_FEATURES.map(({ label }) => (
-                    <li key={label} className="flex items-center gap-2.5 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-                      <span>{label}</span>
-                    </li>
-                  ))}
-                </ul>
+              {/* Plan PRO */}
+              <FadeIn delay={150}>
+                <div className="rounded-2xl border-2 border-primary bg-card p-6 flex flex-col relative overflow-hidden h-full">
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute right-0 top-0 h-32 w-32 bg-primary/5 blur-2xl rounded-full -translate-y-1/2 translate-x-1/2"
+                  />
+                  <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Sparkles className="h-4 w-4 text-primary" />
+                      <span className="text-sm font-semibold uppercase tracking-wider text-primary">
+                        Pro
+                      </span>
+                      <Badge className="ml-auto text-xs">Recomendado</Badge>
+                    </div>
+                    <div className="flex items-end gap-1 mb-1">
+                      <span className="text-4xl font-black">14,99 &euro;</span>
+                      <span className="text-muted-foreground text-sm mb-1">/ mes</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Todo lo que necesitas para tu negocio
+                    </p>
+                  </div>
 
-                <Button render={<Link href="/register" />}>
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  Prueba PRO
-                </Button>
-              </div>
+                  <ul className="space-y-2.5 mb-8 flex-1">
+                    {PRO_FEATURES.map(({ label }) => (
+                      <li key={label} className="flex items-center gap-2.5 text-sm">
+                        <Check className="h-4 w-4 text-emerald-500 shrink-0" />
+                        <span>{label}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Button className="rounded-full" render={<Link href="/register" />}>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Prueba PRO
+                  </Button>
+                </div>
+              </FadeIn>
             </div>
           </div>
         </section>
 
-        {/* --- CTA final ---------------------------------------------- */}
-        <section className="py-20 sm:py-24 bg-primary/5 border-t">
+        {/* --------------------------------------------------------------- */}
+        {/* CTA Final                                                       */}
+        {/* --------------------------------------------------------------- */}
+        <section className="relative overflow-hidden py-20 sm:py-28 border-t">
+          {/* Gradient bg */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[800px] rounded-full bg-primary/6 blur-3xl" />
+          </div>
+
           <div className="mx-auto max-w-2xl px-4 sm:px-6 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground text-xl font-extrabold mx-auto mb-6">
-              PT
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
-              Listo para ordenar tu negocio?
-            </h2>
-            <p className="text-muted-foreground mb-8 leading-relaxed">
-              Únete a los autónomos que ya gestionan sus proyectos y finanzas
-              con ProjectTrack. Es gratis para empezar.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button size="lg" render={<Link href="/register" />}>
+            <FadeIn>
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground text-xl font-extrabold mx-auto mb-6">
+                PT
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
+                Empieza a controlar tus proyectos hoy
+              </h2>
+              <p className="text-muted-foreground mb-8 leading-relaxed">
+                Registrate gratis en menos de 2 minutos. Sin tarjeta de credito.
+              </p>
+              <Button
+                size="lg"
+                className="rounded-full"
+                render={<Link href="/register" />}
+              >
                 Empieza gratis
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button variant="outline" size="lg" render={<Link href="/login" />}>
-                Iniciar sesión
-              </Button>
-            </div>
+            </FadeIn>
           </div>
         </section>
       </main>
 
-      {/* --- Footer --------------------------------------------------- */}
-      <footer className="border-t py-8">
+      {/* ----------------------------------------------------------------- */}
+      {/* Footer                                                            */}
+      {/* ----------------------------------------------------------------- */}
+      <footer className="border-t py-10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2 font-medium text-foreground">
               <span className="flex h-6 w-6 items-center justify-center rounded bg-primary text-primary-foreground text-[10px] font-extrabold">
                 PT
@@ -416,21 +522,32 @@ export default async function LandingPage() {
               ProjectTrack
             </div>
 
-            <div className="flex items-center gap-6 text-xs">
+            <nav className="flex items-center gap-6 text-xs">
+              <a href="#features" className="hover:text-foreground transition-colors">
+                Funciones
+              </a>
+              <a href="#pricing" className="hover:text-foreground transition-colors">
+                Precios
+              </a>
+              <Link href="/faq" className="hover:text-foreground transition-colors">
+                FAQ
+              </Link>
               <Link href="/login" className="hover:text-foreground transition-colors">
-                Iniciar sesión
+                Iniciar sesion
               </Link>
               <Link href="/register" className="hover:text-foreground transition-colors">
                 Registrarse
               </Link>
-              <Link href="/faq" className="hover:text-foreground transition-colors">
-                FAQ
-              </Link>
-            </div>
+            </nav>
 
-            <p className="text-xs">
-              &copy; {new Date().getFullYear()} ProjectTrack - Todos los derechos reservados
-            </p>
+            <div className="text-center sm:text-right">
+              <p className="text-xs">
+                &copy; 2026 ProjectTrack. Todos los derechos reservados.
+              </p>
+              <p className="text-[11px] text-muted-foreground/60 mt-1">
+                Hecho en Espana 🇪🇸
+              </p>
+            </div>
           </div>
         </div>
       </footer>
