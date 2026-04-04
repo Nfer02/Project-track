@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 export const metadata: Metadata = {
   title: "Dashboard — ProjectTrack",
 }
-import { TrendingUp, FolderOpen, ReceiptText, Clock, Plus, ShoppingCart } from "lucide-react"
+import { TrendingUp, FolderOpen, ReceiptText, Clock, Plus, ShoppingCart, Wallet } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { getCurrentWorkspace } from "@/lib/workspace"
@@ -16,7 +16,7 @@ import { RevenueBarChart } from "@/components/charts/revenue-bar-chart"
 import { ProjectStatusBadge } from "@/components/app/project-status-badge"
 
 async function getDashboardData(workspaceId: string) {
-  const [activeProjects, recentProjects, allInvoices] = await Promise.all([
+  const [activeProjects, recentProjects, allInvoices, totalAllocated] = await Promise.all([
     prisma.project.count({ where: { workspaceId, status: "ACTIVE" } }),
     prisma.project.findMany({
       where: { workspaceId },
@@ -28,6 +28,10 @@ async function getDashboardData(workspaceId: string) {
       where: { workspaceId },
       select: { status: true, amount: true, issueDate: true, currency: true, type: true },
       orderBy: { issueDate: "asc" },
+    }),
+    prisma.expenseAllocation.aggregate({
+      where: { project: { workspaceId } },
+      _sum: { amount: true },
     }),
   ])
 
@@ -51,6 +55,11 @@ async function getDashboardData(workspaceId: string) {
     .filter((i) => new Date(i.issueDate) >= firstOfMonth)
     .reduce((s, i) => s + Number(i.amount), 0)
 
+  // Gastos generales = total gastos - total asignado a proyectos
+  const totalExpenses = expenseInvoices.reduce((s, i) => s + Number(i.amount), 0)
+  const allocatedAmount = Number(totalAllocated._sum.amount ?? 0)
+  const generalExpenses = totalExpenses - allocatedAmount
+
   return {
     activeProjects,
     recentProjects,
@@ -58,6 +67,7 @@ async function getDashboardData(workspaceId: string) {
     overdueCount: incomeInvoices.filter((i) => i.status === "OVERDUE").length,
     revenueThisMonth,
     expensesThisMonth,
+    generalExpenses,
     totalPaid,
     totalPending,
     totalOverdue,
@@ -113,6 +123,17 @@ export default async function DashboardPage() {
       icon: FolderOpen,
       color: "text-primary",
       border: "border-l-4 border-l-blue-500",
+    },
+    {
+      label: "Gastos generales",
+      value:
+        data.generalExpenses > 0
+          ? formatCurrency(data.generalExpenses, "EUR")
+          : "0 €",
+      sub: "Sin asignar a proyectos",
+      icon: Wallet,
+      color: "text-violet-600 dark:text-violet-400",
+      border: "border-l-4 border-l-violet-500",
     },
     {
       label: "Facturas pendientes",

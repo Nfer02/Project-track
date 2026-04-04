@@ -40,6 +40,17 @@ export default async function InvoicesPage({ searchParams }: Props) {
     .filter((i) => i.status === "OVERDUE")
     .reduce((s, i) => s + Number(i.amount), 0)
 
+  // Gastos generales (solo para pestaña gastos)
+  let generalExpenses = 0
+  if (tab === "expenses" && invoices.length > 0) {
+    const invoiceIds = invoices.map((i) => i.id)
+    const allocResult = await prisma.expenseAllocation.aggregate({
+      where: { invoiceId: { in: invoiceIds } },
+      _sum: { amount: true },
+    })
+    generalExpenses = totalAmount - Number(allocResult._sum.amount ?? 0)
+  }
+
   const isIncome = tab === "income"
 
   return (
@@ -95,7 +106,7 @@ export default async function InvoicesPage({ searchParams }: Props) {
 
       {/* Resumen rapido */}
       {invoices.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <div className={`grid grid-cols-2 gap-4 ${!isIncome ? "sm:grid-cols-4" : "sm:grid-cols-3"}`}>
           <div className="rounded-xl border bg-card p-4 space-y-1">
             <p className="text-xs text-muted-foreground">
               {isIncome ? "Total facturado" : "Total gastos"}
@@ -104,16 +115,25 @@ export default async function InvoicesPage({ searchParams }: Props) {
               {formatCurrency(totalAmount, "EUR")}
             </p>
           </div>
+          {!isIncome && (
+            <div className="rounded-xl border bg-card p-4 space-y-1 border-l-4 border-l-violet-500">
+              <p className="text-xs text-violet-600 dark:text-violet-400">Gastos generales</p>
+              <p className="text-xl font-semibold">
+                {generalExpenses > 0 ? formatCurrency(generalExpenses, "EUR") : "—"}
+              </p>
+              <p className="text-[10px] text-muted-foreground">Sin asignar a proyectos</p>
+            </div>
+          )}
           <div className="rounded-xl border bg-card p-4 space-y-1">
             <p className="text-xs text-amber-600 dark:text-amber-400">Pendientes</p>
             <p className="text-xl font-semibold">
-              {totalPending > 0 ? formatCurrency(totalPending, "EUR") : "\u2014"}
+              {totalPending > 0 ? formatCurrency(totalPending, "EUR") : "—"}
             </p>
           </div>
           <div className="rounded-xl border bg-card p-4 space-y-1">
             <p className="text-xs text-destructive">Vencidas</p>
             <p className="text-xl font-semibold">
-              {totalOverdue > 0 ? formatCurrency(totalOverdue, "EUR") : "\u2014"}
+              {totalOverdue > 0 ? formatCurrency(totalOverdue, "EUR") : "—"}
             </p>
           </div>
         </div>
