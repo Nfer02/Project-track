@@ -29,40 +29,50 @@ export function FiscalGaugeChart({ totalReservar, vatAmount, irpfAmount, incomes
   ]
 
   return (
-    <div className="relative">
-      <ResponsiveContainer width="100%" height={200}>
-        <PieChart>
-          <Pie
-            data={gaugeData}
-            cx="50%"
-            cy="70%"
-            startAngle={180}
-            endAngle={0}
-            innerRadius={70}
-            outerRadius={90}
-            dataKey="value"
-            strokeWidth={0}
-          >
-            <Cell fill="#6366f1" />
-            <Cell fill="hsl(var(--muted))" />
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
+    <div className="flex flex-col items-center gap-2">
+      {/* Gauge */}
+      <div className="relative w-full" style={{ height: 160 }}>
+        <ResponsiveContainer width="100%" height={160}>
+          <PieChart>
+            <Pie
+              data={gaugeData}
+              cx="50%"
+              cy="80%"
+              startAngle={180}
+              endAngle={0}
+              innerRadius={65}
+              outerRadius={85}
+              dataKey="value"
+              strokeWidth={0}
+            >
+              <Cell fill="#6366f1" />
+              <Cell fill="hsl(var(--muted))" />
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
 
-      {/* Texto central */}
-      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center -mt-4">
-        <span className="text-xl font-bold">{formatCurrency(totalReservar)}</span>
-        <span className="text-[11px] text-muted-foreground mt-0.5">
-          IVA: {formatCurrency(vatAmount)} + IRPF: {formatCurrency(irpfAmount)}
-        </span>
+        {/* Importe total centrado */}
+        <div className="pointer-events-none absolute inset-0 flex items-end justify-center pb-4">
+          <span className="text-2xl font-bold text-foreground">{formatCurrency(totalReservar)}</span>
+        </div>
       </div>
 
-      {/* Porcentaje debajo */}
-      <div className="text-center -mt-6">
-        <span className="text-sm font-medium text-muted-foreground">
-          {percentage.toFixed(1)}% de tus ingresos
-        </span>
+      {/* Desglose IVA + IRPF */}
+      <div className="flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-indigo-500 shrink-0" />
+          <span className="text-foreground font-medium">IVA: {formatCurrency(vatAmount)}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-violet-400 shrink-0" />
+          <span className="text-foreground font-medium">IRPF: {formatCurrency(irpfAmount)}</span>
+        </div>
       </div>
+
+      {/* Porcentaje */}
+      <p className="text-xs text-muted-foreground">
+        {percentage.toFixed(1)}% de tus ingresos declarados
+      </p>
     </div>
   )
 }
