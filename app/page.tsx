@@ -13,15 +13,18 @@ import {
   TrendingUp,
   Clock,
   Shield,
+  Building2,
+  Check,
+  X,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 export const metadata = {
-  title: "ProjectTrack — Gestión financiera para autónomos y freelancers",
+  title: "ProjectTrack — Gestión financiera para autónomos y pymes",
   description:
-    "Lleva el control de tus proyectos, facturas e ingresos en un solo lugar. Diseñado para freelancers y autónomos en España y Latinoamérica.",
+    "Controla proyectos, facturas, gastos e impuestos en un solo lugar. Diseñado para autónomos y pequeñas empresas en España.",
 }
 
 const FEATURES = [
@@ -29,7 +32,7 @@ const FEATURES = [
     icon: FolderKanban,
     title: "Proyectos organizados",
     description:
-      "Crea proyectos, asigna presupuestos y sigue el estado de cada uno. Nunca más pierdes el hilo de tu trabajo.",
+      "Crea proyectos, asigna presupuestos y haz seguimiento del estado de cada uno. Nunca mas pierdes el hilo de tu trabajo.",
     color: "text-primary bg-primary/10",
   },
   {
@@ -48,44 +51,57 @@ const FEATURES = [
   },
   {
     icon: Zap,
-    title: "OCR con IA (PRO)",
+    title: "OCR inteligente con IA",
     description:
-      "Sube una foto o PDF de una factura recibida y Claude AI extrae automáticamente todos los datos relevantes.",
+      "Sube una foto o PDF de un gasto y la IA extrae todos los datos: base, IVA, proveedor y fecha. Sin escribir nada.",
     color: "text-amber-600 bg-amber-500/10",
   },
   {
-    icon: Users,
-    title: "Colaboradores (PRO)",
+    icon: TrendingUp,
+    title: "Estimación fiscal automática",
     description:
-      "Invita a tu equipo, asistente o contador. Cada uno con su propio rol y permisos sobre el workspace.",
+      "Calcula tu IVA repercutido, soportado e IRPF estimado cada trimestre. Llega preparado a la declaración.",
     color: "text-rose-600 bg-rose-500/10",
   },
   {
     icon: Shield,
     title: "Seguro y privado",
     description:
-      "Tus datos se almacenan con cifrado en Supabase. Solo tú (y quien invites) tienes acceso a tu información.",
+      "Tus datos se almacenan con cifrado en Supabase. Solo tu (y quien invites) tienes acceso a tu información.",
     color: "text-slate-600 bg-slate-500/10",
   },
 ]
 
-const FREE_FEATURES = [
-  { label: "1 proyecto activo", included: true },
-  { label: "Hasta 10 facturas/mes", included: true },
-  { label: "Dashboard básico", included: true },
-  { label: "Proyectos ilimitados", included: false },
-  { label: "Upload + OCR con IA", included: false },
-  { label: "Colaboradores", included: false },
+const STARTER_FEATURES = [
+  { label: "1 usuario", included: true },
+  { label: "Hasta 3 proyectos", included: true },
+  { label: "20 facturas/mes", included: true },
+  { label: "Control de gastos básico", included: true },
+  { label: "Dashboard financiero", included: true },
+  { label: "OCR inteligente", included: false },
+  { label: "Estimación fiscal", included: false },
   { label: "Soporte prioritario", included: false },
 ]
 
 const PRO_FEATURES = [
+  { label: "Hasta 3 usuarios", included: true },
   { label: "Proyectos ilimitados", included: true },
   { label: "Facturas ilimitadas", included: true },
+  { label: "OCR inteligente (subir facturas con IA)", included: true },
+  { label: "Reparto de gastos entre proyectos", included: true },
   { label: "Dashboard financiero avanzado", included: true },
-  { label: "Upload + OCR con IA (Claude)", included: true },
-  { label: "Colaboradores (hasta 10)", included: true },
-  { label: "Exportación a PDF", included: true },
+  { label: "Estimación fiscal automática (IVA + IRPF)", included: true },
+  { label: "Reportes para el contador", included: true },
+  { label: "Soporte por email", included: true },
+]
+
+const BUSINESS_FEATURES = [
+  { label: "Usuarios ilimitados", included: true },
+  { label: "Todo lo de PRO", included: true },
+  { label: "Presupuestos de obra con partidas", included: true, soon: true },
+  { label: "Control de costes por partida", included: true, soon: true },
+  { label: "Certificaciones parciales", included: true, soon: true },
+  { label: "Integraciones bancarias", included: true, soon: true },
   { label: "Soporte prioritario", included: true },
 ]
 
@@ -102,14 +118,14 @@ const STEPS = [
   },
   {
     step: "03",
-    title: "Gestiona tus facturas",
+    title: "Gestióna tus facturas",
     description:
-      "Emites facturas, marcas cobros y el dashboard muestra todo en tiempo real.",
+      "Emite facturas, marca cobros y el dashboard te muestra todo en tiempo real.",
   },
 ]
 
 export default async function LandingPage() {
-  // Si el usuario ya está autenticado, mandarlo al dashboard
+  // Si el usuario ya esta autenticado, mandarlo al dashboard
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     const supabase = await createClient()
     const {
@@ -120,7 +136,7 @@ export default async function LandingPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {/* ─── Header ─────────────────────────────────────────────────── */}
+      {/* --- Header --------------------------------------------------- */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2 font-bold text-base">
@@ -144,14 +160,14 @@ export default async function LandingPage() {
               Iniciar sesión
             </Button>
             <Button size="sm" render={<Link href="/register" />}>
-              Empezar gratis
+              Empieza gratis
             </Button>
           </div>
         </div>
       </header>
 
       <main className="flex-1">
-        {/* ─── Hero ───────────────────────────────────────────────────── */}
+        {/* --- Hero ---------------------------------------------------- */}
         <section className="relative overflow-hidden py-20 sm:py-28">
           {/* Gradiente decorativo */}
           <div
@@ -164,7 +180,7 @@ export default async function LandingPage() {
           <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
             <Badge variant="secondary" className="mb-6 inline-flex items-center gap-1.5">
               <TrendingUp className="h-3 w-3" />
-              Diseñado para freelancers y autónomos
+              Para autónomos y pymes en España
             </Badge>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
@@ -173,13 +189,14 @@ export default async function LandingPage() {
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-              ProjectTrack te ayuda a gestionar proyectos, facturas e ingresos en un
-              solo lugar. Diseñado para autónomos y freelancers en España y Latinoamérica.
+              ProjectTrack te ayuda a gestionar proyectos, facturas, gastos e
+              impuestos en un solo lugar. Diseñado para autónomos y pequeñas
+              empresas en España.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Button size="lg" render={<Link href="/register" />} className="w-full sm:w-auto">
-                Empezar gratis
+                Empieza gratis
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button
@@ -193,18 +210,18 @@ export default async function LandingPage() {
             </div>
 
             <p className="mt-4 text-xs text-muted-foreground">
-              Sin tarjeta de crédito · Plan gratuito para siempre
+              Sin tarjeta de crédito - Plan gratuito para siempre
             </p>
           </div>
         </section>
 
-        {/* ─── Stats strip ────────────────────────────────────────────── */}
+        {/* --- Stats strip -------------------------------------------- */}
         <section className="border-y bg-muted/30">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 py-8 grid grid-cols-3 gap-6 text-center">
             {[
               { value: "3 min", label: "para configurar tu workspace" },
               { value: "100%", label: "datos cifrados y privados" },
-              { value: "$0", label: "para empezar" },
+              { value: "0 €", label: "para empezar" },
             ].map(({ value, label }) => (
               <div key={label}>
                 <p className="text-2xl sm:text-3xl font-bold text-foreground tabular-nums">
@@ -216,7 +233,7 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ─── How it works ───────────────────────────────────────────── */}
+        {/* --- How it works ------------------------------------------- */}
         <section className="py-20 sm:py-24">
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
             <div className="text-center mb-12">
@@ -246,7 +263,7 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ─── Features ───────────────────────────────────────────────── */}
+        {/* --- Features ----------------------------------------------- */}
         <section id="features" className="py-20 sm:py-24 bg-muted/20">
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
             <div className="text-center mb-12">
@@ -254,8 +271,8 @@ export default async function LandingPage() {
                 Todo lo que necesitas
               </h2>
               <p className="text-muted-foreground max-w-xl mx-auto">
-                Desde gestionar proyectos hasta cobrar facturas, ProjectTrack
-                centraliza todo tu negocio freelance.
+                Desde gestionar proyectos hasta controlar gastos e impuestos,
+                ProjectTrack centraliza todo tu negocio.
               </p>
             </div>
 
@@ -280,42 +297,44 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ─── Pricing ────────────────────────────────────────────────── */}
+        {/* --- Pricing ------------------------------------------------ */}
         <section id="pricing" className="py-20 sm:py-24">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
             <div className="text-center mb-12">
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-                Planes simples y transparentes
+                Planes y precios
               </h2>
               <p className="text-muted-foreground">
-                Empieza gratis. Mejora tu plan cuando lo necesites.
+                Empieza gratis. Mejora cuando lo necesites.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Plan FREE */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Plan Starter */}
               <div className="rounded-2xl border bg-card p-6 flex flex-col">
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-3">
                     <Zap className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                      Free
+                      Starter
                     </span>
                   </div>
                   <div className="flex items-end gap-1 mb-1">
-                    <span className="text-4xl font-black">$0</span>
+                    <span className="text-4xl font-black">0 &euro;</span>
                     <span className="text-muted-foreground text-sm mb-1">/ mes</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Para empezar y probar</p>
+                  <p className="text-xs text-muted-foreground">
+                    Para empezar a gestionar tus proyectos
+                  </p>
                 </div>
 
                 <ul className="space-y-2.5 mb-8 flex-1">
-                  {FREE_FEATURES.map(({ label, included }) => (
+                  {STARTER_FEATURES.map(({ label, included }) => (
                     <li key={label} className="flex items-center gap-2.5 text-sm">
                       {included ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                        <Check className="h-4 w-4 text-emerald-500 shrink-0" />
                       ) : (
-                        <XCircle className="h-4 w-4 text-muted-foreground/30 shrink-0" />
+                        <X className="h-4 w-4 text-muted-foreground/30 shrink-0" />
                       )}
                       <span className={included ? "" : "text-muted-foreground/50 line-through"}>
                         {label}
@@ -325,11 +344,11 @@ export default async function LandingPage() {
                 </ul>
 
                 <Button variant="outline" render={<Link href="/register" />}>
-                  Empezar gratis
+                  Empieza gratis
                 </Button>
               </div>
 
-              {/* Plan PRO */}
+              {/* Plan PRO - Destacado */}
               <div className="rounded-2xl border-2 border-primary bg-card p-6 flex flex-col relative overflow-hidden">
                 <div
                   aria-hidden
@@ -337,27 +356,25 @@ export default async function LandingPage() {
                 />
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <Sparkles className="h-4 w-4 text-amber-500" />
+                    <Sparkles className="h-4 w-4 text-primary" />
                     <span className="text-sm font-semibold uppercase tracking-wider text-primary">
                       Pro
                     </span>
-                    <Badge className="ml-auto text-xs">Recomendado</Badge>
+                    <Badge className="ml-auto text-xs">Más popular</Badge>
                   </div>
                   <div className="flex items-end gap-1 mb-1">
-                    <span className="text-4xl font-black">€13,99</span>
+                    <span className="text-4xl font-black">14,99 &euro;</span>
                     <span className="text-muted-foreground text-sm mb-1">/ mes</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Para profesionales y equipos</p>
+                  <p className="text-xs text-muted-foreground">
+                    Todo lo que necesitas para tu negocio
+                  </p>
                 </div>
 
                 <ul className="space-y-2.5 mb-8 flex-1">
-                  {PRO_FEATURES.map(({ label, included }) => (
+                  {PRO_FEATURES.map(({ label }) => (
                     <li key={label} className="flex items-center gap-2.5 text-sm">
-                      {included ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-                      ) : (
-                        <XCircle className="h-4 w-4 text-muted-foreground/30 shrink-0" />
-                      )}
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
                       <span>{label}</span>
                     </li>
                   ))}
@@ -365,29 +382,72 @@ export default async function LandingPage() {
 
                 <Button render={<Link href="/register" />}>
                   <Sparkles className="mr-2 h-4 w-4" />
-                  Empezar con PRO
+                  Prueba PRO
+                </Button>
+              </div>
+
+              {/* Plan Business */}
+              <div className="rounded-2xl border border-amber-500/50 bg-card p-6 flex flex-col relative overflow-hidden">
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute right-0 top-0 h-32 w-32 bg-amber-500/5 blur-2xl rounded-full -translate-y-1/2 translate-x-1/2"
+                />
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Building2 className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                    <span className="text-sm font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                      Business
+                    </span>
+                  </div>
+                  <div className="flex items-end gap-1 mb-1">
+                    <span className="text-4xl font-black">29,99 &euro;</span>
+                    <span className="text-muted-foreground text-sm mb-1">/ mes</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Para profesionales y estudios
+                  </p>
+                </div>
+
+                <ul className="space-y-2.5 mb-8 flex-1">
+                  {BUSINESS_FEATURES.map(({ label, soon }) => (
+                    <li key={label} className="flex items-center gap-2.5 text-sm">
+                      <Check className="h-4 w-4 text-amber-500 shrink-0" />
+                      <span>
+                        {label}
+                        {soon && (
+                          <span className="ml-1.5 text-[10px] font-medium uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded-full">
+                            Próximamente
+                          </span>
+                        )}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Button variant="outline" disabled className="opacity-70">
+                  Próximamente
                 </Button>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ─── CTA final ──────────────────────────────────────────────── */}
+        {/* --- CTA final ---------------------------------------------- */}
         <section className="py-20 sm:py-24 bg-primary/5 border-t">
           <div className="mx-auto max-w-2xl px-4 sm:px-6 text-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground text-xl font-extrabold mx-auto mb-6">
               PT
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
-              ¿Listo para ordenar tu negocio?
+              Listo para ordenar tu negocio?
             </h2>
             <p className="text-muted-foreground mb-8 leading-relaxed">
-              Únete a los freelancers que ya gestionan sus proyectos y finanzas
+              Únete a los autónomos que ya gestionan sus proyectos y finanzas
               con ProjectTrack. Es gratis para empezar.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Button size="lg" render={<Link href="/register" />}>
-                Crear cuenta gratis
+                Empieza gratis
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button variant="outline" size="lg" render={<Link href="/login" />}>
@@ -398,7 +458,7 @@ export default async function LandingPage() {
         </section>
       </main>
 
-      {/* ─── Footer ─────────────────────────────────────────────────── */}
+      {/* --- Footer --------------------------------------------------- */}
       <footer className="border-t py-8">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
@@ -416,10 +476,13 @@ export default async function LandingPage() {
               <Link href="/register" className="hover:text-foreground transition-colors">
                 Registrarse
               </Link>
+              <Link href="/faq" className="hover:text-foreground transition-colors">
+                FAQ
+              </Link>
             </div>
 
             <p className="text-xs">
-              © {new Date().getFullYear()} ProjectTrack · Todos los derechos reservados
+              &copy; {new Date().getFullYear()} ProjectTrack - Todos los derechos reservados
             </p>
           </div>
         </div>

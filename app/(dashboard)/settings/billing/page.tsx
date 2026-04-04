@@ -6,6 +6,9 @@ import {
   Sparkles,
   Clock,
   Check,
+  X,
+  Building2,
+  Mail,
 } from "lucide-react"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
@@ -13,33 +16,49 @@ import { PlanBadge } from "@/components/app/plan-badge"
 import { BillingActions } from "./_components/billing-actions"
 import { formatDate } from "@/lib/format"
 
-const FREE_FEATURES = [
+const STARTER_FEATURES = [
+  "1 usuario",
   "Hasta 3 proyectos",
-  "Facturas ilimitadas",
+  "20 facturas/mes",
+  "Control de gastos básico",
   "Dashboard financiero",
-  "Gastos y compras",
   "Reportes trimestrales",
 ]
 
-const FREE_NOT_INCLUDED = [
-  "Proyectos ilimitados",
-  "OCR inteligente (subir facturas con IA)",
-  "Colaboradores (hasta 10)",
-  "Estimación fiscal automática",
+const STARTER_NOT_INCLUDED = [
+  "OCR inteligente",
+  "Estimación fiscal",
+  "Colaboradores",
   "Soporte prioritario",
 ]
 
 const PRO_FEATURES = [
+  "Hasta 3 usuarios",
   "Proyectos ilimitados",
   "Facturas ilimitadas",
-  "Dashboard financiero avanzado",
-  "Gastos y compras con desglose",
   "OCR inteligente (subir facturas con IA)",
-  "Reportes trimestrales para el contador",
+  "Reparto de gastos entre proyectos",
+  "Dashboard financiero avanzado",
   "Estimación fiscal automática (IVA + IRPF)",
-  "Colaboradores (hasta 10)",
+  "Reportes para el contador",
+  "Soporte por email",
+]
+
+const BUSINESS_FEATURES = [
+  "Usuarios ilimitados",
+  "Todo lo de PRO",
+  "Presupuestos de obra con partidas",
+  "Control de costes por partida",
+  "Certificaciones parciales",
+  "Integraciones bancarias",
   "Soporte prioritario",
-  "Acceso anticipado a nuevas funciones",
+]
+
+const BUSINESS_COMING_SOON = [
+  "Presupuestos de obra con partidas",
+  "Control de costes por partida",
+  "Certificaciones parciales",
+  "Integraciones bancarias",
 ]
 
 const STATUS_LABEL: Record<string, string> = {
@@ -67,10 +86,11 @@ export default async function BillingPage({
 
   const sub = freshWorkspace.subscription
   const isPro = freshWorkspace.plan === "PRO"
+  const isFree = freshWorkspace.plan === "FREE"
   const { success, cancelled } = await searchParams
 
   return (
-    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-4xl">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-5xl">
       <div className="flex items-center gap-3">
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
           <CreditCard className="h-4 w-4 text-muted-foreground" />
@@ -90,7 +110,7 @@ export default async function BillingPage({
           <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
           <div>
             <p className="text-sm font-medium text-emerald-700 dark:text-emerald-300">
-              ¡Bienvenido a PRO!
+              Bienvenido a PRO
             </p>
             <p className="text-xs text-emerald-600/80 dark:text-emerald-400/80">
               Tu suscripción está activa. Ya puedes usar todas las funciones.
@@ -150,30 +170,38 @@ export default async function BillingPage({
         </div>
       )}
 
-      {/* Planes — dos cards lado a lado */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Plan Gratuito */}
-        <div className={`rounded-xl border-2 bg-card overflow-hidden flex flex-col ${!isPro ? "border-primary ring-2 ring-primary/20" : "border-border"}`}>
+      {/* Planes — tres cards lado a lado */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Plan Starter */}
+        <div
+          className={`rounded-xl border-2 bg-card overflow-hidden flex flex-col ${
+            isFree ? "border-primary ring-2 ring-primary/20" : "border-border"
+          }`}
+        >
           <div className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">Gratuito</h2>
-              {!isPro && (
+              <h2 className="text-lg font-bold">Starter</h2>
+              {isFree && (
                 <span className="text-[10px] font-semibold uppercase tracking-wider bg-primary/10 text-primary px-2 py-0.5 rounded-full">
                   Plan actual
                 </span>
               )}
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black">0 €</span>
+              <span className="text-3xl font-black">0 &euro;</span>
               <span className="text-sm text-muted-foreground">/ mes</span>
             </div>
-            <p className="text-xs text-muted-foreground">Para empezar a gestionar tus proyectos</p>
+            <p className="text-xs text-muted-foreground">
+              Para empezar a gestionar tus proyectos
+            </p>
           </div>
 
           <div className="border-t p-5 flex-1">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Incluido</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+              Incluido
+            </p>
             <div className="space-y-2.5">
-              {FREE_FEATURES.map((f) => (
+              {STARTER_FEATURES.map((f) => (
                 <div key={f} className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-emerald-500 shrink-0" />
                   <span className="text-sm">{f}</span>
@@ -181,11 +209,13 @@ export default async function BillingPage({
               ))}
             </div>
 
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 mt-5">No incluido</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 mt-5">
+              No incluido
+            </p>
             <div className="space-y-2.5">
-              {FREE_NOT_INCLUDED.map((f) => (
+              {STARTER_NOT_INCLUDED.map((f) => (
                 <div key={f} className="flex items-center gap-2 opacity-50">
-                  <XCircle className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <X className="h-4 w-4 text-muted-foreground shrink-0" />
                   <span className="text-sm line-through">{f}</span>
                 </div>
               ))}
@@ -194,32 +224,42 @@ export default async function BillingPage({
         </div>
 
         {/* Plan PRO */}
-        <div className={`rounded-xl border-2 bg-card overflow-hidden flex flex-col ${isPro ? "border-amber-500 ring-2 ring-amber-500/20" : "border-border"}`}>
-          <div className="p-5 space-y-2 bg-gradient-to-r from-amber-500/5 to-orange-500/5">
+        <div
+          className="rounded-xl border-2 border-primary ring-2 ring-primary/20 bg-card overflow-hidden flex flex-col"
+        >
+          <div className="p-5 space-y-2 bg-gradient-to-r from-primary/5 to-primary/10">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-amber-500" />
+                <Sparkles className="h-4 w-4 text-primary" />
                 <h2 className="text-lg font-bold">PRO</h2>
               </div>
-              {isPro && (
-                <span className="text-[10px] font-semibold uppercase tracking-wider bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full">
+              {isPro ? (
+                <span className="text-[10px] font-semibold uppercase tracking-wider bg-primary/10 text-primary px-2 py-0.5 rounded-full">
                   Plan actual
+                </span>
+              ) : (
+                <span className="text-[10px] font-semibold uppercase tracking-wider bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
+                  Más popular
                 </span>
               )}
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black">13,99 €</span>
+              <span className="text-3xl font-black">14,99 &euro;</span>
               <span className="text-sm text-muted-foreground">/ mes</span>
             </div>
-            <p className="text-xs text-muted-foreground">Todo lo que necesitas para gestionar tu negocio</p>
+            <p className="text-xs text-muted-foreground">
+              Todo lo que necesitas para tu negocio
+            </p>
           </div>
 
           <div className="border-t p-5 flex-1">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Todo incluido</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+              Todo incluido
+            </p>
             <div className="space-y-2.5">
               {PRO_FEATURES.map((f) => (
                 <div key={f} className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-amber-500 shrink-0" />
+                  <Check className="h-4 w-4 text-primary shrink-0" />
                   <span className="text-sm">{f}</span>
                 </div>
               ))}
@@ -231,6 +271,56 @@ export default async function BillingPage({
               <BillingActions isPro={false} hasCustomer={!!sub?.stripeCustomerId} />
             </div>
           )}
+        </div>
+
+        {/* Plan Business */}
+        <div className="rounded-xl border-2 border-amber-500/50 bg-card overflow-hidden flex flex-col">
+          <div className="p-5 space-y-2 bg-gradient-to-r from-amber-500/5 to-orange-500/5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                <h2 className="text-lg font-bold">Business</h2>
+              </div>
+            </div>
+            <div className="flex items-baseline gap-1">
+              <span className="text-3xl font-black">29,99 &euro;</span>
+              <span className="text-sm text-muted-foreground">/ mes</span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Para profesionales y estudios
+            </p>
+          </div>
+
+          <div className="border-t p-5 flex-1">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+              Todo incluido
+            </p>
+            <div className="space-y-2.5">
+              {BUSINESS_FEATURES.map((f) => (
+                <div key={f} className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-amber-500 shrink-0" />
+                  <span className="text-sm">
+                    {f}
+                    {BUSINESS_COMING_SOON.includes(f) && (
+                      <span className="ml-1.5 text-[10px] font-medium uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded-full">
+                        Próximamente
+                      </span>
+                    )}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="border-t p-4">
+            <button
+              disabled
+              className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400 px-4 py-2 text-sm font-medium cursor-not-allowed opacity-70"
+            >
+              <Mail className="h-4 w-4" />
+              Próximamente
+            </button>
+          </div>
         </div>
       </div>
     </div>
