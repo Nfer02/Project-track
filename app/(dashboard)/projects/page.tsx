@@ -20,12 +20,18 @@ export default async function ProjectsPage() {
     where: { workspaceId: ctx.workspace.id },
     orderBy: { createdAt: "desc" },
     include: {
-      _count: { select: { invoices: true } },
+      invoices: {
+        where: { type: "INCOME" },
+        select: { amount: true, status: true },
+      },
+      expenseAllocations: {
+        select: { amount: true },
+      },
     },
   })
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-5xl">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-5xl">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="space-y-1">
@@ -42,7 +48,6 @@ export default async function ProjectsPage() {
         </Button>
       </div>
 
-      {/* Lista o empty state */}
       {projects.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-20 gap-4 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
@@ -61,44 +66,67 @@ export default async function ProjectsPage() {
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <Link
-              key={project.id}
-              href={`/projects/${project.id}`}
-              className="group flex flex-col gap-3 rounded-xl border bg-card p-5 transition-colors hover:border-primary/50 hover:bg-accent/30"
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-sm truncate group-hover:text-primary transition-colors">
-                    {project.name}
-                  </h3>
-                  {project.clientName && (
-                    <p className="text-xs text-muted-foreground truncate mt-0.5">
-                      {project.clientName}
-                    </p>
+          {projects.map((project) => {
+            const totalIncome = project.invoices
+              .filter((i) => i.status === "PAID")
+              .reduce((s, i) => s + Number(i.amount), 0)
+            const totalExpenses = project.expenseAllocations
+              .reduce((s, a) => s + Number(a.amount), 0)
+            const profit = totalIncome - totalExpenses
+            const margin = totalIncome > 0 ? Math.round((profit / totalIncome) * 100) : null
+
+            return (
+              <Link
+                key={project.id}
+                href={`/projects/${project.id}`}
+                className="group flex flex-col gap-3 rounded-xl border bg-card p-5 transition-colors hover:border-primary/50 hover:bg-accent/30"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-sm truncate group-hover:text-primary transition-colors">
+                      {project.name}
+                    </h3>
+                    {project.clientName && (
+                      <p className="text-xs text-muted-foreground truncate mt-0.5">
+                        {project.clientName} · IVA {project.vatRate}%
+                      </p>
+                    )}
+                  </div>
+                  <ProjectStatusBadge status={project.status} />
+                </div>
+
+                {/* Valor del contrato + margen */}
+                <div className="flex items-end justify-between">
+                  <div>
+                    {project.projectValue ? (
+                      <p className="text-lg font-bold">
+                        {formatCurrency(Number(project.projectValue), project.currency)}
+                      </p>
+                    ) : (
+                      <p className="text-lg font-bold text-muted-foreground">—</p>
+                    )}
+                    <p className="text-[10px] text-muted-foreground">Valor del contrato</p>
+                  </div>
+                  {margin !== null && (
+                    <div className="text-right">
+                      <p className={`text-sm font-bold ${margin >= 0 ? "text-emerald-500" : "text-rose-500"}`}>
+                        {margin >= 0 ? "+" : ""}{margin}%
+                      </p>
+                      <p className="text-[10px] text-muted-foreground">margen</p>
+                    </div>
                   )}
                 </div>
-                <ProjectStatusBadge status={project.status} />
-              </div>
 
-              {project.description && (
-                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                  {project.description}
-                </p>
-              )}
-
-              <div className="flex items-center justify-between pt-1 border-t border-border/50">
-                <span className="text-xs text-muted-foreground">
-                  {project._count.invoices} factura{project._count.invoices !== 1 ? "s" : ""}
-                </span>
-                {project.budget && (
-                  <span className="text-xs font-medium">
-                    {formatCurrency(Number(project.budget), project.currency)}
-                  </span>
-                )}
-              </div>
-            </Link>
-          ))}
+                {/* Info inferior */}
+                <div className="flex items-center justify-between pt-2 border-t border-border/50 text-xs text-muted-foreground">
+                  <span>{project.invoices.length} cobro{project.invoices.length !== 1 ? "s" : ""}</span>
+                  {totalExpenses > 0 && (
+                    <span>Gastos: {formatCurrency(totalExpenses, project.currency)}</span>
+                  )}
+                </div>
+              </Link>
+            )
+          })}
         </div>
       )}
     </div>
