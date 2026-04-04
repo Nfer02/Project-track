@@ -213,7 +213,6 @@ export default async function ProjectDetailPage({ params }: Props) {
                   <tr
                     key={inv.id}
                     className="hover:bg-muted/30 transition-colors cursor-pointer"
-                    onClick={() => {}}
                   >
                     <td className="px-4 py-3 font-mono text-xs">
                       <Link href={`/projects/${project.id}/invoices/${inv.id}`} className="hover:text-primary block">
