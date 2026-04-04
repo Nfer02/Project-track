@@ -12,6 +12,8 @@ export type InvoiceFormValues = {
   number: string
   description?: string
   amount: string
+  vatRate?: string
+  vatAmount?: string
   currency: string
   status: InvoiceStatus
   issueDate: string
@@ -94,6 +96,7 @@ export async function createInvoice(
         number: values.number,
         description: values.description || null,
         amount: parseFloat(values.amount),
+        vatAmount: values.vatAmount ? parseFloat(values.vatAmount) : null,
         currency: values.currency,
         status: values.status,
         issueDate: new Date(values.issueDate),

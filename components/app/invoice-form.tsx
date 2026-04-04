@@ -10,13 +10,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
   Form,
   FormControl,
   FormDescription,
@@ -27,15 +20,18 @@ import {
 } from "@/components/ui/form"
 import type { InvoiceFormValues } from "@/app/(dashboard)/invoices/actions"
 
+const decimalRule = (v: string) => /^\d+(\.\d{1,2})?$/.test(v)
+
 const schema = z.object({
   number: z.string().min(1, "El número es obligatorio"),
   description: z.string().optional(),
   amount: z
     .string()
-    .min(1, "El importe es obligatorio")
-    .refine((v) => /^\d+(\.\d{1,2})?$/.test(v), "Formato inválido (ej: 1500.00)"),
+    .min(1, "La base imponible es obligatoria")
+    .refine(decimalRule, "Formato inválido (ej: 1500.00)"),
+  vatRate: z.string().min(1),
   currency: z.string().min(1),
-  status: z.enum(["DRAFT", "PENDING", "PAID", "OVERDUE", "CANCELLED"]),
+  status: z.string().min(1),
   issueDate: z.string().min(1, "La fecha de emisión es obligatoria"),
   dueDate: z.string().optional(),
   paidDate: z.string().optional(),
@@ -52,6 +48,13 @@ const STATUS_OPTIONS = [
   { value: "PAID", label: "Pagada" },
   { value: "OVERDUE", label: "Vencida" },
   { value: "CANCELLED", label: "Cancelada" },
+]
+
+const VAT_OPTIONS = [
+  { value: "21", label: "21% (General)" },
+  { value: "10", label: "10% (Reducido)" },
+  { value: "4", label: "4% (Superreducido)" },
+  { value: "0", label: "0% (Exento)" },
 ]
 
 interface InvoiceFormProps {
@@ -75,6 +78,7 @@ export function InvoiceForm({
       number: "",
       description: "",
       amount: "",
+      vatRate: "21",
       currency: "EUR",
       status: "PENDING",
       issueDate: new Date().toISOString().slice(0, 10),
@@ -89,14 +93,26 @@ export function InvoiceForm({
 
   const { isSubmitting } = form.formState
   const status = form.watch("status")
+  const baseAmount = parseFloat(form.watch("amount") || "0") || 0
+  const vatRate = parseInt(form.watch("vatRate") || "21") || 0
+  const irpfRate = parseInt((defaultValues as Record<string, string>)?.irpfRate || "0") || 0
+
+  // Cálculos fiscales en tiempo real
+  const vatAmount = baseAmount * (vatRate / 100)
+  const irpfAmount = baseAmount * (irpfRate / 100)
+  const totalAmount = baseAmount + vatAmount - irpfAmount
 
   async function handleSubmit(values: FormValues) {
     setServerError(null)
     try {
-      const result = await onSubmit(values as InvoiceFormValues)
+      // Pasamos el total calculado como amount
+      const result = await onSubmit({
+        ...values,
+        amount: totalAmount.toFixed(2),
+        vatAmount: vatAmount.toFixed(2),
+      } as InvoiceFormValues)
       if (result && "error" in result) setServerError(result.error)
     } catch (err) {
-      // redirect() en Next.js lanza un error especial — no interceptar
       if ((err as { digest?: string })?.digest?.startsWith("NEXT_REDIRECT")) throw err
       setServerError("Ocurrió un error. Inténtalo de nuevo.")
     }
@@ -110,7 +126,9 @@ export function InvoiceForm({
         <OcrUpload
           onExtracted={(data: OcrData) => {
             if (data.description) form.setValue("description", data.description)
-            if (data.amount) form.setValue("amount", String(data.amount))
+            if (data.baseAmount) form.setValue("amount", String(data.baseAmount))
+            else if (data.amount) form.setValue("amount", String(data.amount))
+            if (data.vatRate) form.setValue("vatRate", String(data.vatRate))
             if (data.issueDate) form.setValue("issueDate", data.issueDate)
             if (data.dueDate) form.setValue("dueDate", data.dueDate)
             if (data.notes) form.setValue("notes", data.notes)
@@ -144,18 +162,15 @@ export function InvoiceForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Estado</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Estado" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {STATUS_OPTIONS.map((o) => (
-                      <SelectItem key={o.value} value={o.value}>
-                        {o.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <select
+                  value={field.value}
+                  onChange={field.onChange}
+                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  {STATUS_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
                 <FormMessage />
               </FormItem>
             )}
@@ -170,32 +185,79 @@ export function InvoiceForm({
             <FormItem>
               <FormLabel>Descripción</FormLabel>
               <FormControl>
-                <Input placeholder="Ej: Desarrollo frontend — Sprint 3" {...field} />
+                <Input placeholder="Ej: Reforma integral cocina — Primer pago" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        {/* Importe (EUR fijo) */}
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Importe (€) *</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  inputMode="decimal"
-                  placeholder="Ej: 2500.00"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* Base imponible + IVA */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="amount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Base imponible (€) *</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="Ej: 2500.00"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Importe sin IVA</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="vatRate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tipo de IVA</FormLabel>
+                <select
+                  value={field.value}
+                  onChange={field.onChange}
+                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  {VAT_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Desglose fiscal calculado */}
+        {baseAmount > 0 && (
+          <div className="rounded-lg border bg-muted/30 p-4 space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Base imponible</span>
+              <span className="font-medium">{baseAmount.toFixed(2)} €</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">IVA ({vatRate}%)</span>
+              <span className="font-medium">+ {vatAmount.toFixed(2)} €</span>
+            </div>
+            {irpfRate > 0 && (
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Retención IRPF ({irpfRate}%)</span>
+                <span className="font-medium text-rose-500">- {irpfAmount.toFixed(2)} €</span>
+              </div>
+            )}
+            <div className="flex justify-between border-t pt-2">
+              <span className="font-semibold">Total factura</span>
+              <span className="font-bold text-base">{totalAmount.toFixed(2)} €</span>
+            </div>
+          </div>
+        )}
 
         {/* Fechas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -227,7 +289,7 @@ export function InvoiceForm({
           />
         </div>
 
-        {/* Fecha de pago — solo si status es PAID */}
+        {/* Fecha de cobro — solo si status es PAID */}
         {status === "PAID" && (
           <FormField
             control={form.control}
@@ -254,7 +316,7 @@ export function InvoiceForm({
               <select
                 value={field.value ?? ""}
                 onChange={field.onChange}
-                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <option value="">Sin especificar</option>
                 <option value="Transferencia bancaria">Transferencia bancaria</option>
@@ -269,7 +331,7 @@ export function InvoiceForm({
           )}
         />
 
-        {/* Declaracion trimestral */}
+        {/* Declaración trimestral */}
         <FormField
           control={form.control}
           name="isDeclared"
@@ -284,7 +346,7 @@ export function InvoiceForm({
                 />
               </FormControl>
               <div className="space-y-0.5">
-                <FormLabel className="text-sm font-medium">Incluir en declaracion trimestral</FormLabel>
+                <FormLabel className="text-sm font-medium">Incluir en declaración trimestral</FormLabel>
                 <FormDescription className="text-xs">Desactiva si este ingreso no se va a declarar</FormDescription>
               </div>
             </FormItem>
