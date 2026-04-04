@@ -39,6 +39,7 @@ const schema = z.object({
   issueDate: z.string().min(1, "La fecha de emisión es obligatoria"),
   dueDate: z.string().optional(),
   paidDate: z.string().optional(),
+  paymentMethod: z.string().optional(),
   isDeclared: z.boolean(),
   notes: z.string().optional(),
 })
@@ -79,6 +80,7 @@ export function InvoiceForm({
       issueDate: new Date().toISOString().slice(0, 10),
       dueDate: "",
       paidDate: "",
+      paymentMethod: "",
       isDeclared: true,
       notes: "",
       ...defaultValues,
@@ -241,6 +243,31 @@ export function InvoiceForm({
             )}
           />
         )}
+
+        {/* Forma de pago */}
+        <FormField
+          control={form.control}
+          name="paymentMethod"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Forma de pago</FormLabel>
+              <select
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <option value="">Sin especificar</option>
+                <option value="Transferencia bancaria">Transferencia bancaria</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Tarjeta de crédito/débito">Tarjeta de crédito/débito</option>
+                <option value="Bizum">Bizum</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Otro">Otro</option>
+              </select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         {/* Declaracion trimestral */}
         <FormField

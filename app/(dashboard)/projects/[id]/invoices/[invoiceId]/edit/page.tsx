@@ -60,6 +60,7 @@ export default async function EditInvoicePage({ params }: Props) {
           amount: String(Number(invoice.amount)),
           currency: invoice.currency,
           status: invoice.status,
+          isDeclared: invoice.isDeclared,
           issueDate: toDateInputValue(invoice.issueDate),
           dueDate: toDateInputValue(invoice.dueDate),
           paidDate: toDateInputValue(invoice.paidDate),

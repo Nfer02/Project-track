@@ -17,6 +17,7 @@ export type InvoiceFormValues = {
   issueDate: string
   dueDate?: string
   paidDate?: string
+  paymentMethod?: string
   isDeclared: boolean
   notes?: string
 }
@@ -98,6 +99,7 @@ export async function createInvoice(
         issueDate: new Date(values.issueDate),
         dueDate: values.dueDate ? new Date(values.dueDate) : null,
         paidDate: values.paidDate ? new Date(values.paidDate) : null,
+        paymentMethod: values.paymentMethod || null,
         isDeclared: values.isDeclared,
         notes: values.notes || null,
       },
@@ -140,6 +142,7 @@ export async function updateInvoice(
         issueDate: new Date(values.issueDate),
         dueDate: values.dueDate ? new Date(values.dueDate) : null,
         paidDate: values.paidDate ? new Date(values.paidDate) : null,
+        paymentMethod: values.paymentMethod || null,
         isDeclared: values.isDeclared,
         notes: values.notes || null,
       },

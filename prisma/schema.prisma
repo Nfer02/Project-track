@@ -128,6 +128,7 @@ model Invoice {
   issueDate   DateTime
   dueDate     DateTime?
   paidDate    DateTime?
+  paymentMethod String?
   status      InvoiceStatus @default(PENDING)
   notes       String?
   createdAt   DateTime      @default(now())

@@ -8,7 +8,7 @@ export function NewInvoiceForm({
   defaultValues,
 }: {
   projectId: string
-  defaultValues: { number: string; currency: string; isDeclared?: boolean }
+  defaultValues: { number: string; currency: string; isDeclared?: boolean; paymentMethod?: string }
 }) {
   return (
     <div className="rounded-xl border bg-card p-6">
