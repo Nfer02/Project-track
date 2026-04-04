@@ -10,10 +10,12 @@ import { deleteInvoice } from "../../actions"
 
 interface Props {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ from?: string }>
 }
 
-export default async function ExpenseDetailPage({ params }: Props) {
+export default async function ExpenseDetailPage({ params, searchParams }: Props) {
   const { id } = await params
+  const { from } = await searchParams
 
   const ctx = await getCurrentWorkspace()
   if (!ctx) redirect("/onboarding")
@@ -36,9 +38,9 @@ export default async function ExpenseDetailPage({ params }: Props) {
   return (
     <div className="flex flex-col gap-6 p-6 max-w-3xl">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" className="-ml-1" render={<Link href="/invoices?tab=expenses" />}>
+        <Button variant="ghost" size="sm" className="-ml-1" render={<Link href={from ? `/projects/${from}` : "/invoices?tab=expenses"} />}>
           <ArrowLeft className="h-4 w-4 mr-1" />
-          Gastos
+          {from ? "Volver al proyecto" : "Gastos"}
         </Button>
       </div>
 
@@ -56,7 +58,7 @@ export default async function ExpenseDetailPage({ params }: Props) {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <Button variant="outline" size="sm" render={<Link href={`/invoices/expense/${id}/edit`} />}>
+          <Button variant="outline" size="sm" render={<Link href={`/invoices/expense/${id}/edit${from ? `?from=${from}` : ""}`} />}>
             <Pencil className="h-4 w-4 mr-1" />
             Editar
           </Button>

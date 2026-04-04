@@ -8,16 +8,18 @@ export function EditExpenseForm({
   expenseId,
   projects,
   defaultValues,
+  redirectTo,
 }: {
   expenseId: string
   projects: { id: string; name: string }[]
   defaultValues: Partial<ExpenseFormValues>
+  redirectTo?: string
 }) {
   return (
     <ExpenseForm
       defaultValues={defaultValues}
       projects={projects}
-      onSubmit={(values) => updateExpense(expenseId, values)}
+      onSubmit={(values) => updateExpense(expenseId, values, redirectTo)}
       submitLabel="Guardar cambios"
     />
   )

@@ -293,12 +293,12 @@ export default async function ProjectDetailPage({ params }: Props) {
                 {expenseAllocations.map((alloc) => (
                   <tr key={alloc.id} className="hover:bg-muted/30 transition-colors cursor-pointer">
                     <td className="px-4 py-3 font-mono text-xs">
-                      <Link href={`/invoices/expense/${alloc.invoiceId}`} className="hover:text-primary transition-colors">
+                      <Link href={`/invoices/expense/${alloc.invoiceId}?from=${project.id}`} className="hover:text-primary transition-colors">
                         #{alloc.invoice.number}
                       </Link>
                     </td>
                     <td className="px-4 py-3 text-xs font-medium">
-                      <Link href={`/invoices/expense/${alloc.invoiceId}`} className="hover:text-primary transition-colors">
+                      <Link href={`/invoices/expense/${alloc.invoiceId}?from=${project.id}`} className="hover:text-primary transition-colors">
                         {alloc.invoice.vendorName ?? "\u2014"}
                       </Link>
                     </td>

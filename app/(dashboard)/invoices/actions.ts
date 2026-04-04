@@ -241,6 +241,7 @@ export async function createExpense(
 export async function updateExpense(
   invoiceId: string,
   values: ExpenseFormValues,
+  redirectTo?: string,
 ): Promise<{ error: string } | void> {
   const { workspace } = await requireWorkspace()
 
@@ -308,5 +309,5 @@ export async function updateExpense(
   }
 
   revalidatePath("/invoices")
-  redirect(`/invoices/expense/${invoiceId}`)
+  redirect(redirectTo ?? `/invoices/expense/${invoiceId}`)
 }

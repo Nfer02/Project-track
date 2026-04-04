@@ -10,10 +10,12 @@ import { EditExpenseForm } from "./edit-expense-form"
 
 interface Props {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ from?: string }>
 }
 
-export default async function EditExpensePage({ params }: Props) {
+export default async function EditExpensePage({ params, searchParams }: Props) {
   const { id } = await params
+  const { from } = await searchParams
 
   const ctx = await getCurrentWorkspace()
   if (!ctx) redirect("/onboarding")
@@ -34,7 +36,7 @@ export default async function EditExpensePage({ params }: Props) {
   return (
     <div className="flex flex-col gap-6 p-6 max-w-2xl">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" className="-ml-1" render={<Link href={`/invoices/expense/${id}`} />}>
+        <Button variant="ghost" size="sm" className="-ml-1" render={<Link href={`/invoices/expense/${id}${from ? `?from=${from}` : ""}`} />}>
           <ArrowLeft className="h-4 w-4 mr-1" />
           Gasto #{expense.number}
         </Button>
@@ -48,6 +50,7 @@ export default async function EditExpensePage({ params }: Props) {
       <EditExpenseForm
         expenseId={id}
         projects={projects}
+        redirectTo={from ? `/invoices/expense/${id}?from=${from}` : undefined}
         defaultValues={{
           number: expense.number,
           vendorName: expense.vendorName ?? "",
