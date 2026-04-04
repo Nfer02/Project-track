@@ -107,6 +107,8 @@ model Project {
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   invoices  Invoice[]
   isDeclared Boolean @default(true)
+  vatRate    Int     @default(21)  // % IVA del proyecto (10 o 21)
+  irpfRate   Int     @default(0)   // % Retención IRPF (0, 7, 15)
   expenseAllocations ExpenseAllocation[]
 }
 
@@ -122,6 +124,7 @@ model Invoice {
   isDeclared  Boolean       @default(true)
   vendorName  String?
   category    String?
+  vatAmount   Decimal?      @db.Decimal(12, 2)  // IVA incluido en la factura (para calcular soportado/repercutido)
   issueDate   DateTime
   dueDate     DateTime?
   paidDate    DateTime?

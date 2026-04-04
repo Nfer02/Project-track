@@ -55,6 +55,7 @@ export default async function EditExpensePage({ params }: Props) {
           amount: String(Number(expense.amount)),
           currency: expense.currency,
           category: expense.category ?? "",
+          vatAmount: expense.vatAmount ? String(Number(expense.vatAmount)) : "",
           status: expense.status as "PENDING" | "PAID",
           issueDate: toDateInputValue(expense.issueDate),
           dueDate: toDateInputValue(expense.dueDate),

@@ -5,7 +5,18 @@ import { redirect } from "next/navigation"
 export const metadata: Metadata = {
   title: "Dashboard — ProjectTrack",
 }
-import { TrendingUp, FolderOpen, ReceiptText, Clock, Plus, ShoppingCart, Wallet } from "lucide-react"
+import {
+  TrendingUp,
+  TrendingDown,
+  FolderOpen,
+  ReceiptText,
+  Clock,
+  Plus,
+  ShoppingCart,
+  Wallet,
+  Calculator,
+  AlertTriangle,
+} from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { getCurrentWorkspace } from "@/lib/workspace"
@@ -14,6 +25,62 @@ import { formatCurrency } from "@/lib/format"
 import { buildMonthlyData, buildInvoiceSummary } from "@/lib/chart-data"
 import { RevenueBarChart } from "@/components/charts/revenue-bar-chart"
 import { ProjectStatusBadge } from "@/components/app/project-status-badge"
+
+/* ------------------------------------------------------------------ */
+/*  Fiscal helpers                                                     */
+/* ------------------------------------------------------------------ */
+
+const QUARTER_LABELS: Record<number, string> = {
+  1: "T1",
+  2: "T2",
+  3: "T3",
+  4: "T4",
+}
+
+const QUARTER_MONTHS: Record<number, string> = {
+  1: "Ene-Mar",
+  2: "Abr-Jun",
+  3: "Jul-Sep",
+  4: "Oct-Dic",
+}
+
+function getFilingDeadline(quarter: number, year: number): Date {
+  // Q1 → 20 abril, Q2 → 20 julio, Q3 → 20 octubre, Q4 → 30 enero (año siguiente)
+  switch (quarter) {
+    case 1:
+      return new Date(year, 3, 20) // 20 abril
+    case 2:
+      return new Date(year, 6, 20) // 20 julio
+    case 3:
+      return new Date(year, 9, 20) // 20 octubre
+    case 4:
+      return new Date(year + 1, 0, 30) // 30 enero siguiente
+    default:
+      return new Date(year, 3, 20)
+  }
+}
+
+function formatFilingDeadline(quarter: number, year: number): string {
+  switch (quarter) {
+    case 1:
+      return `20 de abril de ${year}`
+    case 2:
+      return `20 de julio de ${year}`
+    case 3:
+      return `20 de octubre de ${year}`
+    case 4:
+      return `30 de enero de ${year + 1}`
+    default:
+      return ""
+  }
+}
+
+const DEFAULT_VAT_RATE = 0.21
+const DEFAULT_IRPF_RATE = 0.20
+
+/* ------------------------------------------------------------------ */
+/*  Data fetching                                                      */
+/* ------------------------------------------------------------------ */
 
 async function getDashboardData(workspaceId: string) {
   const [activeProjects, recentProjects, allInvoices, totalAllocated] = await Promise.all([
@@ -26,7 +93,15 @@ async function getDashboardData(workspaceId: string) {
     }),
     prisma.invoice.findMany({
       where: { workspaceId },
-      select: { status: true, amount: true, issueDate: true, currency: true, type: true },
+      select: {
+        status: true,
+        amount: true,
+        issueDate: true,
+        currency: true,
+        type: true,
+        isDeclared: true,
+        vatAmount: true,
+      },
       orderBy: { issueDate: "asc" },
     }),
     prisma.expenseAllocation.aggregate({
@@ -60,6 +135,46 @@ async function getDashboardData(workspaceId: string) {
   const allocatedAmount = Number(totalAllocated._sum.amount ?? 0)
   const generalExpenses = totalExpenses - allocatedAmount
 
+  // ---- Estimación fiscal del trimestre ----
+  const currentQuarter = Math.floor(now.getMonth() / 3) + 1
+  const quarterStart = new Date(now.getFullYear(), (currentQuarter - 1) * 3, 1)
+  const quarterEnd = new Date(now.getFullYear(), currentQuarter * 3, 0, 23, 59, 59)
+
+  const quarterIncomes = allInvoices.filter((i) => {
+    const d = new Date(i.issueDate)
+    return d >= quarterStart && d <= quarterEnd && i.type === "INCOME" && i.isDeclared
+  })
+
+  const quarterExpenses = allInvoices.filter((i) => {
+    const d = new Date(i.issueDate)
+    return d >= quarterStart && d <= quarterEnd && i.type === "EXPENSE" && i.isDeclared
+  })
+
+  const quarterIncomesTotal = quarterIncomes.reduce((s, i) => s + Number(i.amount), 0)
+  const quarterExpensesTotal = quarterExpenses.reduce((s, i) => s + Number(i.amount), 0)
+
+  // IVA repercutido: use vatAmount from invoices when available, otherwise estimate at 21%
+  const quarterVatRepercutido = quarterIncomes.reduce((s, i) => {
+    if (i.vatAmount != null) return s + Number(i.vatAmount)
+    return s + Number(i.amount) * DEFAULT_VAT_RATE
+  }, 0)
+
+  // IVA soportado: use vatAmount from expenses when available, otherwise estimate at 21%
+  const quarterVatSoportado = quarterExpenses.reduce((s, i) => {
+    if (i.vatAmount != null) return s + Number(i.vatAmount)
+    return s + Number(i.amount) * DEFAULT_VAT_RATE
+  }, 0)
+
+  const quarterVatAPagar = quarterVatRepercutido - quarterVatSoportado
+  const quarterIrpfBase = quarterIncomesTotal - quarterExpensesTotal
+  const quarterPagoFraccionado = Math.max(0, quarterIrpfBase * DEFAULT_IRPF_RATE)
+  const quarterTotalReservar = quarterVatAPagar + quarterPagoFraccionado
+
+  const filingDeadline = getFilingDeadline(currentQuarter, now.getFullYear())
+  const daysUntilDeadline = Math.ceil(
+    (filingDeadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+  )
+
   return {
     activeProjects,
     recentProjects,
@@ -72,6 +187,22 @@ async function getDashboardData(workspaceId: string) {
     totalPending,
     totalOverdue,
     monthlyData,
+    // Fiscal
+    fiscal: {
+      quarter: currentQuarter,
+      year: now.getFullYear(),
+      quarterLabel: `${QUARTER_LABELS[currentQuarter]} ${now.getFullYear()} (${QUARTER_MONTHS[currentQuarter]})`,
+      filingDeadlineLabel: formatFilingDeadline(currentQuarter, now.getFullYear()),
+      daysUntilDeadline,
+      incomesTotal: quarterIncomesTotal,
+      expensesTotal: quarterExpensesTotal,
+      vatRepercutido: quarterVatRepercutido,
+      vatSoportado: quarterVatSoportado,
+      vatAPagar: quarterVatAPagar,
+      irpfBase: quarterIrpfBase,
+      pagoFraccionado: quarterPagoFraccionado,
+      totalReservar: quarterTotalReservar,
+    },
   }
 }
 
@@ -84,13 +215,16 @@ export default async function DashboardPage() {
 
   const data = await getDashboardData(ctx.workspace.id)
 
+  const netProfit = data.revenueThisMonth - data.expensesThisMonth
+  const isPositive = netProfit >= 0
+
   const STATS = [
     {
       label: "Ingresos del mes",
       value:
         data.revenueThisMonth > 0
           ? formatCurrency(data.revenueThisMonth, "EUR")
-          : "0 €",
+          : "0 \u20AC",
       sub:
         data.revenueThisMonth > 0
           ? "Facturas cobradas este mes"
@@ -104,7 +238,7 @@ export default async function DashboardPage() {
       value:
         data.expensesThisMonth > 0
           ? formatCurrency(data.expensesThisMonth, "EUR")
-          : "0 €",
+          : "0 \u20AC",
       sub:
         data.expensesThisMonth > 0
           ? "Gastos registrados este mes"
@@ -112,6 +246,18 @@ export default async function DashboardPage() {
       icon: ShoppingCart,
       color: "text-orange-600 dark:text-orange-400",
       border: "border-l-4 border-l-orange-500",
+    },
+    {
+      label: "Beneficio neto del mes",
+      value: formatCurrency(netProfit, "EUR"),
+      sub: isPositive ? "Ingresos superan gastos" : "Gastos superan ingresos",
+      icon: isPositive ? TrendingUp : TrendingDown,
+      color: isPositive
+        ? "text-emerald-600 dark:text-emerald-400"
+        : "text-destructive",
+      border: isPositive
+        ? "border-l-4 border-l-emerald-500"
+        : "border-l-4 border-l-red-500",
     },
     {
       label: "Proyectos activos",
@@ -129,7 +275,7 @@ export default async function DashboardPage() {
       value:
         data.generalExpenses > 0
           ? formatCurrency(data.generalExpenses, "EUR")
-          : "0 €",
+          : "0 \u20AC",
       sub: "Sin asignar a proyectos",
       icon: Wallet,
       color: "text-violet-600 dark:text-violet-400",
@@ -138,7 +284,7 @@ export default async function DashboardPage() {
     {
       label: "Facturas pendientes",
       value: String(data.pendingCount),
-      sub: data.pendingCount === 0 ? "Al día" : "Por cobrar",
+      sub: data.pendingCount === 0 ? "Al d\u00EDa" : "Por cobrar",
       icon: ReceiptText,
       color: "text-amber-600 dark:text-amber-400",
       border: "border-l-4 border-l-amber-500",
@@ -146,12 +292,14 @@ export default async function DashboardPage() {
     {
       label: "Facturas vencidas",
       value: String(data.overdueCount),
-      sub: data.overdueCount === 0 ? "Sin alertas" : "Requieren atención",
+      sub: data.overdueCount === 0 ? "Sin alertas" : "Requieren atenci\u00F3n",
       icon: Clock,
       color: "text-destructive",
       border: "border-l-4 border-l-red-500",
     },
   ]
+
+  const f = data.fiscal
 
   return (
     <div className="flex flex-col gap-6 p-6 max-w-5xl">
@@ -169,7 +317,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {STATS.map(({ label, value, sub, icon: Icon, color, border }) => (
           <Card key={label} className={border}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -193,7 +341,7 @@ export default async function DashboardPage() {
             <FolderOpen className="h-5 w-5 text-muted-foreground" />
           </div>
           <div className="space-y-1">
-            <p className="text-sm font-medium">No hay proyectos todavía</p>
+            <p className="text-sm font-medium">No hay proyectos todav&iacute;a</p>
             <p className="text-sm text-muted-foreground max-w-xs">
               Crea tu primer proyecto para empezar a registrar ingresos y
               facturas.
@@ -209,9 +357,9 @@ export default async function DashboardPage() {
           {/* Gráfico de ingresos — 2/3 del ancho */}
           <div className="lg:col-span-2 rounded-xl border bg-card p-5">
             <div className="mb-4 space-y-0.5">
-              <h2 className="text-sm font-semibold">Facturación mensual</h2>
+              <h2 className="text-sm font-semibold">Facturaci&oacute;n mensual</h2>
               <p className="text-xs text-muted-foreground">
-                Todos los proyectos — últimos 6 meses
+                Todos los proyectos — &uacute;ltimos 6 meses
               </p>
             </div>
             <RevenueBarChart data={data.monthlyData} currency="EUR" />
@@ -270,6 +418,99 @@ export default async function DashboardPage() {
           </div>
         </div>
       )}
+
+      {/* Estimación fiscal del trimestre */}
+      <div className="rounded-xl border-l-4 border-l-indigo-500 border border-border bg-card p-5 space-y-4">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-2">
+            <Calculator className="h-5 w-5 text-indigo-500" />
+            <div>
+              <h2 className="text-sm font-semibold">
+                Estimaci&oacute;n fiscal del trimestre
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                {f.quarterLabel} — Presentaci&oacute;n: {f.filingDeadlineLabel}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Deadline alert */}
+        {f.daysUntilDeadline > 0 && f.daysUntilDeadline <= 30 && (
+          <div className="rounded-lg bg-amber-500/10 border border-amber-500/20 p-3 text-xs flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
+            <p className="font-medium text-amber-700 dark:text-amber-400">
+              Tienes {f.daysUntilDeadline} d&iacute;a{f.daysUntilDeadline !== 1 ? "s" : ""} para
+              presentar la declaraci&oacute;n trimestral
+            </p>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
+          {/* Columna izquierda: Ingresos y gastos */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Ingresos declarados</span>
+              <span className="font-medium tabular-nums">
+                {formatCurrency(f.incomesTotal, "EUR")}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Gastos declarados</span>
+              <span className="font-medium tabular-nums">
+                {formatCurrency(f.expensesTotal, "EUR")}
+              </span>
+            </div>
+            <div className="border-t pt-2 flex items-center justify-between">
+              <span className="text-muted-foreground">IVA repercutido (est.)</span>
+              <span className="font-medium tabular-nums">
+                {formatCurrency(f.vatRepercutido, "EUR")}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">IVA soportado</span>
+              <span className="font-medium tabular-nums">
+                {formatCurrency(f.vatSoportado, "EUR")}
+              </span>
+            </div>
+            <div className="flex items-center justify-between font-medium">
+              <span>IVA a pagar (est.)</span>
+              <span className="tabular-nums">
+                {formatCurrency(f.vatAPagar, "EUR")}
+              </span>
+            </div>
+          </div>
+
+          {/* Columna derecha: IRPF y total */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Base IRPF</span>
+              <span className="font-medium tabular-nums">
+                {formatCurrency(f.irpfBase, "EUR")}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Pago fraccionado (20%)</span>
+              <span className="font-medium tabular-nums">
+                {formatCurrency(f.pagoFraccionado, "EUR")}
+              </span>
+            </div>
+            <div className="border-t pt-2 flex items-center justify-between">
+              <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+                Total a reservar
+              </span>
+              <span className="font-semibold tabular-nums text-indigo-600 dark:text-indigo-400">
+                {formatCurrency(f.totalReservar, "EUR")}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <p className="text-[11px] text-muted-foreground/70 italic">
+          Estimaci&oacute;n orientativa asumiendo IVA al 21% e IRPF al 20%. Consulta con tu asesor
+          fiscal para el c&aacute;lculo exacto.
+        </p>
+      </div>
 
       {/* Proyectos recientes */}
       {data.recentProjects.length > 0 && (

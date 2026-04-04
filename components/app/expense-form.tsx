@@ -37,6 +37,7 @@ const schema = z.object({
     .refine((v) => /^\d+(\.\d{1,2})?$/.test(v), "Formato invalido (ej: 1500.00)"),
   currency: z.string().min(1),
   category: z.string().optional(),
+  vatAmount: z.string().optional(),
   status: z.enum(["PENDING", "PAID"]),
   issueDate: z.string().min(1, "La fecha es obligatoria"),
   dueDate: z.string().optional(),
@@ -91,6 +92,7 @@ export function ExpenseForm({
       amount: "",
       currency: "EUR",
       category: "",
+      vatAmount: "",
       status: "PENDING" as const,
       issueDate: new Date().toISOString().slice(0, 10),
       dueDate: "",
@@ -249,6 +251,26 @@ export function ExpenseForm({
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="vatAmount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>IVA incluido (EUR)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="Ej: 43.68"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>IVA soportado en esta factura</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

@@ -44,6 +44,8 @@ const schema = z.object({
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   isDeclared: z.boolean(),
+  vatRate: z.string().min(1),
+  irpfRate: z.string().min(1),
 })
 
 type FormValues = z.infer<typeof schema>
@@ -91,6 +93,8 @@ export function ProjectForm({
       startDate: "",
       endDate: "",
       isDeclared: true,
+      vatRate: "21",
+      irpfRate: "0",
       ...defaultValues,
     },
   })
@@ -284,6 +288,51 @@ export function ProjectForm({
                     />
                   </FormControl>
                   <FormDescription>Lo que prevés gastar</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="vatRate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>IVA del proyecto (%)</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Selecciona IVA" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="21">21% (General)</SelectItem>
+                      <SelectItem value="10">10% (Reducido)</SelectItem>
+                      <SelectItem value="4">4% (Superreducido)</SelectItem>
+                      <SelectItem value="0">0% (Exento)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="irpfRate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Retención IRPF (%)</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Selecciona IRPF" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="0">0% (Sin retención)</SelectItem>
+                      <SelectItem value="7">7% (Nuevos autónomos)</SelectItem>
+                      <SelectItem value="15">15% (General)</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

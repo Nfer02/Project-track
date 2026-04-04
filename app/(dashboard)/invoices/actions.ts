@@ -32,6 +32,7 @@ export type ExpenseFormValues = {
   paidDate?: string
   vendorName?: string
   category?: string
+  vatAmount?: string
   isDeclared: boolean
   notes?: string
   allocations: { projectId: string; amount: string; notes?: string }[]
@@ -210,6 +211,7 @@ export async function createExpense(
           paidDate: values.paidDate ? new Date(values.paidDate) : null,
           vendorName: values.vendorName || null,
           category: values.category || null,
+          vatAmount: values.vatAmount ? parseFloat(values.vatAmount) : null,
           isDeclared: values.isDeclared,
           notes: values.notes || null,
         },
@@ -277,6 +279,7 @@ export async function updateExpense(
           paidDate: values.paidDate ? new Date(values.paidDate) : null,
           vendorName: values.vendorName || null,
           category: values.category || null,
+          vatAmount: values.vatAmount ? parseFloat(values.vatAmount) : null,
           isDeclared: values.isDeclared,
           notes: values.notes || null,
         },

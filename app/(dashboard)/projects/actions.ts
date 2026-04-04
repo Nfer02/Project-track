@@ -19,6 +19,8 @@ export type ProjectFormValues = {
   startDate?: string
   endDate?: string
   isDeclared: boolean
+  vatRate: string
+  irpfRate: string
 }
 
 async function requireWorkspace() {
@@ -45,6 +47,8 @@ export async function createProject(values: ProjectFormValues) {
       startDate: values.startDate ? new Date(values.startDate) : null,
       endDate: values.endDate ? new Date(values.endDate) : null,
       isDeclared: values.isDeclared,
+      vatRate: parseInt(values.vatRate),
+      irpfRate: parseInt(values.irpfRate),
     },
   })
 
@@ -75,6 +79,8 @@ export async function updateProject(id: string, values: ProjectFormValues) {
       startDate: values.startDate ? new Date(values.startDate) : null,
       endDate: values.endDate ? new Date(values.endDate) : null,
       isDeclared: values.isDeclared,
+      vatRate: parseInt(values.vatRate),
+      irpfRate: parseInt(values.irpfRate),
     },
   })
 
