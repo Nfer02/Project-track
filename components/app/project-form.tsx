@@ -239,7 +239,7 @@ export function ProjectForm({
                 </FormControl>
                 <div className="space-y-0.5">
                   <FormLabel className="text-sm font-medium">Proyecto declarado</FormLabel>
-                  <FormDescription className="text-xs">Desactiva si este proyecto se trabaja en negro (no se declara)</FormDescription>
+                  <FormDescription className="text-xs">Desactiva si este proyecto no se incluye en la declaración trimestral</FormDescription>
                 </div>
               </FormItem>
             )}

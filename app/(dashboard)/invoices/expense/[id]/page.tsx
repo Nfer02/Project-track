@@ -92,7 +92,7 @@ export default async function ExpenseDetailPage({ params, searchParams }: Props)
         </div>
         <div className="rounded-xl border bg-card p-4 space-y-1">
           <p className="text-xs text-muted-foreground">Declarada</p>
-          <p className="text-base font-semibold">{expense.isDeclared ? "Sí" : "No (en negro)"}</p>
+          <p className="text-base font-semibold">{expense.isDeclared ? "Sí" : "No"}</p>
         </div>
       </div>
 
