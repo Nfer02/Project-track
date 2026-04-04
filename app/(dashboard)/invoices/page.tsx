@@ -5,8 +5,7 @@ import { redirect } from "next/navigation"
 export const metadata: Metadata = {
   title: "Facturas emitidas — ProjectTrack",
 }
-import { ReceiptText, Plus, FileCheck2, FileX2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ReceiptText, FileCheck2, FileX2 } from "lucide-react"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
 import { InvoiceStatusBadge } from "@/components/app/invoice-status-badge"
@@ -34,27 +33,25 @@ export default async function InvoicesPage() {
     .reduce((s, i) => s + Number(i.amount), 0)
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-5xl">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">Facturas emitidas</h1>
-          <p className="text-sm text-muted-foreground">{invoices.length} facturas en total</p>
-        </div>
+    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-5xl">
+      <div className="space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Facturas emitidas</h1>
+        <p className="text-sm text-muted-foreground">{invoices.length} facturas en total</p>
       </div>
 
       {invoices.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border bg-card p-4 space-y-1">
-            <p className="text-xs text-muted-foreground">Total facturado</p>
-            <p className="text-xl font-semibold">{formatCurrency(totalAmount, "EUR")}</p>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="rounded-xl border bg-card p-3 sm:p-4 space-y-1">
+            <p className="text-[10px] sm:text-xs text-muted-foreground">Total facturado</p>
+            <p className="text-base sm:text-xl font-semibold">{formatCurrency(totalAmount, "EUR")}</p>
           </div>
-          <div className="rounded-xl border bg-card p-4 space-y-1">
-            <p className="text-xs text-amber-600 dark:text-amber-400">Pendientes</p>
-            <p className="text-xl font-semibold">{totalPending > 0 ? formatCurrency(totalPending, "EUR") : "—"}</p>
+          <div className="rounded-xl border bg-card p-3 sm:p-4 space-y-1">
+            <p className="text-[10px] sm:text-xs text-amber-600 dark:text-amber-400">Pendientes</p>
+            <p className="text-base sm:text-xl font-semibold">{totalPending > 0 ? formatCurrency(totalPending, "EUR") : "—"}</p>
           </div>
-          <div className="rounded-xl border bg-card p-4 space-y-1">
-            <p className="text-xs text-destructive">Vencidas</p>
-            <p className="text-xl font-semibold">{totalOverdue > 0 ? formatCurrency(totalOverdue, "EUR") : "—"}</p>
+          <div className="rounded-xl border bg-card p-3 sm:p-4 space-y-1">
+            <p className="text-[10px] sm:text-xs text-destructive">Vencidas</p>
+            <p className="text-base sm:text-xl font-semibold">{totalOverdue > 0 ? formatCurrency(totalOverdue, "EUR") : "—"}</p>
           </div>
         </div>
       )}
@@ -64,69 +61,44 @@ export default async function InvoicesPage() {
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
             <ReceiptText className="h-5 w-5 text-muted-foreground" />
           </div>
-          <div className="space-y-1">
-            <p className="text-sm font-medium">Sin facturas emitidas</p>
-            <p className="text-sm text-muted-foreground">Crea facturas desde los proyectos.</p>
-          </div>
+          <p className="text-sm font-medium">Sin facturas emitidas</p>
+          <p className="text-sm text-muted-foreground">Crea facturas desde los proyectos.</p>
         </div>
       ) : (
-        <div className="rounded-xl border overflow-hidden overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b bg-muted/50">
-              <tr>
-                <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">N.°</th>
-                <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Proyecto</th>
-                <th className="px-4 py-2.5 text-left font-medium text-muted-foreground hidden sm:table-cell">Descripción</th>
-                <th className="px-4 py-2.5 text-left font-medium text-muted-foreground hidden md:table-cell">Fecha</th>
-                <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">Importe</th>
-                <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Estado</th>
-                <th className="px-4 py-2.5 text-center font-medium text-muted-foreground">Declarada</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {invoices.map((inv) => (
-                <tr
-                  key={inv.id}
-                  className={`hover:bg-muted/30 transition-colors ${!inv.isDeclared ? "opacity-60" : ""}`}
-                >
-                  <td className="px-4 py-3 font-mono text-xs">
-                    <Link
-                      href={inv.project ? `/projects/${inv.project.id}/invoices/${inv.id}` : "#"}
-                      className="hover:text-primary transition-colors"
-                    >
-                      #{inv.number}
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3 text-xs">
-                    {inv.project ? (
-                      <Link href={`/projects/${inv.project!.id}`} className="hover:text-primary font-medium transition-colors">
-                        {inv.project!.name}
-                      </Link>
-                    ) : "—"}
-                  </td>
-                  <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell text-xs whitespace-nowrap">
-                    {inv.description ?? "—"}
-                  </td>
-                  <td className="px-4 py-3 text-muted-foreground hidden md:table-cell text-xs whitespace-nowrap">
-                    {formatDate(inv.issueDate)}
-                  </td>
-                  <td className="px-4 py-3 text-right font-medium text-sm whitespace-nowrap">
-                    {formatCurrency(Number(inv.amount), inv.currency)}
-                  </td>
-                  <td className="px-4 py-3">
-                    <InvoiceStatusBadge status={inv.status} />
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    {inv.isDeclared ? (
-                      <FileCheck2 className="h-4 w-4 text-emerald-500 inline-block" />
-                    ) : (
-                      <FileX2 className="h-4 w-4 text-muted-foreground inline-block" />
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="space-y-2">
+          {invoices.map((inv) => (
+            <Link
+              key={inv.id}
+              href={inv.project ? `/projects/${inv.project.id}/invoices/${inv.id}` : "#"}
+              className={`block rounded-xl border bg-card p-4 hover:bg-muted/30 transition-colors ${!inv.isDeclared ? "opacity-60" : ""}`}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="font-mono text-xs text-muted-foreground shrink-0">#{inv.number}</span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate">
+                      {inv.project?.name ?? "Sin proyecto"}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {inv.description ?? "Sin descripción"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 shrink-0">
+                  <div className="text-right">
+                    <p className="text-sm font-semibold">{formatCurrency(Number(inv.amount), inv.currency)}</p>
+                    <p className="text-[10px] text-muted-foreground">{formatDate(inv.issueDate)}</p>
+                  </div>
+                  <InvoiceStatusBadge status={inv.status} />
+                  {inv.isDeclared ? (
+                    <FileCheck2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                  ) : (
+                    <FileX2 className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                  )}
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       )}
     </div>
