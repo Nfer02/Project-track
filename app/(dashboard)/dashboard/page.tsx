@@ -72,20 +72,7 @@ export default async function DashboardPage() {
     redirect("/onboarding")
   }
 
-  let data
-  try {
-    data = await getDashboardData(ctx.workspace.id)
-  } catch (err) {
-    const msg = err instanceof Error ? `${err.message}\n\n${err.stack}` : String(err)
-    return (
-      <div className="p-6 max-w-3xl">
-        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6">
-          <p className="text-base font-medium text-destructive mb-2">Error al cargar el dashboard:</p>
-          <pre className="text-xs whitespace-pre-wrap break-all text-muted-foreground">{msg}</pre>
-        </div>
-      </div>
-    )
-  }
+  const data = await getDashboardData(ctx.workspace.id)
 
   const STATS = [
     {
