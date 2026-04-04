@@ -49,6 +49,7 @@ export default async function EditProjectPage({ params }: Props) {
           currency: project.currency,
           paymentMethod: project.paymentMethod ?? "",
           numberOfPayments: project.numberOfPayments ? String(project.numberOfPayments) : "",
+          isDeclared: project.isDeclared,
           startDate: toDateInputValue(project.startDate),
           endDate: toDateInputValue(project.endDate),
         }}

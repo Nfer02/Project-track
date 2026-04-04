@@ -168,10 +168,10 @@ export default async function InvoicesPage({ searchParams }: Props) {
                   <td className="px-4 py-3">
                     {inv.project ? (
                       <Link
-                        href={`/projects/${inv.project.id}`}
+                        href={`/projects/${inv.project!.id}`}
                         className="text-xs font-medium hover:text-primary transition-colors"
                       >
-                        {inv.project.name}
+                        {inv.project!.name}
                       </Link>
                     ) : (
                       <span className="text-xs text-muted-foreground">\u2014</span>

@@ -25,7 +25,7 @@ async function getDashboardData(workspaceId: string) {
       include: { _count: { select: { invoices: true } } },
     }),
     prisma.invoice.findMany({
-      where: { project: { workspaceId } },
+      where: { workspaceId },
       select: { status: true, amount: true, issueDate: true, currency: true, type: true },
       orderBy: { issueDate: "asc" },
     }),

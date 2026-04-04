@@ -44,7 +44,7 @@ export default async function InvoiceDetailPage({ params }: Props) {
           render={<Link href={`/projects/${projectId}`} />}
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          {invoice.project.name}
+          {invoice.project!.name}
         </Button>
       </div>
 
@@ -190,7 +190,7 @@ export default async function InvoiceDetailPage({ params }: Props) {
           href={`/projects/${projectId}`}
           className="font-medium text-foreground hover:text-primary transition-colors"
         >
-          {invoice.project.name}
+          {invoice.project!.name}
         </Link>
       </div>
     </div>

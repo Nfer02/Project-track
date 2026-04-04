@@ -61,10 +61,10 @@ async function extractWithClaude(
             contentBlock,
             {
               type: "text",
-              text: `Analizá este documento de factura y extraé la siguiente información en formato JSON.
+              text: `Analiza este documento de factura y extrae la siguiente información en formato JSON.
 Si no encontrás algún dato, usá null para ese campo.
 
-Respondé ÚNICAMENTE con el JSON, sin texto adicional ni bloques de código:
+Responde ÚNICAMENTE con el JSON, sin texto adicional ni bloques de código:
 
 {
   "invoiceNumber": "número de factura o null",
@@ -121,15 +121,13 @@ export async function POST(
     const invoice = await prisma.invoice.findFirst({
       where: {
         id: invoiceId,
-        project: {
-          workspace: {
-            members: {
-              some: { userId: user.id, acceptedAt: { not: null } },
-            },
+        workspace: {
+          members: {
+            some: { userId: user.id, acceptedAt: { not: null } },
           },
         },
       },
-      include: { project: { select: { workspaceId: true } } },
+      select: { id: true, workspaceId: true, project: { select: { workspaceId: true } } },
     })
 
     if (!invoice) {
@@ -153,7 +151,7 @@ export async function POST(
     if (!isSupportedMimeType(file.type)) {
       return NextResponse.json(
         {
-          error: `Tipo de archivo no soportado. Usá: PDF, JPEG, PNG o WEBP.`,
+          error: `Tipo de archivo no soportado. Usa: PDF, JPEG, PNG o WEBP.`,
         },
         { status: 400 }
       )
@@ -168,7 +166,7 @@ export async function POST(
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const ext = file.name.split(".").pop() ?? "bin"
-    const storagePath = `${invoice.project.workspaceId}/${invoiceId}/${Date.now()}.${ext}`
+    const storagePath = `${invoice.workspaceId}/${invoiceId}/${Date.now()}.${ext}`
 
     // Subir a Supabase Storage (el bucket debe existir y tener RLS apropiado)
     const { error: uploadError } = await supabase.storage
@@ -232,10 +230,8 @@ export async function GET(
       where: {
         invoiceId,
         invoice: {
-          project: {
-            workspace: {
-              members: { some: { userId: user.id, acceptedAt: { not: null } } },
-            },
+          workspace: {
+            members: { some: { userId: user.id, acceptedAt: { not: null } } },
           },
         },
       },

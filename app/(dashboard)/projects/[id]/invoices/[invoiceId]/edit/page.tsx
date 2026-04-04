@@ -47,7 +47,7 @@ export default async function EditInvoicePage({ params }: Props) {
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">Editar factura</h1>
         <p className="text-sm text-muted-foreground">
-          Proyecto: <span className="font-medium text-foreground">{invoice.project.name}</span>
+          Proyecto: <span className="font-medium text-foreground">{invoice.project!.name}</span>
         </p>
       </div>
 
