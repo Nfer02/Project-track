@@ -1,17 +1,12 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import {
-  FolderKanban,
-  TrendingUp,
-  ShoppingCart,
-  BarChart3,
-  Calculator,
   ArrowRight,
   Sparkles,
   Check,
   X,
   Zap,
-  Shield,
+  TrendingUp,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
@@ -27,69 +22,6 @@ export const metadata = {
   description:
     "Controla tus proyectos, ingresos, gastos y obligaciones fiscales en un solo lugar. Disenado para autonomos y pequenas empresas en Espana.",
 }
-
-const FEATURE_TABS = [
-  {
-    label: "Proyectos",
-    icon: FolderKanban,
-    description:
-      "Organiza tus proyectos con presupuesto, cliente, fechas y estado. Visualiza la rentabilidad de cada uno en tiempo real.",
-    highlights: [
-      "Valor del contrato y presupuesto de materiales",
-      "Estado del proyecto (activo, completado, archivado)",
-      "Forma de pago y numero de cobros acordados",
-      "IVA e IRPF configurables por proyecto",
-    ],
-  },
-  {
-    label: "Ingresos",
-    icon: TrendingUp,
-    description:
-      "Registra lo que cobras a cada cliente. Controla pagos pendientes, marca cobros y recibe alertas de vencimiento.",
-    highlights: [
-      "Control de cobros pendientes y vencidos",
-      "Forma de pago por ingreso",
-      "Alerta cuando se acerca el vencimiento",
-      "Marcado de cobros declarables",
-    ],
-  },
-  {
-    label: "Gastos",
-    icon: ShoppingCart,
-    description:
-      "Registra compras y gastos del negocio. Reparte un gasto entre varios proyectos para saber cuanto te cuesta cada obra.",
-    highlights: [
-      "Reparto inteligente entre proyectos",
-      "Categorias: material, herramientas, subcontrata...",
-      "OCR: escanea el ticket y se rellena solo",
-      "Gastos generales del negocio separados",
-    ],
-  },
-  {
-    label: "Dashboard",
-    icon: BarChart3,
-    description:
-      "Graficos profesionales de ingresos vs gastos, beneficio neto, gastos por categoria y reserva fiscal del trimestre.",
-    highlights: [
-      "Ingresos vs gastos mensual",
-      "Beneficio bruto y neto tras impuestos",
-      "Gastos por categoria (donut)",
-      "Gauge de reserva fiscal (IVA + IRPF)",
-    ],
-  },
-  {
-    label: "Fiscal",
-    icon: Calculator,
-    description:
-      "Estimacion automatica de IVA e IRPF trimestral. Sabe cuanto reservar para Hacienda y cuando toca presentar.",
-    highlights: [
-      "IVA repercutido y soportado",
-      "Pago fraccionado IRPF (20%)",
-      "Alerta de fecha de presentacion",
-      "Reportes exportables para el contador",
-    ],
-  },
-]
 
 const STARTER_FEATURES = [
   { label: "1 usuario", included: true },
@@ -263,7 +195,7 @@ export default async function LandingPage() {
             </FadeIn>
 
             <FadeIn delay={100}>
-              <FeatureTabs tabs={FEATURE_TABS} />
+              <FeatureTabs />
             </FadeIn>
           </div>
         </section>

@@ -2,29 +2,96 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { Check, type LucideIcon } from "lucide-react"
+import {
+  Check,
+  FolderKanban,
+  TrendingUp,
+  ShoppingCart,
+  BarChart3,
+  Calculator,
+} from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 
-export interface FeatureTab {
+interface FeatureTab {
   label: string
   icon: LucideIcon
   description: string
   highlights: string[]
 }
 
-interface FeatureTabsProps {
-  tabs: FeatureTab[]
-}
+const TABS: FeatureTab[] = [
+  {
+    label: "Proyectos",
+    icon: FolderKanban,
+    description:
+      "Organiza tus proyectos con presupuesto, cliente, fechas y estado. Visualiza la rentabilidad de cada uno en tiempo real.",
+    highlights: [
+      "Valor del contrato y presupuesto de materiales",
+      "Estado del proyecto (activo, completado, archivado)",
+      "Forma de pago y número de cobros acordados",
+      "IVA e IRPF configurables por proyecto",
+    ],
+  },
+  {
+    label: "Ingresos",
+    icon: TrendingUp,
+    description:
+      "Registra lo que cobras a cada cliente. Controla pagos pendientes, marca cobros y recibe alertas de vencimiento.",
+    highlights: [
+      "Control de cobros pendientes y vencidos",
+      "Forma de pago por ingreso",
+      "Alerta cuando se acerca el vencimiento",
+      "Marcado de cobros declarables",
+    ],
+  },
+  {
+    label: "Gastos",
+    icon: ShoppingCart,
+    description:
+      "Registra compras y gastos del negocio. Reparte un gasto entre varios proyectos para saber cuánto te cuesta cada obra.",
+    highlights: [
+      "Reparto inteligente entre proyectos",
+      "Categorías: material, herramientas, subcontrata...",
+      "OCR: escanea el ticket y se rellena solo",
+      "Gastos generales del negocio separados",
+    ],
+  },
+  {
+    label: "Dashboard",
+    icon: BarChart3,
+    description:
+      "Gráficos profesionales de ingresos vs gastos, beneficio neto, gastos por categoría y reserva fiscal del trimestre.",
+    highlights: [
+      "Ingresos vs gastos mensual",
+      "Beneficio bruto y neto tras impuestos",
+      "Gastos por categoría (donut)",
+      "Gauge de reserva fiscal (IVA + IRPF)",
+    ],
+  },
+  {
+    label: "Fiscal",
+    icon: Calculator,
+    description:
+      "Estimación automática de IVA e IRPF trimestral. Sabe cuánto reservar para Hacienda y cuándo toca presentar.",
+    highlights: [
+      "IVA repercutido y soportado",
+      "Pago fraccionado IRPF (20%)",
+      "Alerta de fecha de presentación",
+      "Reportes exportables para el contador",
+    ],
+  },
+]
 
-export function FeatureTabs({ tabs }: FeatureTabsProps) {
+export function FeatureTabs() {
   const [active, setActive] = useState(0)
-  const current = tabs[active]!
+  const current = TABS[active]!
+  const Icon = current.icon
 
   return (
     <div className="w-full">
-      {/* Tab buttons - pill style */}
       <div className="flex flex-wrap justify-center gap-2 mb-10">
-        {tabs.map((tab, i) => {
-          const Icon = tab.icon
+        {TABS.map((tab, i) => {
+          const TabIcon = tab.icon
           return (
             <button
               key={tab.label}
@@ -36,30 +103,19 @@ export function FeatureTabs({ tabs }: FeatureTabsProps) {
                   : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >
-              <Icon className="h-4 w-4" />
+              <TabIcon className="h-4 w-4" />
               <span className="hidden sm:inline">{tab.label}</span>
             </button>
           )
         })}
       </div>
 
-      {/* Active tab content */}
-      <div
-        key={current.label}
-        className="grid md:grid-cols-2 gap-6 items-start"
-        style={{ animation: "fadeTab 0.3s ease-out" }}
-      >
-        {/* Description card */}
+      <div key={current.label} className="grid md:grid-cols-2 gap-6 items-start">
         <div className="rounded-2xl border bg-card p-6 sm:p-8">
           <div className="flex items-center gap-3 mb-4">
-            {(() => {
-              const Icon = current.icon
-              return (
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                  <Icon className="h-5 w-5" />
-                </div>
-              )
-            })()}
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Icon className="h-5 w-5" />
+            </div>
             <h3 className="text-lg font-semibold">{current.label}</h3>
           </div>
           <p className="text-muted-foreground leading-relaxed text-sm">
@@ -67,7 +123,6 @@ export function FeatureTabs({ tabs }: FeatureTabsProps) {
           </p>
         </div>
 
-        {/* Highlights */}
         <ul className="space-y-3">
           {current.highlights.map((h) => (
             <li
@@ -80,19 +135,6 @@ export function FeatureTabs({ tabs }: FeatureTabsProps) {
           ))}
         </ul>
       </div>
-
-      <style jsx global>{`
-        @keyframes fadeTab {
-          from {
-            opacity: 0;
-            transform: translateY(6px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div>
   )
 }

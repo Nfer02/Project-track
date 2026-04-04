@@ -67,13 +67,7 @@ export function Typewriter({ words, className }: TypewriterProps) {
   return (
     <span className={cn("inline-flex items-baseline", className)}>
       <span>{displayText}</span>
-      <span className="ml-0.5 inline-block w-[2px] h-[1em] bg-current animate-[blink_1s_step-end_infinite]" />
-      <style jsx global>{`
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-      `}</style>
+      <span className="ml-0.5 inline-block w-[2px] h-[1em] bg-current animate-pulse" />
     </span>
   )
 }
