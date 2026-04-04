@@ -6,7 +6,7 @@ import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
 import { InvoiceStatusBadge } from "@/components/app/invoice-status-badge"
 import { formatCurrency, formatDate } from "@/lib/format"
-import { deleteInvoice } from "../../actions"
+import { deleteInvoice } from "@/app/(dashboard)/invoices/actions"
 
 interface Props {
   params: Promise<{ id: string }>

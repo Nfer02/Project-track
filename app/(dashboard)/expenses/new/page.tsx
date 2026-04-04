@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { getCurrentWorkspace } from "@/lib/workspace"
-import { getNextInvoiceNumber, getWorkspaceProjects } from "../actions"
+import { getNextInvoiceNumber, getWorkspaceProjects } from "@/app/(dashboard)/invoices/actions"
 import { NewExpenseForm } from "./new-expense-form"
 
 export default async function NewExpensePage() {

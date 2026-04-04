@@ -1,7 +1,7 @@
 "use client"
 
 import { ExpenseForm } from "@/components/app/expense-form"
-import { createExpense } from "../actions"
+import { createExpense } from "@/app/(dashboard)/invoices/actions"
 
 interface NewExpenseFormProps {
   workspaceId: string
