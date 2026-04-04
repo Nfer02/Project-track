@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { cn } from "@/lib/utils"
 
 interface TypewriterProps {
@@ -17,6 +17,12 @@ export function Typewriter({ words, className }: TypewriterProps) {
 
   const currentWord = words[wordIndex] ?? ""
 
+  // Palabra más larga para reservar espacio y evitar saltos
+  const longestWord = useMemo(
+    () => words.reduce((a, b) => (a.length >= b.length ? a : b), ""),
+    [words]
+  )
+
   useEffect(() => {
     let delay: number
 
@@ -25,7 +31,6 @@ export function Typewriter({ words, className }: TypewriterProps) {
         if (charIndex < currentWord.length) {
           delay = 80
         } else {
-          // Word fully typed, switch to pausing
           setPhase("pausing")
           return
         }
@@ -37,7 +42,6 @@ export function Typewriter({ words, className }: TypewriterProps) {
         if (charIndex > 0) {
           delay = 50
         } else {
-          // Done erasing, move to next word
           setWordIndex((prev) => (prev + 1) % words.length)
           setPhase("typing")
           return
@@ -65,9 +69,16 @@ export function Typewriter({ words, className }: TypewriterProps) {
   const displayText = currentWord.slice(0, charIndex)
 
   return (
-    <span className={cn("inline-flex items-baseline", className)}>
-      <span>{displayText}</span>
-      <span className="ml-0.5 inline-block w-[2px] h-[1em] bg-current animate-pulse" />
+    <span className={cn("inline-grid", className)}>
+      {/* Invisible text to reserve space for the longest word */}
+      <span className="invisible col-start-1 row-start-1" aria-hidden="true">
+        {longestWord}
+      </span>
+      {/* Visible animated text */}
+      <span className="col-start-1 row-start-1 inline-flex items-baseline">
+        <span>{displayText}</span>
+        <span className="ml-0.5 inline-block w-[2px] h-[0.8em] bg-current animate-pulse" />
+      </span>
     </span>
   )
 }
