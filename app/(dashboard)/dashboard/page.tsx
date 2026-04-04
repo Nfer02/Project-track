@@ -432,9 +432,9 @@ export default async function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="rounded-xl border bg-card p-5">
               <div className="mb-4 space-y-0.5">
-                <h2 className="text-sm font-semibold">Beneficio neto mensual</h2>
+                <h2 className="text-sm font-semibold">Beneficio mensual</h2>
                 <p className="text-xs text-muted-foreground">
-                  Ingresos cobrados - gastos
+                  Bruto (antes de impuestos) vs Neto real (tras IVA + IRPF)
                 </p>
               </div>
               <NetProfitChart data={data.netProfitMonthly} />

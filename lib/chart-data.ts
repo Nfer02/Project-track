@@ -240,11 +240,13 @@ export function buildIncomeExpenseMonthly(invoices: InvoiceForChart[], months = 
 }
 
 /**
- * Calcula beneficio neto por mes (ingresos cobrados - gastos).
+ * Calcula beneficio bruto y neto tras impuestos por mes.
+ * Bruto = ingresos - gastos
+ * Neto = bruto - IVA estimado (21%) - IRPF estimado (20%)
  */
-export function buildNetProfitMonthly(invoices: InvoiceForChart[], months = 6) {
+export function buildNetProfitMonthly(invoices: InvoiceForChart[], months = 6, vatRate = 0.21, irpfRate = 0.20) {
   const now = new Date()
-  const result: { month: string; income: number; expenses: number; net: number }[] = []
+  const result: { month: string; income: number; expenses: number; net: number; netAfterTax: number }[] = []
 
   for (let i = months - 1; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
@@ -264,11 +266,19 @@ export function buildNetProfitMonthly(invoices: InvoiceForChart[], months = 6) {
       .filter((i) => i.type === "EXPENSE")
       .reduce((s, i) => s + Number(i.amount), 0)
 
+    const bruto = income - expenses
+    // IVA estimado = IVA repercutido (sobre ingresos) - IVA soportado (sobre gastos)
+    const ivaEstimado = (income * vatRate) - (expenses * vatRate)
+    // IRPF estimado = 20% sobre el beneficio bruto (si es positivo)
+    const irpfEstimado = bruto > 0 ? bruto * irpfRate : 0
+    const netAfterTax = bruto - ivaEstimado - irpfEstimado
+
     result.push({
       month: MONTH_LABELS[month],
       income: Math.round(income),
       expenses: Math.round(expenses),
-      net: Math.round(income - expenses),
+      net: Math.round(bruto),
+      netAfterTax: Math.round(netAfterTax),
     })
   }
 
