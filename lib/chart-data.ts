@@ -203,3 +203,74 @@ export function buildCategorySummary(invoices: InvoiceForChart[]) {
     count,
   }))
 }
+
+/**
+ * Calcula ingresos vs gastos por mes.
+ */
+export function buildIncomeExpenseMonthly(invoices: InvoiceForChart[], months = 6) {
+  const now = new Date()
+  const result: { month: string; income: number; expenses: number }[] = []
+
+  for (let i = months - 1; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    const year = d.getFullYear()
+    const month = d.getMonth()
+
+    const monthInvoices = invoices.filter((inv) => {
+      const issued = new Date(inv.issueDate)
+      return issued.getFullYear() === year && issued.getMonth() === month
+    })
+
+    const income = monthInvoices
+      .filter((i) => i.type === "INCOME" && i.status === "PAID")
+      .reduce((s, i) => s + Number(i.amount), 0)
+
+    const expenses = monthInvoices
+      .filter((i) => i.type === "EXPENSE")
+      .reduce((s, i) => s + Number(i.amount), 0)
+
+    result.push({
+      month: MONTH_LABELS[month],
+      income: Math.round(income),
+      expenses: Math.round(expenses),
+    })
+  }
+
+  return result
+}
+
+/**
+ * Calcula beneficio neto por mes (ingresos cobrados - gastos).
+ */
+export function buildNetProfitMonthly(invoices: InvoiceForChart[], months = 6) {
+  const now = new Date()
+  const result: { month: string; income: number; expenses: number; net: number }[] = []
+
+  for (let i = months - 1; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    const year = d.getFullYear()
+    const month = d.getMonth()
+
+    const monthInvoices = invoices.filter((inv) => {
+      const issued = new Date(inv.issueDate)
+      return issued.getFullYear() === year && issued.getMonth() === month
+    })
+
+    const income = monthInvoices
+      .filter((i) => i.type === "INCOME" && i.status === "PAID")
+      .reduce((s, i) => s + Number(i.amount), 0)
+
+    const expenses = monthInvoices
+      .filter((i) => i.type === "EXPENSE")
+      .reduce((s, i) => s + Number(i.amount), 0)
+
+    result.push({
+      month: MONTH_LABELS[month],
+      income: Math.round(income),
+      expenses: Math.round(expenses),
+      net: Math.round(income - expenses),
+    })
+  }
+
+  return result
+}

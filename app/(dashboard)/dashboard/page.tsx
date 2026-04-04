@@ -19,11 +19,20 @@ import {
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
 import { formatCurrency } from "@/lib/format"
-import { buildMonthlyData, buildInvoiceSummary } from "@/lib/chart-data"
-import { RevenueBarChart } from "@/components/charts/revenue-bar-chart"
+import {
+  buildInvoiceSummary,
+  buildIncomeExpenseMonthly,
+  buildNetProfitMonthly,
+  buildCategorySummary,
+} from "@/lib/chart-data"
+import { IncomeExpenseBarChart } from "@/components/charts/income-expense-bar-chart"
+import { ExpenseCategoryChart } from "@/components/charts/expense-category-chart"
+import { NetProfitChart } from "@/components/charts/net-profit-chart"
+import { FiscalGaugeChart } from "@/components/charts/fiscal-gauge-chart"
 import { ProjectStatusBadge } from "@/components/app/project-status-badge"
 
 /* ------------------------------------------------------------------ */
@@ -45,16 +54,15 @@ const QUARTER_MONTHS: Record<number, string> = {
 }
 
 function getFilingDeadline(quarter: number, year: number): Date {
-  // Q1 → 20 abril, Q2 → 20 julio, Q3 → 20 octubre, Q4 → 30 enero (año siguiente)
   switch (quarter) {
     case 1:
-      return new Date(year, 3, 20) // 20 abril
+      return new Date(year, 3, 20)
     case 2:
-      return new Date(year, 6, 20) // 20 julio
+      return new Date(year, 6, 20)
     case 3:
-      return new Date(year, 9, 20) // 20 octubre
+      return new Date(year, 9, 20)
     case 4:
-      return new Date(year + 1, 0, 30) // 30 enero siguiente
+      return new Date(year + 1, 0, 30)
     default:
       return new Date(year, 3, 20)
   }
@@ -79,42 +87,70 @@ const DEFAULT_VAT_RATE = 0.21
 const DEFAULT_IRPF_RATE = 0.20
 
 /* ------------------------------------------------------------------ */
+/*  Days remaining helper                                              */
+/* ------------------------------------------------------------------ */
+
+function getDaysRemaining(dueDate: Date | null) {
+  if (!dueDate) return null
+  const now = new Date()
+  const diff = Math.ceil(
+    (new Date(dueDate).getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+  )
+  return diff
+}
+
+/* ------------------------------------------------------------------ */
 /*  Data fetching                                                      */
 /* ------------------------------------------------------------------ */
 
 async function getDashboardData(workspaceId: string) {
-  const [activeProjects, recentProjects, allInvoices, totalAllocated] = await Promise.all([
-    prisma.project.count({ where: { workspaceId, status: "ACTIVE" } }),
-    prisma.project.findMany({
-      where: { workspaceId },
-      orderBy: { updatedAt: "desc" },
-      take: 5,
-      include: { _count: { select: { invoices: true } } },
-    }),
-    prisma.invoice.findMany({
-      where: { workspaceId },
-      select: {
-        status: true,
-        amount: true,
-        issueDate: true,
-        currency: true,
-        type: true,
-        isDeclared: true,
-        vatAmount: true,
-      },
-      orderBy: { issueDate: "asc" },
-    }),
-    prisma.expenseAllocation.aggregate({
-      where: { project: { workspaceId } },
-      _sum: { amount: true },
-    }),
-  ])
+  const [activeProjects, recentProjects, allInvoices, totalAllocated, upcomingPayments] =
+    await Promise.all([
+      prisma.project.count({ where: { workspaceId, status: "ACTIVE" } }),
+      prisma.project.findMany({
+        where: { workspaceId },
+        orderBy: { updatedAt: "desc" },
+        take: 5,
+        include: { _count: { select: { invoices: true } } },
+      }),
+      prisma.invoice.findMany({
+        where: { workspaceId },
+        select: {
+          status: true,
+          amount: true,
+          issueDate: true,
+          currency: true,
+          type: true,
+          isDeclared: true,
+          vatAmount: true,
+          category: true,
+        },
+        orderBy: { issueDate: "asc" },
+      }),
+      prisma.expenseAllocation.aggregate({
+        where: { project: { workspaceId } },
+        _sum: { amount: true },
+      }),
+      prisma.invoice.findMany({
+        where: {
+          workspaceId,
+          type: "INCOME",
+          status: { in: ["PENDING", "OVERDUE"] },
+        },
+        include: { project: { select: { name: true } } },
+        orderBy: { dueDate: "asc" },
+        take: 5,
+      }),
+    ])
 
   const incomeInvoices = allInvoices.filter((i) => i.type === "INCOME")
   const expenseInvoices = allInvoices.filter((i) => i.type === "EXPENSE")
 
   const { totalPaid, totalPending, totalOverdue } = buildInvoiceSummary(incomeInvoices)
-  const monthlyData = buildMonthlyData(incomeInvoices, 6)
+  const incomeExpenseMonthly = buildIncomeExpenseMonthly(allInvoices, 6)
+  const netProfitMonthly = buildNetProfitMonthly(allInvoices, 6)
+  const categoryData = buildCategorySummary(expenseInvoices)
+  const totalExpensesAll = expenseInvoices.reduce((s, i) => s + Number(i.amount), 0)
 
   // Ingresos del mes actual (solo INCOME)
   const now = new Date()
@@ -135,7 +171,7 @@ async function getDashboardData(workspaceId: string) {
   const allocatedAmount = Number(totalAllocated._sum.amount ?? 0)
   const generalExpenses = totalExpenses - allocatedAmount
 
-  // ---- Estimación fiscal del trimestre ----
+  // ---- Estimacion fiscal del trimestre ----
   const currentQuarter = Math.floor(now.getMonth() / 3) + 1
   const quarterStart = new Date(now.getFullYear(), (currentQuarter - 1) * 3, 1)
   const quarterEnd = new Date(now.getFullYear(), currentQuarter * 3, 0, 23, 59, 59)
@@ -153,13 +189,11 @@ async function getDashboardData(workspaceId: string) {
   const quarterIncomesTotal = quarterIncomes.reduce((s, i) => s + Number(i.amount), 0)
   const quarterExpensesTotal = quarterExpenses.reduce((s, i) => s + Number(i.amount), 0)
 
-  // IVA repercutido: use vatAmount from invoices when available, otherwise estimate at 21%
   const quarterVatRepercutido = quarterIncomes.reduce((s, i) => {
     if (i.vatAmount != null) return s + Number(i.vatAmount)
     return s + Number(i.amount) * DEFAULT_VAT_RATE
   }, 0)
 
-  // IVA soportado: use vatAmount from expenses when available, otherwise estimate at 21%
   const quarterVatSoportado = quarterExpenses.reduce((s, i) => {
     if (i.vatAmount != null) return s + Number(i.vatAmount)
     return s + Number(i.amount) * DEFAULT_VAT_RATE
@@ -186,8 +220,11 @@ async function getDashboardData(workspaceId: string) {
     totalPaid,
     totalPending,
     totalOverdue,
-    monthlyData,
-    // Fiscal
+    incomeExpenseMonthly,
+    netProfitMonthly,
+    categoryData,
+    totalExpensesAll,
+    upcomingPayments,
     fiscal: {
       quarter: currentQuarter,
       year: now.getFullYear(),
@@ -302,7 +339,8 @@ export default async function DashboardPage() {
   const f = data.fiscal
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-5xl">
+    <div className="flex flex-col gap-6 p-4 sm:p-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
@@ -316,8 +354,8 @@ export default async function DashboardPage() {
         </Button>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Stats cards - 2 rows */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {STATS.map(({ label, value, sub, icon: Icon, color, border }) => (
           <Card key={label} className={border}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -353,73 +391,140 @@ export default async function DashboardPage() {
           </Button>
         </div>
       ) : (
-        <div className="grid gap-4 lg:grid-cols-3">
-          {/* Gráfico de ingresos — 2/3 del ancho */}
-          <div className="lg:col-span-2 rounded-xl border bg-card p-5">
-            <div className="mb-4 space-y-0.5">
-              <h2 className="text-sm font-semibold">Facturaci&oacute;n mensual</h2>
-              <p className="text-xs text-muted-foreground">
-                Todos los proyectos — &uacute;ltimos 6 meses
+        <>
+          {/* Overdue alert */}
+          {data.overdueCount > 0 && (
+            <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 text-destructive shrink-0" />
+              <p className="font-medium text-destructive">
+                {data.overdueCount} factura{data.overdueCount !== 1 ? "s" : ""} vencida
+                {data.overdueCount !== 1 ? "s" : ""}
               </p>
+              <Link
+                href="/invoices"
+                className="ml-auto text-destructive/80 underline underline-offset-2 hover:text-destructive text-xs"
+              >
+                Ver facturas
+              </Link>
             </div>
-            <RevenueBarChart data={data.monthlyData} currency="EUR" />
-          </div>
+          )}
 
-          {/* Resumen financiero — 1/3 */}
-          <div className="rounded-xl border bg-card p-5 space-y-4">
-            <h2 className="text-sm font-semibold">Resumen financiero</h2>
-            <div className="space-y-3">
-              {[
-                {
-                  label: "Cobrado",
-                  value: data.totalPaid,
-                  color: "bg-emerald-500",
-                },
-                {
-                  label: "Pendiente",
-                  value: data.totalPending,
-                  color: "bg-amber-500",
-                },
-                {
-                  label: "Vencido",
-                  value: data.totalOverdue,
-                  color: "bg-destructive",
-                },
-              ].map(({ label, value, color }) => (
-                <div key={label} className="space-y-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <span className={`h-2 w-2 rounded-full ${color}`} />
-                      <span className="text-muted-foreground">{label}</span>
-                    </div>
-                    <span className="font-medium tabular-nums">
-                      {formatCurrency(value, "EUR")}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Alerta de facturas vencidas */}
-            {data.overdueCount > 0 && (
-              <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-xs">
-                <p className="font-medium text-destructive mb-1">
-                  {data.overdueCount} factura{data.overdueCount !== 1 ? "s" : ""} vencida
-                  {data.overdueCount !== 1 ? "s" : ""}
+          {/* Charts row 1 - 2 columns */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="rounded-xl border bg-card p-5">
+              <div className="mb-4 space-y-0.5">
+                <h2 className="text-sm font-semibold">Ingresos vs Gastos</h2>
+                <p className="text-xs text-muted-foreground">
+                  Ultimos 6 meses
                 </p>
-                <Link
-                  href="/invoices"
-                  className="text-destructive/80 underline underline-offset-2 hover:text-destructive"
-                >
-                  Ver facturas →
-                </Link>
               </div>
-            )}
+              <IncomeExpenseBarChart data={data.incomeExpenseMonthly} />
+            </div>
+            <div className="rounded-xl border bg-card p-5">
+              <div className="mb-4 space-y-0.5">
+                <h2 className="text-sm font-semibold">Gastos por categor&iacute;a</h2>
+              </div>
+              <ExpenseCategoryChart data={data.categoryData} totalExpenses={data.totalExpensesAll} />
+            </div>
           </div>
-        </div>
+
+          {/* Charts row 2 - 2 columns */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="rounded-xl border bg-card p-5">
+              <div className="mb-4 space-y-0.5">
+                <h2 className="text-sm font-semibold">Beneficio neto mensual</h2>
+                <p className="text-xs text-muted-foreground">
+                  Ingresos cobrados - gastos
+                </p>
+              </div>
+              <NetProfitChart data={data.netProfitMonthly} />
+            </div>
+            <div className="rounded-xl border bg-card p-5">
+              <div className="mb-4 space-y-0.5">
+                <h2 className="text-sm font-semibold">Reserva fiscal</h2>
+                <p className="text-xs text-muted-foreground">
+                  {f.quarterLabel}
+                </p>
+              </div>
+              <FiscalGaugeChart
+                totalReservar={f.totalReservar}
+                vatAmount={f.vatAPagar}
+                irpfAmount={f.pagoFraccionado}
+                incomesTotal={f.incomesTotal}
+              />
+            </div>
+          </div>
+
+          {/* Upcoming payments - full width */}
+          {data.upcomingPayments.length > 0 && (
+            <div className="rounded-xl border bg-card p-5">
+              <div className="mb-4 space-y-0.5">
+                <h2 className="text-sm font-semibold">Pr&oacute;ximos cobros</h2>
+              </div>
+              <div className="divide-y">
+                {data.upcomingPayments.map((inv) => {
+                  const days = getDaysRemaining(inv.dueDate)
+                  let badgeText: string
+                  let badgeVariant: "destructive" | "secondary" | "outline" | "default"
+
+                  if (days === null) {
+                    badgeText = "Sin vencimiento"
+                    badgeVariant = "secondary"
+                  } else if (days < 0) {
+                    badgeText = `Vencida hace ${Math.abs(days)} d\u00EDa${Math.abs(days) !== 1 ? "s" : ""}`
+                    badgeVariant = "destructive"
+                  } else if (days === 0) {
+                    badgeText = "Vence hoy"
+                    badgeVariant = "destructive"
+                  } else if (days <= 7) {
+                    badgeText = `Vence en ${days} d\u00EDa${days !== 1 ? "s" : ""}`
+                    badgeVariant = "outline"
+                  } else if (days <= 30) {
+                    badgeText = `Vence en ${days} d\u00EDas`
+                    badgeVariant = "default"
+                  } else {
+                    badgeText = `Vence en ${days} d\u00EDas`
+                    badgeVariant = "secondary"
+                  }
+
+                  return (
+                    <div
+                      key={inv.id}
+                      className="flex items-center justify-between py-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="font-mono text-xs text-muted-foreground">
+                          #{inv.number}
+                        </span>
+                        <span className="text-sm">
+                          {inv.project?.name ?? "Sin proyecto"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-semibold tabular-nums">
+                          {formatCurrency(Number(inv.amount), "EUR")}
+                        </span>
+                        <Badge
+                          variant={badgeVariant}
+                          className={
+                            days !== null && days <= 7 && days >= 0
+                              ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20"
+                              : undefined
+                          }
+                        >
+                          {badgeText}
+                        </Badge>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+        </>
       )}
 
-      {/* Estimación fiscal del trimestre */}
+      {/* Estimacion fiscal del trimestre */}
       <div className="rounded-xl border-l-4 border-l-indigo-500 border border-border bg-card p-5 space-y-4">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
@@ -521,7 +626,7 @@ export default async function DashboardPage() {
               href="/projects"
               className="text-xs text-muted-foreground hover:text-primary transition-colors"
             >
-              Ver todos →
+              Ver todos
             </Link>
           </div>
           <div className="rounded-xl border overflow-hidden overflow-x-auto">
