@@ -223,7 +223,14 @@ export default async function InvoicesPage({ searchParams }: Props) {
                   key={inv.id}
                   className={`hover:bg-muted/30 transition-colors ${!inv.isDeclared ? "opacity-60" : ""}`}
                 >
-                  <td className="px-4 py-3 font-mono text-xs">#{inv.number}</td>
+                  <td className="px-4 py-3 font-mono text-xs">
+                    <Link
+                      href={`/invoices/expense/${inv.id}`}
+                      className="hover:text-primary transition-colors"
+                    >
+                      #{inv.number}
+                    </Link>
+                  </td>
                   <td className="px-4 py-3 text-xs font-medium">
                     {inv.vendorName ?? "\u2014"}
                   </td>

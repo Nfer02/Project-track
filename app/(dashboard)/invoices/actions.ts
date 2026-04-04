@@ -154,7 +154,7 @@ export async function updateInvoice(
   redirect(`/projects/${projectId}/invoices/${invoiceId}`)
 }
 
-export async function deleteInvoice(invoiceId: string, projectId: string) {
+export async function deleteInvoice(invoiceId: string, projectId?: string) {
   const { workspace } = await requireWorkspace()
 
   const invoice = await prisma.invoice.findFirst({
@@ -164,9 +164,14 @@ export async function deleteInvoice(invoiceId: string, projectId: string) {
 
   await prisma.invoice.delete({ where: { id: invoiceId } })
 
-  revalidatePath(`/projects/${projectId}`)
+  if (projectId) revalidatePath(`/projects/${projectId}`)
   revalidatePath("/invoices")
-  redirect(`/projects/${projectId}`)
+
+  if (invoice.type === "EXPENSE" || !projectId) {
+    redirect("/invoices?tab=expenses")
+  } else {
+    redirect(`/projects/${projectId}`)
+  }
 }
 
 // ─── Gastos (EXPENSE) ───────────────────────────────────────────────────────
@@ -295,9 +300,9 @@ export async function updateExpense(
     })
   } catch (err) {
     console.error("[updateExpense] Error de BD:", err)
-    return { error: "No se pudo actualizar el gasto. Intentalo de nuevo." }
+    return { error: "No se pudo actualizar el gasto. Inténtalo de nuevo." }
   }
 
   revalidatePath("/invoices")
-  redirect("/invoices")
+  redirect(`/invoices/expense/${invoiceId}`)
 }
