@@ -165,7 +165,7 @@ export default async function ProjectFinancesPage({ params }: Props) {
 
       {/* Detalle por status */}
       {invoices.length > 0 && (
-        <div className="rounded-xl border bg-card overflow-hidden">
+        <div className="rounded-xl border bg-card overflow-hidden overflow-x-auto">
           <div className="px-5 py-3 border-b">
             <h2 className="text-sm font-semibold">Desglose por estado</h2>
           </div>

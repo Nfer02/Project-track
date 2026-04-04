@@ -187,7 +187,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             </div>
           </div>
         ) : (
-          <div className="rounded-xl border overflow-hidden">
+          <div className="rounded-xl border overflow-hidden overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="border-b bg-muted/50">
                 <tr>
@@ -263,7 +263,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             </div>
           </div>
         ) : (
-          <div className="rounded-xl border overflow-hidden">
+          <div className="rounded-xl border overflow-hidden overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="border-b bg-muted/50">
                 <tr>

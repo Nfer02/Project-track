@@ -163,7 +163,7 @@ export function ExpenseForm({
         <input type="hidden" {...form.register("currency")} />
 
         {/* Proveedor + Estado */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="vendorName"
@@ -221,7 +221,7 @@ export function ExpenseForm({
         />
 
         {/* Importe + Categoria */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="amount"
@@ -269,7 +269,7 @@ export function ExpenseForm({
         </div>
 
         {/* Fechas */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="issueDate"

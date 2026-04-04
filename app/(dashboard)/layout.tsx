@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/app/app-sidebar"
+import { MobileSidebarToggle } from "@/components/app/mobile-sidebar"
 import { createClient } from "@/lib/supabase/server"
 import { prisma } from "@/lib/prisma"
 
@@ -32,8 +33,18 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="flex h-svh overflow-hidden">
-      <AppSidebar user={user} workspace={workspace} />
+      {/* Desktop sidebar */}
+      <div className="hidden md:block">
+        <AppSidebar user={user} workspace={workspace} />
+      </div>
+
       <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Mobile top bar */}
+        <div className="md:hidden flex items-center h-14 border-b px-4 gap-3">
+          <MobileSidebarToggle user={user} workspace={workspace} />
+          <span className="font-semibold text-sm">ProjectTrack</span>
+        </div>
+
         <main id="main-content" className="flex-1 overflow-y-auto" tabIndex={-1}>
           {children}
         </main>

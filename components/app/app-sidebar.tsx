@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   FolderKanban,
   ReceiptText,
+  FileBarChart,
   LogOut,
   ChevronDown,
   Users,
@@ -29,6 +30,7 @@ const NAV_ITEMS = [
 ]
 
 const SETTINGS_ITEMS = [
+  { href: "/reports", label: "Reportes", icon: FileBarChart },
   { href: "/settings/members", label: "Colaboradores", icon: Users },
   { href: "/settings/billing", label: "Facturación", icon: CreditCard },
 ]
@@ -36,9 +38,10 @@ const SETTINGS_ITEMS = [
 interface AppSidebarProps {
   user?: { name?: string; email?: string }
   workspace?: { name?: string }
+  onLinkClick?: () => void
 }
 
-export function AppSidebar({ user, workspace }: AppSidebarProps) {
+export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -48,21 +51,21 @@ export function AppSidebar({ user, workspace }: AppSidebarProps) {
 
   return (
     <aside
-      className="flex h-full w-60 flex-col border-r border-sidebar-border bg-sidebar"
+      className="flex h-full w-60 flex-col bg-slate-900"
       aria-label="Navegación principal"
     >
       {/* Workspace selector */}
-      <div className="flex h-14 items-center gap-2 px-4 border-b border-sidebar-border">
+      <div className="flex h-14 items-center gap-2 px-4 border-b border-white/10">
         <div
           className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-bold"
           aria-hidden="true"
         >
           PT
         </div>
-        <span className="text-sm font-semibold text-sidebar-foreground truncate flex-1">
+        <span className="text-sm font-bold text-white truncate flex-1">
           {workspace?.name ?? "ProjectTrack"}
         </span>
-        <ChevronDown className="h-3.5 w-3.5 text-sidebar-foreground/50 shrink-0" aria-hidden="true" />
+        <ChevronDown className="h-3.5 w-3.5 text-slate-500 shrink-0" aria-hidden="true" />
       </div>
 
       {/* Navegación */}
@@ -73,12 +76,13 @@ export function AppSidebar({ user, workspace }: AppSidebarProps) {
             <Link
               key={href}
               href={href}
+              onClick={onLinkClick}
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 isActive
-                  ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                  : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  ? "bg-white/10 text-white border-l-2 border-primary"
+                  : "text-slate-300 hover:bg-white/5 hover:text-white"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -87,9 +91,9 @@ export function AppSidebar({ user, workspace }: AppSidebarProps) {
           )
         })}
 
-        <Separator className="my-2 bg-sidebar-border" />
+        <Separator className="my-2 bg-white/10" />
 
-        <p className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-sidebar-foreground/40">
+        <p className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
           Configuración
         </p>
 
@@ -99,12 +103,13 @@ export function AppSidebar({ user, workspace }: AppSidebarProps) {
             <Link
               key={href}
               href={href}
+              onClick={onLinkClick}
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 isActive
-                  ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                  : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  ? "bg-white/10 text-white border-l-2 border-primary"
+                  : "text-slate-300 hover:bg-white/5 hover:text-white"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -115,22 +120,22 @@ export function AppSidebar({ user, workspace }: AppSidebarProps) {
       </nav>
 
       {/* Usuario */}
-      <div className="border-t border-sidebar-border p-2">
+      <div className="border-t border-white/10 p-2">
         <DropdownMenu>
           <DropdownMenuTrigger
-            className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Menú de usuario"
           >
             <Avatar className="h-7 w-7 shrink-0">
-              <AvatarFallback className="text-xs bg-primary/10 text-primary">
+              <AvatarFallback className="text-xs bg-primary/20 text-primary">
                 {initials}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 text-left overflow-hidden">
-              <p className="truncate text-sm font-medium text-sidebar-foreground leading-tight">
+              <p className="truncate text-sm font-medium text-white leading-tight">
                 {user?.name ?? "Usuario"}
               </p>
-              <p className="truncate text-xs text-sidebar-foreground/50 leading-tight">
+              <p className="truncate text-xs text-slate-500 leading-tight">
                 {user?.email ?? ""}
               </p>
             </div>

@@ -104,7 +104,7 @@ export function InvoiceForm({
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
 
         {/* Número + Estado */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="number"
@@ -184,7 +184,7 @@ export function InvoiceForm({
         />
 
         {/* Fechas */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="issueDate"

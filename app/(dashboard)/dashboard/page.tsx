@@ -87,6 +87,7 @@ export default async function DashboardPage() {
           : "Sin cobros este mes",
       icon: TrendingUp,
       color: "text-emerald-600 dark:text-emerald-400",
+      border: "border-l-4 border-l-emerald-500",
     },
     {
       label: "Gastos del mes",
@@ -100,6 +101,7 @@ export default async function DashboardPage() {
           : "Sin gastos este mes",
       icon: ShoppingCart,
       color: "text-orange-600 dark:text-orange-400",
+      border: "border-l-4 border-l-orange-500",
     },
     {
       label: "Proyectos activos",
@@ -110,6 +112,7 @@ export default async function DashboardPage() {
           : `${data.activeProjects} en curso`,
       icon: FolderOpen,
       color: "text-primary",
+      border: "border-l-4 border-l-blue-500",
     },
     {
       label: "Facturas pendientes",
@@ -117,6 +120,7 @@ export default async function DashboardPage() {
       sub: data.pendingCount === 0 ? "Al día" : "Por cobrar",
       icon: ReceiptText,
       color: "text-amber-600 dark:text-amber-400",
+      border: "border-l-4 border-l-amber-500",
     },
     {
       label: "Facturas vencidas",
@@ -124,6 +128,7 @@ export default async function DashboardPage() {
       sub: data.overdueCount === 0 ? "Sin alertas" : "Requieren atención",
       icon: Clock,
       color: "text-destructive",
+      border: "border-l-4 border-l-red-500",
     },
   ]
 
@@ -143,9 +148,9 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
-        {STATS.map(({ label, value, sub, icon: Icon, color }) => (
-          <Card key={label}>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {STATS.map(({ label, value, sub, icon: Icon, color, border }) => (
+          <Card key={label} className={border}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 {label}
@@ -257,12 +262,12 @@ export default async function DashboardPage() {
               Ver todos →
             </Link>
           </div>
-          <div className="rounded-xl border overflow-hidden">
+          <div className="rounded-xl border overflow-hidden overflow-x-auto">
             <table className="w-full text-sm">
               <tbody className="divide-y">
                 {data.recentProjects.map((project) => (
                   <tr key={project.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <Link
                         href={`/projects/${project.id}`}
                         className="font-medium hover:text-primary transition-colors"
@@ -273,10 +278,10 @@ export default async function DashboardPage() {
                         <p className="text-xs text-muted-foreground">{project.clientName}</p>
                       )}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <ProjectStatusBadge status={project.status} />
                     </td>
-                    <td className="px-4 py-3 text-right text-xs text-muted-foreground">
+                    <td className="px-4 py-3 text-right text-xs text-muted-foreground whitespace-nowrap hidden sm:table-cell">
                       {project._count.invoices} factura{project._count.invoices !== 1 ? "s" : ""}
                     </td>
                   </tr>
