@@ -213,23 +213,32 @@ export default async function ProjectDetailPage({ params }: Props) {
                   <tr
                     key={inv.id}
                     className="hover:bg-muted/30 transition-colors cursor-pointer"
+                    onClick={() => {}}
                   >
                     <td className="px-4 py-3 font-mono text-xs">
-                      <Link href={`/projects/${project.id}/invoices/${inv.id}`} className="hover:text-primary">
+                      <Link href={`/projects/${project.id}/invoices/${inv.id}`} className="hover:text-primary block">
                         #{inv.number}
                       </Link>
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
-                      {inv.description ?? "—"}
+                      <Link href={`/projects/${project.id}/invoices/${inv.id}`} className="hover:text-primary block">
+                        {inv.description ?? "—"}
+                      </Link>
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
-                      {formatDate(inv.issueDate)}
+                      <Link href={`/projects/${project.id}/invoices/${inv.id}`} className="hover:text-primary block">
+                        {formatDate(inv.issueDate)}
+                      </Link>
                     </td>
                     <td className="px-4 py-3 text-right font-medium">
-                      {formatCurrency(Number(inv.amount), inv.currency)}
+                      <Link href={`/projects/${project.id}/invoices/${inv.id}`} className="hover:text-primary block">
+                        {formatCurrency(Number(inv.amount), inv.currency)}
+                      </Link>
                     </td>
                     <td className="px-4 py-3">
-                      <InvoiceStatusBadge status={inv.status} />
+                      <Link href={`/projects/${project.id}/invoices/${inv.id}`} className="block">
+                        <InvoiceStatusBadge status={inv.status} />
+                      </Link>
                     </td>
                   </tr>
                 ))}
@@ -283,9 +292,17 @@ export default async function ProjectDetailPage({ params }: Props) {
               </thead>
               <tbody className="divide-y">
                 {expenseAllocations.map((alloc) => (
-                  <tr key={alloc.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3 font-mono text-xs">#{alloc.invoice.number}</td>
-                    <td className="px-4 py-3 text-xs font-medium">{alloc.invoice.vendorName ?? "\u2014"}</td>
+                  <tr key={alloc.id} className="hover:bg-muted/30 transition-colors cursor-pointer">
+                    <td className="px-4 py-3 font-mono text-xs">
+                      <Link href={`/invoices/expense/${alloc.invoiceId}`} className="hover:text-primary transition-colors">
+                        #{alloc.invoice.number}
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 text-xs font-medium">
+                      <Link href={`/invoices/expense/${alloc.invoiceId}`} className="hover:text-primary transition-colors">
+                        {alloc.invoice.vendorName ?? "\u2014"}
+                      </Link>
+                    </td>
                     <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell text-xs">{alloc.invoice.category ?? "\u2014"}</td>
                     <td className="px-4 py-3 text-muted-foreground hidden md:table-cell text-xs">{formatDate(alloc.invoice.issueDate)}</td>
                     <td className="px-4 py-3 text-right font-medium text-sm">{formatCurrency(Number(alloc.amount), project.currency)}</td>

@@ -179,6 +179,7 @@ export async function deleteInvoice(invoiceId: string, projectId?: string) {
 
 export async function createExpense(
   values: ExpenseFormValues,
+  redirectTo?: string,
 ): Promise<{ error: string } | void> {
   const { workspace } = await requireWorkspace()
 
@@ -234,7 +235,7 @@ export async function createExpense(
   }
 
   revalidatePath("/invoices")
-  redirect("/invoices")
+  redirect(redirectTo ?? "/invoices?tab=expenses")
 }
 
 export async function updateExpense(

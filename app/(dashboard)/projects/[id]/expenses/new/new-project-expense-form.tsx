@@ -18,7 +18,7 @@ export function NewProjectExpenseForm({
       defaultValues={{ number: nextNumber, isDeclared: true }}
       projects={[{ id: projectId, name: projectName }]}
       preAssignedProjectId={projectId}
-      onSubmit={(values: ExpenseFormValues) => createExpense(values)}
+      onSubmit={(values: ExpenseFormValues) => createExpense(values, `/projects/${projectId}`)}
       submitLabel="Registrar gasto"
     />
   )
