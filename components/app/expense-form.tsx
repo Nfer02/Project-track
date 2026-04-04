@@ -78,7 +78,7 @@ export function ExpenseForm({
 }: ExpenseFormProps) {
   const [serverError, setServerError] = useState<string | null>(null)
   const [allocations, setAllocations] = useState<Allocation[]>(
-    defaultValues?.allocations ?? [],
+    (defaultValues?.allocations as Allocation[] | undefined) ?? [],
   )
 
   const form = useForm<FormValues>({
@@ -331,7 +331,7 @@ export function ExpenseForm({
               <div className="flex-1">
                 <Select
                   value={alloc.projectId || undefined}
-                  onValueChange={(v) => updateAllocation(idx, { projectId: v })}
+                  onValueChange={(v) => updateAllocation(idx, { projectId: v ?? "" })}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Selecciona proyecto" />
