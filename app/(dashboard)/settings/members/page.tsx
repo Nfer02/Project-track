@@ -42,7 +42,7 @@ export default async function MembersPage() {
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Colaboradores</h1>
           <p className="text-xs text-muted-foreground">
-            Gestioná quién tiene acceso a <span className="font-medium text-foreground">{ctx.workspace.name}</span>
+            Gestiona quién tiene acceso a <span className="font-medium text-foreground">{ctx.workspace.name}</span>
           </p>
         </div>
       </div>

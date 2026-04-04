@@ -58,7 +58,7 @@ export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
 
   async function onSubmit(values: Values) {
     setServerError(null)
-    const result = await createWorkspace(values).catch(() => ({ error: "Ocurrió un error. Intentá de nuevo." }))
+    const result = await createWorkspace(values).catch(() => ({ error: "Ocurrió un error. Inténtalo de nuevo." }))
     if (result && "error" in result) setServerError(result.error)
   }
 
@@ -137,7 +137,7 @@ export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
                   <Building2 className="h-4 w-4 text-primary" />
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Paso 2 de 2</p>
                 </div>
-                <h1 className="text-2xl font-semibold tracking-tight">Creá tu workspace</h1>
+                <h1 className="text-2xl font-semibold tracking-tight">Crea tu workspace</h1>
                 <p className="text-sm text-muted-foreground">
                   El espacio donde vas a gestionar tus proyectos y finanzas.
                 </p>

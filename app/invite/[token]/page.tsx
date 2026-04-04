@@ -122,9 +122,9 @@ export default async function InvitePage({ params }: Props) {
             <CheckCircle2 className="h-6 w-6 text-muted-foreground" />
           </div>
           <div className="space-y-1 text-center">
-            <h1 className="text-xl font-semibold">Ya sos miembro</h1>
+            <h1 className="text-xl font-semibold">Ya eres miembro</h1>
             <p className="text-sm text-muted-foreground">
-              Ya tenés acceso a <span className="font-medium text-foreground">{member.workspace.name}</span>.
+              Ya tienes acceso a <span className="font-medium text-foreground">{member.workspace.name}</span>.
             </p>
           </div>
           <Button render={<Link href="/dashboard" />}>

@@ -29,42 +29,42 @@ const FEATURES = [
     icon: FolderKanban,
     title: "Proyectos organizados",
     description:
-      "Creá proyectos, asigná presupuestos y seguí el estado de cada uno. Nunca más perdés el hilo de tu trabajo.",
+      "Crea proyectos, asigna presupuestos y sigue el estado de cada uno. Nunca más pierdes el hilo de tu trabajo.",
     color: "text-primary bg-primary/10",
   },
   {
     icon: FileText,
     title: "Facturas sin burocracia",
     description:
-      "Generá y gestioná facturas en segundos. Numeración automática, seguimiento de cobros y alertas de vencimiento.",
+      "Genera y gestiona facturas en segundos. Numeración automática, seguimiento de cobros y alertas de vencimiento.",
     color: "text-emerald-600 bg-emerald-500/10",
   },
   {
     icon: BarChart3,
     title: "Dashboard financiero",
     description:
-      "Visualizá tus ingresos mensuales, pendientes y vencidos en un gráfico claro. Tomá decisiones con datos reales.",
+      "Visualiza tus ingresos mensuales, pendientes y vencidos en un gráfico claro. Toma decisiones con datos reales.",
     color: "text-violet-600 bg-violet-500/10",
   },
   {
     icon: Zap,
     title: "OCR con IA (PRO)",
     description:
-      "Subí una foto o PDF de una factura recibida y Claude AI extrae automáticamente todos los datos relevantes.",
+      "Sube una foto o PDF de una factura recibida y Claude AI extrae automáticamente todos los datos relevantes.",
     color: "text-amber-600 bg-amber-500/10",
   },
   {
     icon: Users,
     title: "Colaboradores (PRO)",
     description:
-      "Invitá a tu equipo, asistente o contador. Cada uno con su propio rol y permisos sobre el workspace.",
+      "Invita a tu equipo, asistente o contador. Cada uno con su propio rol y permisos sobre el workspace.",
     color: "text-rose-600 bg-rose-500/10",
   },
   {
     icon: Shield,
     title: "Seguro y privado",
     description:
-      "Tus datos se almacenan con cifrado en Supabase. Solo vos (y quien invites) tenés acceso a tu información.",
+      "Tus datos se almacenan con cifrado en Supabase. Solo tú (y quien invites) tienes acceso a tu información.",
     color: "text-slate-600 bg-slate-500/10",
   },
 ]
@@ -92,19 +92,19 @@ const PRO_FEATURES = [
 const STEPS = [
   {
     step: "01",
-    title: "Creá tu workspace",
-    description: "Registrate gratis y configurá tu espacio de trabajo en menos de 2 minutos.",
+    title: "Crea tu workspace",
+    description: "Regístrate gratis y configura tu espacio de trabajo en menos de 2 minutos.",
   },
   {
     step: "02",
-    title: "Agregá tus proyectos",
-    description: "Cargá los proyectos activos con su cliente, presupuesto y fechas estimadas.",
+    title: "Agrega tus proyectos",
+    description: "Carga los proyectos activos con su cliente, presupuesto y fechas estimadas.",
   },
   {
     step: "03",
-    title: "Gestioná tus facturas",
+    title: "Gestiona tus facturas",
     description:
-      "Emitís facturas, marcás cobros y el dashboard muestra todo en tiempo real.",
+      "Emites facturas, marcas cobros y el dashboard muestra todo en tiempo real.",
   },
 ]
 
@@ -221,10 +221,10 @@ export default async function LandingPage() {
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
             <div className="text-center mb-12">
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-                Empezá en 3 pasos
+                Empieza en 3 pasos
               </h2>
               <p className="text-muted-foreground">
-                Sin setup complicado. En minutos tenés todo funcionando.
+                Sin setup complicado. En minutos tienes todo funcionando.
               </p>
             </div>
 
@@ -251,7 +251,7 @@ export default async function LandingPage() {
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
             <div className="text-center mb-12">
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-                Todo lo que necesitás
+                Todo lo que necesitas
               </h2>
               <p className="text-muted-foreground max-w-xl mx-auto">
                 Desde gestionar proyectos hasta cobrar facturas, ProjectTrack
@@ -288,7 +288,7 @@ export default async function LandingPage() {
                 Planes simples y transparentes
               </h2>
               <p className="text-muted-foreground">
-                Empezá gratis. Upgradéate cuando lo necesites.
+                Empieza gratis. Mejora tu plan cuando lo necesites.
               </p>
             </div>
 
@@ -382,7 +382,7 @@ export default async function LandingPage() {
               ¿Listo para ordenar tu negocio?
             </h2>
             <p className="text-muted-foreground mb-8 leading-relaxed">
-              Sumate a los freelancers que ya gestionan sus proyectos y finanzas
+              Únete a los freelancers que ya gestionan sus proyectos y finanzas
               con ProjectTrack. Es gratis para empezar.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

@@ -32,7 +32,7 @@ export default async function ProjectsPage() {
           <h1 className="text-2xl font-semibold tracking-tight">Proyectos</h1>
           <p className="text-sm text-muted-foreground">
             {projects.length === 0
-              ? "Todavía no tenés proyectos."
+              ? "Todavía no tienes proyectos."
               : `${projects.length} proyecto${projects.length !== 1 ? "s" : ""}`}
           </p>
         </div>
@@ -51,7 +51,7 @@ export default async function ProjectsPage() {
           <div className="space-y-1">
             <p className="text-sm font-medium">Sin proyectos todavía</p>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Creá tu primer proyecto para empezar a registrar ingresos y facturas.
+              Crea tu primer proyecto para empezar a registrar ingresos y facturas.
             </p>
           </div>
           <Button size="sm" render={<Link href="/projects/new" />}>

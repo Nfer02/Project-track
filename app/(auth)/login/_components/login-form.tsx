@@ -50,7 +50,7 @@ export function LoginForm({ inviteToken }: LoginFormProps) {
     <div className="w-full max-w-sm space-y-8">
       <div className="space-y-1.5">
         <h1 className="text-2xl font-semibold tracking-tight">Bienvenido de vuelta</h1>
-        <p className="text-sm text-muted-foreground">Ingresá con tu cuenta para continuar</p>
+        <p className="text-sm text-muted-foreground">Inicia sesión con tu cuenta para continuar</p>
       </div>
 
       <Form {...form}>
@@ -62,7 +62,7 @@ export function LoginForm({ inviteToken }: LoginFormProps) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="vos@ejemplo.com" autoComplete="email" {...field} />
+                  <Input type="email" placeholder="tu@ejemplo.com" autoComplete="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -103,9 +103,9 @@ export function LoginForm({ inviteToken }: LoginFormProps) {
       </Form>
 
       <p className="text-center text-sm text-muted-foreground">
-        ¿No tenés cuenta?{" "}
+        ¿No tienes cuenta?{" "}
         <Link href="/register" className="font-medium text-foreground hover:underline underline-offset-4">
-          Registrate gratis
+          Regístrate gratis
         </Link>
       </p>
     </div>

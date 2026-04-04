@@ -109,7 +109,7 @@ export function InviteForm() {
             Invitación creada
           </div>
           <p className="text-xs text-muted-foreground">
-            Se envió un email con el link. También podés compartir este link directamente:
+            Se envió un email con el link. También puedes compartir este link directamente:
           </p>
           <div className="flex items-center gap-2">
             <code className="flex-1 rounded bg-muted px-2 py-1 text-xs font-mono truncate">

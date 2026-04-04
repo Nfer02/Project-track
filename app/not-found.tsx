@@ -17,7 +17,7 @@ export default function NotFound() {
           <p className="text-7xl font-black text-primary/20 tabular-nums leading-none">404</p>
           <h1 className="text-xl font-semibold tracking-tight">Página no encontrada</h1>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            La página que buscás no existe o fue movida a otra dirección.
+            La página que buscas no existe o fue movida a otra dirección.
           </p>
         </div>
 

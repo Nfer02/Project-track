@@ -32,11 +32,11 @@ export default function RegisterPage() {
         <div className="space-y-8">
           <div className="space-y-4">
             <p className="text-xs font-semibold tracking-widest uppercase text-primary">
-              Empezá hoy, gratis
+              Empieza hoy, gratis
             </p>
             <h2 className="text-4xl font-semibold leading-tight text-white">
               Todo lo que<br />
-              necesitás para<br />
+              necesitas para<br />
               <span style={{ color: "oklch(0.75 0.18 55)" }}>facturar mejor.</span>
             </h2>
           </div>

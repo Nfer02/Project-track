@@ -20,7 +20,7 @@ import {
 import { register } from "../../actions"
 
 const schema = z.object({
-  name: z.string().min(2, "Ingresá tu nombre"),
+  name: z.string().min(2, "Introduce tu nombre"),
   email: z.string().email("Email inválido"),
   password: z.string().min(8, "Mínimo 8 caracteres"),
 })
@@ -46,7 +46,7 @@ export function RegisterForm() {
   return (
     <div className="w-full max-w-sm space-y-8">
       <div className="space-y-1.5">
-        <h1 className="text-2xl font-semibold tracking-tight">Creá tu cuenta</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Crea tu cuenta</h1>
         <p className="text-sm text-muted-foreground">
           Gratis para siempre en el plan básico
         </p>
@@ -75,7 +75,7 @@ export function RegisterForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="vos@ejemplo.com" autoComplete="email" {...field} />
+                  <Input type="email" placeholder="tu@ejemplo.com" autoComplete="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -108,14 +108,14 @@ export function RegisterForm() {
       </Form>
 
       <p className="text-center text-sm text-muted-foreground">
-        ¿Ya tenés cuenta?{" "}
+        ¿Ya tienes cuenta?{" "}
         <Link href="/login" className="font-medium text-foreground hover:underline underline-offset-4">
-          Iniciá sesión
+          Inicia sesión
         </Link>
       </p>
 
       <p className="text-center text-xs text-muted-foreground leading-relaxed">
-        Al registrarte aceptás nuestros{" "}
+        Al registrarte aceptas nuestros{" "}
         <Link href="/terms" className="underline underline-offset-2 hover:text-foreground transition-colors">
           Términos de servicio
         </Link>{" "}
