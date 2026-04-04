@@ -22,9 +22,9 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 export const metadata = {
-  title: "ProjectTrack — Gestión financiera para autónomos y pymes",
+  title: "ProjectTrack — Gestión de proyectos y control financiero para autónomos",
   description:
-    "Controla proyectos, facturas, gastos e impuestos en un solo lugar. Diseñado para autónomos y pequeñas empresas en España.",
+    "Controla tus proyectos, ingresos, gastos y obligaciones fiscales en un solo lugar. Diseñado para autónomos y pequeñas empresas en España.",
 }
 
 const FEATURES = [
@@ -37,9 +37,9 @@ const FEATURES = [
   },
   {
     icon: FileText,
-    title: "Facturas sin burocracia",
+    title: "Control de ingresos y cobros",
     description:
-      "Genera y gestiona facturas en segundos. Numeración automática, seguimiento de cobros y alertas de vencimiento.",
+      "Registra lo que cobras a cada cliente, controla pagos pendientes y recibe alertas de vencimiento. Todo organizado por proyecto.",
     color: "text-emerald-600 bg-emerald-500/10",
   },
   {
@@ -75,7 +75,7 @@ const FEATURES = [
 const STARTER_FEATURES = [
   { label: "1 usuario", included: true },
   { label: "Hasta 3 proyectos", included: true },
-  { label: "20 facturas/mes", included: true },
+  { label: "20 registros/mes", included: true },
   { label: "Control de gastos básico", included: true },
   { label: "Dashboard financiero", included: true },
   { label: "OCR inteligente", included: false },
@@ -86,8 +86,8 @@ const STARTER_FEATURES = [
 const PRO_FEATURES = [
   { label: "Hasta 3 usuarios", included: true },
   { label: "Proyectos ilimitados", included: true },
-  { label: "Facturas ilimitadas", included: true },
-  { label: "OCR inteligente (subir facturas con IA)", included: true },
+  { label: "Registros ilimitados", included: true },
+  { label: "OCR inteligente (escanear gastos con IA)", included: true },
   { label: "Reparto de gastos entre proyectos", included: true },
   { label: "Dashboard financiero avanzado", included: true },
   { label: "Estimación fiscal automática (IVA + IRPF)", included: true },
@@ -118,9 +118,9 @@ const STEPS = [
   },
   {
     step: "03",
-    title: "Gestióna tus facturas",
+    title: "Controla tus finanzas",
     description:
-      "Emite facturas, marca cobros y el dashboard te muestra todo en tiempo real.",
+      "Registra ingresos, gastos y cobros. El dashboard te muestra la rentabilidad en tiempo real.",
   },
 ]
 
@@ -189,9 +189,9 @@ export default async function LandingPage() {
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-              ProjectTrack te ayuda a gestionar proyectos, facturas, gastos e
-              impuestos en un solo lugar. Diseñado para autónomos y pequeñas
-              empresas en España.
+              Gestiona tus proyectos, controla ingresos y gastos, y ten
+              siempre claro cuánto reservar para Hacienda. Diseñado para
+              autónomos y pequeñas empresas en España.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
