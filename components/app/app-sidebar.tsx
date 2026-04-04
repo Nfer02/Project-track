@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   FolderKanban,
   ReceiptText,
+  ShoppingCart,
   FileBarChart,
   LogOut,
   ChevronDown,
@@ -26,7 +27,8 @@ import { logout } from "@/app/(auth)/actions"
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/projects", label: "Proyectos", icon: FolderKanban },
-  { href: "/invoices", label: "Facturas", icon: ReceiptText },
+  { href: "/invoices", label: "Facturas emitidas", icon: ReceiptText },
+  { href: "/expenses", label: "Gastos / Compras", icon: ShoppingCart },
 ]
 
 const SETTINGS_ITEMS = [
