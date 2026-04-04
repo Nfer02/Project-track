@@ -172,7 +172,7 @@ export async function deleteInvoice(invoiceId: string, projectId?: string) {
   revalidatePath("/invoices")
 
   if (invoice.type === "EXPENSE" || !projectId) {
-    redirect("/invoices?tab=expenses")
+    redirect("/expenses")
   } else {
     redirect(`/projects/${projectId}`)
   }
@@ -238,7 +238,7 @@ export async function createExpense(
   }
 
   revalidatePath("/invoices")
-  redirect(redirectTo ?? "/invoices?tab=expenses")
+  redirect(redirectTo ?? "/expenses")
 }
 
 export async function updateExpense(
@@ -312,5 +312,5 @@ export async function updateExpense(
   }
 
   revalidatePath("/invoices")
-  redirect(redirectTo ?? `/invoices/expense/${invoiceId}`)
+  redirect(redirectTo ?? `/expenses/detail/${invoiceId}`)
 }

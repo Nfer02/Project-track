@@ -49,7 +49,7 @@ export default async function ExpensesPage() {
             {invoices.length} gastos registrados
           </p>
         </div>
-        <Button size="sm" render={<Link href="/invoices/new-expense" />}>
+        <Button size="sm" render={<Link href="/expenses/new" />}>
           <Plus className="h-4 w-4 mr-1" />
           Nuevo gasto
         </Button>
@@ -83,7 +83,7 @@ export default async function ExpensesPage() {
           </div>
           <p className="text-sm font-medium">Sin gastos registrados</p>
           <p className="text-sm text-muted-foreground">Registra compras de material, herramientas y otros gastos.</p>
-          <Button size="sm" render={<Link href="/invoices/new-expense" />}>
+          <Button size="sm" render={<Link href="/expenses/new" />}>
             <Plus className="h-4 w-4 mr-1" />
             Nuevo gasto
           </Button>
@@ -96,7 +96,7 @@ export default async function ExpensesPage() {
             return (
               <Link
                 key={inv.id}
-                href={`/invoices/expense/${inv.id}`}
+                href={`/expenses/detail/${inv.id}`}
                 className={`block rounded-xl border bg-card p-4 hover:bg-muted/30 transition-colors ${!inv.isDeclared ? "opacity-60" : ""}`}
               >
                 <div className="flex items-center justify-between gap-3">
