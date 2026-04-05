@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>ProjectTrack - Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: #0f172a; color: #fff;
+    width: 1280px; height: 800px; overflow: hidden; display: flex;
+  }
+  .sidebar {
+    width: 240px; min-width: 240px; background: #0b1120;
+    border-right: 1px solid #1e293b; display: flex; flex-direction: column; height: 800px;
+  }
+  .sidebar-logo { padding: 20px 20px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #1e293b; }
+  .sidebar-logo .logo-icon { width: 32px; height: 32px; background: #3b82f6; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+  .sidebar-logo span { font-size: 16px; font-weight: 600; }
+  .sidebar-nav { padding: 12px 10px; flex: 1; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: #94a3b8; font-size: 14px; margin-bottom: 2px; }
+  .nav-item.active { background: #1e293b; color: #fff; font-weight: 500; }
+  .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .nav-section { padding: 16px 12px 6px; font-size: 11px; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; }
+  .sidebar-user { padding: 16px; border-top: 1px solid #1e293b; display: flex; align-items: center; gap: 10px; }
+  .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; }
+  .user-info .name { font-size: 13px; font-weight: 500; }
+  .user-info .role { font-size: 11px; color: #64748b; }
+
+  .content { flex: 1; padding: 20px 24px; overflow-y: auto; }
+  .content h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .content .subtitle { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+
+  /* Stat cards */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
+  .stats-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+    padding: 14px 16px; position: relative; overflow: hidden;
+  }
+  .stat-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; }
+  .stat-card .label { font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
+  .stat-card .value { font-size: 20px; font-weight: 700; }
+  .stat-card .change { font-size: 11px; margin-top: 2px; }
+  .border-green::before { background: #10b981; }
+  .border-orange::before { background: #f97316; }
+  .border-blue::before { background: #3b82f6; }
+  .border-violet::before { background: #8b5cf6; }
+  .border-amber::before { background: #f59e0b; }
+  .border-red::before { background: #ef4444; }
+
+  /* Charts grid */
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .chart-card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .chart-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
+
+  /* Bar chart */
+  .bar-chart { display: flex; align-items: flex-end; gap: 16px; height: 130px; padding-top: 10px; }
+  .bar-group { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+  .bar-pair { display: flex; gap: 4px; align-items: flex-end; height: 110px; }
+  .bar {
+    width: 18px; border-radius: 4px 4px 0 0; min-height: 4px;
+    transition: height 0.3s;
+  }
+  .bar.income { background: #10b981; }
+  .bar.expense { background: #ef4444; opacity: 0.7; }
+  .bar-label { font-size: 10px; color: #64748b; }
+
+  /* Donut chart */
+  .donut-container { display: flex; align-items: center; gap: 20px; }
+  .donut-svg { width: 130px; height: 130px; }
+  .donut-legend { font-size: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+  .legend-value { color: #94a3b8; margin-left: auto; }
+
+  /* Area chart */
+  .area-chart { position: relative; height: 130px; }
+  .area-chart svg { width: 100%; height: 100%; }
+
+  /* Gauge */
+  .gauge-container { display: flex; flex-direction: column; align-items: center; }
+  .gauge-svg { width: 180px; height: 100px; }
+  .gauge-value { font-size: 24px; font-weight: 700; margin-top: -10px; }
+  .gauge-sub { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+  .gauge-details { display: flex; gap: 20px; margin-top: 10px; font-size: 12px; }
+  .gauge-detail { text-align: center; }
+  .gauge-detail .gd-val { font-weight: 600; font-size: 14px; }
+  .gauge-detail .gd-label { color: #94a3b8; font-size: 11px; }
+
+  /* Table */
+  .projects-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .projects-table th {
+    text-align: left; padding: 8px 12px; font-size: 11px; color: #64748b;
+    border-bottom: 1px solid #334155; font-weight: 500;
+  }
+  .projects-table td { padding: 8px 12px; border-bottom: 1px solid #1e293b; }
+  .projects-table tr:hover td { background: rgba(59,130,246,0.04); }
+  .badge { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+  .badge-green { background: rgba(16,185,129,0.15); color: #34d399; }
+  .badge-blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .badge-amber { background: rgba(245,158,11,0.15); color: #fbbf24; }
+</style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="logo-icon">PT</div><span>ProjectTrack</span></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Principal</div>
+      <div class="nav-item active"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>Dashboard</div>
+      <div class="nav-item"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>Proyectos</div>
+      <div class="nav-section">Finanzas</div>
+      <div class="nav-item"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Facturas emitidas</div>
+      <div class="nav-item"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>Gastos / Compras</div>
+      <div class="nav-item"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Reportes</div>
+      <div class="nav-section">Equipo</div>
+      <div class="nav-item"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Colaboradores</div>
+      <div class="nav-item"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Facturación</div>
+    </nav>
+    <div class="sidebar-user"><div class="user-avatar">NF</div><div class="user-info"><div class="name">Nelson Fernandez</div><div class="role">Administrador</div></div></div>
+  </aside>
+
+  <main class="content">
+    <h1>Dashboard financiero</h1>
+    <div class="subtitle">Abril 2026 &middot; Resumen general</div>
+
+    <!-- Top 4 stats -->
+    <div class="stats-row">
+      <div class="stat-card border-green">
+        <div class="label">Ingresos del mes</div>
+        <div class="value">18.750 &euro;</div>
+        <div class="change" style="color:#34d399">+12% vs marzo</div>
+      </div>
+      <div class="stat-card border-orange">
+        <div class="label">Gastos del mes</div>
+        <div class="value">6.320 &euro;</div>
+        <div class="change" style="color:#f97316">+3% vs marzo</div>
+      </div>
+      <div class="stat-card border-blue">
+        <div class="label">Beneficio neto</div>
+        <div class="value">12.430 &euro;</div>
+        <div class="change" style="color:#60a5fa">+18% vs marzo</div>
+      </div>
+      <div class="stat-card border-violet">
+        <div class="label">Proyectos activos</div>
+        <div class="value">5</div>
+        <div class="change" style="color:#a78bfa">1 completado este mes</div>
+      </div>
+    </div>
+
+    <!-- Second row 3 stats -->
+    <div class="stats-row-3">
+      <div class="stat-card border-violet">
+        <div class="label">Gastos generales</div>
+        <div class="value">890 &euro;</div>
+      </div>
+      <div class="stat-card border-amber">
+        <div class="label">Facturas pendientes</div>
+        <div class="value">3</div>
+      </div>
+      <div class="stat-card border-red">
+        <div class="label">Facturas vencidas</div>
+        <div class="value" style="color:#ef4444">0</div>
+      </div>
+    </div>
+
+    <!-- Charts row 1 -->
+    <div class="charts-row">
+      <!-- Bar chart -->
+      <div class="chart-card">
+        <h3>Ingresos vs Gastos</h3>
+        <div class="bar-chart">
+          <div class="bar-group">
+            <div class="bar-pair">
+              <div class="bar income" style="height:55px"></div>
+              <div class="bar expense" style="height:28px"></div>
+            </div>
+            <div class="bar-label">Nov</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-pair">
+              <div class="bar income" style="height:72px"></div>
+              <div class="bar expense" style="height:35px"></div>
+            </div>
+            <div class="bar-label">Dic</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-pair">
+              <div class="bar income" style="height:48px"></div>
+              <div class="bar expense" style="height:22px"></div>
+            </div>
+            <div class="bar-label">Ene</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-pair">
+              <div class="bar income" style="height:85px"></div>
+              <div class="bar expense" style="height:42px"></div>
+            </div>
+            <div class="bar-label">Feb</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-pair">
+              <div class="bar income" style="height:78px"></div>
+              <div class="bar expense" style="height:38px"></div>
+            </div>
+            <div class="bar-label">Mar</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-pair">
+              <div class="bar income" style="height:95px"></div>
+              <div class="bar expense" style="height:40px"></div>
+            </div>
+            <div class="bar-label">Abr</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:10px;font-size:11px">
+          <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:#10b981"></div><span style="color:#94a3b8">Ingresos</span></div>
+          <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:#ef4444;opacity:0.7"></div><span style="color:#94a3b8">Gastos</span></div>
+        </div>
+      </div>
+
+      <!-- Donut chart -->
+      <div class="chart-card">
+        <h3>Gastos por categoría</h3>
+        <div class="donut-container">
+          <svg class="donut-svg" viewBox="0 0 36 36">
+            <!-- Background -->
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#334155" stroke-width="3"/>
+            <!-- Material 45% -->
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3b82f6" stroke-width="3"
+              stroke-dasharray="45 55" stroke-dashoffset="25" stroke-linecap="round"/>
+            <!-- Herramientas 25% -->
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#8b5cf6" stroke-width="3"
+              stroke-dasharray="25 75" stroke-dashoffset="80" stroke-linecap="round"/>
+            <!-- Transporte 15% -->
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" stroke-width="3"
+              stroke-dasharray="15 85" stroke-dashoffset="55" stroke-linecap="round"/>
+            <!-- Subcontrata 15% -->
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#10b981" stroke-width="3"
+              stroke-dasharray="15 85" stroke-dashoffset="40" stroke-linecap="round"/>
+            <text x="18" y="17" text-anchor="middle" fill="#fff" font-size="3.5" font-weight="700">9.150 &euro;</text>
+            <text x="18" y="20.5" text-anchor="middle" fill="#94a3b8" font-size="2">Total gastos</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>Material<span class="legend-value">4.118 &euro;</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>Herramientas<span class="legend-value">2.288 &euro;</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Transporte<span class="legend-value">1.373 &euro;</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>Subcontrata<span class="legend-value">1.371 &euro;</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts row 2 -->
+    <div class="charts-row">
+      <!-- Area chart: Beneficio mensual -->
+      <div class="chart-card">
+        <h3>Beneficio mensual</h3>
+        <div class="area-chart">
+          <svg viewBox="0 0 460 120" preserveAspectRatio="none">
+            <!-- Grid lines -->
+            <line x1="0" y1="30" x2="460" y2="30" stroke="#1e293b" stroke-width="0.5"/>
+            <line x1="0" y1="60" x2="460" y2="60" stroke="#1e293b" stroke-width="0.5"/>
+            <line x1="0" y1="90" x2="460" y2="90" stroke="#1e293b" stroke-width="0.5"/>
+            <!-- Benefit area -->
+            <defs>
+              <linearGradient id="greenGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0.02"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,90 L76,78 L153,82 L230,60 L306,52 L383,38 L460,25 L460,120 L0,120 Z" fill="url(#greenGrad)"/>
+            <polyline points="0,90 76,78 153,82 230,60 306,52 383,38 460,25" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Dots -->
+            <circle cx="0" cy="90" r="3" fill="#10b981"/>
+            <circle cx="76" cy="78" r="3" fill="#10b981"/>
+            <circle cx="153" cy="82" r="3" fill="#10b981"/>
+            <circle cx="230" cy="60" r="3" fill="#10b981"/>
+            <circle cx="306" cy="52" r="3" fill="#10b981"/>
+            <circle cx="383" cy="38" r="3" fill="#10b981"/>
+            <circle cx="460" cy="25" r="3" fill="#10b981"/>
+            <!-- Projected line -->
+            <polyline points="383,38 460,25" fill="none" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"/>
+            <!-- Labels -->
+            <text x="0" y="115" fill="#64748b" font-size="10">Nov</text>
+            <text x="72" y="115" fill="#64748b" font-size="10">Dic</text>
+            <text x="149" y="115" fill="#64748b" font-size="10">Ene</text>
+            <text x="226" y="115" fill="#64748b" font-size="10">Feb</text>
+            <text x="302" y="115" fill="#64748b" font-size="10">Mar</text>
+            <text x="379" y="115" fill="#64748b" font-size="10">Abr</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Gauge: Reserva fiscal -->
+      <div class="chart-card">
+        <h3>Reserva fiscal T2 2026</h3>
+        <div class="gauge-container">
+          <svg class="gauge-svg" viewBox="0 0 200 110">
+            <!-- Background arc -->
+            <path d="M20,100 A80,80 0 0,1 180,100" fill="none" stroke="#334155" stroke-width="12" stroke-linecap="round"/>
+            <!-- Filled arc (~62%) -->
+            <path d="M20,100 A80,80 0 0,1 148,32" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#3b82f6"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="gauge-value">4.815 &euro;</div>
+          <div class="gauge-sub">Estimación trimestral</div>
+          <div class="gauge-details">
+            <div class="gauge-detail">
+              <div class="gd-val" style="color:#3b82f6">2.984 &euro;</div>
+              <div class="gd-label">IVA trimestral</div>
+            </div>
+            <div class="gauge-detail">
+              <div class="gd-val" style="color:#8b5cf6">1.831 &euro;</div>
+              <div class="gd-label">IRPF estimado</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent projects table -->
+    <div class="chart-card" style="margin-top:0">
+      <h3>Proyectos recientes</h3>
+      <table class="projects-table">
+        <thead>
+          <tr>
+            <th>Proyecto</th>
+            <th>Cliente</th>
+            <th>Contrato</th>
+            <th>Gastos</th>
+            <th>Margen</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:500">Reforma Chamberí</td>
+            <td style="color:#94a3b8">María López</td>
+            <td>28.500 &euro;</td>
+            <td style="color:#f59e0b">4.200 &euro;</td>
+            <td style="color:#34d399">+62%</td>
+            <td><span class="badge badge-green">Activo</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500">Fachada Goya 45</td>
+            <td style="color:#94a3b8">Carlos Ruiz</td>
+            <td>45.000 &euro;</td>
+            <td style="color:#f59e0b">12.350 &euro;</td>
+            <td style="color:#34d399">+48%</td>
+            <td><span class="badge badge-green">Activo</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500">Cocina Salamanca</td>
+            <td style="color:#94a3b8">Ana Martínez</td>
+            <td>12.800 &euro;</td>
+            <td style="color:#f59e0b">1.850 &euro;</td>
+            <td style="color:#34d399">+71%</td>
+            <td><span class="badge badge-blue">Completado</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500">Baño Retiro</td>
+            <td style="color:#94a3b8">Pedro Sánchez G.</td>
+            <td>8.200 &euro;</td>
+            <td style="color:#f59e0b">1.900 &euro;</td>
+            <td style="color:#34d399">+55%</td>
+            <td><span class="badge badge-green">Activo</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500">Local Gran Vía</td>
+            <td style="color:#94a3b8">Inversiones MBR S.L.</td>
+            <td>67.500 &euro;</td>
+            <td style="color:#f59e0b">24.600 &euro;</td>
+            <td style="color:#34d399">+38%</td>
+            <td><span class="badge badge-green">Activo</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>

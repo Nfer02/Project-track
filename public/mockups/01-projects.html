@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>ProjectTrack - Proyectos</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: #fff;
+    width: 1280px;
+    height: 800px;
+    overflow: hidden;
+    display: flex;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: #0b1120;
+    border-right: 1px solid #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+  }
+  .sidebar-logo {
+    padding: 20px 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #1e293b;
+  }
+  .sidebar-logo .logo-icon {
+    width: 32px; height: 32px;
+    background: #3b82f6;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+  }
+  .sidebar-logo span {
+    font-size: 16px; font-weight: 600;
+  }
+  .sidebar-nav { padding: 12px 10px; flex: 1; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 8px;
+    color: #94a3b8; font-size: 14px; cursor: pointer;
+    margin-bottom: 2px;
+  }
+  .nav-item:hover { background: #1e293b; color: #cbd5e1; }
+  .nav-item.active { background: #1e293b; color: #fff; font-weight: 500; }
+  .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .nav-section { padding: 16px 12px 6px; font-size: 11px; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; }
+  .sidebar-user {
+    padding: 16px 16px;
+    border-top: 1px solid #1e293b;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .user-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+  }
+  .user-info { font-size: 13px; }
+  .user-info .name { font-weight: 500; }
+  .user-info .role { font-size: 11px; color: #64748b; }
+
+  /* Content */
+  .content {
+    flex: 1;
+    padding: 24px 28px;
+    overflow-y: auto;
+  }
+  .content-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 24px;
+  }
+  .content-header h1 { font-size: 24px; font-weight: 700; }
+  .content-header .subtitle { font-size: 14px; color: #64748b; margin-top: 2px; }
+  .btn-primary {
+    background: #3b82f6; color: #fff;
+    border: none; padding: 9px 18px; border-radius: 8px;
+    font-size: 14px; font-weight: 500; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* Grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .project-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+  .project-card:hover { border-color: #475569; }
+  .card-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .card-top h3 { font-size: 15px; font-weight: 600; line-height: 1.3; max-width: 200px; }
+  .badge {
+    font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge-green { background: rgba(16,185,129,0.15); color: #34d399; }
+  .badge-blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .badge-amber { background: rgba(245,158,11,0.15); color: #fbbf24; }
+  .client-row {
+    font-size: 13px; color: #94a3b8; margin-bottom: 14px;
+  }
+  .amount-row {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .amount-row .value { font-size: 22px; font-weight: 700; }
+  .amount-row .margin { font-size: 13px; color: #34d399; font-weight: 500; }
+  .card-footer {
+    display: flex; justify-content: space-between;
+    padding-top: 12px; border-top: 1px solid #334155;
+    font-size: 12px; color: #64748b;
+  }
+</style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">PT</div>
+      <span>ProjectTrack</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Principal</div>
+      <div class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item active">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+        Proyectos
+      </div>
+      <div class="nav-section">Finanzas</div>
+      <div class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Facturas emitidas
+      </div>
+      <div class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        Gastos / Compras
+      </div>
+      <div class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Reportes
+      </div>
+      <div class="nav-section">Equipo</div>
+      <div class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Colaboradores
+      </div>
+      <div class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Facturación
+      </div>
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-avatar">NF</div>
+      <div class="user-info">
+        <div class="name">Nelson Fernandez</div>
+        <div class="role">Administrador</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <main class="content">
+    <div class="content-header">
+      <div>
+        <h1>Proyectos</h1>
+        <div class="subtitle">6 proyectos activos</div>
+      </div>
+      <button class="btn-primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+        Nuevo proyecto
+      </button>
+    </div>
+    <div class="projects-grid">
+      <!-- Card 1 -->
+      <div class="project-card">
+        <div class="card-top">
+          <h3>Reforma integral Chamberí</h3>
+          <span class="badge badge-green">Activo</span>
+        </div>
+        <div class="client-row">María López &middot; IVA 10%</div>
+        <div class="amount-row">
+          <span class="value">28.500 &euro;</span>
+          <span class="margin">+62% margen</span>
+        </div>
+        <div class="card-footer">
+          <span>3 cobros</span>
+          <span>Gastos: 4.200 &euro;</span>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="project-card">
+        <div class="card-top">
+          <h3>Rehabilitación fachada Goya 45</h3>
+          <span class="badge badge-green">Activo</span>
+        </div>
+        <div class="client-row">Carlos Ruiz &middot; IVA 21%</div>
+        <div class="amount-row">
+          <span class="value">45.000 &euro;</span>
+          <span class="margin">+48% margen</span>
+        </div>
+        <div class="card-footer">
+          <span>5 cobros</span>
+          <span>Gastos: 12.350 &euro;</span>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="project-card">
+        <div class="card-top">
+          <h3>Cocina completa Salamanca</h3>
+          <span class="badge badge-blue">Completado</span>
+        </div>
+        <div class="client-row">Ana Martínez &middot; IVA 10%</div>
+        <div class="amount-row">
+          <span class="value">12.800 &euro;</span>
+          <span class="margin">+71% margen</span>
+        </div>
+        <div class="card-footer">
+          <span>2 cobros</span>
+          <span>Gastos: 1.850 &euro;</span>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="project-card">
+        <div class="card-top">
+          <h3>Baño accesible Retiro</h3>
+          <span class="badge badge-green">Activo</span>
+        </div>
+        <div class="client-row">Pedro Sánchez G. &middot; IVA 10%</div>
+        <div class="amount-row">
+          <span class="value">8.200 &euro;</span>
+          <span class="margin">+55% margen</span>
+        </div>
+        <div class="card-footer">
+          <span>2 cobros</span>
+          <span>Gastos: 1.900 &euro;</span>
+        </div>
+      </div>
+      <!-- Card 5 -->
+      <div class="project-card">
+        <div class="card-top">
+          <h3>Local comercial Gran Vía</h3>
+          <span class="badge badge-green">Activo</span>
+        </div>
+        <div class="client-row">Inversiones MBR S.L. &middot; IVA 21%</div>
+        <div class="amount-row">
+          <span class="value">67.500 &euro;</span>
+          <span class="margin">+38% margen</span>
+        </div>
+        <div class="card-footer">
+          <span>8 cobros</span>
+          <span>Gastos: 24.600 &euro;</span>
+        </div>
+      </div>
+      <!-- Card 6 -->
+      <div class="project-card">
+        <div class="card-top">
+          <h3>Terraza ático Malasaña</h3>
+          <span class="badge badge-amber">En pausa</span>
+        </div>
+        <div class="client-row">Lucía Fernández &middot; IVA 10%</div>
+        <div class="amount-row">
+          <span class="value">15.400 &euro;</span>
+          <span class="margin">+59% margen</span>
+        </div>
+        <div class="card-footer">
+          <span>1 cobro</span>
+          <span>Gastos: 2.100 &euro;</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
