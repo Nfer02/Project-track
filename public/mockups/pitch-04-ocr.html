@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>ProjectTrack — OCR con IA</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px; height: 1080px; overflow: hidden;
+    background: #0a0f1a;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 50px 80px;
+    display: flex; flex-direction: column;
+  }
+  .bg-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  h1 { font-size: 48px; font-weight: 800; color: #f9fafb; letter-spacing: -1px; position: relative; z-index:1; }
+  .subtitle { font-size: 24px; color: #9ca3af; margin-top: 8px; margin-bottom: 10px; position: relative; z-index:1; }
+  .accent-line { width: 60px; height: 4px; background: #8b5cf6; border-radius: 2px; margin-bottom: 36px; position: relative; z-index:1; }
+  .main-row {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: center;
+    flex: 1; position: relative; z-index: 1;
+  }
+  /* Receipt */
+  .receipt {
+    background: #fefce8;
+    border-radius: 16px;
+    padding: 40px 36px;
+    color: #1a1a1a;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    max-width: 520px;
+    justify-self: center;
+  }
+  .receipt-header {
+    text-align: center; margin-bottom: 20px;
+    border-bottom: 2px dashed #d4d4d4; padding-bottom: 16px;
+  }
+  .receipt-header h2 { font-size: 28px; font-weight: 900; color: #16a34a; letter-spacing: 2px; }
+  .receipt-header p { font-size: 14px; color: #666; margin-top: 4px; }
+  .receipt-line {
+    display: flex; justify-content: space-between;
+    font-size: 16px; padding: 6px 0; color: #333;
+  }
+  .receipt-sep { border-top: 1px dashed #ccc; margin: 12px 0; }
+  .receipt-total {
+    display: flex; justify-content: space-between;
+    font-size: 22px; font-weight: 900; padding: 10px 0; color: #111;
+    border-top: 2px solid #333; margin-top: 8px;
+  }
+  .receipt-date { text-align: center; font-size: 14px; color: #888; margin-top: 12px; }
+
+  /* Arrow */
+  .arrow-col {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    padding: 0 30px;
+  }
+  .arrow-label {
+    font-size: 20px; font-weight: 800; color: #8b5cf6;
+    background: rgba(139,92,246,0.12);
+    padding: 10px 24px; border-radius: 12px;
+  }
+  .arrow-icon { font-size: 48px; color: #8b5cf6; }
+
+  /* Extracted data */
+  .extracted {
+    background: #111827; border: 1px solid #1f2937; border-radius: 18px;
+    overflow: hidden; max-width: 560px; justify-self: center;
+  }
+  .extracted-header {
+    background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.05));
+    padding: 20px 32px;
+    font-size: 20px; font-weight: 700; color: #10b981;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid #1f2937;
+  }
+  .extracted-header span { font-size: 24px; }
+  .extracted-body { padding: 28px 32px; }
+  .field-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(31,41,55,0.6);
+  }
+  .field-row:last-child { border-bottom: none; }
+  .field-label { font-size: 16px; color: #9ca3af; }
+  .field-value { font-size: 18px; font-weight: 600; color: #f9fafb; }
+
+  .assign-section {
+    padding: 20px 32px 28px;
+    border-top: 1px solid #1f2937;
+  }
+  .assign-title { font-size: 16px; font-weight: 700; color: #9ca3af; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+  .assign-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 10px; font-size: 16px; color: #e5e7eb;
+  }
+  .assign-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .assign-dot-blue { background: #3b82f6; }
+  .assign-dot-amber { background: #f59e0b; }
+  .assign-amount { margin-left: auto; font-weight: 700; color: #f9fafb; }
+  .assign-pct { color: #6b7280; font-size: 14px; margin-left: 6px; }
+  .progress-bar {
+    height: 8px; border-radius: 4px; background: #1f2937; margin-top: 16px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, #10b981, #3b82f6);
+    width: 100%;
+  }
+  .progress-label { font-size: 14px; color: #10b981; font-weight: 600; margin-top: 8px; text-align: right; }
+</style>
+</head>
+<body>
+  <div class="bg-dots"></div>
+  <h1>La IA trabaja por ti</h1>
+  <div class="subtitle">Sube una foto y los datos se rellenan solos</div>
+  <div class="accent-line"></div>
+  <div class="main-row">
+    <!-- Receipt -->
+    <div class="receipt">
+      <div class="receipt-header">
+        <h2>LEROY MERLIN</h2>
+        <p>NIF: A28989845</p>
+        <p>Tienda: Madrid Leganes</p>
+      </div>
+      <div class="receipt-line"><span>Cemento cola 25kg x2</span><span>18,50 &euro;</span></div>
+      <div class="receipt-line"><span>Ladrillo macizo x100</span><span>85,00 &euro;</span></div>
+      <div class="receipt-line"><span>Yeso proyectable 20kg x3</span><span>42,30 &euro;</span></div>
+      <div class="receipt-line"><span>Pintura blanca 15L</span><span>57,33 &euro;</span></div>
+      <div class="receipt-sep"></div>
+      <div class="receipt-line"><span>Base imponible</span><span>203,13 &euro;</span></div>
+      <div class="receipt-line"><span>IVA 21%</span><span>42,67 &euro;</span></div>
+      <div class="receipt-total"><span>TOTAL</span><span>245,80 &euro;</span></div>
+      <div class="receipt-date">Fecha: 03/04/2026</div>
+    </div>
+    <!-- Arrow -->
+    <div class="arrow-col">
+      <div class="arrow-icon">&#10132;</div>
+      <div class="arrow-label">IA</div>
+      <div class="arrow-icon">&#10132;</div>
+    </div>
+    <!-- Extracted -->
+    <div class="extracted">
+      <div class="extracted-header"><span>&#10003;</span> Datos extraidos automaticamente</div>
+      <div class="extracted-body">
+        <div class="field-row"><div class="field-label">Proveedor</div><div class="field-value">Leroy Merlin</div></div>
+        <div class="field-row"><div class="field-label">Base imponible</div><div class="field-value">203,13 &euro;</div></div>
+        <div class="field-row"><div class="field-label">IVA (21%)</div><div class="field-value">42,67 &euro;</div></div>
+        <div class="field-row"><div class="field-label">Total</div><div class="field-value">245,80 &euro;</div></div>
+        <div class="field-row"><div class="field-label">Fecha</div><div class="field-value">03/04/2026</div></div>
+        <div class="field-row"><div class="field-label">Descripcion</div><div class="field-value" style="font-size:15px">Cemento, ladrillos, yeso, pintura</div></div>
+      </div>
+      <div class="assign-section">
+        <div class="assign-title">Asignar a proyectos</div>
+        <div class="assign-row">
+          <div class="assign-dot assign-dot-blue"></div>
+          Reforma Chamberi
+          <div class="assign-amount">147,00 &euro;</div>
+          <div class="assign-pct">(60%)</div>
+        </div>
+        <div class="assign-row">
+          <div class="assign-dot assign-dot-amber"></div>
+          Fachada Goya
+          <div class="assign-amount">98,80 &euro;</div>
+          <div class="assign-pct">(40%)</div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="progress-label">100% asignado</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

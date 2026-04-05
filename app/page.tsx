@@ -180,8 +180,36 @@ export default async function LandingPage() {
         </section>
 
         {/* --------------------------------------------------------------- */}
-        {/* Video / Demo (placeholder para vídeo futuro)                   */}
+        {/* Video Demo                                                     */}
         {/* --------------------------------------------------------------- */}
+        <section className="py-16 sm:py-24 bg-muted/20">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6">
+            <FadeIn>
+              <div className="text-center mb-10">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+                  Mira lo que puedes hacer
+                </h2>
+                <p className="text-muted-foreground max-w-xl mx-auto">
+                  En menos de un minuto, descubre cómo ProjectTrack te ayuda a controlar tu negocio
+                </p>
+              </div>
+            </FadeIn>
+            <FadeIn delay={150}>
+              <div className="rounded-xl border border-border/80 bg-black shadow-2xl overflow-hidden">
+                <video
+                  className="w-full"
+                  controls
+                  preload="metadata"
+                  poster=""
+                  playsInline
+                >
+                  <source src="/projecttrack-promo.mp4" type="video/mp4" />
+                  Tu navegador no soporta el elemento de vídeo.
+                </video>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
 
         {/* --------------------------------------------------------------- */}
         {/* Feature Tabs                                                    */}

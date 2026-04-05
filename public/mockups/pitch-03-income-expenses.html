@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>ProjectTrack — Ingresos y Gastos</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px; height: 1080px; overflow: hidden;
+    background: #0a0f1a;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 50px 80px;
+    display: flex; flex-direction: column;
+  }
+  .bg-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  h1 { font-size: 48px; font-weight: 800; color: #f9fafb; letter-spacing: -1px; position: relative; z-index:1; }
+  .subtitle { font-size: 24px; color: #9ca3af; margin-top: 8px; margin-bottom: 10px; position: relative; z-index:1; }
+  .accent-line { width: 60px; height: 4px; background: #10b981; border-radius: 2px; margin-bottom: 36px; position: relative; z-index:1; }
+  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; flex:1; position: relative; z-index:1; }
+  .col-header { font-size: 22px; font-weight: 700; color: #f9fafb; margin-bottom: 20px; display:flex; align-items:center; gap:10px; }
+  .col-header .dot { width:10px; height:10px; border-radius:50%; }
+  .dot-green { background: #10b981; }
+  .dot-red { background: #ef4444; }
+  .stats-row { display: flex; gap: 16px; margin-bottom: 22px; }
+  .stat-box {
+    background: #111827; border: 1px solid #1f2937; border-radius: 14px;
+    padding: 18px 22px; flex:1; text-align: center;
+  }
+  .stat-label { font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .stat-value { font-size: 26px; font-weight: 800; color: #f9fafb; }
+  .stat-value.green { color: #10b981; }
+  .stat-value.amber { color: #f59e0b; }
+  .stat-value.red { color: #ef4444; }
+  .stat-value.blue { color: #3b82f6; }
+  .invoice-card, .expense-card {
+    background: #111827; border: 1px solid #1f2937; border-radius: 14px;
+    padding: 20px 24px; margin-bottom: 14px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .inv-left { display: flex; flex-direction: column; gap: 4px; }
+  .inv-code { font-size: 14px; color: #6b7280; font-weight: 600; font-family: monospace; }
+  .inv-desc { font-size: 18px; color: #e5e7eb; font-weight: 500; }
+  .inv-right { display: flex; align-items: center; gap: 18px; }
+  .inv-amount { font-size: 24px; font-weight: 800; color: #f9fafb; }
+  .inv-status {
+    font-size: 13px; font-weight: 600; padding: 4px 14px; border-radius: 100px;
+  }
+  .status-paid { background: rgba(16,185,129,0.15); color: #10b981; }
+  .status-pending { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .exp-tag {
+    font-size: 13px; font-weight: 500; color: #9ca3af;
+    background: #1f2937; padding: 3px 12px; border-radius: 8px;
+  }
+  .exp-cat { font-size: 14px; color: #6b7280; }
+</style>
+</head>
+<body>
+  <div class="bg-dots"></div>
+  <h1>Ingresos y gastos bajo control</h1>
+  <div class="subtitle">Todo registrado, nada se pierde</div>
+  <div class="accent-line"></div>
+  <div class="columns">
+    <!-- LEFT: Invoices -->
+    <div>
+      <div class="col-header"><div class="dot dot-green"></div> Facturas emitidas</div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-label">Total</div><div class="stat-value">79.848 &euro;</div></div>
+        <div class="stat-box"><div class="stat-label">Cobrado</div><div class="stat-value green">33.348 &euro;</div></div>
+        <div class="stat-box"><div class="stat-label">Pendiente</div><div class="stat-value amber">46.500 &euro;</div></div>
+      </div>
+      <div class="invoice-card">
+        <div class="inv-left">
+          <div class="inv-code">#F-001</div>
+          <div class="inv-desc">Reforma Chamberi - Primer pago</div>
+        </div>
+        <div class="inv-right">
+          <div class="inv-amount">4.500 &euro;</div>
+          <div class="inv-status status-paid">Pagada</div>
+        </div>
+      </div>
+      <div class="invoice-card">
+        <div class="inv-left">
+          <div class="inv-code">#F-002</div>
+          <div class="inv-desc">Fachada Goya - Anticipo</div>
+        </div>
+        <div class="inv-right">
+          <div class="inv-amount">15.000 &euro;</div>
+          <div class="inv-status status-paid">Pagada</div>
+        </div>
+      </div>
+      <div class="invoice-card">
+        <div class="inv-left">
+          <div class="inv-code">#F-003</div>
+          <div class="inv-desc">Cocina Salamanca - Pago final</div>
+        </div>
+        <div class="inv-right">
+          <div class="inv-amount">12.800 &euro;</div>
+          <div class="inv-status status-paid">Pagada</div>
+        </div>
+      </div>
+      <div class="invoice-card">
+        <div class="inv-left">
+          <div class="inv-code">#F-004</div>
+          <div class="inv-desc">Local Gran Via - Certificacion 1</div>
+        </div>
+        <div class="inv-right">
+          <div class="inv-amount">20.000 &euro;</div>
+          <div class="inv-status status-pending">Pendiente</div>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT: Expenses -->
+    <div>
+      <div class="col-header"><div class="dot dot-red"></div> Gastos / Compras</div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-label">Total</div><div class="stat-value">9.150 &euro;</div></div>
+        <div class="stat-box"><div class="stat-label">En proyectos</div><div class="stat-value blue">8.260 &euro;</div></div>
+        <div class="stat-box"><div class="stat-label">Generales</div><div class="stat-value red">890 &euro;</div></div>
+      </div>
+      <div class="expense-card">
+        <div class="inv-left">
+          <div class="inv-code">#G-001</div>
+          <div class="inv-desc">Leroy Merlin</div>
+          <div class="exp-cat">Material</div>
+        </div>
+        <div class="inv-right">
+          <div class="inv-amount">1.200 &euro;</div>
+          <div class="exp-tag">2 proyectos</div>
+        </div>
+      </div>
+      <div class="expense-card">
+        <div class="inv-left">
+          <div class="inv-code">#G-002</div>
+          <div class="inv-desc">ElectroStock</div>
+          <div class="exp-cat">Herramientas</div>
+        </div>
+        <div class="inv-right">
+          <div class="inv-amount">450 &euro;</div>
+          <div class="exp-tag">Fachada Goya</div>
+        </div>
+      </div>
+      <div class="expense-card">
+        <div class="inv-left">
+          <div class="inv-code">#G-003</div>
+          <div class="inv-desc">Transportes Ruiz</div>
+          <div class="exp-cat">Transporte</div>
+        </div>
+        <div class="inv-right">
+          <div class="inv-amount">380 &euro;</div>
+          <div class="exp-tag">Gasto general</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>ProjectTrack — El problema</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px; height: 1080px; overflow: hidden;
+    background: #0a0f1a;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 70px 80px;
+    display: flex; flex-direction: column;
+  }
+  .bg-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  h1 {
+    font-size: 52px; font-weight: 800; color: #f9fafb;
+    margin-bottom: 16px; letter-spacing: -1px;
+    position: relative; z-index: 1;
+  }
+  h1 span { color: #f59e0b; }
+  .subtitle-line {
+    width: 60px; height: 4px; background: #f59e0b; border-radius: 2px;
+    margin-bottom: 56px; position: relative; z-index: 1;
+  }
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 36px;
+    flex: 1; position: relative; z-index: 1;
+    align-content: center;
+  }
+  .card {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 20px;
+    padding: 48px 44px;
+    display: flex; flex-direction: column; gap: 20px;
+    transition: transform 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #ef4444, #f59e0b);
+    opacity: 0.6;
+  }
+  .card-icon {
+    font-size: 52px;
+    line-height: 1;
+  }
+  .card-text {
+    font-size: 23px; color: #e5e7eb; line-height: 1.5;
+    font-weight: 400;
+  }
+  .card-number {
+    position: absolute; top: 20px; right: 28px;
+    font-size: 80px; font-weight: 900; color: rgba(255,255,255,0.03);
+    line-height: 1;
+  }
+  .bottom-text {
+    text-align: center;
+    font-size: 24px; color: #6b7280;
+    margin-top: auto;
+    padding-top: 40px;
+    position: relative; z-index: 1;
+  }
+  .bottom-text strong { color: #10b981; font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="bg-dots"></div>
+  <h1><span>¿</span>Te suena esto<span>?</span></h1>
+  <div class="subtitle-line"></div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-number">1</div>
+      <div class="card-icon">&#128196;</div>
+      <div class="card-text">Tickets en el bolsillo del pantalon que se pierden antes de llegar a casa</div>
+    </div>
+    <div class="card">
+      <div class="card-number">2</div>
+      <div class="card-icon">&#128202;</div>
+      <div class="card-text">Hojas de calculo con formulas que nadie entiende (ni tu mismo)</div>
+    </div>
+    <div class="card">
+      <div class="card-number">3</div>
+      <div class="card-icon">&#128552;</div>
+      <div class="card-text">Cada trimestre, el mismo susto: ¿cuanto tengo que pagar a Hacienda?</div>
+    </div>
+    <div class="card">
+      <div class="card-number">4</div>
+      <div class="card-icon">&#129335;</div>
+      <div class="card-text">¿Cuanto gano realmente en cada obra? Ni idea</div>
+    </div>
+  </div>
+  <div class="bottom-text">Si eres autonomo y trabajas por proyectos, <strong>esto se acabo.</strong></div>
+</body>
+</html>

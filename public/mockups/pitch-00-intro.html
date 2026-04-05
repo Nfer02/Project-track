@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>ProjectTrack — Intro</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px; height: 1080px; overflow: hidden;
+    background: #0a0f1a;
+    font-family: system-ui, -apple-system, sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .bg-glow {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px; height: 900px;
+    background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, rgba(59,130,246,0.03) 30%, transparent 70%);
+    pointer-events: none;
+  }
+  .bg-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  .content {
+    position: relative; z-index: 1;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 28px;
+  }
+  .logo-row {
+    display: flex; align-items: center; gap: 24px;
+    margin-bottom: 12px;
+  }
+  .logo-icon {
+    width: 88px; height: 88px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px; font-weight: 800; color: #fff;
+    letter-spacing: -1px;
+    box-shadow: 0 0 60px rgba(59,130,246,0.3), 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .logo-text {
+    font-size: 68px; font-weight: 800; color: #f9fafb;
+    letter-spacing: -2px;
+  }
+  .tagline {
+    font-size: 34px; color: #9ca3af; font-weight: 400;
+    letter-spacing: -0.5px;
+  }
+  .audience {
+    font-size: 26px; color: #6b7280; font-weight: 400;
+    margin-top: 4px;
+  }
+  .domain {
+    position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%);
+    font-size: 18px; color: #4b5563; letter-spacing: 2px; text-transform: lowercase;
+  }
+  .accent-line {
+    width: 80px; height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 2px;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="bg-dots"></div>
+  <div class="content">
+    <div class="logo-row">
+      <div class="logo-icon">PT</div>
+      <div class="logo-text">ProjectTrack</div>
+    </div>
+    <div class="accent-line"></div>
+    <div class="tagline">Gestion de proyectos y control financiero</div>
+    <div class="audience">Para autonomos y pymes en Espana <span style="font-size:32px">&#127466;&#127480;</span></div>
+  </div>
+  <div class="domain">projecttrack.app</div>
+</body>
+</html>
