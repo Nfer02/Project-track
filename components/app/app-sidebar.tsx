@@ -144,21 +144,21 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="top" align="start" className="w-52">
-            <DropdownMenuItem onSelect={() => router.push("/settings/profile")}>
+            <DropdownMenuItem onClick={() => router.push("/settings/profile")}>
               <User className="mr-2 h-4 w-4" aria-hidden="true" />
               Mi perfil
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => router.push("/settings/members")}>
+            <DropdownMenuItem onClick={() => router.push("/settings/members")}>
               <Users className="mr-2 h-4 w-4" aria-hidden="true" />
               Colaboradores
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => router.push("/settings/billing")}>
+            <DropdownMenuItem onClick={() => router.push("/settings/billing")}>
               <CreditCard className="mr-2 h-4 w-4" aria-hidden="true" />
               Facturación
             </DropdownMenuItem>
             <DropdownMenuItem
               className="text-destructive focus:text-destructive"
-              onSelect={() => logout()}
+              onClick={() => logout()}
             >
               <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
               Cerrar sesión
