@@ -11,6 +11,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 ### Patron Client Wrapper
 - Nunca pasar closures de server actions desde server components a client components
 - Crear un client wrapper que importe la server action directamente
+- Nunca pasar referencias a componentes React (como iconos de Lucide) como props de Server a Client components — mover los datos dentro del client component
 
 ### Formularios
 - Usar `FormField` (de react-hook-form) para todos los selects en formularios, NO `Controller`
@@ -41,5 +42,18 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ### Base UI (shadcn/ui)
 - `Button` NO tiene `asChild`. Usar `render={<Link href="..." />}`
-- `DropdownMenuItem` navega via `onSelect={() => router.push(...)}`
+- `DropdownMenuItem`: usar `onClick` en lugar de `onSelect` (Base UI no soporta `onSelect`)
 - No existe `asChild` en Base UI (es concepto de Radix)
+
+### Cookie notice
+- Usar localStorage para persistir el estado de aceptacion del cookie notice
+- No bloquear la navegacion; es informativo, no un consent wall
+
+### Facturas vencidas
+- Detectar facturas vencidas al cargar la pagina (en el server component), no durante la mutacion en DB
+- Marcar como OVERDUE al hacer fetch, no al crear/editar
+
+### Disclaimers legales
+- Todas las estimaciones fiscales deben incluir un disclaimer: "orientativo, no sustituye asesoramiento profesional"
+- Los reportes CSV deben incluir disclaimer similar
+- Nunca presentar datos fiscales como definitivos o vinculantes
