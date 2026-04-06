@@ -100,10 +100,20 @@ export default async function ProjectFinancesPage({ params }: Props) {
   }))
 
   // ─── Gráfico 3: Rentabilidad acumulada mes a mes ──────────────────────
+  // Acumula DESDE EL INICIO del proyecto, no solo los últimos 6 meses
   const MONTH_LABELS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
   const profitData: ProfitPoint[] = []
-  let accCobrado = 0
-  let accGastado = 0
+
+  // Calcular acumulado ANTES de los 6 meses visibles
+  const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1)
+
+  let accCobrado = processedIncome
+    .filter((inv) => inv.status === "PAID" && new Date(inv.issueDate) < sixMonthsAgo)
+    .reduce((s, inv) => s + Number(inv.amount), 0)
+
+  let accGastado = expenseAllocations
+    .filter((a) => a.invoice.status === "PAID" && new Date(a.invoice.issueDate) < sixMonthsAgo)
+    .reduce((s, a) => s + Number(a.amount), 0)
 
   for (let i = 5; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
