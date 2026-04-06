@@ -214,10 +214,6 @@ export default async function ProjectFinancesPage({ params }: Props) {
         </div>
       </div>
 
-      {/* (Cobros por factura eliminado — la info ya está en las cards) */}
-      {false && (
-      )}
-
       {/* Presupuesto de materiales */}
       {budget != null && budget > 0 && (
         <div className="rounded-xl border bg-card p-5 space-y-3">
