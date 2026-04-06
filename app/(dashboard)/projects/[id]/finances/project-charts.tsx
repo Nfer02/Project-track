@@ -52,7 +52,7 @@ export function ProjectExpenseDonut({ data, total }: { data: CategoryItem[]; tot
             ))}
           </Pie>
           <Tooltip
-            formatter={(value: number) => formatCurrency(value)}
+            formatter={(value) => formatCurrency(Number(value))}
             contentStyle={{
               backgroundColor: "hsl(var(--popover))",
               border: "1px solid hsl(var(--border))",
@@ -107,7 +107,7 @@ export function ProjectPaymentsBar({ data }: { data: PaymentItem[] }) {
           width={45}
         />
         <Tooltip
-          formatter={(value: number) => formatCurrency(value)}
+          formatter={(value) => formatCurrency(Number(value))}
           contentStyle={{
             backgroundColor: "hsl(var(--popover))",
             border: "1px solid hsl(var(--border))",
@@ -161,9 +161,9 @@ export function ProjectProfitArea({ data }: { data: ProfitPoint[] }) {
           width={45}
         />
         <Tooltip
-          formatter={(value: number, name: string) => [
-            formatCurrency(value),
-            name === "cobrado" ? "Cobrado" : name === "gastado" ? "Gastado" : "Beneficio neto",
+          formatter={(value, name) => [
+            formatCurrency(Number(value ?? 0)),
+            String(name) === "cobrado" ? "Cobrado" : String(name) === "gastado" ? "Gastado" : "Beneficio neto",
           ]}
           contentStyle={{
             backgroundColor: "hsl(var(--popover))",
