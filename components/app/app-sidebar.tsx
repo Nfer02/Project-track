@@ -35,7 +35,7 @@ const NAV_ITEMS = [
 const SETTINGS_ITEMS = [
   { href: "/reports", label: "Reportes", icon: FileBarChart },
   { href: "/settings/members", label: "Colaboradores", icon: Users },
-  { href: "/settings/billing", label: "Facturación", icon: CreditCard },
+  { href: "/settings/billing", label: "Mi plan", icon: CreditCard },
 ]
 
 interface AppSidebarProps {
@@ -154,7 +154,7 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => router.push("/settings/billing")}>
               <CreditCard className="mr-2 h-4 w-4" aria-hidden="true" />
-              Facturación
+              Mi plan
             </DropdownMenuItem>
             <DropdownMenuItem
               className="text-destructive focus:text-destructive"

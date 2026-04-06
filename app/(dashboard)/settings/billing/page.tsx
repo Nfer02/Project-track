@@ -39,7 +39,7 @@ const PRO_FEATURES = [
   "OCR inteligente (escanear gastos con IA)",
   "Reparto de gastos entre proyectos",
   "Dashboard financiero avanzado",
-  "Estimación fiscal automática (IVA + IRPF)",
+  "Estimación fiscal orientativa (IVA + IRPF)",
   "Reportes para el contador",
   "Soporte por email",
 ]
@@ -79,7 +79,7 @@ export default async function BillingPage({
           <CreditCard className="h-4 w-4 text-muted-foreground" />
         </div>
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">Facturación</h1>
+          <h1 className="text-xl font-semibold tracking-tight">Plan y suscripción</h1>
           <p className="text-xs text-muted-foreground">
             Plan y suscripción de{" "}
             <span className="font-medium text-foreground">{freshWorkspace.name}</span>
