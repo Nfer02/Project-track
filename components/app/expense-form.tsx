@@ -31,6 +31,8 @@ import type { ExpenseFormValues } from "@/app/(dashboard)/invoices/actions"
 
 const schema = z.object({
   number: z.string().min(1),
+  externalNumber: z.string().optional(),
+  counterpartNif: z.string().optional(),
   vendorName: z.string().min(1, "El proveedor es obligatorio"),
   description: z.string().optional(),
   amount: z
@@ -93,6 +95,8 @@ export function ExpenseForm({
     resolver: zodResolver(schema),
     defaultValues: {
       number: "",
+      externalNumber: "",
+      counterpartNif: "",
       vendorName: "",
       description: "",
       amount: "",
@@ -171,6 +175,8 @@ export function ExpenseForm({
     try {
       const result = await onSubmit({
         ...values,
+        externalNumber: values.externalNumber,
+        counterpartNif: values.counterpartNif,
         allocations: validAllocations,
       } as ExpenseFormValues)
       if (result && "error" in result) setServerError(result.error)
@@ -193,6 +199,8 @@ export function ExpenseForm({
             if (data.vatAmount) form.setValue("vatAmount", String(data.vatAmount))
             if (data.issueDate) form.setValue("issueDate", data.issueDate)
             if (data.dueDate) form.setValue("dueDate", data.dueDate)
+            if (data.nif) form.setValue("counterpartNif", data.nif)
+            if (data.invoiceNumber) form.setValue("externalNumber", data.invoiceNumber)
             if (data.notes) form.setValue("notes", data.notes)
           }}
         />
@@ -200,6 +208,22 @@ export function ExpenseForm({
         {/* Numero (oculto) */}
         <input type="hidden" {...form.register("number")} />
         <input type="hidden" {...form.register("currency")} />
+
+        {/* N.º factura del proveedor */}
+        <FormField
+          control={form.control}
+          name="externalNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>N.º factura del proveedor</FormLabel>
+              <FormControl>
+                <Input placeholder="Número que aparece en la factura de compra" {...field} />
+              </FormControl>
+              <FormDescription>El número de factura del proveedor</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         {/* Proveedor + Estado */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -240,6 +264,22 @@ export function ExpenseForm({
             )}
           />
         </div>
+
+        {/* NIF del proveedor */}
+        <FormField
+          control={form.control}
+          name="counterpartNif"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>NIF del proveedor</FormLabel>
+              <FormControl>
+                <Input placeholder="Ej: B12345678" {...field} />
+              </FormControl>
+              <FormDescription>Obligatorio para el libro registro</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         {/* Descripcion */}
         <FormField

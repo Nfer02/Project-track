@@ -9,6 +9,7 @@ import { ProjectStatus } from "@/generated/prisma"
 export type ProjectFormValues = {
   name: string
   clientName?: string
+  clientNif?: string
   description?: string
   status: ProjectStatus
   projectValue?: string
@@ -36,6 +37,7 @@ export async function createProject(values: ProjectFormValues) {
       workspaceId: workspace.id,
       name: values.name,
       clientName: values.clientName || null,
+      clientNif: values.clientNif || null,
       description: values.description || null,
       status: values.status,
       projectValue: values.projectValue ? parseFloat(values.projectValue) : null,
@@ -67,6 +69,7 @@ export async function updateProject(id: string, values: ProjectFormValues) {
     data: {
       name: values.name,
       clientName: values.clientName || null,
+      clientNif: values.clientNif || null,
       description: values.description || null,
       status: values.status,
       projectValue: values.projectValue ? parseFloat(values.projectValue) : null,

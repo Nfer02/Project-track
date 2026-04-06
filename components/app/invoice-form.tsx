@@ -24,6 +24,7 @@ const decimalRule = (v: string) => /^\d+(\.\d{1,2})?$/.test(v)
 
 const schema = z.object({
   number: z.string().min(1, "El número es obligatorio"),
+  counterpartNif: z.string().optional(),
   description: z.string().optional(),
   amount: z
     .string()
@@ -76,6 +77,7 @@ export function InvoiceForm({
     resolver: zodResolver(schema),
     defaultValues: {
       number: "",
+      counterpartNif: "",
       description: "",
       amount: "",
       vatRate: "21",
@@ -110,6 +112,7 @@ export function InvoiceForm({
         ...values,
         amount: totalAmount.toFixed(2),
         vatAmount: vatAmount.toFixed(2),
+        counterpartNif: values.counterpartNif,
       } as InvoiceFormValues)
       if (result && "error" in result) setServerError(result.error)
     } catch (err) {
@@ -187,6 +190,22 @@ export function InvoiceForm({
               <FormControl>
                 <Input placeholder="Ej: Reforma integral cocina — Primer pago" {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* NIF del cliente */}
+        <FormField
+          control={form.control}
+          name="counterpartNif"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>NIF del cliente</FormLabel>
+              <FormControl>
+                <Input placeholder="Ej: 12345678A" {...field} />
+              </FormControl>
+              <FormDescription>Obligatorio para el libro registro de facturas</FormDescription>
               <FormMessage />
             </FormItem>
           )}

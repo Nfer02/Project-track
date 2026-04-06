@@ -31,6 +31,7 @@ const decimalRule = (v?: string) => !v || /^\d+(\.\d{1,2})?$/.test(v)
 const schema = z.object({
   name: z.string().min(1, "El nombre es obligatorio"),
   clientName: z.string().optional(),
+  clientNif: z.string().optional(),
   description: z.string().optional(),
   status: z.enum(["ACTIVE", "COMPLETED", "ARCHIVED"]),
   projectValue: z.string().optional().refine(decimalRule, "Formato inválido (ej: 5000.00)"),
@@ -73,6 +74,7 @@ export function ProjectForm({
     defaultValues: {
       name: "",
       clientName: "",
+      clientNif: "",
       description: "",
       status: "ACTIVE",
       projectValue: "",
@@ -133,6 +135,20 @@ export function ProjectForm({
                 <FormLabel>Cliente</FormLabel>
                 <FormControl>
                   <Input placeholder="Ej: Empresa X S.A." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="clientNif"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>NIF/CIF del cliente</FormLabel>
+                <FormControl>
+                  <Input placeholder="Ej: 12345678A o B12345678" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

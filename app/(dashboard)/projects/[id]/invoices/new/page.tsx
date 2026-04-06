@@ -42,7 +42,7 @@ export default async function NewInvoicePage({ params }: Props) {
 
       <NewInvoiceForm
         projectId={projectId}
-        defaultValues={{ number: nextNumber, currency: project.currency, isDeclared: project.isDeclared, paymentMethod: project.paymentMethod ?? "", vatRate: String(project.vatRate), irpfRate: String(project.irpfRate) }}
+        defaultValues={{ number: nextNumber, currency: project.currency, isDeclared: project.isDeclared, paymentMethod: project.paymentMethod ?? "", vatRate: String(project.vatRate), irpfRate: String(project.irpfRate), counterpartNif: project.clientNif ?? "" }}
       />
     </div>
   )

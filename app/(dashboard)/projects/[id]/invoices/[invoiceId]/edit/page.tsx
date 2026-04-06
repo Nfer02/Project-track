@@ -56,6 +56,7 @@ export default async function EditInvoicePage({ params }: Props) {
         projectId={projectId}
         defaultValues={{
           number: invoice.number,
+          counterpartNif: invoice.counterpartNif ?? "",
           description: invoice.description ?? "",
           amount: String(Number(invoice.amount)),
           currency: invoice.currency,

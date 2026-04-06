@@ -16,6 +16,7 @@ export type OcrData = {
   description?: string | null
   vendorName?: string | null
   clientName?: string | null
+  nif?: string | null
   notes?: string | null
   error?: string
 }

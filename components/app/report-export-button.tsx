@@ -7,9 +7,12 @@ interface ReportRow {
   fecha: string
   tipo: string
   numero: string
-  descripcion: string
-  proveedorCliente: string
-  importe: string
+  numeroFacturaProveedor: string
+  nif: string
+  nombreClienteProveedor: string
+  baseImponible: string
+  iva: string
+  total: string
   estado: string
 }
 
@@ -20,7 +23,7 @@ interface ReportExportButtonProps {
 
 export function ReportExportButton({ rows, quarterLabel }: ReportExportButtonProps) {
   function handleExport() {
-    const headers = ["Fecha", "Tipo", "N\u00b0 Factura", "Descripci\u00f3n", "Proveedor/Cliente", "Importe", "Estado"]
+    const headers = ["Fecha", "Tipo", "N\u00b0 Factura", "N\u00b0 Factura Proveedor", "NIF", "Nombre Cliente/Proveedor", "Base Imponible", "IVA", "Total", "Estado"]
 
     const csvContent = [
       headers.join(";"),
@@ -29,9 +32,12 @@ export function ReportExportButton({ rows, quarterLabel }: ReportExportButtonPro
           r.fecha,
           r.tipo,
           r.numero,
-          `"${(r.descripcion || "").replace(/"/g, '""')}"`,
-          `"${(r.proveedorCliente || "").replace(/"/g, '""')}"`,
-          r.importe,
+          r.numeroFacturaProveedor,
+          r.nif,
+          `"${(r.nombreClienteProveedor || "").replace(/"/g, '""')}"`,
+          r.baseImponible,
+          r.iva,
+          r.total,
           r.estado,
         ].join(";")
       ),

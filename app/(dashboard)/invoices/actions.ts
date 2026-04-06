@@ -11,6 +11,7 @@ import { InvoiceStatus, InvoiceType } from "@/generated/prisma"
 export type InvoiceFormValues = {
   number: string
   description?: string
+  counterpartNif?: string
   amount: string
   vatRate?: string
   vatAmount?: string
@@ -26,7 +27,9 @@ export type InvoiceFormValues = {
 
 export type ExpenseFormValues = {
   number: string
+  externalNumber?: string
   description?: string
+  counterpartNif?: string
   amount: string
   currency: string
   status: InvoiceStatus // PENDING o PAID para gastos
@@ -88,6 +91,12 @@ export async function createInvoice(
   if (!project) return { error: "Proyecto no encontrado" }
 
   try {
+    // Auto-fill counterpartNif from project's clientNif if not provided
+    let counterpartNif = values.counterpartNif || null
+    if (!counterpartNif && project.clientNif) {
+      counterpartNif = project.clientNif
+    }
+
     await prisma.invoice.create({
       data: {
         type: "INCOME" as InvoiceType,
@@ -95,6 +104,7 @@ export async function createInvoice(
         projectId,
         number: values.number,
         description: values.description || null,
+        counterpartNif,
         amount: parseFloat(values.amount),
         vatAmount: values.vatAmount ? parseFloat(values.vatAmount) : null,
         currency: values.currency,
@@ -139,6 +149,7 @@ export async function updateInvoice(
       data: {
         number: values.number,
         description: values.description || null,
+        counterpartNif: values.counterpartNif || null,
         amount: parseFloat(values.amount),
         currency: values.currency,
         status: values.status,
@@ -209,7 +220,9 @@ export async function createExpense(
           workspaceId: workspace.id,
           projectId: null,
           number: values.number,
+          externalNumber: values.externalNumber || null,
           description: values.description || null,
+          counterpartNif: values.counterpartNif || null,
           amount: totalAmount,
           currency: values.currency,
           status: values.status,
@@ -278,7 +291,9 @@ export async function updateExpense(
         where: { id: invoiceId },
         data: {
           number: values.number,
+          externalNumber: values.externalNumber || null,
           description: values.description || null,
+          counterpartNif: values.counterpartNif || null,
           amount: totalAmount,
           currency: values.currency,
           status: values.status,

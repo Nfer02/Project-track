@@ -83,6 +83,7 @@ Responde ÚNICAMENTE con el JSON, sin texto adicional ni bloques de código:
   "description": "descripción principal del servicio o bien o null",
   "vendorName": "nombre del emisor/proveedor o null",
   "clientName": "nombre del cliente/receptor o null",
+  "nif": "NIF o CIF del emisor de la factura o null",
   "notes": "cualquier nota o condición de pago relevante o null"
 }`,
             },

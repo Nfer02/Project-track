@@ -93,6 +93,7 @@ model Project {
   workspaceId String
   name        String
   clientName  String?
+  clientNif   String?       // NIF/CIF del cliente
   description String?
   status      ProjectStatus @default(ACTIVE)
   projectValue     Decimal?      @db.Decimal(12, 2)
@@ -118,8 +119,10 @@ model Invoice {
   type        InvoiceType   @default(INCOME)
   workspaceId String
   projectId   String?
-  number      String
-  description String?
+  number          String
+  externalNumber  String?       // Número de factura del proveedor (gastos) o del propio autónomo (ingresos)
+  counterpartNif  String?       // NIF del cliente (ingresos) o proveedor (gastos)
+  description     String?
   amount      Decimal       @db.Decimal(12, 2)
   currency    String        @default("EUR")
   isDeclared  Boolean       @default(true)

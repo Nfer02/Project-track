@@ -5150,6 +5150,7 @@ export namespace Prisma {
     workspaceId: string | null
     name: string | null
     clientName: string | null
+    clientNif: string | null
     description: string | null
     status: $Enums.ProjectStatus | null
     projectValue: Decimal | null
@@ -5171,6 +5172,7 @@ export namespace Prisma {
     workspaceId: string | null
     name: string | null
     clientName: string | null
+    clientNif: string | null
     description: string | null
     status: $Enums.ProjectStatus | null
     projectValue: Decimal | null
@@ -5192,6 +5194,7 @@ export namespace Prisma {
     workspaceId: number
     name: number
     clientName: number
+    clientNif: number
     description: number
     status: number
     projectValue: number
@@ -5231,6 +5234,7 @@ export namespace Prisma {
     workspaceId?: true
     name?: true
     clientName?: true
+    clientNif?: true
     description?: true
     status?: true
     projectValue?: true
@@ -5252,6 +5256,7 @@ export namespace Prisma {
     workspaceId?: true
     name?: true
     clientName?: true
+    clientNif?: true
     description?: true
     status?: true
     projectValue?: true
@@ -5273,6 +5278,7 @@ export namespace Prisma {
     workspaceId?: true
     name?: true
     clientName?: true
+    clientNif?: true
     description?: true
     status?: true
     projectValue?: true
@@ -5381,6 +5387,7 @@ export namespace Prisma {
     workspaceId: string
     name: string
     clientName: string | null
+    clientNif: string | null
     description: string | null
     status: $Enums.ProjectStatus
     projectValue: Decimal | null
@@ -5421,6 +5428,7 @@ export namespace Prisma {
     workspaceId?: boolean
     name?: boolean
     clientName?: boolean
+    clientNif?: boolean
     description?: boolean
     status?: boolean
     projectValue?: boolean
@@ -5446,6 +5454,7 @@ export namespace Prisma {
     workspaceId?: boolean
     name?: boolean
     clientName?: boolean
+    clientNif?: boolean
     description?: boolean
     status?: boolean
     projectValue?: boolean
@@ -5468,6 +5477,7 @@ export namespace Prisma {
     workspaceId?: boolean
     name?: boolean
     clientName?: boolean
+    clientNif?: boolean
     description?: boolean
     status?: boolean
     projectValue?: boolean
@@ -5490,6 +5500,7 @@ export namespace Prisma {
     workspaceId?: boolean
     name?: boolean
     clientName?: boolean
+    clientNif?: boolean
     description?: boolean
     status?: boolean
     projectValue?: boolean
@@ -5506,7 +5517,7 @@ export namespace Prisma {
     irpfRate?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "name" | "clientName" | "description" | "status" | "projectValue" | "budget" | "currency" | "paymentMethod" | "numberOfPayments" | "startDate" | "endDate" | "createdAt" | "updatedAt" | "isDeclared" | "vatRate" | "irpfRate", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "name" | "clientName" | "clientNif" | "description" | "status" | "projectValue" | "budget" | "currency" | "paymentMethod" | "numberOfPayments" | "startDate" | "endDate" | "createdAt" | "updatedAt" | "isDeclared" | "vatRate" | "irpfRate", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     invoices?: boolean | Project$invoicesArgs<ExtArgs>
@@ -5532,6 +5543,7 @@ export namespace Prisma {
       workspaceId: string
       name: string
       clientName: string | null
+      clientNif: string | null
       description: string | null
       status: $Enums.ProjectStatus
       projectValue: Prisma.Decimal | null
@@ -5976,6 +5988,7 @@ export namespace Prisma {
     readonly workspaceId: FieldRef<"Project", 'String'>
     readonly name: FieldRef<"Project", 'String'>
     readonly clientName: FieldRef<"Project", 'String'>
+    readonly clientNif: FieldRef<"Project", 'String'>
     readonly description: FieldRef<"Project", 'String'>
     readonly status: FieldRef<"Project", 'ProjectStatus'>
     readonly projectValue: FieldRef<"Project", 'Decimal'>
@@ -6485,6 +6498,8 @@ export namespace Prisma {
     workspaceId: string | null
     projectId: string | null
     number: string | null
+    externalNumber: string | null
+    counterpartNif: string | null
     description: string | null
     amount: Decimal | null
     currency: string | null
@@ -6508,6 +6523,8 @@ export namespace Prisma {
     workspaceId: string | null
     projectId: string | null
     number: string | null
+    externalNumber: string | null
+    counterpartNif: string | null
     description: string | null
     amount: Decimal | null
     currency: string | null
@@ -6531,6 +6548,8 @@ export namespace Prisma {
     workspaceId: number
     projectId: number
     number: number
+    externalNumber: number
+    counterpartNif: number
     description: number
     amount: number
     currency: number
@@ -6566,6 +6585,8 @@ export namespace Prisma {
     workspaceId?: true
     projectId?: true
     number?: true
+    externalNumber?: true
+    counterpartNif?: true
     description?: true
     amount?: true
     currency?: true
@@ -6589,6 +6610,8 @@ export namespace Prisma {
     workspaceId?: true
     projectId?: true
     number?: true
+    externalNumber?: true
+    counterpartNif?: true
     description?: true
     amount?: true
     currency?: true
@@ -6612,6 +6635,8 @@ export namespace Prisma {
     workspaceId?: true
     projectId?: true
     number?: true
+    externalNumber?: true
+    counterpartNif?: true
     description?: true
     amount?: true
     currency?: true
@@ -6722,6 +6747,8 @@ export namespace Prisma {
     workspaceId: string
     projectId: string | null
     number: string
+    externalNumber: string | null
+    counterpartNif: string | null
     description: string | null
     amount: Decimal
     currency: string
@@ -6764,6 +6791,8 @@ export namespace Prisma {
     workspaceId?: boolean
     projectId?: boolean
     number?: boolean
+    externalNumber?: boolean
+    counterpartNif?: boolean
     description?: boolean
     amount?: boolean
     currency?: boolean
@@ -6792,6 +6821,8 @@ export namespace Prisma {
     workspaceId?: boolean
     projectId?: boolean
     number?: boolean
+    externalNumber?: boolean
+    counterpartNif?: boolean
     description?: boolean
     amount?: boolean
     currency?: boolean
@@ -6817,6 +6848,8 @@ export namespace Prisma {
     workspaceId?: boolean
     projectId?: boolean
     number?: boolean
+    externalNumber?: boolean
+    counterpartNif?: boolean
     description?: boolean
     amount?: boolean
     currency?: boolean
@@ -6842,6 +6875,8 @@ export namespace Prisma {
     workspaceId?: boolean
     projectId?: boolean
     number?: boolean
+    externalNumber?: boolean
+    counterpartNif?: boolean
     description?: boolean
     amount?: boolean
     currency?: boolean
@@ -6859,7 +6894,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "workspaceId" | "projectId" | "number" | "description" | "amount" | "currency" | "isDeclared" | "vendorName" | "category" | "vatAmount" | "issueDate" | "dueDate" | "paidDate" | "paymentMethod" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
+  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "workspaceId" | "projectId" | "number" | "externalNumber" | "counterpartNif" | "description" | "amount" | "currency" | "isDeclared" | "vendorName" | "category" | "vatAmount" | "issueDate" | "dueDate" | "paidDate" | "paymentMethod" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
   export type InvoiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     project?: boolean | Invoice$projectArgs<ExtArgs>
@@ -6890,6 +6925,8 @@ export namespace Prisma {
       workspaceId: string
       projectId: string | null
       number: string
+      externalNumber: string | null
+      counterpartNif: string | null
       description: string | null
       amount: Prisma.Decimal
       currency: string
@@ -7337,6 +7374,8 @@ export namespace Prisma {
     readonly workspaceId: FieldRef<"Invoice", 'String'>
     readonly projectId: FieldRef<"Invoice", 'String'>
     readonly number: FieldRef<"Invoice", 'String'>
+    readonly externalNumber: FieldRef<"Invoice", 'String'>
+    readonly counterpartNif: FieldRef<"Invoice", 'String'>
     readonly description: FieldRef<"Invoice", 'String'>
     readonly amount: FieldRef<"Invoice", 'Decimal'>
     readonly currency: FieldRef<"Invoice", 'String'>
@@ -11259,6 +11298,7 @@ export namespace Prisma {
     workspaceId: 'workspaceId',
     name: 'name',
     clientName: 'clientName',
+    clientNif: 'clientNif',
     description: 'description',
     status: 'status',
     projectValue: 'projectValue',
@@ -11284,6 +11324,8 @@ export namespace Prisma {
     workspaceId: 'workspaceId',
     projectId: 'projectId',
     number: 'number',
+    externalNumber: 'externalNumber',
+    counterpartNif: 'counterpartNif',
     description: 'description',
     amount: 'amount',
     currency: 'currency',
@@ -11775,6 +11817,7 @@ export namespace Prisma {
     workspaceId?: StringFilter<"Project"> | string
     name?: StringFilter<"Project"> | string
     clientName?: StringNullableFilter<"Project"> | string | null
+    clientNif?: StringNullableFilter<"Project"> | string | null
     description?: StringNullableFilter<"Project"> | string | null
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
     projectValue?: DecimalNullableFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
@@ -11799,6 +11842,7 @@ export namespace Prisma {
     workspaceId?: SortOrder
     name?: SortOrder
     clientName?: SortOrderInput | SortOrder
+    clientNif?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     status?: SortOrder
     projectValue?: SortOrderInput | SortOrder
@@ -11826,6 +11870,7 @@ export namespace Prisma {
     workspaceId?: StringFilter<"Project"> | string
     name?: StringFilter<"Project"> | string
     clientName?: StringNullableFilter<"Project"> | string | null
+    clientNif?: StringNullableFilter<"Project"> | string | null
     description?: StringNullableFilter<"Project"> | string | null
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
     projectValue?: DecimalNullableFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
@@ -11850,6 +11895,7 @@ export namespace Prisma {
     workspaceId?: SortOrder
     name?: SortOrder
     clientName?: SortOrderInput | SortOrder
+    clientNif?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     status?: SortOrder
     projectValue?: SortOrderInput | SortOrder
@@ -11879,6 +11925,7 @@ export namespace Prisma {
     workspaceId?: StringWithAggregatesFilter<"Project"> | string
     name?: StringWithAggregatesFilter<"Project"> | string
     clientName?: StringNullableWithAggregatesFilter<"Project"> | string | null
+    clientNif?: StringNullableWithAggregatesFilter<"Project"> | string | null
     description?: StringNullableWithAggregatesFilter<"Project"> | string | null
     status?: EnumProjectStatusWithAggregatesFilter<"Project"> | $Enums.ProjectStatus
     projectValue?: DecimalNullableWithAggregatesFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
@@ -11904,6 +11951,8 @@ export namespace Prisma {
     workspaceId?: StringFilter<"Invoice"> | string
     projectId?: StringNullableFilter<"Invoice"> | string | null
     number?: StringFilter<"Invoice"> | string
+    externalNumber?: StringNullableFilter<"Invoice"> | string | null
+    counterpartNif?: StringNullableFilter<"Invoice"> | string | null
     description?: StringNullableFilter<"Invoice"> | string | null
     amount?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
     currency?: StringFilter<"Invoice"> | string
@@ -11931,6 +11980,8 @@ export namespace Prisma {
     workspaceId?: SortOrder
     projectId?: SortOrderInput | SortOrder
     number?: SortOrder
+    externalNumber?: SortOrderInput | SortOrder
+    counterpartNif?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -11962,6 +12013,8 @@ export namespace Prisma {
     workspaceId?: StringFilter<"Invoice"> | string
     projectId?: StringNullableFilter<"Invoice"> | string | null
     number?: StringFilter<"Invoice"> | string
+    externalNumber?: StringNullableFilter<"Invoice"> | string | null
+    counterpartNif?: StringNullableFilter<"Invoice"> | string | null
     description?: StringNullableFilter<"Invoice"> | string | null
     amount?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
     currency?: StringFilter<"Invoice"> | string
@@ -11989,6 +12042,8 @@ export namespace Prisma {
     workspaceId?: SortOrder
     projectId?: SortOrderInput | SortOrder
     number?: SortOrder
+    externalNumber?: SortOrderInput | SortOrder
+    counterpartNif?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -12020,6 +12075,8 @@ export namespace Prisma {
     workspaceId?: StringWithAggregatesFilter<"Invoice"> | string
     projectId?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
     number?: StringWithAggregatesFilter<"Invoice"> | string
+    externalNumber?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    counterpartNif?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
     description?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
     amount?: DecimalWithAggregatesFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
     currency?: StringWithAggregatesFilter<"Invoice"> | string
@@ -12468,6 +12525,7 @@ export namespace Prisma {
     id?: string
     name: string
     clientName?: string | null
+    clientNif?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
     projectValue?: Decimal | DecimalJsLike | number | string | null
@@ -12492,6 +12550,7 @@ export namespace Prisma {
     workspaceId: string
     name: string
     clientName?: string | null
+    clientNif?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
     projectValue?: Decimal | DecimalJsLike | number | string | null
@@ -12514,6 +12573,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -12538,6 +12598,7 @@ export namespace Prisma {
     workspaceId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -12561,6 +12622,7 @@ export namespace Prisma {
     workspaceId: string
     name: string
     clientName?: string | null
+    clientNif?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
     projectValue?: Decimal | DecimalJsLike | number | string | null
@@ -12581,6 +12643,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -12602,6 +12665,7 @@ export namespace Prisma {
     workspaceId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -12622,6 +12686,8 @@ export namespace Prisma {
     id?: string
     type?: $Enums.InvoiceType
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -12649,6 +12715,8 @@ export namespace Prisma {
     workspaceId: string
     projectId?: string | null
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -12672,6 +12740,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -12699,6 +12769,8 @@ export namespace Prisma {
     workspaceId?: StringFieldUpdateOperationsInput | string
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -12724,6 +12796,8 @@ export namespace Prisma {
     workspaceId: string
     projectId?: string | null
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -12745,6 +12819,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -12768,6 +12844,8 @@ export namespace Prisma {
     workspaceId?: StringFieldUpdateOperationsInput | string
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -13354,6 +13432,7 @@ export namespace Prisma {
     workspaceId?: SortOrder
     name?: SortOrder
     clientName?: SortOrder
+    clientNif?: SortOrder
     description?: SortOrder
     status?: SortOrder
     projectValue?: SortOrder
@@ -13383,6 +13462,7 @@ export namespace Prisma {
     workspaceId?: SortOrder
     name?: SortOrder
     clientName?: SortOrder
+    clientNif?: SortOrder
     description?: SortOrder
     status?: SortOrder
     projectValue?: SortOrder
@@ -13404,6 +13484,7 @@ export namespace Prisma {
     workspaceId?: SortOrder
     name?: SortOrder
     clientName?: SortOrder
+    clientNif?: SortOrder
     description?: SortOrder
     status?: SortOrder
     projectValue?: SortOrder
@@ -13546,6 +13627,8 @@ export namespace Prisma {
     workspaceId?: SortOrder
     projectId?: SortOrder
     number?: SortOrder
+    externalNumber?: SortOrder
+    counterpartNif?: SortOrder
     description?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -13574,6 +13657,8 @@ export namespace Prisma {
     workspaceId?: SortOrder
     projectId?: SortOrder
     number?: SortOrder
+    externalNumber?: SortOrder
+    counterpartNif?: SortOrder
     description?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -13597,6 +13682,8 @@ export namespace Prisma {
     workspaceId?: SortOrder
     projectId?: SortOrder
     number?: SortOrder
+    externalNumber?: SortOrder
+    counterpartNif?: SortOrder
     description?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -14894,6 +14981,7 @@ export namespace Prisma {
     id?: string
     name: string
     clientName?: string | null
+    clientNif?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
     projectValue?: Decimal | DecimalJsLike | number | string | null
@@ -14916,6 +15004,7 @@ export namespace Prisma {
     id?: string
     name: string
     clientName?: string | null
+    clientNif?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
     projectValue?: Decimal | DecimalJsLike | number | string | null
@@ -14948,6 +15037,8 @@ export namespace Prisma {
     id?: string
     type?: $Enums.InvoiceType
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -14973,6 +15064,8 @@ export namespace Prisma {
     type?: $Enums.InvoiceType
     projectId?: string | null
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -15069,6 +15162,7 @@ export namespace Prisma {
     workspaceId?: StringFilter<"Project"> | string
     name?: StringFilter<"Project"> | string
     clientName?: StringNullableFilter<"Project"> | string | null
+    clientNif?: StringNullableFilter<"Project"> | string | null
     description?: StringNullableFilter<"Project"> | string | null
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
     projectValue?: DecimalNullableFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
@@ -15110,6 +15204,8 @@ export namespace Prisma {
     workspaceId?: StringFilter<"Invoice"> | string
     projectId?: StringNullableFilter<"Invoice"> | string | null
     number?: StringFilter<"Invoice"> | string
+    externalNumber?: StringNullableFilter<"Invoice"> | string | null
+    counterpartNif?: StringNullableFilter<"Invoice"> | string | null
     description?: StringNullableFilter<"Invoice"> | string | null
     amount?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
     currency?: StringFilter<"Invoice"> | string
@@ -15305,6 +15401,8 @@ export namespace Prisma {
     id?: string
     type?: $Enums.InvoiceType
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -15330,6 +15428,8 @@ export namespace Prisma {
     type?: $Enums.InvoiceType
     workspaceId: string
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -15497,6 +15597,7 @@ export namespace Prisma {
     id?: string
     name: string
     clientName?: string | null
+    clientNif?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
     projectValue?: Decimal | DecimalJsLike | number | string | null
@@ -15520,6 +15621,7 @@ export namespace Prisma {
     workspaceId: string
     name: string
     clientName?: string | null
+    clientNif?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
     projectValue?: Decimal | DecimalJsLike | number | string | null
@@ -15648,6 +15750,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -15671,6 +15774,7 @@ export namespace Prisma {
     workspaceId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -15738,6 +15842,8 @@ export namespace Prisma {
     id?: string
     type?: $Enums.InvoiceType
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -15764,6 +15870,8 @@ export namespace Prisma {
     workspaceId: string
     projectId?: string | null
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -15791,6 +15899,7 @@ export namespace Prisma {
     id?: string
     name: string
     clientName?: string | null
+    clientNif?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
     projectValue?: Decimal | DecimalJsLike | number | string | null
@@ -15814,6 +15923,7 @@ export namespace Prisma {
     workspaceId: string
     name: string
     clientName?: string | null
+    clientNif?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
     projectValue?: Decimal | DecimalJsLike | number | string | null
@@ -15851,6 +15961,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -15877,6 +15989,8 @@ export namespace Prisma {
     workspaceId?: StringFieldUpdateOperationsInput | string
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -15910,6 +16024,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -15933,6 +16048,7 @@ export namespace Prisma {
     workspaceId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -15954,6 +16070,8 @@ export namespace Prisma {
     id?: string
     type?: $Enums.InvoiceType
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -15980,6 +16098,8 @@ export namespace Prisma {
     workspaceId: string
     projectId?: string | null
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -16018,6 +16138,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -16044,6 +16166,8 @@ export namespace Prisma {
     workspaceId?: StringFieldUpdateOperationsInput | string
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -16180,6 +16304,7 @@ export namespace Prisma {
     id?: string
     name: string
     clientName?: string | null
+    clientNif?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
     projectValue?: Decimal | DecimalJsLike | number | string | null
@@ -16201,6 +16326,8 @@ export namespace Prisma {
     type?: $Enums.InvoiceType
     projectId?: string | null
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -16252,6 +16379,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -16274,6 +16402,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -16296,6 +16425,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -16316,6 +16446,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -16341,6 +16473,8 @@ export namespace Prisma {
     type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -16365,6 +16499,8 @@ export namespace Prisma {
     type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -16387,6 +16523,8 @@ export namespace Prisma {
     type?: $Enums.InvoiceType
     workspaceId: string
     number: string
+    externalNumber?: string | null
+    counterpartNif?: string | null
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
@@ -16416,6 +16554,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -16441,6 +16581,8 @@ export namespace Prisma {
     type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     workspaceId?: StringFieldUpdateOperationsInput | string
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
@@ -16465,6 +16607,8 @@ export namespace Prisma {
     type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     workspaceId?: StringFieldUpdateOperationsInput | string
     number?: StringFieldUpdateOperationsInput | string
+    externalNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    counterpartNif?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string

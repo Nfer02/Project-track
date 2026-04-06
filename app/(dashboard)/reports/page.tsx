@@ -97,16 +97,26 @@ export default async function ReportsPage({ searchParams }: Props) {
     CANCELLED: "Cancelada",
   }
 
+  // Calcular base imponible e IVA para cada factura
+  const computeBase = (inv: (typeof declaredInvoices)[number]) => {
+    const total = Number(inv.amount)
+    const vat = inv.vatAmount ? Number(inv.vatAmount) : 0
+    return total - vat
+  }
+
   const csvRows = declaredInvoices.map((inv) => ({
     fecha: new Date(inv.issueDate).toLocaleDateString("es-ES"),
     tipo: inv.type === "INCOME" ? "Ingreso" : "Gasto",
     numero: inv.number,
-    descripcion: inv.description || "",
-    proveedorCliente:
+    numeroFacturaProveedor: inv.externalNumber || "",
+    nif: inv.counterpartNif || "",
+    nombreClienteProveedor:
       inv.type === "INCOME"
         ? (inv.project?.name || "")
         : (inv.vendorName || ""),
-    importe: Number(inv.amount).toFixed(2),
+    baseImponible: computeBase(inv).toFixed(2),
+    iva: inv.vatAmount ? Number(inv.vatAmount).toFixed(2) : "0.00",
+    total: Number(inv.amount).toFixed(2),
     estado: statusLabels[inv.status] || inv.status,
   }))
 
@@ -213,6 +223,9 @@ export default async function ReportsPage({ searchParams }: Props) {
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground whitespace-nowrap">
                     Proyecto
                   </th>
+                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground whitespace-nowrap hidden lg:table-cell">
+                    NIF
+                  </th>
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground whitespace-nowrap hidden sm:table-cell">
                     Descripci&oacute;n
                   </th>
@@ -239,6 +252,9 @@ export default async function ReportsPage({ searchParams }: Props) {
                     <td className="px-4 py-3 text-xs font-medium whitespace-nowrap">
                       {inv.project?.name || "\u2014"}
                     </td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground hidden lg:table-cell whitespace-nowrap">
+                      {inv.counterpartNif || "\u2014"}
+                    </td>
                     <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell text-xs">
                       {inv.description || "\u2014"}
                     </td>
@@ -254,7 +270,7 @@ export default async function ReportsPage({ searchParams }: Props) {
                   </tr>
                 ))}
                 <tr className="bg-muted/30 font-semibold">
-                  <td className="px-4 py-3 text-xs" colSpan={4}>
+                  <td className="px-4 py-3 text-xs" colSpan={5}>
                     Total
                   </td>
                   <td className="px-4 py-3 text-right text-sm whitespace-nowrap">
@@ -286,8 +302,14 @@ export default async function ReportsPage({ searchParams }: Props) {
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground whitespace-nowrap">
                     N.&ordm;
                   </th>
+                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground whitespace-nowrap hidden lg:table-cell">
+                    N.&ordm; Fra. Prov.
+                  </th>
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground whitespace-nowrap">
                     Proveedor
+                  </th>
+                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground whitespace-nowrap hidden lg:table-cell">
+                    NIF
                   </th>
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground whitespace-nowrap hidden sm:table-cell">
                     Categor&iacute;a
@@ -312,8 +334,14 @@ export default async function ReportsPage({ searchParams }: Props) {
                     <td className="px-4 py-3 font-mono text-xs whitespace-nowrap">
                       #{inv.number}
                     </td>
+                    <td className="px-4 py-3 font-mono text-xs whitespace-nowrap hidden lg:table-cell">
+                      {inv.externalNumber || "\u2014"}
+                    </td>
                     <td className="px-4 py-3 text-xs font-medium whitespace-nowrap">
                       {inv.vendorName || "\u2014"}
+                    </td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground hidden lg:table-cell whitespace-nowrap">
+                      {inv.counterpartNif || "\u2014"}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell text-xs">
                       {inv.category || "\u2014"}
@@ -330,7 +358,7 @@ export default async function ReportsPage({ searchParams }: Props) {
                   </tr>
                 ))}
                 <tr className="bg-muted/30 font-semibold">
-                  <td className="px-4 py-3 text-xs" colSpan={4}>
+                  <td className="px-4 py-3 text-xs" colSpan={6}>
                     Total
                   </td>
                   <td className="px-4 py-3 text-right text-sm whitespace-nowrap">

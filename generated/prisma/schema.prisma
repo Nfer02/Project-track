@@ -93,6 +93,7 @@ model Project {
   workspaceId      String
   name             String
   clientName       String?
+  clientNif        String? // NIF/CIF del cliente
   description      String?
   status           ProjectStatus @default(ACTIVE)
   projectValue     Decimal?      @db.Decimal(12, 2)
@@ -114,26 +115,28 @@ model Project {
 }
 
 model Invoice {
-  id            String        @id @default(cuid())
-  type          InvoiceType   @default(INCOME)
-  workspaceId   String
-  projectId     String?
-  number        String
-  description   String?
-  amount        Decimal       @db.Decimal(12, 2)
-  currency      String        @default("EUR")
-  isDeclared    Boolean       @default(true)
-  vendorName    String?
-  category      String?
-  vatAmount     Decimal?      @db.Decimal(12, 2) // IVA incluido en la factura (para calcular soportado/repercutido)
-  issueDate     DateTime
-  dueDate       DateTime?
-  paidDate      DateTime?
-  paymentMethod String?
-  status        InvoiceStatus @default(PENDING)
-  notes         String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id             String        @id @default(cuid())
+  type           InvoiceType   @default(INCOME)
+  workspaceId    String
+  projectId      String?
+  number         String
+  externalNumber String? // Número de factura del proveedor (gastos) o del propio autónomo (ingresos)
+  counterpartNif String? // NIF del cliente (ingresos) o proveedor (gastos)
+  description    String?
+  amount         Decimal       @db.Decimal(12, 2)
+  currency       String        @default("EUR")
+  isDeclared     Boolean       @default(true)
+  vendorName     String?
+  category       String?
+  vatAmount      Decimal?      @db.Decimal(12, 2) // IVA incluido en la factura (para calcular soportado/repercutido)
+  issueDate      DateTime
+  dueDate        DateTime?
+  paidDate       DateTime?
+  paymentMethod  String?
+  status         InvoiceStatus @default(PENDING)
+  notes          String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 
   workspace   Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   project     Project?            @relation(fields: [projectId], references: [id], onDelete: Cascade)

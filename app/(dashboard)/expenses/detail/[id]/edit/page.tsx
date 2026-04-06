@@ -53,6 +53,8 @@ export default async function EditExpensePage({ params, searchParams }: Props) {
         redirectTo={from ? `/expenses/detail/${id}?from=${from}` : undefined}
         defaultValues={{
           number: expense.number,
+          externalNumber: expense.externalNumber ?? "",
+          counterpartNif: expense.counterpartNif ?? "",
           vendorName: expense.vendorName ?? "",
           description: expense.description ?? "",
           amount: String(Number(expense.amount)),

@@ -42,6 +42,7 @@ export default async function EditProjectPage({ params }: Props) {
         defaultValues={{
           name: project.name,
           clientName: project.clientName ?? "",
+          clientNif: project.clientNif ?? "",
           description: project.description ?? "",
           status: project.status,
           projectValue: project.projectValue ? String(Number(project.projectValue)) : "",
