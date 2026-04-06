@@ -419,6 +419,66 @@ export default async function DashboardPage() {
             </div>
           )}
 
+          {/* Upcoming payments - justo arriba de las gráficas */}
+          {data.upcomingPayments.length > 0 && (
+            <div className="rounded-xl border bg-card p-5">
+              <div className="mb-4 space-y-0.5">
+                <h2 className="text-sm font-semibold">Próximos cobros</h2>
+              </div>
+              <div className="divide-y">
+                {data.upcomingPayments.map((inv) => {
+                  const days = getDaysRemaining(inv.dueDate)
+                  let badgeText: string
+                  let badgeVariant: "destructive" | "secondary" | "outline" | "default"
+
+                  if (days === null) {
+                    badgeText = "Sin vencimiento"
+                    badgeVariant = "secondary"
+                  } else if (days < 0) {
+                    badgeText = `Vencida hace ${Math.abs(days)} día${Math.abs(days) !== 1 ? "s" : ""}`
+                    badgeVariant = "destructive"
+                  } else if (days === 0) {
+                    badgeText = "Vence hoy"
+                    badgeVariant = "destructive"
+                  } else if (days <= 7) {
+                    badgeText = `Vence en ${days} día${days !== 1 ? "s" : ""}`
+                    badgeVariant = "outline"
+                  } else if (days <= 30) {
+                    badgeText = `Vence en ${days} días`
+                    badgeVariant = "default"
+                  } else {
+                    badgeText = `Vence en ${days} días`
+                    badgeVariant = "secondary"
+                  }
+
+                  return (
+                    <div key={inv.id} className="flex items-center justify-between py-3">
+                      <div className="flex items-center gap-3">
+                        <span className="font-mono text-xs text-muted-foreground">#{inv.number}</span>
+                        <span className="text-sm">{inv.project?.name ?? "Sin proyecto"}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-semibold tabular-nums">
+                          {formatCurrency(Number(inv.amount), "EUR")}
+                        </span>
+                        <Badge
+                          variant={badgeVariant}
+                          className={
+                            days !== null && days <= 7 && days >= 0
+                              ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20"
+                              : undefined
+                          }
+                        >
+                          {badgeText}
+                        </Badge>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Charts row 1 - 2 columns */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="rounded-xl border bg-card p-5">
@@ -465,72 +525,6 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-          {/* Upcoming payments - full width */}
-          {data.upcomingPayments.length > 0 && (
-            <div className="rounded-xl border bg-card p-5">
-              <div className="mb-4 space-y-0.5">
-                <h2 className="text-sm font-semibold">Pr&oacute;ximos cobros</h2>
-              </div>
-              <div className="divide-y">
-                {data.upcomingPayments.map((inv) => {
-                  const days = getDaysRemaining(inv.dueDate)
-                  let badgeText: string
-                  let badgeVariant: "destructive" | "secondary" | "outline" | "default"
-
-                  if (days === null) {
-                    badgeText = "Sin vencimiento"
-                    badgeVariant = "secondary"
-                  } else if (days < 0) {
-                    badgeText = `Vencida hace ${Math.abs(days)} d\u00EDa${Math.abs(days) !== 1 ? "s" : ""}`
-                    badgeVariant = "destructive"
-                  } else if (days === 0) {
-                    badgeText = "Vence hoy"
-                    badgeVariant = "destructive"
-                  } else if (days <= 7) {
-                    badgeText = `Vence en ${days} d\u00EDa${days !== 1 ? "s" : ""}`
-                    badgeVariant = "outline"
-                  } else if (days <= 30) {
-                    badgeText = `Vence en ${days} d\u00EDas`
-                    badgeVariant = "default"
-                  } else {
-                    badgeText = `Vence en ${days} d\u00EDas`
-                    badgeVariant = "secondary"
-                  }
-
-                  return (
-                    <div
-                      key={inv.id}
-                      className="flex items-center justify-between py-3"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono text-xs text-muted-foreground">
-                          #{inv.number}
-                        </span>
-                        <span className="text-sm">
-                          {inv.project?.name ?? "Sin proyecto"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-semibold tabular-nums">
-                          {formatCurrency(Number(inv.amount), "EUR")}
-                        </span>
-                        <Badge
-                          variant={badgeVariant}
-                          className={
-                            days !== null && days <= 7 && days >= 0
-                              ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20"
-                              : undefined
-                          }
-                        >
-                          {badgeText}
-                        </Badge>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
         </>
       )}
 

@@ -15,13 +15,22 @@ export default async function InvoicesPage() {
   const ctx = await getCurrentWorkspace()
   if (!ctx) redirect("/onboarding")
 
-  const invoices = await prisma.invoice.findMany({
+  const rawInvoices = await prisma.invoice.findMany({
     where: {
       workspaceId: ctx.workspace.id,
       type: "INCOME",
     },
     include: { project: { select: { id: true, name: true } } },
     orderBy: { issueDate: "desc" },
+  })
+
+  // Auto-detectar vencidas
+  const now = new Date()
+  const invoices = rawInvoices.map((inv) => {
+    if (inv.status === "PENDING" && inv.dueDate && new Date(inv.dueDate) < now) {
+      return { ...inv, status: "OVERDUE" as typeof inv.status }
+    }
+    return inv
   })
 
   const totalAmount = invoices.reduce((s, i) => s + Number(i.amount), 0)
