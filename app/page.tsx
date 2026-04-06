@@ -164,7 +164,7 @@ export default async function LandingPage() {
             <div className="mx-auto max-w-4xl px-4 sm:px-6 py-10 grid grid-cols-3 gap-6 text-center">
               {[
                 { value: "3 min", label: "para configurar" },
-                { value: "+2M", label: "autonomos en Espana (mercado)" },
+                { value: "+2M", label: "autónomos en España (mercado)" },
                 { value: "0 \u20AC", label: "para empezar" },
               ].map(({ value, label }) => (
                 <div key={label}>
