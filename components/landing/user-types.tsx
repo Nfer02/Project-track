@@ -14,7 +14,7 @@ const userTypes: UserType[] = [
     Icon: Building2,
     title: "Reformas y construcción",
     description:
-      "Controla materiales, subcontratas y presupuestos por obra. Sabe cuánto ganas en cada reforma.",
+      "Controla materiales, subcontratas y presupuestos por obra. Sabrás cuánto ganas en cada reforma.",
     color: "text-amber-600 bg-amber-500/10",
   },
   {

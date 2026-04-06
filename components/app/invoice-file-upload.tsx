@@ -179,9 +179,9 @@ function OcrResultCard({ data }: { data: OcrData }) {
     { label: "Emisor", value: data.vendorName },
     { label: "Cliente", value: data.clientName },
     { label: "Descripción", value: data.description },
-    { label: "Monto", value: data.amount != null ? `${data.amount} ${data.currency ?? ""}` : null },
-    { label: "Fecha emisión", value: data.issueDate },
-    { label: "Fecha vencimiento", value: data.dueDate },
+    { label: "Importe", value: data.amount != null ? `${data.amount} ${data.currency ?? ""}` : null },
+    { label: "Fecha de emisión", value: data.issueDate },
+    { label: "Fecha de vencimiento", value: data.dueDate },
     { label: "Notas", value: data.notes },
   ].filter((f) => f.value != null && f.value !== "")
 

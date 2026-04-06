@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils"
 import { createWorkspace } from "../actions"
 
 const schema = z.object({
-  name: z.string().min(2, "Ingresa tu nombre completo"),
+  name: z.string().min(2, "Introduce tu nombre completo"),
   sector: z.string().min(1, "Selecciona tu sector"),
   workspaceName: z.string().min(2, "Nombre del workspace muy corto"),
 })

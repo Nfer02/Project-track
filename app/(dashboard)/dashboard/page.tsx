@@ -485,7 +485,7 @@ export default async function DashboardPage() {
               <div className="mb-4 space-y-0.5">
                 <h2 className="text-sm font-semibold">Ingresos vs Gastos</h2>
                 <p className="text-xs text-muted-foreground">
-                  Ultimos 6 meses
+                  Últimos 6 meses
                 </p>
               </div>
               <IncomeExpenseBarChart data={data.incomeExpenseMonthly} />

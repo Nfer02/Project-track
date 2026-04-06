@@ -20,19 +20,19 @@ import { UserTypes } from "@/components/landing/user-types"
 // import { AppShowcase } from "@/components/landing/app-showcase"  // Se reemplazará por vídeo
 
 export const metadata = {
-  title: "ProjectTrack — Gestion de proyectos y control financiero para autonomos",
+  title: "ProjectTrack — Gestión de proyectos y control financiero para autónomos",
   description:
-    "Controla tus proyectos, ingresos, gastos y estimaciones fiscales en un solo lugar. Disenado para autonomos y pequenas empresas en Espana.",
+    "Controla tus proyectos, ingresos, gastos y estimaciones fiscales en un solo lugar. Diseñado para autónomos y pequeñas empresas en España.",
 }
 
 const STARTER_FEATURES = [
   { label: "1 usuario", included: true },
   { label: "Hasta 3 proyectos", included: true },
   { label: "20 registros/mes", included: true },
-  { label: "Control de gastos basico", included: true },
+  { label: "Control de gastos básico", included: true },
   { label: "Dashboard financiero", included: true },
   { label: "OCR inteligente", included: false },
-  { label: "Estimacion fiscal", included: false },
+  { label: "Estimación fiscal", included: false },
   { label: "Reparto de gastos entre proyectos", included: false },
 ]
 
@@ -43,7 +43,7 @@ const PRO_FEATURES = [
   { label: "OCR inteligente (escanear gastos con IA)", included: true },
   { label: "Reparto de gastos entre proyectos", included: true },
   { label: "Dashboard financiero avanzado", included: true },
-  { label: "Estimacion fiscal orientativa (IVA + IRPF)", included: true },
+  { label: "Estimación fiscal orientativa (IVA + IRPF)", included: true },
   { label: "Reportes para el contador", included: true },
   { label: "Soporte por email", included: true },
 ]
@@ -86,7 +86,7 @@ export default async function LandingPage() {
 
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" render={<Link href="/login" />}>
-              Iniciar sesion
+              Iniciar sesión
             </Button>
             <Button size="sm" className="rounded-full" render={<Link href="/register" />}>
               Empieza gratis
@@ -109,7 +109,7 @@ export default async function LandingPage() {
           <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
             <Badge variant="secondary" className="mb-6 inline-flex items-center gap-1.5">
               <TrendingUp className="h-3 w-3" />
-              Para autonomos y pymes en Espana
+              Para autónomos y pymes en España
             </Badge>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
@@ -151,7 +151,7 @@ export default async function LandingPage() {
             </div>
 
             <p className="mt-5 text-xs text-muted-foreground">
-              Sin tarjeta de credito &middot; Plan gratuito para siempre
+              Sin tarjeta de crédito &middot; Plan gratuito para siempre
             </p>
           </div>
         </section>
@@ -242,10 +242,10 @@ export default async function LandingPage() {
             <FadeIn>
               <div className="text-center mb-14">
                 <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-                  Disenado para tu sector
+                  Diseñado para tu sector
                 </h2>
                 <p className="text-muted-foreground max-w-xl mx-auto">
-                  Da igual a que te dediques. Si gestionas proyectos y necesitas
+                  Da igual a qué te dediques. Si gestionas proyectos y necesitas
                   controlar tus finanzas, ProjectTrack es para ti.
                 </p>
               </div>
@@ -268,7 +268,7 @@ export default async function LandingPage() {
                   Lo que dicen nuestros usuarios
                 </h2>
                 <p className="text-muted-foreground max-w-xl mx-auto">
-                  Autonomos y pymes que ya controlan sus proyectos y finanzas
+                  Autónomos y pymes que ya controlan sus proyectos y finanzas
                 </p>
               </div>
             </FadeIn>
@@ -301,7 +301,7 @@ export default async function LandingPage() {
                   step: "01",
                   title: "Crea tu workspace",
                   description:
-                    "Registrate gratis y configura tu espacio de trabajo en menos de 2 minutos.",
+                    "Regístrate gratis y configura tu espacio de trabajo en menos de 2 minutos.",
                 },
                 {
                   step: "02",
@@ -460,7 +460,7 @@ export default async function LandingPage() {
                 Empieza a controlar tus proyectos hoy
               </h2>
               <p className="text-muted-foreground mb-8 leading-relaxed">
-                Registrate gratis en menos de 2 minutos. Sin tarjeta de credito.
+                Regístrate gratis en menos de 2 minutos. Sin tarjeta de crédito.
               </p>
               <Button
                 size="lg"

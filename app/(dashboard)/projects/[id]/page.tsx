@@ -193,7 +193,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                     Fecha
                   </th>
                   <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">
-                    Monto
+                    Importe
                   </th>
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">
                     Estado
@@ -275,7 +275,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                 <tr>
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">N.&#xba; Factura</th>
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Proveedor</th>
-                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground hidden sm:table-cell">Categoria</th>
+                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground hidden sm:table-cell">Categoría</th>
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground hidden md:table-cell">Fecha</th>
                   <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">Importe asignado</th>
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Estado</th>

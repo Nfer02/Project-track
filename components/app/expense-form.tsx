@@ -38,7 +38,7 @@ const schema = z.object({
   amount: z
     .string()
     .min(1, "El importe es obligatorio")
-    .refine((v) => /^\d+(\.\d{1,2})?$/.test(v), "Formato invalido (ej: 1500.00)"),
+    .refine((v) => /^\d+(\.\d{1,2})?$/.test(v), "Formato inválido (ej: 1500.00)"),
   currency: z.string().min(1),
   category: z.string().optional(),
   vatAmount: z.string().optional(),
@@ -183,7 +183,7 @@ export function ExpenseForm({
     } catch (err) {
       if ((err as { digest?: string })?.digest?.startsWith("NEXT_REDIRECT"))
         throw err
-      setServerError("Ocurrio un error. Intentalo de nuevo.")
+      setServerError("Ocurrió un error. Inténtalo de nuevo.")
     }
   }
 
@@ -287,7 +287,7 @@ export function ExpenseForm({
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Descripcion</FormLabel>
+              <FormLabel>Descripción</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Ej: Materiales para obra calle Mayor"
@@ -345,13 +345,13 @@ export function ExpenseForm({
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Categoria</FormLabel>
+                <FormLabel>Categoría</FormLabel>
                 <Select
                   value={field.value || undefined}
                   onValueChange={field.onChange}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecciona categoria" />
+                    <SelectValue placeholder="Selecciona categoría" />
                   </SelectTrigger>
                   <SelectContent>
                     {CATEGORY_OPTIONS.map((o) => (
@@ -418,7 +418,7 @@ export function ExpenseForm({
         {preAssignedProjectId && (
           <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
             <p className="text-sm text-muted-foreground">
-              Este gasto se asignara completo al proyecto{" "}
+              Este gasto se asignará completo al proyecto{" "}
               <span className="font-medium text-foreground">
                 {projects.find((p) => p.id === preAssignedProjectId)?.name ?? "seleccionado"}
               </span>.
@@ -434,7 +434,7 @@ export function ExpenseForm({
                 Asignar a proyectos
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                Indica cuanto de este gasto corresponde a cada proyecto
+                Indica cuánto de este gasto corresponde a cada proyecto
               </p>
             </div>
 
@@ -523,7 +523,7 @@ export function ExpenseForm({
                 disabled={projects.length === 0}
               >
                 <Plus className="mr-1 h-4 w-4" />
-                Anadir proyecto
+                Añadir proyecto
               </Button>
 
               {allocations.length >= 2 && totalAmount > 0 && (
@@ -585,7 +585,7 @@ export function ExpenseForm({
               </FormControl>
               <div className="space-y-0.5">
                 <FormLabel className="text-sm font-medium">
-                  Incluir en declaracion trimestral
+                  Incluir en declaración trimestral
                 </FormLabel>
                 <FormDescription className="text-xs">
                   Desactiva si este gasto no se va a declarar

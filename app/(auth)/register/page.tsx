@@ -5,7 +5,7 @@ import { RegisterForm } from "./_components/register-form"
 const benefits = [
   "Configuración en menos de 2 minutos",
   "Sin tarjeta de crédito requerida",
-  "Plan gratuito con proyectos ilimitados",
+  "Plan gratuito con hasta 3 proyectos",
   "Soporte por email incluido",
 ]
 
