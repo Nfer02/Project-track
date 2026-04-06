@@ -14,7 +14,6 @@ export type ProjectFormValues = {
   projectValue?: string
   budget?: string
   currency: string
-  paymentMethod?: string
   numberOfPayments?: string
   startDate?: string
   endDate?: string
@@ -42,7 +41,6 @@ export async function createProject(values: ProjectFormValues) {
       projectValue: values.projectValue ? parseFloat(values.projectValue) : null,
       budget: values.budget ? parseFloat(values.budget) : null,
       currency: values.currency,
-      paymentMethod: values.paymentMethod || null,
       numberOfPayments: values.numberOfPayments ? parseInt(values.numberOfPayments) : null,
       startDate: values.startDate ? new Date(values.startDate) : null,
       endDate: values.endDate ? new Date(values.endDate) : null,
@@ -74,7 +72,6 @@ export async function updateProject(id: string, values: ProjectFormValues) {
       projectValue: values.projectValue ? parseFloat(values.projectValue) : null,
       budget: values.budget ? parseFloat(values.budget) : null,
       currency: values.currency,
-      paymentMethod: values.paymentMethod || null,
       numberOfPayments: values.numberOfPayments ? parseInt(values.numberOfPayments) : null,
       startDate: values.startDate ? new Date(values.startDate) : null,
       endDate: values.endDate ? new Date(values.endDate) : null,

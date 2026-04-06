@@ -119,6 +119,7 @@ async function getDashboardData(workspaceId: string) {
           status: true,
           amount: true,
           issueDate: true,
+          dueDate: true,
           currency: true,
           type: true,
           isDeclared: true,
@@ -143,12 +144,21 @@ async function getDashboardData(workspaceId: string) {
       }),
     ])
 
-  const incomeInvoices = allInvoices.filter((i) => i.type === "INCOME")
-  const expenseInvoices = allInvoices.filter((i) => i.type === "EXPENSE")
+  // Auto-detectar facturas vencidas (dueDate pasada + status PENDING)
+  const now_detect = new Date()
+  const processedInvoices = allInvoices.map(i => {
+    if (i.status === "PENDING" && i.dueDate && new Date(i.dueDate) < now_detect) {
+      return { ...i, status: "OVERDUE" as typeof i.status }
+    }
+    return i
+  })
+
+  const incomeInvoices = processedInvoices.filter((i) => i.type === "INCOME")
+  const expenseInvoices = processedInvoices.filter((i) => i.type === "EXPENSE")
 
   const { totalPaid, totalPending, totalOverdue } = buildInvoiceSummary(incomeInvoices)
-  const incomeExpenseMonthly = buildIncomeExpenseMonthly(allInvoices, 6)
-  const netProfitMonthly = buildNetProfitMonthly(allInvoices, 6)
+  const incomeExpenseMonthly = buildIncomeExpenseMonthly(processedInvoices, 6)
+  const netProfitMonthly = buildNetProfitMonthly(processedInvoices, 6)
   const categoryData = buildCategorySummary(expenseInvoices)
   const totalExpensesAll = expenseInvoices.reduce((s, i) => s + Number(i.amount), 0)
 
@@ -161,9 +171,9 @@ async function getDashboardData(workspaceId: string) {
     )
     .reduce((s, i) => s + Number(i.amount), 0)
 
-  // Gastos del mes actual
+  // Gastos del mes actual (solo PAID)
   const expensesThisMonth = expenseInvoices
-    .filter((i) => new Date(i.issueDate) >= firstOfMonth)
+    .filter((i) => i.status === "PAID" && new Date(i.issueDate) >= firstOfMonth)
     .reduce((s, i) => s + Number(i.amount), 0)
 
   // Gastos generales = total gastos - total asignado a proyectos

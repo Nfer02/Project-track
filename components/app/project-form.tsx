@@ -36,7 +36,6 @@ const schema = z.object({
   projectValue: z.string().optional().refine(decimalRule, "Formato inválido (ej: 5000.00)"),
   budget: z.string().optional().refine(decimalRule, "Formato inválido (ej: 1500.00)"),
   currency: z.string().min(1),
-  paymentMethod: z.string().optional(),
   numberOfPayments: z
     .string()
     .optional()
@@ -54,15 +53,6 @@ const STATUS_OPTIONS = [
   { value: "ACTIVE", label: "Activo" },
   { value: "COMPLETED", label: "Completado" },
   { value: "ARCHIVED", label: "Archivado" },
-]
-
-const PAYMENT_METHOD_OPTIONS = [
-  { value: "Transferencia bancaria", label: "Transferencia bancaria" },
-  { value: "Efectivo", label: "Efectivo" },
-  { value: "Tarjeta de crédito/débito", label: "Tarjeta de crédito/débito" },
-  { value: "Bizum", label: "Bizum" },
-  { value: "PayPal", label: "PayPal" },
-  { value: "Otro", label: "Otro" },
 ]
 
 interface ProjectFormProps {
@@ -88,7 +78,6 @@ export function ProjectForm({
       projectValue: "",
       budget: "",
       currency: "EUR",
-      paymentMethod: "",
       numberOfPayments: "",
       startDate: "",
       endDate: "",
@@ -352,29 +341,6 @@ export function ProjectForm({
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="paymentMethod"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Forma de pago</FormLabel>
-                  <Select value={field.value || undefined} onValueChange={field.onChange}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecciona forma de pago" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {PAYMENT_METHOD_OPTIONS.map((o) => (
-                        <SelectItem key={o.value} value={o.value}>
-                          {o.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="numberOfPayments"

@@ -104,7 +104,7 @@ export default async function ProjectDetailPage({ params }: Props) {
       </div>
 
       {/* Stats del proyecto */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="rounded-xl border bg-card p-4 space-y-1">
           <p className="text-xs text-muted-foreground">Valor del contrato</p>
           <p className="text-lg font-semibold">
@@ -132,14 +132,6 @@ export default async function ProjectDetailPage({ params }: Props) {
           <p className="text-lg font-semibold">
             {totalExpenses > 0
               ? formatCurrency(totalExpenses, project.currency)
-              : "\u2014"}
-          </p>
-        </div>
-        <div className="rounded-xl border bg-card p-4 space-y-1">
-          <p className="text-xs text-muted-foreground">Forma de pago</p>
-          <p className="text-base font-semibold">
-            {project.paymentMethod
-              ? `${project.paymentMethod}${project.numberOfPayments ? ` (${project.numberOfPayments} pagos)` : ""}`
               : "\u2014"}
           </p>
         </div>

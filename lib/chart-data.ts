@@ -226,7 +226,7 @@ export function buildIncomeExpenseMonthly(invoices: InvoiceForChart[], months = 
       .reduce((s, i) => s + Number(i.amount), 0)
 
     const expenses = monthInvoices
-      .filter((i) => i.type === "EXPENSE")
+      .filter((i) => i.type === "EXPENSE" && i.status === "PAID")
       .reduce((s, i) => s + Number(i.amount), 0)
 
     result.push({
@@ -263,7 +263,7 @@ export function buildNetProfitMonthly(invoices: InvoiceForChart[], months = 6, v
       .reduce((s, i) => s + Number(i.amount), 0)
 
     const expenses = monthInvoices
-      .filter((i) => i.type === "EXPENSE")
+      .filter((i) => i.type === "EXPENSE" && i.status === "PAID")
       .reduce((s, i) => s + Number(i.amount), 0)
 
     const bruto = income - expenses

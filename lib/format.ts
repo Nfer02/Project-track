@@ -1,6 +1,6 @@
 /**
  * Formatea un número como moneda.
- * Ej: formatCurrency(1500, "USD") → "$1,500.00"
+ * Ej: formatCurrency(1500, "EUR") → "1.500,00 €"
  */
 export function formatCurrency(amount: number, currency = "EUR"): string {
   return new Intl.NumberFormat("es-ES", {
