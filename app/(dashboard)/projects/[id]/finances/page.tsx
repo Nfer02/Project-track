@@ -20,11 +20,10 @@ import { formatCurrency } from "@/lib/format"
 import {
   ProjectExpenseDonut,
   ProjectPaymentsBar,
-  ProjectProfitArea,
+  ProjectMonthlyBars,
   ContractProgress,
   type CategoryItem,
   type PaymentItem,
-  type ProfitPoint,
 } from "./project-charts"
 
 interface Props {
@@ -99,49 +98,37 @@ export default async function ProjectFinancesPage({ params }: Props) {
     status: inv.status as "PAID" | "PENDING" | "OVERDUE",
   }))
 
-  // ─── Gráfico 3: Rentabilidad acumulada mes a mes ──────────────────────
-  // Acumula DESDE EL INICIO del proyecto, no solo los últimos 6 meses
+  // ─── Gráfico 3: Cobros vs Gastos por mes (solo meses con movimiento) ──
   const MONTH_LABELS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
-  const profitData: ProfitPoint[] = []
+  const monthlyMap = new Map<string, { income: number; expense: number }>()
 
-  // Calcular acumulado ANTES de los 6 meses visibles
-  const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1)
-
-  let accCobrado = processedIncome
-    .filter((inv) => inv.status === "PAID" && new Date(inv.issueDate) < sixMonthsAgo)
-    .reduce((s, inv) => s + Number(inv.amount), 0)
-
-  let accGastado = expenseAllocations
-    .filter((a) => a.invoice.status === "PAID" && new Date(a.invoice.issueDate) < sixMonthsAgo)
-    .reduce((s, a) => s + Number(a.amount), 0)
-
-  for (let i = 5; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
-    const year = d.getFullYear()
-    const month = d.getMonth()
-    const endOfMonth = new Date(year, month + 1, 0, 23, 59, 59)
-
-    const monthIncome = processedIncome
-      .filter((inv) => inv.status === "PAID" && new Date(inv.issueDate) >= d && new Date(inv.issueDate) <= endOfMonth)
-      .reduce((s, inv) => s + Number(inv.amount), 0)
-
-    const monthExpense = expenseAllocations
-      .filter((a) => {
-        const dt = new Date(a.invoice.issueDate)
-        return a.invoice.status === "PAID" && dt >= d && dt <= endOfMonth
-      })
-      .reduce((s, a) => s + Number(a.amount), 0)
-
-    accCobrado += monthIncome
-    accGastado += monthExpense
-
-    profitData.push({
-      label: MONTH_LABELS[month],
-      cobrado: Math.round(accCobrado),
-      gastado: Math.round(accGastado),
-      neto: Math.round(accCobrado - accGastado),
-    })
+  for (const inv of processedIncome.filter((i) => i.status === "PAID")) {
+    const d = new Date(inv.issueDate)
+    const key = `${d.getFullYear()}-${d.getMonth()}`
+    const existing = monthlyMap.get(key) ?? { income: 0, expense: 0 }
+    existing.income += Number(inv.amount)
+    monthlyMap.set(key, existing)
   }
+
+  for (const alloc of expenseAllocations.filter((a) => a.invoice.status === "PAID")) {
+    const d = new Date(alloc.invoice.issueDate)
+    const key = `${d.getFullYear()}-${d.getMonth()}`
+    const existing = monthlyMap.get(key) ?? { income: 0, expense: 0 }
+    existing.expense += Number(alloc.amount)
+    monthlyMap.set(key, existing)
+  }
+
+  // Ordenar por fecha y construir datos
+  const monthlyEntries = Array.from(monthlyMap.entries()).sort(([a], [b]) => a.localeCompare(b))
+
+  const monthlyData = monthlyEntries.map(([key, val]) => {
+    const m = parseInt(key.split("-")[1])
+    return {
+      label: MONTH_LABELS[m],
+      income: Math.round(val.income),
+      expense: Math.round(val.expense),
+    }
+  })
 
   // ─── Presupuesto ──────────────────────────────────────────────────────
   const budgetUsed = budget != null && budget > 0 ? totalGastosAsignados : 0
@@ -236,14 +223,16 @@ export default async function ProjectFinancesPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Rentabilidad acumulada */}
-      <div className="rounded-xl border bg-card p-5">
-        <div className="mb-3 space-y-0.5">
-          <h2 className="text-sm font-semibold">Rentabilidad acumulada</h2>
-          <p className="text-xs text-muted-foreground">Evolución de cobros, gastos y beneficio neto del proyecto</p>
+      {/* Cobros vs Gastos por mes */}
+      {monthlyData.length > 0 && (
+        <div className="rounded-xl border bg-card p-5">
+          <div className="mb-3 space-y-0.5">
+            <h2 className="text-sm font-semibold">Cobros vs Gastos por mes</h2>
+            <p className="text-xs text-muted-foreground">Solo meses con movimiento en este proyecto</p>
+          </div>
+          <ProjectMonthlyBars data={monthlyData} />
         </div>
-        <ProjectProfitArea data={profitData} />
-      </div>
+      )}
 
       {/* Presupuesto de materiales */}
       {budget != null && budget > 0 && (

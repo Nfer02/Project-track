@@ -125,31 +125,23 @@ export function ProjectPaymentsBar({ data }: { data: PaymentItem[] }) {
   )
 }
 
-// ─── Área: Rentabilidad acumulada del proyecto ──────────────────────────
+// ─── Barras: Cobros vs Gastos por mes ────────────────────────────────────
 
-export type ProfitPoint = { label: string; cobrado: number; gastado: number; neto: number }
-
-export function ProjectProfitArea({ data }: { data: ProfitPoint[] }) {
-  if (data.length === 0 || data.every((d) => d.cobrado === 0 && d.gastado === 0)) {
+export function ProjectMonthlyBars({ data }: { data: { label: string; income: number; expense: number }[] }) {
+  if (data.length === 0) {
     return (
       <div className="flex h-48 items-center justify-center text-sm text-muted-foreground">
-        Sin datos suficientes.
+        Sin movimientos en este proyecto.
       </div>
     )
   }
 
   return (
     <ResponsiveContainer width="100%" height={250}>
-      <AreaChart data={data}>
-        <defs>
-          <linearGradient id="projProfitG" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#10b981" stopOpacity={0.25} />
-            <stop offset="100%" stopColor="#10b981" stopOpacity={0.02} />
-          </linearGradient>
-        </defs>
+      <BarChart data={data} barSize={16} barGap={4}>
         <XAxis
           dataKey="label"
-          tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
+          tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
           axisLine={false}
           tickLine={false}
         />
@@ -163,7 +155,7 @@ export function ProjectProfitArea({ data }: { data: ProfitPoint[] }) {
         <Tooltip
           formatter={(value, name) => [
             formatCurrency(Number(value ?? 0)),
-            String(name) === "cobrado" ? "Cobrado" : String(name) === "gastado" ? "Gastado" : "Beneficio neto",
+            String(name) === "income" ? "Cobrado" : "Gastado",
           ]}
           contentStyle={{
             backgroundColor: "hsl(var(--popover))",
@@ -172,42 +164,18 @@ export function ProjectProfitArea({ data }: { data: ProfitPoint[] }) {
             fontSize: "12px",
           }}
         />
-        <ReferenceLine y={0} stroke="hsl(var(--muted-foreground))" strokeDasharray="4 4" />
-        <Area
-          type="monotone"
-          dataKey="cobrado"
-          stroke="#10b981"
-          strokeWidth={2}
-          fill="none"
-          dot={{ r: 3, fill: "#10b981" }}
-        />
-        <Area
-          type="monotone"
-          dataKey="gastado"
-          stroke="#f43f5e"
-          strokeWidth={2}
-          fill="none"
-          dot={{ r: 3, fill: "#f43f5e" }}
-          strokeDasharray="4 3"
-        />
-        <Area
-          type="monotone"
-          dataKey="neto"
-          stroke="#6366f1"
-          strokeWidth={2}
-          fill="url(#projProfitG)"
-          dot={{ r: 3, fill: "#6366f1" }}
-        />
         <Legend
           verticalAlign="bottom"
           height={30}
           formatter={(value: string) => (
             <span className="text-xs text-muted-foreground">
-              {value === "cobrado" ? "Cobrado" : value === "gastado" ? "Gastado" : "Beneficio neto"}
+              {value === "income" ? "Cobrado" : "Gastado"}
             </span>
           )}
         />
-      </AreaChart>
+        <Bar dataKey="income" fill="#10b981" radius={[4, 4, 0, 0]} name="income" />
+        <Bar dataKey="expense" fill="#f43f5e" radius={[4, 4, 0, 0]} name="expense" />
+      </BarChart>
     </ResponsiveContainer>
   )
 }
