@@ -32,7 +32,7 @@ const SECTIONS = [
   {
     title: "5. Cancelación",
     content:
-      "El usuario puede cancelar su suscripción en cualquier momento desde la sección de Facturación de su cuenta. Tras la cancelación, el acceso a las funcionalidades del plan PRO se mantendrá hasta el final del período de facturación ya pagado. Una vez finalizado dicho período, la cuenta pasará automáticamente al plan Starter gratuito, conservando todos los datos del usuario.",
+      "El usuario puede cancelar su suscripción en cualquier momento desde la sección de Facturación de su cuenta. Tras la cancelación, el acceso a las funcionalidades del plan PRO se mantendrá hasta el final del período de facturación ya pagado. Una vez finalizado dicho período, la cuenta pasará automáticamente al plan Starter gratuito. Los datos existentes se conservarán, pero las funcionalidades quedarán limitadas al plan Starter: máximo 3 proyectos activos, 20 registros al mes y sin acceso a OCR inteligente ni estimación fiscal. Los proyectos que excedan el límite del plan gratuito quedarán en modo solo lectura hasta que el usuario vuelva a suscribirse al plan PRO o archive los proyectos excedentes.",
   },
   {
     title: "6. Propiedad intelectual",

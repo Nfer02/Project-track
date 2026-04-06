@@ -95,7 +95,7 @@ const FAQ_CATEGORIES = [
       {
         question: "¿Qué categorías de gastos hay disponibles?",
         answer:
-          "Material, Herramientas, Mano de obra / Subcontrata, Transporte, Alquiler, Suministros (luz, agua, teléfono) y Otros. Las categorías te ayudan a saber en qué gastas más en cada proyecto.",
+          "Al registrarte, seleccionas tu sector (reformas, diseño, instalaciones, etc.) y las categorías se adaptan a tu actividad. Las categorías estándar son: Material, Herramientas, Mano de obra / Subcontrata, Transporte, Alquiler, Suministros (luz, agua, teléfono) y Otros. Las categorías te ayudan a saber en qué gastas más en cada proyecto a través de los gráficos del dashboard.",
       },
     ],
   },
@@ -190,7 +190,7 @@ const FAQ_CATEGORIES = [
       {
         question: "¿Puedo cancelar en cualquier momento?",
         answer:
-          "Sí. No hay permanencia. Puedes cancelar tu suscripción PRO en cualquier momento desde la sección de Facturación. Seguirás teniendo acceso hasta el final del período pagado.",
+          "Sí. No hay permanencia. Puedes cancelar tu suscripción PRO en cualquier momento desde la sección de Facturación. Seguirás teniendo acceso a las funciones PRO hasta el final del período pagado. Después, tu cuenta pasa al plan Starter gratuito: tus datos se conservan, pero quedarás limitado a 3 proyectos activos y 20 registros al mes. Los proyectos que excedan el límite quedan en modo solo lectura hasta que vuelvas a PRO o los archives.",
       },
       {
         question: "¿Puedo dar acceso a mi gestor o a un empleado?",
