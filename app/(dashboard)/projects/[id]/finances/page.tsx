@@ -16,14 +16,16 @@ import {
 import { Button } from "@/components/ui/button"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
-import { formatCurrency, formatDate } from "@/lib/format"
+import { formatCurrency } from "@/lib/format"
 import {
   ProjectExpenseDonut,
   ProjectPaymentsBar,
   ProjectProfitArea,
   ContractProgress,
+  type CategoryItem,
+  type PaymentItem,
+  type ProfitPoint,
 } from "./project-charts"
-import type { CategoryItem, PaymentItem, ProfitPoint } from "./project-charts"
 
 interface Props {
   params: Promise<{ id: string }>
