@@ -19,11 +19,9 @@ import { prisma } from "@/lib/prisma"
 import { formatCurrency } from "@/lib/format"
 import {
   ProjectExpenseDonut,
-  ProjectPaymentsBar,
   ProjectMonthlyBars,
   ContractProgress,
   type CategoryItem,
-  type PaymentItem,
 } from "./project-charts"
 
 interface Props {
@@ -91,14 +89,7 @@ export default async function ProjectFinancesPage({ params }: Props) {
     .map(([category, total]) => ({ category, total }))
     .sort((a, b) => b.total - a.total)
 
-  // ─── Gráfico 2: Barras de cobros (cada factura = una barra) ───────────
-  const paymentsData: PaymentItem[] = processedIncome.map((inv) => ({
-    label: `#${inv.number}`,
-    amount: Number(inv.amount),
-    status: inv.status as "PAID" | "PENDING" | "OVERDUE",
-  }))
-
-  // ─── Gráfico 3: Cobros vs Gastos por mes (solo meses con movimiento) ──
+  // ─── Gráfico 2: Cobros vs Gastos por mes (solo meses con movimiento) ──
   const MONTH_LABELS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
   const monthlyMap = new Map<string, { income: number; expense: number }>()
 
@@ -204,13 +195,13 @@ export default async function ProjectFinancesPage({ params }: Props) {
 
       {/* Gráficos — 2 columnas */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Cobros por factura */}
+        {/* Cobros vs Gastos por mes + línea de ganancia */}
         <div className="rounded-xl border bg-card p-5">
           <div className="mb-3 space-y-0.5">
-            <h2 className="text-sm font-semibold">Cobros del proyecto</h2>
-            <p className="text-xs text-muted-foreground">Cada barra es una factura — verde cobrada, amarilla pendiente, roja vencida</p>
+            <h2 className="text-sm font-semibold">Cobros vs Gastos por mes</h2>
+            <p className="text-xs text-muted-foreground">Barras + línea de ganancia neta</p>
           </div>
-          <ProjectPaymentsBar data={paymentsData} />
+          <ProjectMonthlyBars data={monthlyData} />
         </div>
 
         {/* Gastos por categoría */}
@@ -223,15 +214,8 @@ export default async function ProjectFinancesPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Cobros vs Gastos por mes */}
-      {monthlyData.length > 0 && (
-        <div className="rounded-xl border bg-card p-5">
-          <div className="mb-3 space-y-0.5">
-            <h2 className="text-sm font-semibold">Cobros vs Gastos por mes</h2>
-            <p className="text-xs text-muted-foreground">Solo meses con movimiento en este proyecto</p>
-          </div>
-          <ProjectMonthlyBars data={monthlyData} />
-        </div>
+      {/* (Cobros por factura eliminado — la info ya está en las cards) */}
+      {false && (
       )}
 
       {/* Presupuesto de materiales */}

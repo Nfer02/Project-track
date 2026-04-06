@@ -3,7 +3,7 @@
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
   PieChart, Pie, Legend,
-  AreaChart, Area, ReferenceLine,
+  ComposedChart, Line,
 } from "recharts"
 import { formatCurrency } from "@/lib/format"
 
@@ -136,9 +136,12 @@ export function ProjectMonthlyBars({ data }: { data: { label: string; income: nu
     )
   }
 
+  // Agregar ganancia como dato derivado
+  const chartData = data.map((d) => ({ ...d, profit: d.income - d.expense }))
+
   return (
     <ResponsiveContainer width="100%" height={250}>
-      <BarChart data={data} barSize={16} barGap={4}>
+      <ComposedChart data={chartData} barSize={16} barGap={4}>
         <XAxis
           dataKey="label"
           tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
@@ -155,7 +158,7 @@ export function ProjectMonthlyBars({ data }: { data: { label: string; income: nu
         <Tooltip
           formatter={(value, name) => [
             formatCurrency(Number(value ?? 0)),
-            String(name) === "income" ? "Cobrado" : "Gastado",
+            String(name) === "income" ? "Cobrado" : String(name) === "expense" ? "Gastado" : "Ganancia",
           ]}
           contentStyle={{
             backgroundColor: "hsl(var(--popover))",
@@ -169,13 +172,22 @@ export function ProjectMonthlyBars({ data }: { data: { label: string; income: nu
           height={30}
           formatter={(value: string) => (
             <span className="text-xs text-muted-foreground">
-              {value === "income" ? "Cobrado" : "Gastado"}
+              {value === "income" ? "Cobrado" : value === "expense" ? "Gastado" : "Ganancia"}
             </span>
           )}
         />
         <Bar dataKey="income" fill="#10b981" radius={[4, 4, 0, 0]} name="income" />
         <Bar dataKey="expense" fill="#f43f5e" radius={[4, 4, 0, 0]} name="expense" />
-      </BarChart>
+        <Line
+          type="monotone"
+          dataKey="profit"
+          stroke="#6366f1"
+          strokeWidth={2}
+          dot={{ r: 4, fill: "#6366f1", strokeWidth: 0 }}
+          activeDot={{ r: 5, fill: "#6366f1", stroke: "#fff", strokeWidth: 2 }}
+          name="profit"
+        />
+      </ComposedChart>
     </ResponsiveContainer>
   )
 }
