@@ -39,6 +39,11 @@ export type Project = $Result.DefaultSelection<Prisma.$ProjectPayload>
  */
 export type Invoice = $Result.DefaultSelection<Prisma.$InvoicePayload>
 /**
+ * Model ExpenseAllocation
+ * 
+ */
+export type ExpenseAllocation = $Result.DefaultSelection<Prisma.$ExpenseAllocationPayload>
+/**
  * Model InvoiceFile
  * 
  */
@@ -99,6 +104,14 @@ export const SubscriptionStatus: {
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
 
+
+export const InvoiceType: {
+  INCOME: 'INCOME',
+  EXPENSE: 'EXPENSE'
+};
+
+export type InvoiceType = (typeof InvoiceType)[keyof typeof InvoiceType]
+
 }
 
 export type Plan = $Enums.Plan
@@ -120,6 +133,10 @@ export const InvoiceStatus: typeof $Enums.InvoiceStatus
 export type SubscriptionStatus = $Enums.SubscriptionStatus
 
 export const SubscriptionStatus: typeof $Enums.SubscriptionStatus
+
+export type InvoiceType = $Enums.InvoiceType
+
+export const InvoiceType: typeof $Enums.InvoiceType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -291,6 +308,16 @@ export class PrismaClient<
     * ```
     */
   get invoice(): Prisma.InvoiceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.expenseAllocation`: Exposes CRUD operations for the **ExpenseAllocation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ExpenseAllocations
+    * const expenseAllocations = await prisma.expenseAllocation.findMany()
+    * ```
+    */
+  get expenseAllocation(): Prisma.ExpenseAllocationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.invoiceFile`: Exposes CRUD operations for the **InvoiceFile** model.
@@ -750,6 +777,7 @@ export namespace Prisma {
     WorkspaceMember: 'WorkspaceMember',
     Project: 'Project',
     Invoice: 'Invoice',
+    ExpenseAllocation: 'ExpenseAllocation',
     InvoiceFile: 'InvoiceFile',
     Subscription: 'Subscription'
   };
@@ -767,7 +795,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "workspace" | "workspaceMember" | "project" | "invoice" | "invoiceFile" | "subscription"
+      modelProps: "user" | "workspace" | "workspaceMember" | "project" | "invoice" | "expenseAllocation" | "invoiceFile" | "subscription"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1141,6 +1169,80 @@ export namespace Prisma {
           }
         }
       }
+      ExpenseAllocation: {
+        payload: Prisma.$ExpenseAllocationPayload<ExtArgs>
+        fields: Prisma.ExpenseAllocationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ExpenseAllocationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ExpenseAllocationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload>
+          }
+          findFirst: {
+            args: Prisma.ExpenseAllocationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ExpenseAllocationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload>
+          }
+          findMany: {
+            args: Prisma.ExpenseAllocationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload>[]
+          }
+          create: {
+            args: Prisma.ExpenseAllocationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload>
+          }
+          createMany: {
+            args: Prisma.ExpenseAllocationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ExpenseAllocationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload>[]
+          }
+          delete: {
+            args: Prisma.ExpenseAllocationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload>
+          }
+          update: {
+            args: Prisma.ExpenseAllocationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload>
+          }
+          deleteMany: {
+            args: Prisma.ExpenseAllocationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ExpenseAllocationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ExpenseAllocationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload>[]
+          }
+          upsert: {
+            args: Prisma.ExpenseAllocationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseAllocationPayload>
+          }
+          aggregate: {
+            args: Prisma.ExpenseAllocationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateExpenseAllocation>
+          }
+          groupBy: {
+            args: Prisma.ExpenseAllocationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ExpenseAllocationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ExpenseAllocationCountArgs<ExtArgs>
+            result: $Utils.Optional<ExpenseAllocationCountAggregateOutputType> | number
+          }
+        }
+      }
       InvoiceFile: {
         payload: Prisma.$InvoiceFilePayload<ExtArgs>
         fields: Prisma.InvoiceFileFieldRefs
@@ -1402,6 +1504,7 @@ export namespace Prisma {
     workspaceMember?: WorkspaceMemberOmit
     project?: ProjectOmit
     invoice?: InvoiceOmit
+    expenseAllocation?: ExpenseAllocationOmit
     invoiceFile?: InvoiceFileOmit
     subscription?: SubscriptionOmit
   }
@@ -1517,11 +1620,13 @@ export namespace Prisma {
   export type WorkspaceCountOutputType = {
     members: number
     projects: number
+    invoices: number
   }
 
   export type WorkspaceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | WorkspaceCountOutputTypeCountMembersArgs
     projects?: boolean | WorkspaceCountOutputTypeCountProjectsArgs
+    invoices?: boolean | WorkspaceCountOutputTypeCountInvoicesArgs
   }
 
   // Custom InputTypes
@@ -1549,6 +1654,13 @@ export namespace Prisma {
     where?: ProjectWhereInput
   }
 
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountInvoicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvoiceWhereInput
+  }
+
 
   /**
    * Count Type ProjectCountOutputType
@@ -1556,10 +1668,12 @@ export namespace Prisma {
 
   export type ProjectCountOutputType = {
     invoices: number
+    expenseAllocations: number
   }
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     invoices?: boolean | ProjectCountOutputTypeCountInvoicesArgs
+    expenseAllocations?: boolean | ProjectCountOutputTypeCountExpenseAllocationsArgs
   }
 
   // Custom InputTypes
@@ -1580,6 +1694,13 @@ export namespace Prisma {
     where?: InvoiceWhereInput
   }
 
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountExpenseAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExpenseAllocationWhereInput
+  }
+
 
   /**
    * Count Type InvoiceCountOutputType
@@ -1587,10 +1708,12 @@ export namespace Prisma {
 
   export type InvoiceCountOutputType = {
     files: number
+    allocations: number
   }
 
   export type InvoiceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     files?: boolean | InvoiceCountOutputTypeCountFilesArgs
+    allocations?: boolean | InvoiceCountOutputTypeCountAllocationsArgs
   }
 
   // Custom InputTypes
@@ -1609,6 +1732,13 @@ export namespace Prisma {
    */
   export type InvoiceCountOutputTypeCountFilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InvoiceFileWhereInput
+  }
+
+  /**
+   * InvoiceCountOutputType without action
+   */
+  export type InvoiceCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExpenseAllocationWhereInput
   }
 
 
@@ -2857,6 +2987,7 @@ export namespace Prisma {
     createdAt?: boolean
     members?: boolean | Workspace$membersArgs<ExtArgs>
     projects?: boolean | Workspace$projectsArgs<ExtArgs>
+    invoices?: boolean | Workspace$invoicesArgs<ExtArgs>
     subscription?: boolean | Workspace$subscriptionArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
@@ -2889,6 +3020,7 @@ export namespace Prisma {
   export type WorkspaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | Workspace$membersArgs<ExtArgs>
     projects?: boolean | Workspace$projectsArgs<ExtArgs>
+    invoices?: boolean | Workspace$invoicesArgs<ExtArgs>
     subscription?: boolean | Workspace$subscriptionArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -2900,6 +3032,7 @@ export namespace Prisma {
     objects: {
       members: Prisma.$WorkspaceMemberPayload<ExtArgs>[]
       projects: Prisma.$ProjectPayload<ExtArgs>[]
+      invoices: Prisma.$InvoicePayload<ExtArgs>[]
       subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -3304,6 +3437,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     members<T extends Workspace$membersArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkspaceMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     projects<T extends Workspace$projectsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invoices<T extends Workspace$invoicesArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscription<T extends Workspace$subscriptionArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$subscriptionArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3777,6 +3911,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.invoices
+   */
+  export type Workspace$invoicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    where?: InvoiceWhereInput
+    orderBy?: InvoiceOrderByWithRelationInput | InvoiceOrderByWithRelationInput[]
+    cursor?: InvoiceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InvoiceScalarFieldEnum | InvoiceScalarFieldEnum[]
   }
 
   /**
@@ -4959,11 +5117,19 @@ export namespace Prisma {
   }
 
   export type ProjectAvgAggregateOutputType = {
+    projectValue: Decimal | null
     budget: Decimal | null
+    numberOfPayments: number | null
+    vatRate: number | null
+    irpfRate: number | null
   }
 
   export type ProjectSumAggregateOutputType = {
+    projectValue: Decimal | null
     budget: Decimal | null
+    numberOfPayments: number | null
+    vatRate: number | null
+    irpfRate: number | null
   }
 
   export type ProjectMinAggregateOutputType = {
@@ -4973,12 +5139,18 @@ export namespace Prisma {
     clientName: string | null
     description: string | null
     status: $Enums.ProjectStatus | null
+    projectValue: Decimal | null
     budget: Decimal | null
     currency: string | null
+    paymentMethod: string | null
+    numberOfPayments: number | null
     startDate: Date | null
     endDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
+    isDeclared: boolean | null
+    vatRate: number | null
+    irpfRate: number | null
   }
 
   export type ProjectMaxAggregateOutputType = {
@@ -4988,12 +5160,18 @@ export namespace Prisma {
     clientName: string | null
     description: string | null
     status: $Enums.ProjectStatus | null
+    projectValue: Decimal | null
     budget: Decimal | null
     currency: string | null
+    paymentMethod: string | null
+    numberOfPayments: number | null
     startDate: Date | null
     endDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
+    isDeclared: boolean | null
+    vatRate: number | null
+    irpfRate: number | null
   }
 
   export type ProjectCountAggregateOutputType = {
@@ -5003,22 +5181,36 @@ export namespace Prisma {
     clientName: number
     description: number
     status: number
+    projectValue: number
     budget: number
     currency: number
+    paymentMethod: number
+    numberOfPayments: number
     startDate: number
     endDate: number
     createdAt: number
     updatedAt: number
+    isDeclared: number
+    vatRate: number
+    irpfRate: number
     _all: number
   }
 
 
   export type ProjectAvgAggregateInputType = {
+    projectValue?: true
     budget?: true
+    numberOfPayments?: true
+    vatRate?: true
+    irpfRate?: true
   }
 
   export type ProjectSumAggregateInputType = {
+    projectValue?: true
     budget?: true
+    numberOfPayments?: true
+    vatRate?: true
+    irpfRate?: true
   }
 
   export type ProjectMinAggregateInputType = {
@@ -5028,12 +5220,18 @@ export namespace Prisma {
     clientName?: true
     description?: true
     status?: true
+    projectValue?: true
     budget?: true
     currency?: true
+    paymentMethod?: true
+    numberOfPayments?: true
     startDate?: true
     endDate?: true
     createdAt?: true
     updatedAt?: true
+    isDeclared?: true
+    vatRate?: true
+    irpfRate?: true
   }
 
   export type ProjectMaxAggregateInputType = {
@@ -5043,12 +5241,18 @@ export namespace Prisma {
     clientName?: true
     description?: true
     status?: true
+    projectValue?: true
     budget?: true
     currency?: true
+    paymentMethod?: true
+    numberOfPayments?: true
     startDate?: true
     endDate?: true
     createdAt?: true
     updatedAt?: true
+    isDeclared?: true
+    vatRate?: true
+    irpfRate?: true
   }
 
   export type ProjectCountAggregateInputType = {
@@ -5058,12 +5262,18 @@ export namespace Prisma {
     clientName?: true
     description?: true
     status?: true
+    projectValue?: true
     budget?: true
     currency?: true
+    paymentMethod?: true
+    numberOfPayments?: true
     startDate?: true
     endDate?: true
     createdAt?: true
     updatedAt?: true
+    isDeclared?: true
+    vatRate?: true
+    irpfRate?: true
     _all?: true
   }
 
@@ -5160,12 +5370,18 @@ export namespace Prisma {
     clientName: string | null
     description: string | null
     status: $Enums.ProjectStatus
+    projectValue: Decimal | null
     budget: Decimal | null
     currency: string
+    paymentMethod: string | null
+    numberOfPayments: number | null
     startDate: Date | null
     endDate: Date | null
     createdAt: Date
     updatedAt: Date
+    isDeclared: boolean
+    vatRate: number
+    irpfRate: number
     _count: ProjectCountAggregateOutputType | null
     _avg: ProjectAvgAggregateOutputType | null
     _sum: ProjectSumAggregateOutputType | null
@@ -5194,14 +5410,21 @@ export namespace Prisma {
     clientName?: boolean
     description?: boolean
     status?: boolean
+    projectValue?: boolean
     budget?: boolean
     currency?: boolean
+    paymentMethod?: boolean
+    numberOfPayments?: boolean
     startDate?: boolean
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeclared?: boolean
+    vatRate?: boolean
+    irpfRate?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     invoices?: boolean | Project$invoicesArgs<ExtArgs>
+    expenseAllocations?: boolean | Project$expenseAllocationsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -5212,12 +5435,18 @@ export namespace Prisma {
     clientName?: boolean
     description?: boolean
     status?: boolean
+    projectValue?: boolean
     budget?: boolean
     currency?: boolean
+    paymentMethod?: boolean
+    numberOfPayments?: boolean
     startDate?: boolean
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeclared?: boolean
+    vatRate?: boolean
+    irpfRate?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -5228,12 +5457,18 @@ export namespace Prisma {
     clientName?: boolean
     description?: boolean
     status?: boolean
+    projectValue?: boolean
     budget?: boolean
     currency?: boolean
+    paymentMethod?: boolean
+    numberOfPayments?: boolean
     startDate?: boolean
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeclared?: boolean
+    vatRate?: boolean
+    irpfRate?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -5244,18 +5479,25 @@ export namespace Prisma {
     clientName?: boolean
     description?: boolean
     status?: boolean
+    projectValue?: boolean
     budget?: boolean
     currency?: boolean
+    paymentMethod?: boolean
+    numberOfPayments?: boolean
     startDate?: boolean
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeclared?: boolean
+    vatRate?: boolean
+    irpfRate?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "name" | "clientName" | "description" | "status" | "budget" | "currency" | "startDate" | "endDate" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "name" | "clientName" | "description" | "status" | "projectValue" | "budget" | "currency" | "paymentMethod" | "numberOfPayments" | "startDate" | "endDate" | "createdAt" | "updatedAt" | "isDeclared" | "vatRate" | "irpfRate", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     invoices?: boolean | Project$invoicesArgs<ExtArgs>
+    expenseAllocations?: boolean | Project$expenseAllocationsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5270,6 +5512,7 @@ export namespace Prisma {
     objects: {
       workspace: Prisma.$WorkspacePayload<ExtArgs>
       invoices: Prisma.$InvoicePayload<ExtArgs>[]
+      expenseAllocations: Prisma.$ExpenseAllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5278,12 +5521,18 @@ export namespace Prisma {
       clientName: string | null
       description: string | null
       status: $Enums.ProjectStatus
+      projectValue: Prisma.Decimal | null
       budget: Prisma.Decimal | null
       currency: string
+      paymentMethod: string | null
+      numberOfPayments: number | null
       startDate: Date | null
       endDate: Date | null
       createdAt: Date
       updatedAt: Date
+      isDeclared: boolean
+      vatRate: number
+      irpfRate: number
     }, ExtArgs["result"]["project"]>
     composites: {}
   }
@@ -5680,6 +5929,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     invoices<T extends Project$invoicesArgs<ExtArgs> = {}>(args?: Subset<T, Project$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    expenseAllocations<T extends Project$expenseAllocationsArgs<ExtArgs> = {}>(args?: Subset<T, Project$expenseAllocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5715,12 +5965,18 @@ export namespace Prisma {
     readonly clientName: FieldRef<"Project", 'String'>
     readonly description: FieldRef<"Project", 'String'>
     readonly status: FieldRef<"Project", 'ProjectStatus'>
+    readonly projectValue: FieldRef<"Project", 'Decimal'>
     readonly budget: FieldRef<"Project", 'Decimal'>
     readonly currency: FieldRef<"Project", 'String'>
+    readonly paymentMethod: FieldRef<"Project", 'String'>
+    readonly numberOfPayments: FieldRef<"Project", 'Int'>
     readonly startDate: FieldRef<"Project", 'DateTime'>
     readonly endDate: FieldRef<"Project", 'DateTime'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
     readonly updatedAt: FieldRef<"Project", 'DateTime'>
+    readonly isDeclared: FieldRef<"Project", 'Boolean'>
+    readonly vatRate: FieldRef<"Project", 'Int'>
+    readonly irpfRate: FieldRef<"Project", 'Int'>
   }
     
 
@@ -6146,6 +6402,30 @@ export namespace Prisma {
   }
 
   /**
+   * Project.expenseAllocations
+   */
+  export type Project$expenseAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    where?: ExpenseAllocationWhereInput
+    orderBy?: ExpenseAllocationOrderByWithRelationInput | ExpenseAllocationOrderByWithRelationInput[]
+    cursor?: ExpenseAllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExpenseAllocationScalarFieldEnum | ExpenseAllocationScalarFieldEnum[]
+  }
+
+  /**
    * Project without action
    */
   export type ProjectDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6178,22 +6458,31 @@ export namespace Prisma {
 
   export type InvoiceAvgAggregateOutputType = {
     amount: Decimal | null
+    vatAmount: Decimal | null
   }
 
   export type InvoiceSumAggregateOutputType = {
     amount: Decimal | null
+    vatAmount: Decimal | null
   }
 
   export type InvoiceMinAggregateOutputType = {
     id: string | null
+    type: $Enums.InvoiceType | null
+    workspaceId: string | null
     projectId: string | null
     number: string | null
     description: string | null
     amount: Decimal | null
     currency: string | null
+    isDeclared: boolean | null
+    vendorName: string | null
+    category: string | null
+    vatAmount: Decimal | null
     issueDate: Date | null
     dueDate: Date | null
     paidDate: Date | null
+    paymentMethod: string | null
     status: $Enums.InvoiceStatus | null
     notes: string | null
     createdAt: Date | null
@@ -6202,14 +6491,21 @@ export namespace Prisma {
 
   export type InvoiceMaxAggregateOutputType = {
     id: string | null
+    type: $Enums.InvoiceType | null
+    workspaceId: string | null
     projectId: string | null
     number: string | null
     description: string | null
     amount: Decimal | null
     currency: string | null
+    isDeclared: boolean | null
+    vendorName: string | null
+    category: string | null
+    vatAmount: Decimal | null
     issueDate: Date | null
     dueDate: Date | null
     paidDate: Date | null
+    paymentMethod: string | null
     status: $Enums.InvoiceStatus | null
     notes: string | null
     createdAt: Date | null
@@ -6218,14 +6514,21 @@ export namespace Prisma {
 
   export type InvoiceCountAggregateOutputType = {
     id: number
+    type: number
+    workspaceId: number
     projectId: number
     number: number
     description: number
     amount: number
     currency: number
+    isDeclared: number
+    vendorName: number
+    category: number
+    vatAmount: number
     issueDate: number
     dueDate: number
     paidDate: number
+    paymentMethod: number
     status: number
     notes: number
     createdAt: number
@@ -6236,22 +6539,31 @@ export namespace Prisma {
 
   export type InvoiceAvgAggregateInputType = {
     amount?: true
+    vatAmount?: true
   }
 
   export type InvoiceSumAggregateInputType = {
     amount?: true
+    vatAmount?: true
   }
 
   export type InvoiceMinAggregateInputType = {
     id?: true
+    type?: true
+    workspaceId?: true
     projectId?: true
     number?: true
     description?: true
     amount?: true
     currency?: true
+    isDeclared?: true
+    vendorName?: true
+    category?: true
+    vatAmount?: true
     issueDate?: true
     dueDate?: true
     paidDate?: true
+    paymentMethod?: true
     status?: true
     notes?: true
     createdAt?: true
@@ -6260,14 +6572,21 @@ export namespace Prisma {
 
   export type InvoiceMaxAggregateInputType = {
     id?: true
+    type?: true
+    workspaceId?: true
     projectId?: true
     number?: true
     description?: true
     amount?: true
     currency?: true
+    isDeclared?: true
+    vendorName?: true
+    category?: true
+    vatAmount?: true
     issueDate?: true
     dueDate?: true
     paidDate?: true
+    paymentMethod?: true
     status?: true
     notes?: true
     createdAt?: true
@@ -6276,14 +6595,21 @@ export namespace Prisma {
 
   export type InvoiceCountAggregateInputType = {
     id?: true
+    type?: true
+    workspaceId?: true
     projectId?: true
     number?: true
     description?: true
     amount?: true
     currency?: true
+    isDeclared?: true
+    vendorName?: true
+    category?: true
+    vatAmount?: true
     issueDate?: true
     dueDate?: true
     paidDate?: true
+    paymentMethod?: true
     status?: true
     notes?: true
     createdAt?: true
@@ -6379,14 +6705,21 @@ export namespace Prisma {
 
   export type InvoiceGroupByOutputType = {
     id: string
-    projectId: string
+    type: $Enums.InvoiceType
+    workspaceId: string
+    projectId: string | null
     number: string
     description: string | null
     amount: Decimal
     currency: string
+    isDeclared: boolean
+    vendorName: string | null
+    category: string | null
+    vatAmount: Decimal | null
     issueDate: Date
     dueDate: Date | null
     paidDate: Date | null
+    paymentMethod: string | null
     status: $Enums.InvoiceStatus
     notes: string | null
     createdAt: Date
@@ -6414,102 +6747,147 @@ export namespace Prisma {
 
   export type InvoiceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    type?: boolean
+    workspaceId?: boolean
     projectId?: boolean
     number?: boolean
     description?: boolean
     amount?: boolean
     currency?: boolean
+    isDeclared?: boolean
+    vendorName?: boolean
+    category?: boolean
+    vatAmount?: boolean
     issueDate?: boolean
     dueDate?: boolean
     paidDate?: boolean
+    paymentMethod?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    project?: boolean | Invoice$projectArgs<ExtArgs>
     files?: boolean | Invoice$filesArgs<ExtArgs>
+    allocations?: boolean | Invoice$allocationsArgs<ExtArgs>
     _count?: boolean | InvoiceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["invoice"]>
 
   export type InvoiceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    type?: boolean
+    workspaceId?: boolean
     projectId?: boolean
     number?: boolean
     description?: boolean
     amount?: boolean
     currency?: boolean
+    isDeclared?: boolean
+    vendorName?: boolean
+    category?: boolean
+    vatAmount?: boolean
     issueDate?: boolean
     dueDate?: boolean
     paidDate?: boolean
+    paymentMethod?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    project?: boolean | Invoice$projectArgs<ExtArgs>
   }, ExtArgs["result"]["invoice"]>
 
   export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    type?: boolean
+    workspaceId?: boolean
     projectId?: boolean
     number?: boolean
     description?: boolean
     amount?: boolean
     currency?: boolean
+    isDeclared?: boolean
+    vendorName?: boolean
+    category?: boolean
+    vatAmount?: boolean
     issueDate?: boolean
     dueDate?: boolean
     paidDate?: boolean
+    paymentMethod?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    project?: boolean | Invoice$projectArgs<ExtArgs>
   }, ExtArgs["result"]["invoice"]>
 
   export type InvoiceSelectScalar = {
     id?: boolean
+    type?: boolean
+    workspaceId?: boolean
     projectId?: boolean
     number?: boolean
     description?: boolean
     amount?: boolean
     currency?: boolean
+    isDeclared?: boolean
+    vendorName?: boolean
+    category?: boolean
+    vatAmount?: boolean
     issueDate?: boolean
     dueDate?: boolean
     paidDate?: boolean
+    paymentMethod?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "number" | "description" | "amount" | "currency" | "issueDate" | "dueDate" | "paidDate" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
+  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "workspaceId" | "projectId" | "number" | "description" | "amount" | "currency" | "isDeclared" | "vendorName" | "category" | "vatAmount" | "issueDate" | "dueDate" | "paidDate" | "paymentMethod" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
   export type InvoiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    project?: boolean | Invoice$projectArgs<ExtArgs>
     files?: boolean | Invoice$filesArgs<ExtArgs>
+    allocations?: boolean | Invoice$allocationsArgs<ExtArgs>
     _count?: boolean | InvoiceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type InvoiceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    project?: boolean | Invoice$projectArgs<ExtArgs>
   }
   export type InvoiceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    project?: boolean | Invoice$projectArgs<ExtArgs>
   }
 
   export type $InvoicePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Invoice"
     objects: {
-      project: Prisma.$ProjectPayload<ExtArgs>
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      project: Prisma.$ProjectPayload<ExtArgs> | null
       files: Prisma.$InvoiceFilePayload<ExtArgs>[]
+      allocations: Prisma.$ExpenseAllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      projectId: string
+      type: $Enums.InvoiceType
+      workspaceId: string
+      projectId: string | null
       number: string
       description: string | null
       amount: Prisma.Decimal
       currency: string
+      isDeclared: boolean
+      vendorName: string | null
+      category: string | null
+      vatAmount: Prisma.Decimal | null
       issueDate: Date
       dueDate: Date | null
       paidDate: Date | null
+      paymentMethod: string | null
       status: $Enums.InvoiceStatus
       notes: string | null
       createdAt: Date
@@ -6908,8 +7286,10 @@ export namespace Prisma {
    */
   export interface Prisma__InvoiceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    project<T extends Invoice$projectArgs<ExtArgs> = {}>(args?: Subset<T, Invoice$projectArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     files<T extends Invoice$filesArgs<ExtArgs> = {}>(args?: Subset<T, Invoice$filesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoiceFilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    allocations<T extends Invoice$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, Invoice$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6940,14 +7320,21 @@ export namespace Prisma {
    */
   interface InvoiceFieldRefs {
     readonly id: FieldRef<"Invoice", 'String'>
+    readonly type: FieldRef<"Invoice", 'InvoiceType'>
+    readonly workspaceId: FieldRef<"Invoice", 'String'>
     readonly projectId: FieldRef<"Invoice", 'String'>
     readonly number: FieldRef<"Invoice", 'String'>
     readonly description: FieldRef<"Invoice", 'String'>
     readonly amount: FieldRef<"Invoice", 'Decimal'>
     readonly currency: FieldRef<"Invoice", 'String'>
+    readonly isDeclared: FieldRef<"Invoice", 'Boolean'>
+    readonly vendorName: FieldRef<"Invoice", 'String'>
+    readonly category: FieldRef<"Invoice", 'String'>
+    readonly vatAmount: FieldRef<"Invoice", 'Decimal'>
     readonly issueDate: FieldRef<"Invoice", 'DateTime'>
     readonly dueDate: FieldRef<"Invoice", 'DateTime'>
     readonly paidDate: FieldRef<"Invoice", 'DateTime'>
+    readonly paymentMethod: FieldRef<"Invoice", 'String'>
     readonly status: FieldRef<"Invoice", 'InvoiceStatus'>
     readonly notes: FieldRef<"Invoice", 'String'>
     readonly createdAt: FieldRef<"Invoice", 'DateTime'>
@@ -7353,6 +7740,25 @@ export namespace Prisma {
   }
 
   /**
+   * Invoice.project
+   */
+  export type Invoice$projectArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    where?: ProjectWhereInput
+  }
+
+  /**
    * Invoice.files
    */
   export type Invoice$filesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7377,6 +7783,30 @@ export namespace Prisma {
   }
 
   /**
+   * Invoice.allocations
+   */
+  export type Invoice$allocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    where?: ExpenseAllocationWhereInput
+    orderBy?: ExpenseAllocationOrderByWithRelationInput | ExpenseAllocationOrderByWithRelationInput[]
+    cursor?: ExpenseAllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExpenseAllocationScalarFieldEnum | ExpenseAllocationScalarFieldEnum[]
+  }
+
+  /**
    * Invoice without action
    */
   export type InvoiceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7392,6 +7822,1124 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: InvoiceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ExpenseAllocation
+   */
+
+  export type AggregateExpenseAllocation = {
+    _count: ExpenseAllocationCountAggregateOutputType | null
+    _avg: ExpenseAllocationAvgAggregateOutputType | null
+    _sum: ExpenseAllocationSumAggregateOutputType | null
+    _min: ExpenseAllocationMinAggregateOutputType | null
+    _max: ExpenseAllocationMaxAggregateOutputType | null
+  }
+
+  export type ExpenseAllocationAvgAggregateOutputType = {
+    amount: Decimal | null
+  }
+
+  export type ExpenseAllocationSumAggregateOutputType = {
+    amount: Decimal | null
+  }
+
+  export type ExpenseAllocationMinAggregateOutputType = {
+    id: string | null
+    invoiceId: string | null
+    projectId: string | null
+    amount: Decimal | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type ExpenseAllocationMaxAggregateOutputType = {
+    id: string | null
+    invoiceId: string | null
+    projectId: string | null
+    amount: Decimal | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type ExpenseAllocationCountAggregateOutputType = {
+    id: number
+    invoiceId: number
+    projectId: number
+    amount: number
+    notes: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ExpenseAllocationAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type ExpenseAllocationSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type ExpenseAllocationMinAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    projectId?: true
+    amount?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type ExpenseAllocationMaxAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    projectId?: true
+    amount?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type ExpenseAllocationCountAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    projectId?: true
+    amount?: true
+    notes?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ExpenseAllocationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ExpenseAllocation to aggregate.
+     */
+    where?: ExpenseAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExpenseAllocations to fetch.
+     */
+    orderBy?: ExpenseAllocationOrderByWithRelationInput | ExpenseAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ExpenseAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExpenseAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExpenseAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ExpenseAllocations
+    **/
+    _count?: true | ExpenseAllocationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ExpenseAllocationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ExpenseAllocationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ExpenseAllocationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ExpenseAllocationMaxAggregateInputType
+  }
+
+  export type GetExpenseAllocationAggregateType<T extends ExpenseAllocationAggregateArgs> = {
+        [P in keyof T & keyof AggregateExpenseAllocation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateExpenseAllocation[P]>
+      : GetScalarType<T[P], AggregateExpenseAllocation[P]>
+  }
+
+
+
+
+  export type ExpenseAllocationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExpenseAllocationWhereInput
+    orderBy?: ExpenseAllocationOrderByWithAggregationInput | ExpenseAllocationOrderByWithAggregationInput[]
+    by: ExpenseAllocationScalarFieldEnum[] | ExpenseAllocationScalarFieldEnum
+    having?: ExpenseAllocationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ExpenseAllocationCountAggregateInputType | true
+    _avg?: ExpenseAllocationAvgAggregateInputType
+    _sum?: ExpenseAllocationSumAggregateInputType
+    _min?: ExpenseAllocationMinAggregateInputType
+    _max?: ExpenseAllocationMaxAggregateInputType
+  }
+
+  export type ExpenseAllocationGroupByOutputType = {
+    id: string
+    invoiceId: string
+    projectId: string
+    amount: Decimal
+    notes: string | null
+    createdAt: Date
+    _count: ExpenseAllocationCountAggregateOutputType | null
+    _avg: ExpenseAllocationAvgAggregateOutputType | null
+    _sum: ExpenseAllocationSumAggregateOutputType | null
+    _min: ExpenseAllocationMinAggregateOutputType | null
+    _max: ExpenseAllocationMaxAggregateOutputType | null
+  }
+
+  type GetExpenseAllocationGroupByPayload<T extends ExpenseAllocationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ExpenseAllocationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ExpenseAllocationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ExpenseAllocationGroupByOutputType[P]>
+            : GetScalarType<T[P], ExpenseAllocationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ExpenseAllocationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    projectId?: boolean
+    amount?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["expenseAllocation"]>
+
+  export type ExpenseAllocationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    projectId?: boolean
+    amount?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["expenseAllocation"]>
+
+  export type ExpenseAllocationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    projectId?: boolean
+    amount?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["expenseAllocation"]>
+
+  export type ExpenseAllocationSelectScalar = {
+    id?: boolean
+    invoiceId?: boolean
+    projectId?: boolean
+    amount?: boolean
+    notes?: boolean
+    createdAt?: boolean
+  }
+
+  export type ExpenseAllocationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceId" | "projectId" | "amount" | "notes" | "createdAt", ExtArgs["result"]["expenseAllocation"]>
+  export type ExpenseAllocationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type ExpenseAllocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type ExpenseAllocationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+
+  export type $ExpenseAllocationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ExpenseAllocation"
+    objects: {
+      invoice: Prisma.$InvoicePayload<ExtArgs>
+      project: Prisma.$ProjectPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      invoiceId: string
+      projectId: string
+      amount: Prisma.Decimal
+      notes: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["expenseAllocation"]>
+    composites: {}
+  }
+
+  type ExpenseAllocationGetPayload<S extends boolean | null | undefined | ExpenseAllocationDefaultArgs> = $Result.GetResult<Prisma.$ExpenseAllocationPayload, S>
+
+  type ExpenseAllocationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ExpenseAllocationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ExpenseAllocationCountAggregateInputType | true
+    }
+
+  export interface ExpenseAllocationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ExpenseAllocation'], meta: { name: 'ExpenseAllocation' } }
+    /**
+     * Find zero or one ExpenseAllocation that matches the filter.
+     * @param {ExpenseAllocationFindUniqueArgs} args - Arguments to find a ExpenseAllocation
+     * @example
+     * // Get one ExpenseAllocation
+     * const expenseAllocation = await prisma.expenseAllocation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ExpenseAllocationFindUniqueArgs>(args: SelectSubset<T, ExpenseAllocationFindUniqueArgs<ExtArgs>>): Prisma__ExpenseAllocationClient<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ExpenseAllocation that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ExpenseAllocationFindUniqueOrThrowArgs} args - Arguments to find a ExpenseAllocation
+     * @example
+     * // Get one ExpenseAllocation
+     * const expenseAllocation = await prisma.expenseAllocation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ExpenseAllocationFindUniqueOrThrowArgs>(args: SelectSubset<T, ExpenseAllocationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ExpenseAllocationClient<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ExpenseAllocation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseAllocationFindFirstArgs} args - Arguments to find a ExpenseAllocation
+     * @example
+     * // Get one ExpenseAllocation
+     * const expenseAllocation = await prisma.expenseAllocation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ExpenseAllocationFindFirstArgs>(args?: SelectSubset<T, ExpenseAllocationFindFirstArgs<ExtArgs>>): Prisma__ExpenseAllocationClient<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ExpenseAllocation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseAllocationFindFirstOrThrowArgs} args - Arguments to find a ExpenseAllocation
+     * @example
+     * // Get one ExpenseAllocation
+     * const expenseAllocation = await prisma.expenseAllocation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ExpenseAllocationFindFirstOrThrowArgs>(args?: SelectSubset<T, ExpenseAllocationFindFirstOrThrowArgs<ExtArgs>>): Prisma__ExpenseAllocationClient<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ExpenseAllocations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseAllocationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ExpenseAllocations
+     * const expenseAllocations = await prisma.expenseAllocation.findMany()
+     * 
+     * // Get first 10 ExpenseAllocations
+     * const expenseAllocations = await prisma.expenseAllocation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const expenseAllocationWithIdOnly = await prisma.expenseAllocation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ExpenseAllocationFindManyArgs>(args?: SelectSubset<T, ExpenseAllocationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ExpenseAllocation.
+     * @param {ExpenseAllocationCreateArgs} args - Arguments to create a ExpenseAllocation.
+     * @example
+     * // Create one ExpenseAllocation
+     * const ExpenseAllocation = await prisma.expenseAllocation.create({
+     *   data: {
+     *     // ... data to create a ExpenseAllocation
+     *   }
+     * })
+     * 
+     */
+    create<T extends ExpenseAllocationCreateArgs>(args: SelectSubset<T, ExpenseAllocationCreateArgs<ExtArgs>>): Prisma__ExpenseAllocationClient<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ExpenseAllocations.
+     * @param {ExpenseAllocationCreateManyArgs} args - Arguments to create many ExpenseAllocations.
+     * @example
+     * // Create many ExpenseAllocations
+     * const expenseAllocation = await prisma.expenseAllocation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ExpenseAllocationCreateManyArgs>(args?: SelectSubset<T, ExpenseAllocationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ExpenseAllocations and returns the data saved in the database.
+     * @param {ExpenseAllocationCreateManyAndReturnArgs} args - Arguments to create many ExpenseAllocations.
+     * @example
+     * // Create many ExpenseAllocations
+     * const expenseAllocation = await prisma.expenseAllocation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ExpenseAllocations and only return the `id`
+     * const expenseAllocationWithIdOnly = await prisma.expenseAllocation.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ExpenseAllocationCreateManyAndReturnArgs>(args?: SelectSubset<T, ExpenseAllocationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ExpenseAllocation.
+     * @param {ExpenseAllocationDeleteArgs} args - Arguments to delete one ExpenseAllocation.
+     * @example
+     * // Delete one ExpenseAllocation
+     * const ExpenseAllocation = await prisma.expenseAllocation.delete({
+     *   where: {
+     *     // ... filter to delete one ExpenseAllocation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ExpenseAllocationDeleteArgs>(args: SelectSubset<T, ExpenseAllocationDeleteArgs<ExtArgs>>): Prisma__ExpenseAllocationClient<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ExpenseAllocation.
+     * @param {ExpenseAllocationUpdateArgs} args - Arguments to update one ExpenseAllocation.
+     * @example
+     * // Update one ExpenseAllocation
+     * const expenseAllocation = await prisma.expenseAllocation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ExpenseAllocationUpdateArgs>(args: SelectSubset<T, ExpenseAllocationUpdateArgs<ExtArgs>>): Prisma__ExpenseAllocationClient<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ExpenseAllocations.
+     * @param {ExpenseAllocationDeleteManyArgs} args - Arguments to filter ExpenseAllocations to delete.
+     * @example
+     * // Delete a few ExpenseAllocations
+     * const { count } = await prisma.expenseAllocation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ExpenseAllocationDeleteManyArgs>(args?: SelectSubset<T, ExpenseAllocationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ExpenseAllocations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseAllocationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ExpenseAllocations
+     * const expenseAllocation = await prisma.expenseAllocation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ExpenseAllocationUpdateManyArgs>(args: SelectSubset<T, ExpenseAllocationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ExpenseAllocations and returns the data updated in the database.
+     * @param {ExpenseAllocationUpdateManyAndReturnArgs} args - Arguments to update many ExpenseAllocations.
+     * @example
+     * // Update many ExpenseAllocations
+     * const expenseAllocation = await prisma.expenseAllocation.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ExpenseAllocations and only return the `id`
+     * const expenseAllocationWithIdOnly = await prisma.expenseAllocation.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ExpenseAllocationUpdateManyAndReturnArgs>(args: SelectSubset<T, ExpenseAllocationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ExpenseAllocation.
+     * @param {ExpenseAllocationUpsertArgs} args - Arguments to update or create a ExpenseAllocation.
+     * @example
+     * // Update or create a ExpenseAllocation
+     * const expenseAllocation = await prisma.expenseAllocation.upsert({
+     *   create: {
+     *     // ... data to create a ExpenseAllocation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ExpenseAllocation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ExpenseAllocationUpsertArgs>(args: SelectSubset<T, ExpenseAllocationUpsertArgs<ExtArgs>>): Prisma__ExpenseAllocationClient<$Result.GetResult<Prisma.$ExpenseAllocationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ExpenseAllocations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseAllocationCountArgs} args - Arguments to filter ExpenseAllocations to count.
+     * @example
+     * // Count the number of ExpenseAllocations
+     * const count = await prisma.expenseAllocation.count({
+     *   where: {
+     *     // ... the filter for the ExpenseAllocations we want to count
+     *   }
+     * })
+    **/
+    count<T extends ExpenseAllocationCountArgs>(
+      args?: Subset<T, ExpenseAllocationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ExpenseAllocationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ExpenseAllocation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseAllocationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ExpenseAllocationAggregateArgs>(args: Subset<T, ExpenseAllocationAggregateArgs>): Prisma.PrismaPromise<GetExpenseAllocationAggregateType<T>>
+
+    /**
+     * Group by ExpenseAllocation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseAllocationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ExpenseAllocationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ExpenseAllocationGroupByArgs['orderBy'] }
+        : { orderBy?: ExpenseAllocationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ExpenseAllocationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetExpenseAllocationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ExpenseAllocation model
+   */
+  readonly fields: ExpenseAllocationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ExpenseAllocation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ExpenseAllocationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    invoice<T extends InvoiceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InvoiceDefaultArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ExpenseAllocation model
+   */
+  interface ExpenseAllocationFieldRefs {
+    readonly id: FieldRef<"ExpenseAllocation", 'String'>
+    readonly invoiceId: FieldRef<"ExpenseAllocation", 'String'>
+    readonly projectId: FieldRef<"ExpenseAllocation", 'String'>
+    readonly amount: FieldRef<"ExpenseAllocation", 'Decimal'>
+    readonly notes: FieldRef<"ExpenseAllocation", 'String'>
+    readonly createdAt: FieldRef<"ExpenseAllocation", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ExpenseAllocation findUnique
+   */
+  export type ExpenseAllocationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which ExpenseAllocation to fetch.
+     */
+    where: ExpenseAllocationWhereUniqueInput
+  }
+
+  /**
+   * ExpenseAllocation findUniqueOrThrow
+   */
+  export type ExpenseAllocationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which ExpenseAllocation to fetch.
+     */
+    where: ExpenseAllocationWhereUniqueInput
+  }
+
+  /**
+   * ExpenseAllocation findFirst
+   */
+  export type ExpenseAllocationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which ExpenseAllocation to fetch.
+     */
+    where?: ExpenseAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExpenseAllocations to fetch.
+     */
+    orderBy?: ExpenseAllocationOrderByWithRelationInput | ExpenseAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ExpenseAllocations.
+     */
+    cursor?: ExpenseAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExpenseAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExpenseAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ExpenseAllocations.
+     */
+    distinct?: ExpenseAllocationScalarFieldEnum | ExpenseAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * ExpenseAllocation findFirstOrThrow
+   */
+  export type ExpenseAllocationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which ExpenseAllocation to fetch.
+     */
+    where?: ExpenseAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExpenseAllocations to fetch.
+     */
+    orderBy?: ExpenseAllocationOrderByWithRelationInput | ExpenseAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ExpenseAllocations.
+     */
+    cursor?: ExpenseAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExpenseAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExpenseAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ExpenseAllocations.
+     */
+    distinct?: ExpenseAllocationScalarFieldEnum | ExpenseAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * ExpenseAllocation findMany
+   */
+  export type ExpenseAllocationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which ExpenseAllocations to fetch.
+     */
+    where?: ExpenseAllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExpenseAllocations to fetch.
+     */
+    orderBy?: ExpenseAllocationOrderByWithRelationInput | ExpenseAllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ExpenseAllocations.
+     */
+    cursor?: ExpenseAllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExpenseAllocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExpenseAllocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ExpenseAllocations.
+     */
+    distinct?: ExpenseAllocationScalarFieldEnum | ExpenseAllocationScalarFieldEnum[]
+  }
+
+  /**
+   * ExpenseAllocation create
+   */
+  export type ExpenseAllocationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ExpenseAllocation.
+     */
+    data: XOR<ExpenseAllocationCreateInput, ExpenseAllocationUncheckedCreateInput>
+  }
+
+  /**
+   * ExpenseAllocation createMany
+   */
+  export type ExpenseAllocationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ExpenseAllocations.
+     */
+    data: ExpenseAllocationCreateManyInput | ExpenseAllocationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ExpenseAllocation createManyAndReturn
+   */
+  export type ExpenseAllocationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * The data used to create many ExpenseAllocations.
+     */
+    data: ExpenseAllocationCreateManyInput | ExpenseAllocationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ExpenseAllocation update
+   */
+  export type ExpenseAllocationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ExpenseAllocation.
+     */
+    data: XOR<ExpenseAllocationUpdateInput, ExpenseAllocationUncheckedUpdateInput>
+    /**
+     * Choose, which ExpenseAllocation to update.
+     */
+    where: ExpenseAllocationWhereUniqueInput
+  }
+
+  /**
+   * ExpenseAllocation updateMany
+   */
+  export type ExpenseAllocationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ExpenseAllocations.
+     */
+    data: XOR<ExpenseAllocationUpdateManyMutationInput, ExpenseAllocationUncheckedUpdateManyInput>
+    /**
+     * Filter which ExpenseAllocations to update
+     */
+    where?: ExpenseAllocationWhereInput
+    /**
+     * Limit how many ExpenseAllocations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ExpenseAllocation updateManyAndReturn
+   */
+  export type ExpenseAllocationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * The data used to update ExpenseAllocations.
+     */
+    data: XOR<ExpenseAllocationUpdateManyMutationInput, ExpenseAllocationUncheckedUpdateManyInput>
+    /**
+     * Filter which ExpenseAllocations to update
+     */
+    where?: ExpenseAllocationWhereInput
+    /**
+     * Limit how many ExpenseAllocations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ExpenseAllocation upsert
+   */
+  export type ExpenseAllocationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ExpenseAllocation to update in case it exists.
+     */
+    where: ExpenseAllocationWhereUniqueInput
+    /**
+     * In case the ExpenseAllocation found by the `where` argument doesn't exist, create a new ExpenseAllocation with this data.
+     */
+    create: XOR<ExpenseAllocationCreateInput, ExpenseAllocationUncheckedCreateInput>
+    /**
+     * In case the ExpenseAllocation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ExpenseAllocationUpdateInput, ExpenseAllocationUncheckedUpdateInput>
+  }
+
+  /**
+   * ExpenseAllocation delete
+   */
+  export type ExpenseAllocationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
+    /**
+     * Filter which ExpenseAllocation to delete.
+     */
+    where: ExpenseAllocationWhereUniqueInput
+  }
+
+  /**
+   * ExpenseAllocation deleteMany
+   */
+  export type ExpenseAllocationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ExpenseAllocations to delete
+     */
+    where?: ExpenseAllocationWhereInput
+    /**
+     * Limit how many ExpenseAllocations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ExpenseAllocation without action
+   */
+  export type ExpenseAllocationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseAllocation
+     */
+    select?: ExpenseAllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseAllocation
+     */
+    omit?: ExpenseAllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseAllocationInclude<ExtArgs> | null
   }
 
 
@@ -9699,12 +11247,18 @@ export namespace Prisma {
     clientName: 'clientName',
     description: 'description',
     status: 'status',
+    projectValue: 'projectValue',
     budget: 'budget',
     currency: 'currency',
+    paymentMethod: 'paymentMethod',
+    numberOfPayments: 'numberOfPayments',
     startDate: 'startDate',
     endDate: 'endDate',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    isDeclared: 'isDeclared',
+    vatRate: 'vatRate',
+    irpfRate: 'irpfRate'
   };
 
   export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
@@ -9712,14 +11266,21 @@ export namespace Prisma {
 
   export const InvoiceScalarFieldEnum: {
     id: 'id',
+    type: 'type',
+    workspaceId: 'workspaceId',
     projectId: 'projectId',
     number: 'number',
     description: 'description',
     amount: 'amount',
     currency: 'currency',
+    isDeclared: 'isDeclared',
+    vendorName: 'vendorName',
+    category: 'category',
+    vatAmount: 'vatAmount',
     issueDate: 'issueDate',
     dueDate: 'dueDate',
     paidDate: 'paidDate',
+    paymentMethod: 'paymentMethod',
     status: 'status',
     notes: 'notes',
     createdAt: 'createdAt',
@@ -9727,6 +11288,18 @@ export namespace Prisma {
   };
 
   export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+  export const ExpenseAllocationScalarFieldEnum: {
+    id: 'id',
+    invoiceId: 'invoiceId',
+    projectId: 'projectId',
+    amount: 'amount',
+    notes: 'notes',
+    createdAt: 'createdAt'
+  };
+
+  export type ExpenseAllocationScalarFieldEnum = (typeof ExpenseAllocationScalarFieldEnum)[keyof typeof ExpenseAllocationScalarFieldEnum]
 
 
   export const InvoiceFileScalarFieldEnum: {
@@ -9889,20 +11462,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'InvoiceStatus'
-   */
-  export type EnumInvoiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'InvoiceStatus[]'
-   */
-  export type ListEnumInvoiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -9913,6 +11472,41 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'InvoiceType'
+   */
+  export type EnumInvoiceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceType'>
+    
+
+
+  /**
+   * Reference to a field of type 'InvoiceType[]'
+   */
+  export type ListEnumInvoiceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'InvoiceStatus'
+   */
+  export type EnumInvoiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'InvoiceStatus[]'
+   */
+  export type ListEnumInvoiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceStatus[]'>
     
 
 
@@ -10027,6 +11621,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     members?: WorkspaceMemberListRelationFilter
     projects?: ProjectListRelationFilter
+    invoices?: InvoiceListRelationFilter
     subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
   }
 
@@ -10038,6 +11633,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     members?: WorkspaceMemberOrderByRelationAggregateInput
     projects?: ProjectOrderByRelationAggregateInput
+    invoices?: InvoiceOrderByRelationAggregateInput
     subscription?: SubscriptionOrderByWithRelationInput
   }
 
@@ -10052,6 +11648,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     members?: WorkspaceMemberListRelationFilter
     projects?: ProjectListRelationFilter
+    invoices?: InvoiceListRelationFilter
     subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
   }, "id" | "slug">
 
@@ -10161,14 +11758,21 @@ export namespace Prisma {
     clientName?: StringNullableFilter<"Project"> | string | null
     description?: StringNullableFilter<"Project"> | string | null
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+    projectValue?: DecimalNullableFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
     budget?: DecimalNullableFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
     currency?: StringFilter<"Project"> | string
+    paymentMethod?: StringNullableFilter<"Project"> | string | null
+    numberOfPayments?: IntNullableFilter<"Project"> | number | null
     startDate?: DateTimeNullableFilter<"Project"> | Date | string | null
     endDate?: DateTimeNullableFilter<"Project"> | Date | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
+    isDeclared?: BoolFilter<"Project"> | boolean
+    vatRate?: IntFilter<"Project"> | number
+    irpfRate?: IntFilter<"Project"> | number
     workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
     invoices?: InvoiceListRelationFilter
+    expenseAllocations?: ExpenseAllocationListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
@@ -10178,14 +11782,21 @@ export namespace Prisma {
     clientName?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     status?: SortOrder
+    projectValue?: SortOrderInput | SortOrder
     budget?: SortOrderInput | SortOrder
     currency?: SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
+    numberOfPayments?: SortOrderInput | SortOrder
     startDate?: SortOrderInput | SortOrder
     endDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeclared?: SortOrder
+    vatRate?: SortOrder
+    irpfRate?: SortOrder
     workspace?: WorkspaceOrderByWithRelationInput
     invoices?: InvoiceOrderByRelationAggregateInput
+    expenseAllocations?: ExpenseAllocationOrderByRelationAggregateInput
   }
 
   export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -10198,14 +11809,21 @@ export namespace Prisma {
     clientName?: StringNullableFilter<"Project"> | string | null
     description?: StringNullableFilter<"Project"> | string | null
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+    projectValue?: DecimalNullableFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
     budget?: DecimalNullableFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
     currency?: StringFilter<"Project"> | string
+    paymentMethod?: StringNullableFilter<"Project"> | string | null
+    numberOfPayments?: IntNullableFilter<"Project"> | number | null
     startDate?: DateTimeNullableFilter<"Project"> | Date | string | null
     endDate?: DateTimeNullableFilter<"Project"> | Date | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
+    isDeclared?: BoolFilter<"Project"> | boolean
+    vatRate?: IntFilter<"Project"> | number
+    irpfRate?: IntFilter<"Project"> | number
     workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
     invoices?: InvoiceListRelationFilter
+    expenseAllocations?: ExpenseAllocationListRelationFilter
   }, "id">
 
   export type ProjectOrderByWithAggregationInput = {
@@ -10215,12 +11833,18 @@ export namespace Prisma {
     clientName?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     status?: SortOrder
+    projectValue?: SortOrderInput | SortOrder
     budget?: SortOrderInput | SortOrder
     currency?: SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
+    numberOfPayments?: SortOrderInput | SortOrder
     startDate?: SortOrderInput | SortOrder
     endDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeclared?: SortOrder
+    vatRate?: SortOrder
+    irpfRate?: SortOrder
     _count?: ProjectCountOrderByAggregateInput
     _avg?: ProjectAvgOrderByAggregateInput
     _max?: ProjectMaxOrderByAggregateInput
@@ -10238,12 +11862,18 @@ export namespace Prisma {
     clientName?: StringNullableWithAggregatesFilter<"Project"> | string | null
     description?: StringNullableWithAggregatesFilter<"Project"> | string | null
     status?: EnumProjectStatusWithAggregatesFilter<"Project"> | $Enums.ProjectStatus
+    projectValue?: DecimalNullableWithAggregatesFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
     budget?: DecimalNullableWithAggregatesFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
     currency?: StringWithAggregatesFilter<"Project"> | string
+    paymentMethod?: StringNullableWithAggregatesFilter<"Project"> | string | null
+    numberOfPayments?: IntNullableWithAggregatesFilter<"Project"> | number | null
     startDate?: DateTimeNullableWithAggregatesFilter<"Project"> | Date | string | null
     endDate?: DateTimeNullableWithAggregatesFilter<"Project"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
+    isDeclared?: BoolWithAggregatesFilter<"Project"> | boolean
+    vatRate?: IntWithAggregatesFilter<"Project"> | number
+    irpfRate?: IntWithAggregatesFilter<"Project"> | number
   }
 
   export type InvoiceWhereInput = {
@@ -10251,72 +11881,106 @@ export namespace Prisma {
     OR?: InvoiceWhereInput[]
     NOT?: InvoiceWhereInput | InvoiceWhereInput[]
     id?: StringFilter<"Invoice"> | string
-    projectId?: StringFilter<"Invoice"> | string
+    type?: EnumInvoiceTypeFilter<"Invoice"> | $Enums.InvoiceType
+    workspaceId?: StringFilter<"Invoice"> | string
+    projectId?: StringNullableFilter<"Invoice"> | string | null
     number?: StringFilter<"Invoice"> | string
     description?: StringNullableFilter<"Invoice"> | string | null
     amount?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
     currency?: StringFilter<"Invoice"> | string
+    isDeclared?: BoolFilter<"Invoice"> | boolean
+    vendorName?: StringNullableFilter<"Invoice"> | string | null
+    category?: StringNullableFilter<"Invoice"> | string | null
+    vatAmount?: DecimalNullableFilter<"Invoice"> | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFilter<"Invoice"> | Date | string
     dueDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
     paidDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    paymentMethod?: StringNullableFilter<"Invoice"> | string | null
     status?: EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
     notes?: StringNullableFilter<"Invoice"> | string | null
     createdAt?: DateTimeFilter<"Invoice"> | Date | string
     updatedAt?: DateTimeFilter<"Invoice"> | Date | string
-    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
     files?: InvoiceFileListRelationFilter
+    allocations?: ExpenseAllocationListRelationFilter
   }
 
   export type InvoiceOrderByWithRelationInput = {
     id?: SortOrder
-    projectId?: SortOrder
+    type?: SortOrder
+    workspaceId?: SortOrder
+    projectId?: SortOrderInput | SortOrder
     number?: SortOrder
     description?: SortOrderInput | SortOrder
     amount?: SortOrder
     currency?: SortOrder
+    isDeclared?: SortOrder
+    vendorName?: SortOrderInput | SortOrder
+    category?: SortOrderInput | SortOrder
+    vatAmount?: SortOrderInput | SortOrder
     issueDate?: SortOrder
     dueDate?: SortOrderInput | SortOrder
     paidDate?: SortOrderInput | SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
     project?: ProjectOrderByWithRelationInput
     files?: InvoiceFileOrderByRelationAggregateInput
+    allocations?: ExpenseAllocationOrderByRelationAggregateInput
   }
 
   export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    projectId_number?: InvoiceProjectIdNumberCompoundUniqueInput
+    workspaceId_type_number?: InvoiceWorkspaceIdTypeNumberCompoundUniqueInput
     AND?: InvoiceWhereInput | InvoiceWhereInput[]
     OR?: InvoiceWhereInput[]
     NOT?: InvoiceWhereInput | InvoiceWhereInput[]
-    projectId?: StringFilter<"Invoice"> | string
+    type?: EnumInvoiceTypeFilter<"Invoice"> | $Enums.InvoiceType
+    workspaceId?: StringFilter<"Invoice"> | string
+    projectId?: StringNullableFilter<"Invoice"> | string | null
     number?: StringFilter<"Invoice"> | string
     description?: StringNullableFilter<"Invoice"> | string | null
     amount?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
     currency?: StringFilter<"Invoice"> | string
+    isDeclared?: BoolFilter<"Invoice"> | boolean
+    vendorName?: StringNullableFilter<"Invoice"> | string | null
+    category?: StringNullableFilter<"Invoice"> | string | null
+    vatAmount?: DecimalNullableFilter<"Invoice"> | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFilter<"Invoice"> | Date | string
     dueDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
     paidDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    paymentMethod?: StringNullableFilter<"Invoice"> | string | null
     status?: EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
     notes?: StringNullableFilter<"Invoice"> | string | null
     createdAt?: DateTimeFilter<"Invoice"> | Date | string
     updatedAt?: DateTimeFilter<"Invoice"> | Date | string
-    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
     files?: InvoiceFileListRelationFilter
-  }, "id" | "projectId_number">
+    allocations?: ExpenseAllocationListRelationFilter
+  }, "id" | "workspaceId_type_number">
 
   export type InvoiceOrderByWithAggregationInput = {
     id?: SortOrder
-    projectId?: SortOrder
+    type?: SortOrder
+    workspaceId?: SortOrder
+    projectId?: SortOrderInput | SortOrder
     number?: SortOrder
     description?: SortOrderInput | SortOrder
     amount?: SortOrder
     currency?: SortOrder
+    isDeclared?: SortOrder
+    vendorName?: SortOrderInput | SortOrder
+    category?: SortOrderInput | SortOrder
+    vatAmount?: SortOrderInput | SortOrder
     issueDate?: SortOrder
     dueDate?: SortOrderInput | SortOrder
     paidDate?: SortOrderInput | SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -10333,18 +11997,91 @@ export namespace Prisma {
     OR?: InvoiceScalarWhereWithAggregatesInput[]
     NOT?: InvoiceScalarWhereWithAggregatesInput | InvoiceScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Invoice"> | string
-    projectId?: StringWithAggregatesFilter<"Invoice"> | string
+    type?: EnumInvoiceTypeWithAggregatesFilter<"Invoice"> | $Enums.InvoiceType
+    workspaceId?: StringWithAggregatesFilter<"Invoice"> | string
+    projectId?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
     number?: StringWithAggregatesFilter<"Invoice"> | string
     description?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
     amount?: DecimalWithAggregatesFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
     currency?: StringWithAggregatesFilter<"Invoice"> | string
+    isDeclared?: BoolWithAggregatesFilter<"Invoice"> | boolean
+    vendorName?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    category?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    vatAmount?: DecimalNullableWithAggregatesFilter<"Invoice"> | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeWithAggregatesFilter<"Invoice"> | Date | string
     dueDate?: DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
     paidDate?: DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
+    paymentMethod?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
     status?: EnumInvoiceStatusWithAggregatesFilter<"Invoice"> | $Enums.InvoiceStatus
     notes?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Invoice"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Invoice"> | Date | string
+  }
+
+  export type ExpenseAllocationWhereInput = {
+    AND?: ExpenseAllocationWhereInput | ExpenseAllocationWhereInput[]
+    OR?: ExpenseAllocationWhereInput[]
+    NOT?: ExpenseAllocationWhereInput | ExpenseAllocationWhereInput[]
+    id?: StringFilter<"ExpenseAllocation"> | string
+    invoiceId?: StringFilter<"ExpenseAllocation"> | string
+    projectId?: StringFilter<"ExpenseAllocation"> | string
+    amount?: DecimalFilter<"ExpenseAllocation"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableFilter<"ExpenseAllocation"> | string | null
+    createdAt?: DateTimeFilter<"ExpenseAllocation"> | Date | string
+    invoice?: XOR<InvoiceScalarRelationFilter, InvoiceWhereInput>
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }
+
+  export type ExpenseAllocationOrderByWithRelationInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    projectId?: SortOrder
+    amount?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    invoice?: InvoiceOrderByWithRelationInput
+    project?: ProjectOrderByWithRelationInput
+  }
+
+  export type ExpenseAllocationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    invoiceId_projectId?: ExpenseAllocationInvoiceIdProjectIdCompoundUniqueInput
+    AND?: ExpenseAllocationWhereInput | ExpenseAllocationWhereInput[]
+    OR?: ExpenseAllocationWhereInput[]
+    NOT?: ExpenseAllocationWhereInput | ExpenseAllocationWhereInput[]
+    invoiceId?: StringFilter<"ExpenseAllocation"> | string
+    projectId?: StringFilter<"ExpenseAllocation"> | string
+    amount?: DecimalFilter<"ExpenseAllocation"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableFilter<"ExpenseAllocation"> | string | null
+    createdAt?: DateTimeFilter<"ExpenseAllocation"> | Date | string
+    invoice?: XOR<InvoiceScalarRelationFilter, InvoiceWhereInput>
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }, "id" | "invoiceId_projectId">
+
+  export type ExpenseAllocationOrderByWithAggregationInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    projectId?: SortOrder
+    amount?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: ExpenseAllocationCountOrderByAggregateInput
+    _avg?: ExpenseAllocationAvgOrderByAggregateInput
+    _max?: ExpenseAllocationMaxOrderByAggregateInput
+    _min?: ExpenseAllocationMinOrderByAggregateInput
+    _sum?: ExpenseAllocationSumOrderByAggregateInput
+  }
+
+  export type ExpenseAllocationScalarWhereWithAggregatesInput = {
+    AND?: ExpenseAllocationScalarWhereWithAggregatesInput | ExpenseAllocationScalarWhereWithAggregatesInput[]
+    OR?: ExpenseAllocationScalarWhereWithAggregatesInput[]
+    NOT?: ExpenseAllocationScalarWhereWithAggregatesInput | ExpenseAllocationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ExpenseAllocation"> | string
+    invoiceId?: StringWithAggregatesFilter<"ExpenseAllocation"> | string
+    projectId?: StringWithAggregatesFilter<"ExpenseAllocation"> | string
+    amount?: DecimalWithAggregatesFilter<"ExpenseAllocation"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableWithAggregatesFilter<"ExpenseAllocation"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ExpenseAllocation"> | Date | string
   }
 
   export type InvoiceFileWhereInput = {
@@ -10562,6 +12299,7 @@ export namespace Prisma {
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+    invoices?: InvoiceCreateNestedManyWithoutWorkspaceInput
     subscription?: SubscriptionCreateNestedOneWithoutWorkspaceInput
   }
 
@@ -10573,6 +12311,7 @@ export namespace Prisma {
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutWorkspaceInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutWorkspaceInput
   }
 
@@ -10584,6 +12323,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+    invoices?: InvoiceUpdateManyWithoutWorkspaceNestedInput
     subscription?: SubscriptionUpdateOneWithoutWorkspaceNestedInput
   }
 
@@ -10595,6 +12335,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutWorkspaceNestedInput
   }
 
@@ -10703,14 +12444,21 @@ export namespace Prisma {
     clientName?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
+    projectValue?: Decimal | DecimalJsLike | number | string | null
     budget?: Decimal | DecimalJsLike | number | string | null
     currency?: string
+    paymentMethod?: string | null
+    numberOfPayments?: number | null
     startDate?: Date | string | null
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeclared?: boolean
+    vatRate?: number
+    irpfRate?: number
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
     invoices?: InvoiceCreateNestedManyWithoutProjectInput
+    expenseAllocations?: ExpenseAllocationCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
@@ -10720,13 +12468,20 @@ export namespace Prisma {
     clientName?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
+    projectValue?: Decimal | DecimalJsLike | number | string | null
     budget?: Decimal | DecimalJsLike | number | string | null
     currency?: string
+    paymentMethod?: string | null
+    numberOfPayments?: number | null
     startDate?: Date | string | null
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeclared?: boolean
+    vatRate?: number
+    irpfRate?: number
     invoices?: InvoiceUncheckedCreateNestedManyWithoutProjectInput
+    expenseAllocations?: ExpenseAllocationUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
@@ -10735,14 +12490,21 @@ export namespace Prisma {
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
     invoices?: InvoiceUpdateManyWithoutProjectNestedInput
+    expenseAllocations?: ExpenseAllocationUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateInput = {
@@ -10752,13 +12514,20 @@ export namespace Prisma {
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
     invoices?: InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+    expenseAllocations?: ExpenseAllocationUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateManyInput = {
@@ -10768,12 +12537,18 @@ export namespace Prisma {
     clientName?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
+    projectValue?: Decimal | DecimalJsLike | number | string | null
     budget?: Decimal | DecimalJsLike | number | string | null
     currency?: string
+    paymentMethod?: string | null
+    numberOfPayments?: number | null
     startDate?: Date | string | null
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeclared?: boolean
+    vatRate?: number
+    irpfRate?: number
   }
 
   export type ProjectUpdateManyMutationInput = {
@@ -10782,12 +12557,18 @@ export namespace Prisma {
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
   }
 
   export type ProjectUncheckedUpdateManyInput = {
@@ -10797,92 +12578,137 @@ export namespace Prisma {
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
   }
 
   export type InvoiceCreateInput = {
     id?: string
+    type?: $Enums.InvoiceType
     number: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
     issueDate: Date | string
     dueDate?: Date | string | null
     paidDate?: Date | string | null
+    paymentMethod?: string | null
     status?: $Enums.InvoiceStatus
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    project: ProjectCreateNestedOneWithoutInvoicesInput
+    workspace: WorkspaceCreateNestedOneWithoutInvoicesInput
+    project?: ProjectCreateNestedOneWithoutInvoicesInput
     files?: InvoiceFileCreateNestedManyWithoutInvoiceInput
+    allocations?: ExpenseAllocationCreateNestedManyWithoutInvoiceInput
   }
 
   export type InvoiceUncheckedCreateInput = {
     id?: string
-    projectId: string
+    type?: $Enums.InvoiceType
+    workspaceId: string
+    projectId?: string | null
     number: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
     issueDate: Date | string
     dueDate?: Date | string | null
     paidDate?: Date | string | null
+    paymentMethod?: string | null
     status?: $Enums.InvoiceStatus
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     files?: InvoiceFileUncheckedCreateNestedManyWithoutInvoiceInput
+    allocations?: ExpenseAllocationUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
   export type InvoiceUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     number?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    project?: ProjectUpdateOneRequiredWithoutInvoicesNestedInput
+    workspace?: WorkspaceUpdateOneRequiredWithoutInvoicesNestedInput
+    project?: ProjectUpdateOneWithoutInvoicesNestedInput
     files?: InvoiceFileUpdateManyWithoutInvoiceNestedInput
+    allocations?: ExpenseAllocationUpdateManyWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    projectId?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
     number?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     files?: InvoiceFileUncheckedUpdateManyWithoutInvoiceNestedInput
+    allocations?: ExpenseAllocationUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
   export type InvoiceCreateManyInput = {
     id?: string
-    projectId: string
+    type?: $Enums.InvoiceType
+    workspaceId: string
+    projectId?: string | null
     number: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
     issueDate: Date | string
     dueDate?: Date | string | null
     paidDate?: Date | string | null
+    paymentMethod?: string | null
     status?: $Enums.InvoiceStatus
     notes?: string | null
     createdAt?: Date | string
@@ -10891,13 +12717,19 @@ export namespace Prisma {
 
   export type InvoiceUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     number?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10906,18 +12738,86 @@ export namespace Prisma {
 
   export type InvoiceUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    projectId?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
     number?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseAllocationCreateInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+    invoice: InvoiceCreateNestedOneWithoutAllocationsInput
+    project: ProjectCreateNestedOneWithoutExpenseAllocationsInput
+  }
+
+  export type ExpenseAllocationUncheckedCreateInput = {
+    id?: string
+    invoiceId: string
+    projectId: string
+    amount: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ExpenseAllocationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneRequiredWithoutAllocationsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutExpenseAllocationsNestedInput
+  }
+
+  export type ExpenseAllocationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseAllocationCreateManyInput = {
+    id?: string
+    invoiceId: string
+    projectId: string
+    amount: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ExpenseAllocationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseAllocationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InvoiceFileCreateInput = {
@@ -11222,12 +13122,22 @@ export namespace Prisma {
     none?: ProjectWhereInput
   }
 
+  export type InvoiceListRelationFilter = {
+    every?: InvoiceWhereInput
+    some?: InvoiceWhereInput
+    none?: InvoiceWhereInput
+  }
+
   export type SubscriptionNullableScalarRelationFilter = {
     is?: SubscriptionWhereInput | null
     isNot?: SubscriptionWhereInput | null
   }
 
   export type ProjectOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InvoiceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -11373,13 +13283,40 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
-  export type InvoiceListRelationFilter = {
-    every?: InvoiceWhereInput
-    some?: InvoiceWhereInput
-    none?: InvoiceWhereInput
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type InvoiceOrderByRelationAggregateInput = {
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type ExpenseAllocationListRelationFilter = {
+    every?: ExpenseAllocationWhereInput
+    some?: ExpenseAllocationWhereInput
+    none?: ExpenseAllocationWhereInput
+  }
+
+  export type ExpenseAllocationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -11390,16 +13327,26 @@ export namespace Prisma {
     clientName?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    projectValue?: SortOrder
     budget?: SortOrder
     currency?: SortOrder
+    paymentMethod?: SortOrder
+    numberOfPayments?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeclared?: SortOrder
+    vatRate?: SortOrder
+    irpfRate?: SortOrder
   }
 
   export type ProjectAvgOrderByAggregateInput = {
+    projectValue?: SortOrder
     budget?: SortOrder
+    numberOfPayments?: SortOrder
+    vatRate?: SortOrder
+    irpfRate?: SortOrder
   }
 
   export type ProjectMaxOrderByAggregateInput = {
@@ -11409,12 +13356,18 @@ export namespace Prisma {
     clientName?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    projectValue?: SortOrder
     budget?: SortOrder
     currency?: SortOrder
+    paymentMethod?: SortOrder
+    numberOfPayments?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeclared?: SortOrder
+    vatRate?: SortOrder
+    irpfRate?: SortOrder
   }
 
   export type ProjectMinOrderByAggregateInput = {
@@ -11424,16 +13377,26 @@ export namespace Prisma {
     clientName?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    projectValue?: SortOrder
     budget?: SortOrder
     currency?: SortOrder
+    paymentMethod?: SortOrder
+    numberOfPayments?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeclared?: SortOrder
+    vatRate?: SortOrder
+    irpfRate?: SortOrder
   }
 
   export type ProjectSumOrderByAggregateInput = {
+    projectValue?: SortOrder
     budget?: SortOrder
+    numberOfPayments?: SortOrder
+    vatRate?: SortOrder
+    irpfRate?: SortOrder
   }
 
   export type EnumProjectStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -11462,6 +13425,53 @@ export namespace Prisma {
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumInvoiceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvoiceType | EnumInvoiceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InvoiceType[] | ListEnumInvoiceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvoiceType[] | ListEnumInvoiceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvoiceTypeFilter<$PrismaModel> | $Enums.InvoiceType
+  }
+
   export type DecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -11480,9 +13490,9 @@ export namespace Prisma {
     not?: NestedEnumInvoiceStatusFilter<$PrismaModel> | $Enums.InvoiceStatus
   }
 
-  export type ProjectScalarRelationFilter = {
-    is?: ProjectWhereInput
-    isNot?: ProjectWhereInput
+  export type ProjectNullableScalarRelationFilter = {
+    is?: ProjectWhereInput | null
+    isNot?: ProjectWhereInput | null
   }
 
   export type InvoiceFileListRelationFilter = {
@@ -11495,21 +13505,29 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type InvoiceProjectIdNumberCompoundUniqueInput = {
-    projectId: string
+  export type InvoiceWorkspaceIdTypeNumberCompoundUniqueInput = {
+    workspaceId: string
+    type: $Enums.InvoiceType
     number: string
   }
 
   export type InvoiceCountOrderByAggregateInput = {
     id?: SortOrder
+    type?: SortOrder
+    workspaceId?: SortOrder
     projectId?: SortOrder
     number?: SortOrder
     description?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
+    isDeclared?: SortOrder
+    vendorName?: SortOrder
+    category?: SortOrder
+    vatAmount?: SortOrder
     issueDate?: SortOrder
     dueDate?: SortOrder
     paidDate?: SortOrder
+    paymentMethod?: SortOrder
     status?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -11518,18 +13536,26 @@ export namespace Prisma {
 
   export type InvoiceAvgOrderByAggregateInput = {
     amount?: SortOrder
+    vatAmount?: SortOrder
   }
 
   export type InvoiceMaxOrderByAggregateInput = {
     id?: SortOrder
+    type?: SortOrder
+    workspaceId?: SortOrder
     projectId?: SortOrder
     number?: SortOrder
     description?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
+    isDeclared?: SortOrder
+    vendorName?: SortOrder
+    category?: SortOrder
+    vatAmount?: SortOrder
     issueDate?: SortOrder
     dueDate?: SortOrder
     paidDate?: SortOrder
+    paymentMethod?: SortOrder
     status?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -11538,14 +13564,21 @@ export namespace Prisma {
 
   export type InvoiceMinOrderByAggregateInput = {
     id?: SortOrder
+    type?: SortOrder
+    workspaceId?: SortOrder
     projectId?: SortOrder
     number?: SortOrder
     description?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
+    isDeclared?: SortOrder
+    vendorName?: SortOrder
+    category?: SortOrder
+    vatAmount?: SortOrder
     issueDate?: SortOrder
     dueDate?: SortOrder
     paidDate?: SortOrder
+    paymentMethod?: SortOrder
     status?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -11554,6 +13587,17 @@ export namespace Prisma {
 
   export type InvoiceSumOrderByAggregateInput = {
     amount?: SortOrder
+    vatAmount?: SortOrder
+  }
+
+  export type EnumInvoiceTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvoiceType | EnumInvoiceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InvoiceType[] | ListEnumInvoiceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvoiceType[] | ListEnumInvoiceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvoiceTypeWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInvoiceTypeFilter<$PrismaModel>
+    _max?: NestedEnumInvoiceTypeFilter<$PrismaModel>
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -11582,15 +13626,54 @@ export namespace Prisma {
     _max?: NestedEnumInvoiceStatusFilter<$PrismaModel>
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type InvoiceScalarRelationFilter = {
+    is?: InvoiceWhereInput
+    isNot?: InvoiceWhereInput
+  }
+
+  export type ProjectScalarRelationFilter = {
+    is?: ProjectWhereInput
+    isNot?: ProjectWhereInput
+  }
+
+  export type ExpenseAllocationInvoiceIdProjectIdCompoundUniqueInput = {
+    invoiceId: string
+    projectId: string
+  }
+
+  export type ExpenseAllocationCountOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    projectId?: SortOrder
+    amount?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ExpenseAllocationAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type ExpenseAllocationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    projectId?: SortOrder
+    amount?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ExpenseAllocationMinOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    projectId?: SortOrder
+    amount?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ExpenseAllocationSumOrderByAggregateInput = {
+    amount?: SortOrder
   }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -11614,11 +13697,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type InvoiceScalarRelationFilter = {
-    is?: InvoiceWhereInput
-    isNot?: InvoiceWhereInput
   }
 
   export type InvoiceFileCountOrderByAggregateInput = {
@@ -11658,22 +13736,6 @@ export namespace Prisma {
 
   export type InvoiceFileSumOrderByAggregateInput = {
     sizeBytes?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -11823,6 +13885,13 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
+  export type InvoiceCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<InvoiceCreateWithoutWorkspaceInput, InvoiceUncheckedCreateWithoutWorkspaceInput> | InvoiceCreateWithoutWorkspaceInput[] | InvoiceUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutWorkspaceInput | InvoiceCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: InvoiceCreateManyWorkspaceInputEnvelope
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+  }
+
   export type SubscriptionCreateNestedOneWithoutWorkspaceInput = {
     create?: XOR<SubscriptionCreateWithoutWorkspaceInput, SubscriptionUncheckedCreateWithoutWorkspaceInput>
     connectOrCreate?: SubscriptionCreateOrConnectWithoutWorkspaceInput
@@ -11841,6 +13910,13 @@ export namespace Prisma {
     connectOrCreate?: ProjectCreateOrConnectWithoutWorkspaceInput | ProjectCreateOrConnectWithoutWorkspaceInput[]
     createMany?: ProjectCreateManyWorkspaceInputEnvelope
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+  }
+
+  export type InvoiceUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<InvoiceCreateWithoutWorkspaceInput, InvoiceUncheckedCreateWithoutWorkspaceInput> | InvoiceCreateWithoutWorkspaceInput[] | InvoiceUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutWorkspaceInput | InvoiceCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: InvoiceCreateManyWorkspaceInputEnvelope
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
   }
 
   export type SubscriptionUncheckedCreateNestedOneWithoutWorkspaceInput = {
@@ -11881,6 +13957,20 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
+  export type InvoiceUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<InvoiceCreateWithoutWorkspaceInput, InvoiceUncheckedCreateWithoutWorkspaceInput> | InvoiceCreateWithoutWorkspaceInput[] | InvoiceUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutWorkspaceInput | InvoiceCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: InvoiceUpsertWithWhereUniqueWithoutWorkspaceInput | InvoiceUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: InvoiceCreateManyWorkspaceInputEnvelope
+    set?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    disconnect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    delete?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    update?: InvoiceUpdateWithWhereUniqueWithoutWorkspaceInput | InvoiceUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: InvoiceUpdateManyWithWhereWithoutWorkspaceInput | InvoiceUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
   export type SubscriptionUpdateOneWithoutWorkspaceNestedInput = {
     create?: XOR<SubscriptionCreateWithoutWorkspaceInput, SubscriptionUncheckedCreateWithoutWorkspaceInput>
     connectOrCreate?: SubscriptionCreateOrConnectWithoutWorkspaceInput
@@ -11917,6 +14007,20 @@ export namespace Prisma {
     update?: ProjectUpdateWithWhereUniqueWithoutWorkspaceInput | ProjectUpdateWithWhereUniqueWithoutWorkspaceInput[]
     updateMany?: ProjectUpdateManyWithWhereWithoutWorkspaceInput | ProjectUpdateManyWithWhereWithoutWorkspaceInput[]
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+  }
+
+  export type InvoiceUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<InvoiceCreateWithoutWorkspaceInput, InvoiceUncheckedCreateWithoutWorkspaceInput> | InvoiceCreateWithoutWorkspaceInput[] | InvoiceUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutWorkspaceInput | InvoiceCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: InvoiceUpsertWithWhereUniqueWithoutWorkspaceInput | InvoiceUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: InvoiceCreateManyWorkspaceInputEnvelope
+    set?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    disconnect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    delete?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    update?: InvoiceUpdateWithWhereUniqueWithoutWorkspaceInput | InvoiceUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: InvoiceUpdateManyWithWhereWithoutWorkspaceInput | InvoiceUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
   }
 
   export type SubscriptionUncheckedUpdateOneWithoutWorkspaceNestedInput = {
@@ -11980,11 +14084,25 @@ export namespace Prisma {
     connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
   }
 
+  export type ExpenseAllocationCreateNestedManyWithoutProjectInput = {
+    create?: XOR<ExpenseAllocationCreateWithoutProjectInput, ExpenseAllocationUncheckedCreateWithoutProjectInput> | ExpenseAllocationCreateWithoutProjectInput[] | ExpenseAllocationUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ExpenseAllocationCreateOrConnectWithoutProjectInput | ExpenseAllocationCreateOrConnectWithoutProjectInput[]
+    createMany?: ExpenseAllocationCreateManyProjectInputEnvelope
+    connect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+  }
+
   export type InvoiceUncheckedCreateNestedManyWithoutProjectInput = {
     create?: XOR<InvoiceCreateWithoutProjectInput, InvoiceUncheckedCreateWithoutProjectInput> | InvoiceCreateWithoutProjectInput[] | InvoiceUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: InvoiceCreateOrConnectWithoutProjectInput | InvoiceCreateOrConnectWithoutProjectInput[]
     createMany?: InvoiceCreateManyProjectInputEnvelope
     connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+  }
+
+  export type ExpenseAllocationUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<ExpenseAllocationCreateWithoutProjectInput, ExpenseAllocationUncheckedCreateWithoutProjectInput> | ExpenseAllocationCreateWithoutProjectInput[] | ExpenseAllocationUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ExpenseAllocationCreateOrConnectWithoutProjectInput | ExpenseAllocationCreateOrConnectWithoutProjectInput[]
+    createMany?: ExpenseAllocationCreateManyProjectInputEnvelope
+    connect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
   }
 
   export type EnumProjectStatusFieldUpdateOperationsInput = {
@@ -11997,6 +14115,26 @@ export namespace Prisma {
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type WorkspaceUpdateOneRequiredWithoutProjectsNestedInput = {
@@ -12021,6 +14159,20 @@ export namespace Prisma {
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
   }
 
+  export type ExpenseAllocationUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<ExpenseAllocationCreateWithoutProjectInput, ExpenseAllocationUncheckedCreateWithoutProjectInput> | ExpenseAllocationCreateWithoutProjectInput[] | ExpenseAllocationUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ExpenseAllocationCreateOrConnectWithoutProjectInput | ExpenseAllocationCreateOrConnectWithoutProjectInput[]
+    upsert?: ExpenseAllocationUpsertWithWhereUniqueWithoutProjectInput | ExpenseAllocationUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: ExpenseAllocationCreateManyProjectInputEnvelope
+    set?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    disconnect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    delete?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    connect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    update?: ExpenseAllocationUpdateWithWhereUniqueWithoutProjectInput | ExpenseAllocationUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: ExpenseAllocationUpdateManyWithWhereWithoutProjectInput | ExpenseAllocationUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: ExpenseAllocationScalarWhereInput | ExpenseAllocationScalarWhereInput[]
+  }
+
   export type InvoiceUncheckedUpdateManyWithoutProjectNestedInput = {
     create?: XOR<InvoiceCreateWithoutProjectInput, InvoiceUncheckedCreateWithoutProjectInput> | InvoiceCreateWithoutProjectInput[] | InvoiceUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: InvoiceCreateOrConnectWithoutProjectInput | InvoiceCreateOrConnectWithoutProjectInput[]
@@ -12033,6 +14185,26 @@ export namespace Prisma {
     update?: InvoiceUpdateWithWhereUniqueWithoutProjectInput | InvoiceUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: InvoiceUpdateManyWithWhereWithoutProjectInput | InvoiceUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
+  export type ExpenseAllocationUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<ExpenseAllocationCreateWithoutProjectInput, ExpenseAllocationUncheckedCreateWithoutProjectInput> | ExpenseAllocationCreateWithoutProjectInput[] | ExpenseAllocationUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ExpenseAllocationCreateOrConnectWithoutProjectInput | ExpenseAllocationCreateOrConnectWithoutProjectInput[]
+    upsert?: ExpenseAllocationUpsertWithWhereUniqueWithoutProjectInput | ExpenseAllocationUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: ExpenseAllocationCreateManyProjectInputEnvelope
+    set?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    disconnect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    delete?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    connect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    update?: ExpenseAllocationUpdateWithWhereUniqueWithoutProjectInput | ExpenseAllocationUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: ExpenseAllocationUpdateManyWithWhereWithoutProjectInput | ExpenseAllocationUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: ExpenseAllocationScalarWhereInput | ExpenseAllocationScalarWhereInput[]
+  }
+
+  export type WorkspaceCreateNestedOneWithoutInvoicesInput = {
+    create?: XOR<WorkspaceCreateWithoutInvoicesInput, WorkspaceUncheckedCreateWithoutInvoicesInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutInvoicesInput
+    connect?: WorkspaceWhereUniqueInput
   }
 
   export type ProjectCreateNestedOneWithoutInvoicesInput = {
@@ -12048,11 +14220,29 @@ export namespace Prisma {
     connect?: InvoiceFileWhereUniqueInput | InvoiceFileWhereUniqueInput[]
   }
 
+  export type ExpenseAllocationCreateNestedManyWithoutInvoiceInput = {
+    create?: XOR<ExpenseAllocationCreateWithoutInvoiceInput, ExpenseAllocationUncheckedCreateWithoutInvoiceInput> | ExpenseAllocationCreateWithoutInvoiceInput[] | ExpenseAllocationUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: ExpenseAllocationCreateOrConnectWithoutInvoiceInput | ExpenseAllocationCreateOrConnectWithoutInvoiceInput[]
+    createMany?: ExpenseAllocationCreateManyInvoiceInputEnvelope
+    connect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+  }
+
   export type InvoiceFileUncheckedCreateNestedManyWithoutInvoiceInput = {
     create?: XOR<InvoiceFileCreateWithoutInvoiceInput, InvoiceFileUncheckedCreateWithoutInvoiceInput> | InvoiceFileCreateWithoutInvoiceInput[] | InvoiceFileUncheckedCreateWithoutInvoiceInput[]
     connectOrCreate?: InvoiceFileCreateOrConnectWithoutInvoiceInput | InvoiceFileCreateOrConnectWithoutInvoiceInput[]
     createMany?: InvoiceFileCreateManyInvoiceInputEnvelope
     connect?: InvoiceFileWhereUniqueInput | InvoiceFileWhereUniqueInput[]
+  }
+
+  export type ExpenseAllocationUncheckedCreateNestedManyWithoutInvoiceInput = {
+    create?: XOR<ExpenseAllocationCreateWithoutInvoiceInput, ExpenseAllocationUncheckedCreateWithoutInvoiceInput> | ExpenseAllocationCreateWithoutInvoiceInput[] | ExpenseAllocationUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: ExpenseAllocationCreateOrConnectWithoutInvoiceInput | ExpenseAllocationCreateOrConnectWithoutInvoiceInput[]
+    createMany?: ExpenseAllocationCreateManyInvoiceInputEnvelope
+    connect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+  }
+
+  export type EnumInvoiceTypeFieldUpdateOperationsInput = {
+    set?: $Enums.InvoiceType
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -12067,10 +14257,20 @@ export namespace Prisma {
     set?: $Enums.InvoiceStatus
   }
 
-  export type ProjectUpdateOneRequiredWithoutInvoicesNestedInput = {
+  export type WorkspaceUpdateOneRequiredWithoutInvoicesNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutInvoicesInput, WorkspaceUncheckedCreateWithoutInvoicesInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutInvoicesInput
+    upsert?: WorkspaceUpsertWithoutInvoicesInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutInvoicesInput, WorkspaceUpdateWithoutInvoicesInput>, WorkspaceUncheckedUpdateWithoutInvoicesInput>
+  }
+
+  export type ProjectUpdateOneWithoutInvoicesNestedInput = {
     create?: XOR<ProjectCreateWithoutInvoicesInput, ProjectUncheckedCreateWithoutInvoicesInput>
     connectOrCreate?: ProjectCreateOrConnectWithoutInvoicesInput
     upsert?: ProjectUpsertWithoutInvoicesInput
+    disconnect?: ProjectWhereInput | boolean
+    delete?: ProjectWhereInput | boolean
     connect?: ProjectWhereUniqueInput
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutInvoicesInput, ProjectUpdateWithoutInvoicesInput>, ProjectUncheckedUpdateWithoutInvoicesInput>
   }
@@ -12089,6 +14289,20 @@ export namespace Prisma {
     deleteMany?: InvoiceFileScalarWhereInput | InvoiceFileScalarWhereInput[]
   }
 
+  export type ExpenseAllocationUpdateManyWithoutInvoiceNestedInput = {
+    create?: XOR<ExpenseAllocationCreateWithoutInvoiceInput, ExpenseAllocationUncheckedCreateWithoutInvoiceInput> | ExpenseAllocationCreateWithoutInvoiceInput[] | ExpenseAllocationUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: ExpenseAllocationCreateOrConnectWithoutInvoiceInput | ExpenseAllocationCreateOrConnectWithoutInvoiceInput[]
+    upsert?: ExpenseAllocationUpsertWithWhereUniqueWithoutInvoiceInput | ExpenseAllocationUpsertWithWhereUniqueWithoutInvoiceInput[]
+    createMany?: ExpenseAllocationCreateManyInvoiceInputEnvelope
+    set?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    disconnect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    delete?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    connect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    update?: ExpenseAllocationUpdateWithWhereUniqueWithoutInvoiceInput | ExpenseAllocationUpdateWithWhereUniqueWithoutInvoiceInput[]
+    updateMany?: ExpenseAllocationUpdateManyWithWhereWithoutInvoiceInput | ExpenseAllocationUpdateManyWithWhereWithoutInvoiceInput[]
+    deleteMany?: ExpenseAllocationScalarWhereInput | ExpenseAllocationScalarWhereInput[]
+  }
+
   export type InvoiceFileUncheckedUpdateManyWithoutInvoiceNestedInput = {
     create?: XOR<InvoiceFileCreateWithoutInvoiceInput, InvoiceFileUncheckedCreateWithoutInvoiceInput> | InvoiceFileCreateWithoutInvoiceInput[] | InvoiceFileUncheckedCreateWithoutInvoiceInput[]
     connectOrCreate?: InvoiceFileCreateOrConnectWithoutInvoiceInput | InvoiceFileCreateOrConnectWithoutInvoiceInput[]
@@ -12103,18 +14317,52 @@ export namespace Prisma {
     deleteMany?: InvoiceFileScalarWhereInput | InvoiceFileScalarWhereInput[]
   }
 
+  export type ExpenseAllocationUncheckedUpdateManyWithoutInvoiceNestedInput = {
+    create?: XOR<ExpenseAllocationCreateWithoutInvoiceInput, ExpenseAllocationUncheckedCreateWithoutInvoiceInput> | ExpenseAllocationCreateWithoutInvoiceInput[] | ExpenseAllocationUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: ExpenseAllocationCreateOrConnectWithoutInvoiceInput | ExpenseAllocationCreateOrConnectWithoutInvoiceInput[]
+    upsert?: ExpenseAllocationUpsertWithWhereUniqueWithoutInvoiceInput | ExpenseAllocationUpsertWithWhereUniqueWithoutInvoiceInput[]
+    createMany?: ExpenseAllocationCreateManyInvoiceInputEnvelope
+    set?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    disconnect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    delete?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    connect?: ExpenseAllocationWhereUniqueInput | ExpenseAllocationWhereUniqueInput[]
+    update?: ExpenseAllocationUpdateWithWhereUniqueWithoutInvoiceInput | ExpenseAllocationUpdateWithWhereUniqueWithoutInvoiceInput[]
+    updateMany?: ExpenseAllocationUpdateManyWithWhereWithoutInvoiceInput | ExpenseAllocationUpdateManyWithWhereWithoutInvoiceInput[]
+    deleteMany?: ExpenseAllocationScalarWhereInput | ExpenseAllocationScalarWhereInput[]
+  }
+
+  export type InvoiceCreateNestedOneWithoutAllocationsInput = {
+    create?: XOR<InvoiceCreateWithoutAllocationsInput, InvoiceUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: InvoiceCreateOrConnectWithoutAllocationsInput
+    connect?: InvoiceWhereUniqueInput
+  }
+
+  export type ProjectCreateNestedOneWithoutExpenseAllocationsInput = {
+    create?: XOR<ProjectCreateWithoutExpenseAllocationsInput, ProjectUncheckedCreateWithoutExpenseAllocationsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutExpenseAllocationsInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type InvoiceUpdateOneRequiredWithoutAllocationsNestedInput = {
+    create?: XOR<InvoiceCreateWithoutAllocationsInput, InvoiceUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: InvoiceCreateOrConnectWithoutAllocationsInput
+    upsert?: InvoiceUpsertWithoutAllocationsInput
+    connect?: InvoiceWhereUniqueInput
+    update?: XOR<XOR<InvoiceUpdateToOneWithWhereWithoutAllocationsInput, InvoiceUpdateWithoutAllocationsInput>, InvoiceUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type ProjectUpdateOneRequiredWithoutExpenseAllocationsNestedInput = {
+    create?: XOR<ProjectCreateWithoutExpenseAllocationsInput, ProjectUncheckedCreateWithoutExpenseAllocationsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutExpenseAllocationsInput
+    upsert?: ProjectUpsertWithoutExpenseAllocationsInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutExpenseAllocationsInput, ProjectUpdateWithoutExpenseAllocationsInput>, ProjectUncheckedUpdateWithoutExpenseAllocationsInput>
+  }
+
   export type InvoiceCreateNestedOneWithoutFilesInput = {
     create?: XOR<InvoiceCreateWithoutFilesInput, InvoiceUncheckedCreateWithoutFilesInput>
     connectOrCreate?: InvoiceCreateOrConnectWithoutFilesInput
     connect?: InvoiceWhereUniqueInput
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type InvoiceUpdateOneRequiredWithoutFilesNestedInput = {
@@ -12329,6 +14577,11 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedEnumProjectStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ProjectStatus | EnumProjectStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
@@ -12355,48 +14608,39 @@ export namespace Prisma {
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
-  export type NestedDecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumInvoiceStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.InvoiceStatus | EnumInvoiceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumInvoiceStatusFilter<$PrismaModel> | $Enums.InvoiceStatus
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
-  }
-
-  export type NestedEnumInvoiceStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.InvoiceStatus | EnumInvoiceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumInvoiceStatusWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumInvoiceStatusFilter<$PrismaModel>
-    _max?: NestedEnumInvoiceStatusFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -12424,6 +14668,67 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumInvoiceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvoiceType | EnumInvoiceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InvoiceType[] | ListEnumInvoiceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvoiceType[] | ListEnumInvoiceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvoiceTypeFilter<$PrismaModel> | $Enums.InvoiceType
+  }
+
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type NestedEnumInvoiceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvoiceStatus | EnumInvoiceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvoiceStatusFilter<$PrismaModel> | $Enums.InvoiceStatus
+  }
+
+  export type NestedEnumInvoiceTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvoiceType | EnumInvoiceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InvoiceType[] | ListEnumInvoiceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvoiceType[] | ListEnumInvoiceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvoiceTypeWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInvoiceTypeFilter<$PrismaModel>
+    _max?: NestedEnumInvoiceTypeFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type NestedEnumInvoiceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvoiceStatus | EnumInvoiceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvoiceStatusWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInvoiceStatusFilter<$PrismaModel>
+    _max?: NestedEnumInvoiceStatusFilter<$PrismaModel>
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -12562,13 +14867,20 @@ export namespace Prisma {
     clientName?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
+    projectValue?: Decimal | DecimalJsLike | number | string | null
     budget?: Decimal | DecimalJsLike | number | string | null
     currency?: string
+    paymentMethod?: string | null
+    numberOfPayments?: number | null
     startDate?: Date | string | null
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeclared?: boolean
+    vatRate?: number
+    irpfRate?: number
     invoices?: InvoiceCreateNestedManyWithoutProjectInput
+    expenseAllocations?: ExpenseAllocationCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutWorkspaceInput = {
@@ -12577,13 +14889,20 @@ export namespace Prisma {
     clientName?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
+    projectValue?: Decimal | DecimalJsLike | number | string | null
     budget?: Decimal | DecimalJsLike | number | string | null
     currency?: string
+    paymentMethod?: string | null
+    numberOfPayments?: number | null
     startDate?: Date | string | null
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeclared?: boolean
+    vatRate?: number
+    irpfRate?: number
     invoices?: InvoiceUncheckedCreateNestedManyWithoutProjectInput
+    expenseAllocations?: ExpenseAllocationUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutWorkspaceInput = {
@@ -12593,6 +14912,64 @@ export namespace Prisma {
 
   export type ProjectCreateManyWorkspaceInputEnvelope = {
     data: ProjectCreateManyWorkspaceInput | ProjectCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InvoiceCreateWithoutWorkspaceInput = {
+    id?: string
+    type?: $Enums.InvoiceType
+    number: string
+    description?: string | null
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
+    issueDate: Date | string
+    dueDate?: Date | string | null
+    paidDate?: Date | string | null
+    paymentMethod?: string | null
+    status?: $Enums.InvoiceStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project?: ProjectCreateNestedOneWithoutInvoicesInput
+    files?: InvoiceFileCreateNestedManyWithoutInvoiceInput
+    allocations?: ExpenseAllocationCreateNestedManyWithoutInvoiceInput
+  }
+
+  export type InvoiceUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    type?: $Enums.InvoiceType
+    projectId?: string | null
+    number: string
+    description?: string | null
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
+    issueDate: Date | string
+    dueDate?: Date | string | null
+    paidDate?: Date | string | null
+    paymentMethod?: string | null
+    status?: $Enums.InvoiceStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    files?: InvoiceFileUncheckedCreateNestedManyWithoutInvoiceInput
+    allocations?: ExpenseAllocationUncheckedCreateNestedManyWithoutInvoiceInput
+  }
+
+  export type InvoiceCreateOrConnectWithoutWorkspaceInput = {
+    where: InvoiceWhereUniqueInput
+    create: XOR<InvoiceCreateWithoutWorkspaceInput, InvoiceUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type InvoiceCreateManyWorkspaceInputEnvelope = {
+    data: InvoiceCreateManyWorkspaceInput | InvoiceCreateManyWorkspaceInput[]
     skipDuplicates?: boolean
   }
 
@@ -12665,12 +15042,60 @@ export namespace Prisma {
     clientName?: StringNullableFilter<"Project"> | string | null
     description?: StringNullableFilter<"Project"> | string | null
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+    projectValue?: DecimalNullableFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
     budget?: DecimalNullableFilter<"Project"> | Decimal | DecimalJsLike | number | string | null
     currency?: StringFilter<"Project"> | string
+    paymentMethod?: StringNullableFilter<"Project"> | string | null
+    numberOfPayments?: IntNullableFilter<"Project"> | number | null
     startDate?: DateTimeNullableFilter<"Project"> | Date | string | null
     endDate?: DateTimeNullableFilter<"Project"> | Date | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
+    isDeclared?: BoolFilter<"Project"> | boolean
+    vatRate?: IntFilter<"Project"> | number
+    irpfRate?: IntFilter<"Project"> | number
+  }
+
+  export type InvoiceUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: InvoiceWhereUniqueInput
+    update: XOR<InvoiceUpdateWithoutWorkspaceInput, InvoiceUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<InvoiceCreateWithoutWorkspaceInput, InvoiceUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type InvoiceUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: InvoiceWhereUniqueInput
+    data: XOR<InvoiceUpdateWithoutWorkspaceInput, InvoiceUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type InvoiceUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: InvoiceScalarWhereInput
+    data: XOR<InvoiceUpdateManyMutationInput, InvoiceUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type InvoiceScalarWhereInput = {
+    AND?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+    OR?: InvoiceScalarWhereInput[]
+    NOT?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+    id?: StringFilter<"Invoice"> | string
+    type?: EnumInvoiceTypeFilter<"Invoice"> | $Enums.InvoiceType
+    workspaceId?: StringFilter<"Invoice"> | string
+    projectId?: StringNullableFilter<"Invoice"> | string | null
+    number?: StringFilter<"Invoice"> | string
+    description?: StringNullableFilter<"Invoice"> | string | null
+    amount?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"Invoice"> | string
+    isDeclared?: BoolFilter<"Invoice"> | boolean
+    vendorName?: StringNullableFilter<"Invoice"> | string | null
+    category?: StringNullableFilter<"Invoice"> | string | null
+    vatAmount?: DecimalNullableFilter<"Invoice"> | Decimal | DecimalJsLike | number | string | null
+    issueDate?: DateTimeFilter<"Invoice"> | Date | string
+    dueDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    paidDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    paymentMethod?: StringNullableFilter<"Invoice"> | string | null
+    status?: EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
+    notes?: StringNullableFilter<"Invoice"> | string | null
+    createdAt?: DateTimeFilter<"Invoice"> | Date | string
+    updatedAt?: DateTimeFilter<"Invoice"> | Date | string
   }
 
   export type SubscriptionUpsertWithoutWorkspaceInput = {
@@ -12734,6 +15159,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     createdAt?: Date | string
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+    invoices?: InvoiceCreateNestedManyWithoutWorkspaceInput
     subscription?: SubscriptionCreateNestedOneWithoutWorkspaceInput
   }
 
@@ -12744,6 +15170,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     createdAt?: Date | string
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutWorkspaceInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutWorkspaceInput
   }
 
@@ -12797,6 +15224,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+    invoices?: InvoiceUpdateManyWithoutWorkspaceNestedInput
     subscription?: SubscriptionUpdateOneWithoutWorkspaceNestedInput
   }
 
@@ -12807,6 +15235,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutWorkspaceNestedInput
   }
 
@@ -12817,6 +15246,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+    invoices?: InvoiceCreateNestedManyWithoutWorkspaceInput
     subscription?: SubscriptionCreateNestedOneWithoutWorkspaceInput
   }
 
@@ -12827,6 +15257,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutWorkspaceInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutWorkspaceInput
   }
 
@@ -12837,34 +15268,50 @@ export namespace Prisma {
 
   export type InvoiceCreateWithoutProjectInput = {
     id?: string
+    type?: $Enums.InvoiceType
     number: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
     issueDate: Date | string
     dueDate?: Date | string | null
     paidDate?: Date | string | null
+    paymentMethod?: string | null
     status?: $Enums.InvoiceStatus
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutInvoicesInput
     files?: InvoiceFileCreateNestedManyWithoutInvoiceInput
+    allocations?: ExpenseAllocationCreateNestedManyWithoutInvoiceInput
   }
 
   export type InvoiceUncheckedCreateWithoutProjectInput = {
     id?: string
+    type?: $Enums.InvoiceType
+    workspaceId: string
     number: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
     issueDate: Date | string
     dueDate?: Date | string | null
     paidDate?: Date | string | null
+    paymentMethod?: string | null
     status?: $Enums.InvoiceStatus
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     files?: InvoiceFileUncheckedCreateNestedManyWithoutInvoiceInput
+    allocations?: ExpenseAllocationUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
   export type InvoiceCreateOrConnectWithoutProjectInput = {
@@ -12874,6 +15321,32 @@ export namespace Prisma {
 
   export type InvoiceCreateManyProjectInputEnvelope = {
     data: InvoiceCreateManyProjectInput | InvoiceCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ExpenseAllocationCreateWithoutProjectInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+    invoice: InvoiceCreateNestedOneWithoutAllocationsInput
+  }
+
+  export type ExpenseAllocationUncheckedCreateWithoutProjectInput = {
+    id?: string
+    invoiceId: string
+    amount: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ExpenseAllocationCreateOrConnectWithoutProjectInput = {
+    where: ExpenseAllocationWhereUniqueInput
+    create: XOR<ExpenseAllocationCreateWithoutProjectInput, ExpenseAllocationUncheckedCreateWithoutProjectInput>
+  }
+
+  export type ExpenseAllocationCreateManyProjectInputEnvelope = {
+    data: ExpenseAllocationCreateManyProjectInput | ExpenseAllocationCreateManyProjectInput[]
     skipDuplicates?: boolean
   }
 
@@ -12895,6 +15368,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+    invoices?: InvoiceUpdateManyWithoutWorkspaceNestedInput
     subscription?: SubscriptionUpdateOneWithoutWorkspaceNestedInput
   }
 
@@ -12905,6 +15379,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutWorkspaceNestedInput
   }
 
@@ -12924,23 +15399,59 @@ export namespace Prisma {
     data: XOR<InvoiceUpdateManyMutationInput, InvoiceUncheckedUpdateManyWithoutProjectInput>
   }
 
-  export type InvoiceScalarWhereInput = {
-    AND?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
-    OR?: InvoiceScalarWhereInput[]
-    NOT?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
-    id?: StringFilter<"Invoice"> | string
-    projectId?: StringFilter<"Invoice"> | string
-    number?: StringFilter<"Invoice"> | string
-    description?: StringNullableFilter<"Invoice"> | string | null
-    amount?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
-    currency?: StringFilter<"Invoice"> | string
-    issueDate?: DateTimeFilter<"Invoice"> | Date | string
-    dueDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
-    paidDate?: DateTimeNullableFilter<"Invoice"> | Date | string | null
-    status?: EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
-    notes?: StringNullableFilter<"Invoice"> | string | null
-    createdAt?: DateTimeFilter<"Invoice"> | Date | string
-    updatedAt?: DateTimeFilter<"Invoice"> | Date | string
+  export type ExpenseAllocationUpsertWithWhereUniqueWithoutProjectInput = {
+    where: ExpenseAllocationWhereUniqueInput
+    update: XOR<ExpenseAllocationUpdateWithoutProjectInput, ExpenseAllocationUncheckedUpdateWithoutProjectInput>
+    create: XOR<ExpenseAllocationCreateWithoutProjectInput, ExpenseAllocationUncheckedCreateWithoutProjectInput>
+  }
+
+  export type ExpenseAllocationUpdateWithWhereUniqueWithoutProjectInput = {
+    where: ExpenseAllocationWhereUniqueInput
+    data: XOR<ExpenseAllocationUpdateWithoutProjectInput, ExpenseAllocationUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type ExpenseAllocationUpdateManyWithWhereWithoutProjectInput = {
+    where: ExpenseAllocationScalarWhereInput
+    data: XOR<ExpenseAllocationUpdateManyMutationInput, ExpenseAllocationUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type ExpenseAllocationScalarWhereInput = {
+    AND?: ExpenseAllocationScalarWhereInput | ExpenseAllocationScalarWhereInput[]
+    OR?: ExpenseAllocationScalarWhereInput[]
+    NOT?: ExpenseAllocationScalarWhereInput | ExpenseAllocationScalarWhereInput[]
+    id?: StringFilter<"ExpenseAllocation"> | string
+    invoiceId?: StringFilter<"ExpenseAllocation"> | string
+    projectId?: StringFilter<"ExpenseAllocation"> | string
+    amount?: DecimalFilter<"ExpenseAllocation"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableFilter<"ExpenseAllocation"> | string | null
+    createdAt?: DateTimeFilter<"ExpenseAllocation"> | Date | string
+  }
+
+  export type WorkspaceCreateWithoutInvoicesInput = {
+    id?: string
+    name: string
+    slug: string
+    plan?: $Enums.Plan
+    createdAt?: Date | string
+    members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+    projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+    subscription?: SubscriptionCreateNestedOneWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutInvoicesInput = {
+    id?: string
+    name: string
+    slug: string
+    plan?: $Enums.Plan
+    createdAt?: Date | string
+    members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutInvoicesInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutInvoicesInput, WorkspaceUncheckedCreateWithoutInvoicesInput>
   }
 
   export type ProjectCreateWithoutInvoicesInput = {
@@ -12949,13 +15460,20 @@ export namespace Prisma {
     clientName?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
+    projectValue?: Decimal | DecimalJsLike | number | string | null
     budget?: Decimal | DecimalJsLike | number | string | null
     currency?: string
+    paymentMethod?: string | null
+    numberOfPayments?: number | null
     startDate?: Date | string | null
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeclared?: boolean
+    vatRate?: number
+    irpfRate?: number
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
+    expenseAllocations?: ExpenseAllocationCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutInvoicesInput = {
@@ -12965,12 +15483,19 @@ export namespace Prisma {
     clientName?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
+    projectValue?: Decimal | DecimalJsLike | number | string | null
     budget?: Decimal | DecimalJsLike | number | string | null
     currency?: string
+    paymentMethod?: string | null
+    numberOfPayments?: number | null
     startDate?: Date | string | null
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeclared?: boolean
+    vatRate?: number
+    irpfRate?: number
+    expenseAllocations?: ExpenseAllocationUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutInvoicesInput = {
@@ -13008,6 +15533,65 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ExpenseAllocationCreateWithoutInvoiceInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+    project: ProjectCreateNestedOneWithoutExpenseAllocationsInput
+  }
+
+  export type ExpenseAllocationUncheckedCreateWithoutInvoiceInput = {
+    id?: string
+    projectId: string
+    amount: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ExpenseAllocationCreateOrConnectWithoutInvoiceInput = {
+    where: ExpenseAllocationWhereUniqueInput
+    create: XOR<ExpenseAllocationCreateWithoutInvoiceInput, ExpenseAllocationUncheckedCreateWithoutInvoiceInput>
+  }
+
+  export type ExpenseAllocationCreateManyInvoiceInputEnvelope = {
+    data: ExpenseAllocationCreateManyInvoiceInput | ExpenseAllocationCreateManyInvoiceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WorkspaceUpsertWithoutInvoicesInput = {
+    update: XOR<WorkspaceUpdateWithoutInvoicesInput, WorkspaceUncheckedUpdateWithoutInvoicesInput>
+    create: XOR<WorkspaceCreateWithoutInvoicesInput, WorkspaceUncheckedCreateWithoutInvoicesInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutInvoicesInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutInvoicesInput, WorkspaceUncheckedUpdateWithoutInvoicesInput>
+  }
+
+  export type WorkspaceUpdateWithoutInvoicesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+    projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+    subscription?: SubscriptionUpdateOneWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutInvoicesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutWorkspaceNestedInput
+  }
+
   export type ProjectUpsertWithoutInvoicesInput = {
     update: XOR<ProjectUpdateWithoutInvoicesInput, ProjectUncheckedUpdateWithoutInvoicesInput>
     create: XOR<ProjectCreateWithoutInvoicesInput, ProjectUncheckedCreateWithoutInvoicesInput>
@@ -13025,13 +15609,20 @@ export namespace Prisma {
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+    expenseAllocations?: ExpenseAllocationUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutInvoicesInput = {
@@ -13041,12 +15632,19 @@ export namespace Prisma {
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
+    expenseAllocations?: ExpenseAllocationUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type InvoiceFileUpsertWithWhereUniqueWithoutInvoiceInput = {
@@ -13079,36 +15677,284 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"InvoiceFile"> | Date | string
   }
 
-  export type InvoiceCreateWithoutFilesInput = {
+  export type ExpenseAllocationUpsertWithWhereUniqueWithoutInvoiceInput = {
+    where: ExpenseAllocationWhereUniqueInput
+    update: XOR<ExpenseAllocationUpdateWithoutInvoiceInput, ExpenseAllocationUncheckedUpdateWithoutInvoiceInput>
+    create: XOR<ExpenseAllocationCreateWithoutInvoiceInput, ExpenseAllocationUncheckedCreateWithoutInvoiceInput>
+  }
+
+  export type ExpenseAllocationUpdateWithWhereUniqueWithoutInvoiceInput = {
+    where: ExpenseAllocationWhereUniqueInput
+    data: XOR<ExpenseAllocationUpdateWithoutInvoiceInput, ExpenseAllocationUncheckedUpdateWithoutInvoiceInput>
+  }
+
+  export type ExpenseAllocationUpdateManyWithWhereWithoutInvoiceInput = {
+    where: ExpenseAllocationScalarWhereInput
+    data: XOR<ExpenseAllocationUpdateManyMutationInput, ExpenseAllocationUncheckedUpdateManyWithoutInvoiceInput>
+  }
+
+  export type InvoiceCreateWithoutAllocationsInput = {
     id?: string
+    type?: $Enums.InvoiceType
     number: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
     issueDate: Date | string
     dueDate?: Date | string | null
     paidDate?: Date | string | null
+    paymentMethod?: string | null
     status?: $Enums.InvoiceStatus
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    project: ProjectCreateNestedOneWithoutInvoicesInput
+    workspace: WorkspaceCreateNestedOneWithoutInvoicesInput
+    project?: ProjectCreateNestedOneWithoutInvoicesInput
+    files?: InvoiceFileCreateNestedManyWithoutInvoiceInput
+  }
+
+  export type InvoiceUncheckedCreateWithoutAllocationsInput = {
+    id?: string
+    type?: $Enums.InvoiceType
+    workspaceId: string
+    projectId?: string | null
+    number: string
+    description?: string | null
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
+    issueDate: Date | string
+    dueDate?: Date | string | null
+    paidDate?: Date | string | null
+    paymentMethod?: string | null
+    status?: $Enums.InvoiceStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    files?: InvoiceFileUncheckedCreateNestedManyWithoutInvoiceInput
+  }
+
+  export type InvoiceCreateOrConnectWithoutAllocationsInput = {
+    where: InvoiceWhereUniqueInput
+    create: XOR<InvoiceCreateWithoutAllocationsInput, InvoiceUncheckedCreateWithoutAllocationsInput>
+  }
+
+  export type ProjectCreateWithoutExpenseAllocationsInput = {
+    id?: string
+    name: string
+    clientName?: string | null
+    description?: string | null
+    status?: $Enums.ProjectStatus
+    projectValue?: Decimal | DecimalJsLike | number | string | null
+    budget?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
+    paymentMethod?: string | null
+    numberOfPayments?: number | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeclared?: boolean
+    vatRate?: number
+    irpfRate?: number
+    workspace: WorkspaceCreateNestedOneWithoutProjectsInput
+    invoices?: InvoiceCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutExpenseAllocationsInput = {
+    id?: string
+    workspaceId: string
+    name: string
+    clientName?: string | null
+    description?: string | null
+    status?: $Enums.ProjectStatus
+    projectValue?: Decimal | DecimalJsLike | number | string | null
+    budget?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
+    paymentMethod?: string | null
+    numberOfPayments?: number | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeclared?: boolean
+    vatRate?: number
+    irpfRate?: number
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutExpenseAllocationsInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutExpenseAllocationsInput, ProjectUncheckedCreateWithoutExpenseAllocationsInput>
+  }
+
+  export type InvoiceUpsertWithoutAllocationsInput = {
+    update: XOR<InvoiceUpdateWithoutAllocationsInput, InvoiceUncheckedUpdateWithoutAllocationsInput>
+    create: XOR<InvoiceCreateWithoutAllocationsInput, InvoiceUncheckedCreateWithoutAllocationsInput>
+    where?: InvoiceWhereInput
+  }
+
+  export type InvoiceUpdateToOneWithWhereWithoutAllocationsInput = {
+    where?: InvoiceWhereInput
+    data: XOR<InvoiceUpdateWithoutAllocationsInput, InvoiceUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type InvoiceUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
+    number?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutInvoicesNestedInput
+    project?: ProjectUpdateOneWithoutInvoicesNestedInput
+    files?: InvoiceFileUpdateManyWithoutInvoiceNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    number?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    files?: InvoiceFileUncheckedUpdateManyWithoutInvoiceNestedInput
+  }
+
+  export type ProjectUpsertWithoutExpenseAllocationsInput = {
+    update: XOR<ProjectUpdateWithoutExpenseAllocationsInput, ProjectUncheckedUpdateWithoutExpenseAllocationsInput>
+    create: XOR<ProjectCreateWithoutExpenseAllocationsInput, ProjectUncheckedCreateWithoutExpenseAllocationsInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutExpenseAllocationsInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutExpenseAllocationsInput, ProjectUncheckedUpdateWithoutExpenseAllocationsInput>
+  }
+
+  export type ProjectUpdateWithoutExpenseAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
+    workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+    invoices?: InvoiceUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutExpenseAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
+    invoices?: InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type InvoiceCreateWithoutFilesInput = {
+    id?: string
+    type?: $Enums.InvoiceType
+    number: string
+    description?: string | null
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
+    issueDate: Date | string
+    dueDate?: Date | string | null
+    paidDate?: Date | string | null
+    paymentMethod?: string | null
+    status?: $Enums.InvoiceStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutInvoicesInput
+    project?: ProjectCreateNestedOneWithoutInvoicesInput
+    allocations?: ExpenseAllocationCreateNestedManyWithoutInvoiceInput
   }
 
   export type InvoiceUncheckedCreateWithoutFilesInput = {
     id?: string
-    projectId: string
+    type?: $Enums.InvoiceType
+    workspaceId: string
+    projectId?: string | null
     number: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
     issueDate: Date | string
     dueDate?: Date | string | null
     paidDate?: Date | string | null
+    paymentMethod?: string | null
     status?: $Enums.InvoiceStatus
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    allocations?: ExpenseAllocationUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
   export type InvoiceCreateOrConnectWithoutFilesInput = {
@@ -13129,34 +15975,50 @@ export namespace Prisma {
 
   export type InvoiceUpdateWithoutFilesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     number?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    project?: ProjectUpdateOneRequiredWithoutInvoicesNestedInput
+    workspace?: WorkspaceUpdateOneRequiredWithoutInvoicesNestedInput
+    project?: ProjectUpdateOneWithoutInvoicesNestedInput
+    allocations?: ExpenseAllocationUpdateManyWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateWithoutFilesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    projectId?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
     number?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocations?: ExpenseAllocationUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
   export type WorkspaceCreateWithoutSubscriptionInput = {
@@ -13167,6 +16029,7 @@ export namespace Prisma {
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+    invoices?: InvoiceCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutSubscriptionInput = {
@@ -13177,6 +16040,7 @@ export namespace Prisma {
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutSubscriptionInput = {
@@ -13203,6 +16067,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+    invoices?: InvoiceUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutSubscriptionInput = {
@@ -13213,6 +16078,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceMemberCreateManyUserInput = {
@@ -13271,10 +16137,38 @@ export namespace Prisma {
     clientName?: string | null
     description?: string | null
     status?: $Enums.ProjectStatus
+    projectValue?: Decimal | DecimalJsLike | number | string | null
     budget?: Decimal | DecimalJsLike | number | string | null
     currency?: string
+    paymentMethod?: string | null
+    numberOfPayments?: number | null
     startDate?: Date | string | null
     endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isDeclared?: boolean
+    vatRate?: number
+    irpfRate?: number
+  }
+
+  export type InvoiceCreateManyWorkspaceInput = {
+    id?: string
+    type?: $Enums.InvoiceType
+    projectId?: string | null
+    number: string
+    description?: string | null
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
+    issueDate: Date | string
+    dueDate?: Date | string | null
+    paidDate?: Date | string | null
+    paymentMethod?: string | null
+    status?: $Enums.InvoiceStatus
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -13315,13 +16209,20 @@ export namespace Prisma {
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
     invoices?: InvoiceUpdateManyWithoutProjectNestedInput
+    expenseAllocations?: ExpenseAllocationUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutWorkspaceInput = {
@@ -13330,13 +16231,20 @@ export namespace Prisma {
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
     invoices?: InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+    expenseAllocations?: ExpenseAllocationUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -13345,74 +16253,212 @@ export namespace Prisma {
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    projectValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     currency?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfPayments?: NullableIntFieldUpdateOperationsInput | number | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vatRate?: IntFieldUpdateOperationsInput | number
+    irpfRate?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type InvoiceUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
+    number?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneWithoutInvoicesNestedInput
+    files?: InvoiceFileUpdateManyWithoutInvoiceNestedInput
+    allocations?: ExpenseAllocationUpdateManyWithoutInvoiceNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    number?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    files?: InvoiceFileUncheckedUpdateManyWithoutInvoiceNestedInput
+    allocations?: ExpenseAllocationUncheckedUpdateManyWithoutInvoiceNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    number?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InvoiceCreateManyProjectInput = {
     id?: string
+    type?: $Enums.InvoiceType
+    workspaceId: string
     number: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
     currency?: string
+    isDeclared?: boolean
+    vendorName?: string | null
+    category?: string | null
+    vatAmount?: Decimal | DecimalJsLike | number | string | null
     issueDate: Date | string
     dueDate?: Date | string | null
     paidDate?: Date | string | null
+    paymentMethod?: string | null
     status?: $Enums.InvoiceStatus
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
+  export type ExpenseAllocationCreateManyProjectInput = {
+    id?: string
+    invoiceId: string
+    amount: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
   export type InvoiceUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
     number?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutInvoicesNestedInput
     files?: InvoiceFileUpdateManyWithoutInvoiceNestedInput
+    allocations?: ExpenseAllocationUpdateManyWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
+    workspaceId?: StringFieldUpdateOperationsInput | string
     number?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     files?: InvoiceFileUncheckedUpdateManyWithoutInvoiceNestedInput
+    allocations?: ExpenseAllocationUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateManyWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumInvoiceTypeFieldUpdateOperationsInput | $Enums.InvoiceType
+    workspaceId?: StringFieldUpdateOperationsInput | string
     number?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: StringFieldUpdateOperationsInput | string
+    isDeclared?: BoolFieldUpdateOperationsInput | boolean
+    vendorName?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    vatAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     issueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseAllocationUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneRequiredWithoutAllocationsNestedInput
+  }
+
+  export type ExpenseAllocationUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseAllocationUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InvoiceFileCreateManyInvoiceInput = {
@@ -13422,6 +16468,14 @@ export namespace Prisma {
     mimeType: string
     sizeBytes: number
     ocrData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type ExpenseAllocationCreateManyInvoiceInput = {
+    id?: string
+    projectId: string
+    amount: Decimal | DecimalJsLike | number | string
+    notes?: string | null
     createdAt?: Date | string
   }
 
@@ -13452,6 +16506,30 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
     ocrData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseAllocationUpdateWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutExpenseAllocationsNestedInput
+  }
+
+  export type ExpenseAllocationUncheckedUpdateWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseAllocationUncheckedUpdateManyWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

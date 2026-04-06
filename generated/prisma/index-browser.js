@@ -154,28 +154,50 @@ exports.Prisma.ProjectScalarFieldEnum = {
   clientName: 'clientName',
   description: 'description',
   status: 'status',
+  projectValue: 'projectValue',
   budget: 'budget',
   currency: 'currency',
+  paymentMethod: 'paymentMethod',
+  numberOfPayments: 'numberOfPayments',
   startDate: 'startDate',
   endDate: 'endDate',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  isDeclared: 'isDeclared',
+  vatRate: 'vatRate',
+  irpfRate: 'irpfRate'
 };
 
 exports.Prisma.InvoiceScalarFieldEnum = {
   id: 'id',
+  type: 'type',
+  workspaceId: 'workspaceId',
   projectId: 'projectId',
   number: 'number',
   description: 'description',
   amount: 'amount',
   currency: 'currency',
+  isDeclared: 'isDeclared',
+  vendorName: 'vendorName',
+  category: 'category',
+  vatAmount: 'vatAmount',
   issueDate: 'issueDate',
   dueDate: 'dueDate',
   paidDate: 'paidDate',
+  paymentMethod: 'paymentMethod',
   status: 'status',
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ExpenseAllocationScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  projectId: 'projectId',
+  amount: 'amount',
+  notes: 'notes',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.InvoiceFileScalarFieldEnum = {
@@ -243,6 +265,11 @@ exports.ProjectStatus = exports.$Enums.ProjectStatus = {
   ARCHIVED: 'ARCHIVED'
 };
 
+exports.InvoiceType = exports.$Enums.InvoiceType = {
+  INCOME: 'INCOME',
+  EXPENSE: 'EXPENSE'
+};
+
 exports.InvoiceStatus = exports.$Enums.InvoiceStatus = {
   DRAFT: 'DRAFT',
   PENDING: 'PENDING',
@@ -264,6 +291,7 @@ exports.Prisma.ModelName = {
   WorkspaceMember: 'WorkspaceMember',
   Project: 'Project',
   Invoice: 'Invoice',
+  ExpenseAllocation: 'ExpenseAllocation',
   InvoiceFile: 'InvoiceFile',
   Subscription: 'Subscription'
 };
