@@ -497,11 +497,11 @@ export default async function LandingPage() {
               <Link href="/faq" className="hover:text-foreground transition-colors">
                 FAQ
               </Link>
-              <Link href="/login" className="hover:text-foreground transition-colors">
-                Iniciar sesion
+              <Link href="/terms" className="hover:text-foreground transition-colors">
+                Términos
               </Link>
-              <Link href="/register" className="hover:text-foreground transition-colors">
-                Registrarse
+              <Link href="/privacy" className="hover:text-foreground transition-colors">
+                Privacidad
               </Link>
             </nav>
 

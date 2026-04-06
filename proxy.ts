@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
-const PUBLIC_PATHS = ["/login", "/register", "/forgot-password"]
+const PUBLIC_PATHS = ["/login", "/register", "/forgot-password", "/faq", "/terms", "/privacy"]
 const PUBLIC_EXACT = ["/"]
 const ONBOARDING_PATH = "/onboarding"
 

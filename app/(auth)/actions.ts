@@ -53,6 +53,19 @@ export async function logout() {
   redirect("/")
 }
 
+export async function deleteAccount() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect("/login")
+
+  // Eliminar datos del usuario en nuestra DB (cascade borra workspaces, projects, invoices, etc.)
+  await prisma.user.delete({ where: { id: user.id } }).catch(() => {})
+
+  // Cerrar sesión
+  await supabase.auth.signOut()
+  redirect("/")
+}
+
 export async function updateProfile(values: { name: string }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
