@@ -2836,6 +2836,7 @@ export namespace Prisma {
     name: string | null
     slug: string | null
     plan: $Enums.Plan | null
+    sector: string | null
     createdAt: Date | null
   }
 
@@ -2844,6 +2845,7 @@ export namespace Prisma {
     name: string | null
     slug: string | null
     plan: $Enums.Plan | null
+    sector: string | null
     createdAt: Date | null
   }
 
@@ -2852,6 +2854,7 @@ export namespace Prisma {
     name: number
     slug: number
     plan: number
+    sector: number
     createdAt: number
     _all: number
   }
@@ -2862,6 +2865,7 @@ export namespace Prisma {
     name?: true
     slug?: true
     plan?: true
+    sector?: true
     createdAt?: true
   }
 
@@ -2870,6 +2874,7 @@ export namespace Prisma {
     name?: true
     slug?: true
     plan?: true
+    sector?: true
     createdAt?: true
   }
 
@@ -2878,6 +2883,7 @@ export namespace Prisma {
     name?: true
     slug?: true
     plan?: true
+    sector?: true
     createdAt?: true
     _all?: true
   }
@@ -2959,6 +2965,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan: $Enums.Plan
+    sector: string | null
     createdAt: Date
     _count: WorkspaceCountAggregateOutputType | null
     _min: WorkspaceMinAggregateOutputType | null
@@ -2984,6 +2991,7 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     plan?: boolean
+    sector?: boolean
     createdAt?: boolean
     members?: boolean | Workspace$membersArgs<ExtArgs>
     projects?: boolean | Workspace$projectsArgs<ExtArgs>
@@ -2997,6 +3005,7 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     plan?: boolean
+    sector?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["workspace"]>
 
@@ -3005,6 +3014,7 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     plan?: boolean
+    sector?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["workspace"]>
 
@@ -3013,10 +3023,11 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     plan?: boolean
+    sector?: boolean
     createdAt?: boolean
   }
 
-  export type WorkspaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "plan" | "createdAt", ExtArgs["result"]["workspace"]>
+  export type WorkspaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "plan" | "sector" | "createdAt", ExtArgs["result"]["workspace"]>
   export type WorkspaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | Workspace$membersArgs<ExtArgs>
     projects?: boolean | Workspace$projectsArgs<ExtArgs>
@@ -3040,6 +3051,7 @@ export namespace Prisma {
       name: string
       slug: string
       plan: $Enums.Plan
+      sector: string | null
       createdAt: Date
     }, ExtArgs["result"]["workspace"]>
     composites: {}
@@ -3472,6 +3484,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Workspace", 'String'>
     readonly slug: FieldRef<"Workspace", 'String'>
     readonly plan: FieldRef<"Workspace", 'Plan'>
+    readonly sector: FieldRef<"Workspace", 'String'>
     readonly createdAt: FieldRef<"Workspace", 'DateTime'>
   }
     
@@ -11220,6 +11233,7 @@ export namespace Prisma {
     name: 'name',
     slug: 'slug',
     plan: 'plan',
+    sector: 'sector',
     createdAt: 'createdAt'
   };
 
@@ -11618,6 +11632,7 @@ export namespace Prisma {
     name?: StringFilter<"Workspace"> | string
     slug?: StringFilter<"Workspace"> | string
     plan?: EnumPlanFilter<"Workspace"> | $Enums.Plan
+    sector?: StringNullableFilter<"Workspace"> | string | null
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     members?: WorkspaceMemberListRelationFilter
     projects?: ProjectListRelationFilter
@@ -11630,6 +11645,7 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     plan?: SortOrder
+    sector?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     members?: WorkspaceMemberOrderByRelationAggregateInput
     projects?: ProjectOrderByRelationAggregateInput
@@ -11645,6 +11661,7 @@ export namespace Prisma {
     NOT?: WorkspaceWhereInput | WorkspaceWhereInput[]
     name?: StringFilter<"Workspace"> | string
     plan?: EnumPlanFilter<"Workspace"> | $Enums.Plan
+    sector?: StringNullableFilter<"Workspace"> | string | null
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     members?: WorkspaceMemberListRelationFilter
     projects?: ProjectListRelationFilter
@@ -11657,6 +11674,7 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     plan?: SortOrder
+    sector?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: WorkspaceCountOrderByAggregateInput
     _max?: WorkspaceMaxOrderByAggregateInput
@@ -11671,6 +11689,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Workspace"> | string
     slug?: StringWithAggregatesFilter<"Workspace"> | string
     plan?: EnumPlanWithAggregatesFilter<"Workspace"> | $Enums.Plan
+    sector?: StringNullableWithAggregatesFilter<"Workspace"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Workspace"> | Date | string
   }
 
@@ -12296,6 +12315,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
@@ -12308,6 +12328,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -12320,6 +12341,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
@@ -12332,6 +12354,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -12344,6 +12367,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
   }
 
@@ -12352,6 +12376,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12360,6 +12385,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -13146,6 +13172,7 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     plan?: SortOrder
+    sector?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -13154,6 +13181,7 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     plan?: SortOrder
+    sector?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -13162,6 +13190,7 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     plan?: SortOrder
+    sector?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -15157,6 +15186,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
     invoices?: InvoiceCreateNestedManyWithoutWorkspaceInput
@@ -15168,6 +15198,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -15222,6 +15253,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
     invoices?: InvoiceUpdateManyWithoutWorkspaceNestedInput
@@ -15233,6 +15265,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -15244,6 +15277,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
     invoices?: InvoiceCreateNestedManyWithoutWorkspaceInput
@@ -15255,6 +15289,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -15366,6 +15401,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
     invoices?: InvoiceUpdateManyWithoutWorkspaceNestedInput
@@ -15377,6 +15413,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -15432,6 +15469,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
@@ -15443,6 +15481,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -15575,6 +15614,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
@@ -15586,6 +15626,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -16026,6 +16067,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
@@ -16037,6 +16079,7 @@ export namespace Prisma {
     name: string
     slug: string
     plan?: $Enums.Plan
+    sector?: string | null
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -16064,6 +16107,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
@@ -16075,6 +16119,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput

@@ -1,7 +1,9 @@
 "use server"
 
 import { createClient } from "@/lib/supabase/server"
+import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 
 export async function login(values: {
   email: string
@@ -48,5 +50,19 @@ export async function register(values: { name: string; email: string; password: 
 export async function logout() {
   const supabase = await createClient()
   await supabase.auth.signOut()
-  redirect("/login")
+  redirect("/")
+}
+
+export async function updateProfile(values: { name: string }) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect("/login")
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { name: values.name },
+  })
+
+  revalidatePath("/settings/profile")
+  redirect("/settings/profile")
 }

@@ -63,6 +63,7 @@ model Workspace {
   name      String
   slug      String   @unique
   plan      Plan     @default(FREE)
+  sector    String? // Sector del negocio (reformas, diseño, instalaciones, etc.)
   createdAt DateTime @default(now())
 
   members      WorkspaceMember[]

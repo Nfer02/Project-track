@@ -11,6 +11,7 @@ import {
   LogOut,
   ChevronDown,
   Users,
+  User,
   CreditCard,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -143,6 +144,10 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="top" align="start" className="w-52">
+            <DropdownMenuItem onSelect={() => router.push("/settings/profile")}>
+              <User className="mr-2 h-4 w-4" aria-hidden="true" />
+              Mi perfil
+            </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => router.push("/settings/members")}>
               <Users className="mr-2 h-4 w-4" aria-hidden="true" />
               Colaboradores

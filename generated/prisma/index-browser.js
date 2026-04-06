@@ -133,6 +133,7 @@ exports.Prisma.WorkspaceScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   plan: 'plan',
+  sector: 'sector',
   createdAt: 'createdAt'
 };
 

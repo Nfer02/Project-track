@@ -13,7 +13,7 @@ function slugify(name: string) {
     .replace(/-+/g, "-")
 }
 
-export async function createWorkspace(values: { name: string; workspaceName: string }) {
+export async function createWorkspace(values: { name: string; sector: string; workspaceName: string }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -41,6 +41,7 @@ export async function createWorkspace(values: { name: string; workspaceName: str
     data: {
       name: values.workspaceName,
       slug,
+      sector: values.sector,
       members: {
         create: { userId: user.id, role: "OWNER", acceptedAt: new Date() },
       },

@@ -16,10 +16,12 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form"
+import { cn } from "@/lib/utils"
 import { createWorkspace } from "../actions"
 
 const schema = z.object({
   name: z.string().min(2, "Ingresa tu nombre completo"),
+  sector: z.string().min(1, "Selecciona tu sector"),
   workspaceName: z.string().min(2, "Nombre del workspace muy corto"),
 })
 
@@ -36,7 +38,18 @@ function slugPreview(name: string) {
 
 const STEPS = [
   { id: 1, label: "Tu perfil" },
-  { id: 2, label: "Tu workspace" },
+  { id: 2, label: "Tu sector" },
+  { id: 3, label: "Tu workspace" },
+]
+
+const SECTORS = [
+  { value: "reformas", label: "Reformas y construcción", icon: "🏗️" },
+  { value: "instalaciones", label: "Instalaciones y mantenimiento", icon: "🔧" },
+  { value: "diseno", label: "Diseño y servicios profesionales", icon: "🎨" },
+  { value: "fotografia", label: "Fotografía, vídeo y eventos", icon: "📷" },
+  { value: "consultoria", label: "Consultoría y formación", icon: "💼" },
+  { value: "tecnologia", label: "Desarrollo y tecnología", icon: "💻" },
+  { value: "otro", label: "Otro sector", icon: "📦" },
 ]
 
 export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
@@ -45,7 +58,7 @@ export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
 
   const form = useForm<Values>({
     resolver: zodResolver(schema),
-    defaultValues: { name: defaultName ?? "", workspaceName: "" },
+    defaultValues: { name: defaultName ?? "", sector: "", workspaceName: "" },
   })
 
   const { isSubmitting } = form.formState
@@ -102,7 +115,7 @@ export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
               <div className="space-y-1">
                 <div className="flex items-center gap-2 mb-1">
                   <User className="h-4 w-4 text-primary" />
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Paso 1 de 2</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Paso 1 de 3</p>
                 </div>
                 <h1 className="text-2xl font-semibold tracking-tight">Bienvenido a ProjectTrack</h1>
                 <p className="text-sm text-muted-foreground">¿Cómo te llamas?</p>
@@ -129,13 +142,47 @@ export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
             </div>
           )}
 
-          {/* Paso 2: Workspace */}
+          {/* Paso 2: Sector */}
           {step === 2 && (
+            <div className="space-y-6">
+              <div className="space-y-1">
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Paso 2 de 3</p>
+                <h1 className="text-2xl font-semibold tracking-tight">¿A qué te dedicas?</h1>
+                <p className="text-sm text-muted-foreground">Personalizamos las categorías de gastos según tu sector</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                {SECTORS.map((s) => (
+                  <button
+                    key={s.value}
+                    type="button"
+                    onClick={() => { form.setValue("sector", s.value); setStep(3) }}
+                    className={cn(
+                      "flex flex-col items-center gap-2 rounded-xl border p-4 text-sm transition-all hover:border-primary/50",
+                      form.watch("sector") === s.value
+                        ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                        : "border-border"
+                    )}
+                  >
+                    <span className="text-2xl">{s.icon}</span>
+                    <span className="font-medium">{s.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              <Button type="button" variant="outline" onClick={() => setStep(1)}>
+                Atrás
+              </Button>
+            </div>
+          )}
+
+          {/* Paso 3: Workspace */}
+          {step === 3 && (
             <div className="space-y-6">
               <div className="space-y-1">
                 <div className="flex items-center gap-2 mb-1">
                   <Building2 className="h-4 w-4 text-primary" />
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Paso 2 de 2</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Paso 3 de 3</p>
                 </div>
                 <h1 className="text-2xl font-semibold tracking-tight">Crea tu workspace</h1>
                 <p className="text-sm text-muted-foreground">
@@ -171,7 +218,7 @@ export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => setStep(1)}
+                  onClick={() => setStep(2)}
                   disabled={isSubmitting}
                 >
                   Atrás
