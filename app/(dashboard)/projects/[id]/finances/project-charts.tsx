@@ -34,44 +34,44 @@ export function ProjectExpenseDonut({ data, total }: { data: CategoryItem[]; tot
   }
 
   return (
-    <ResponsiveContainer width="100%" height={260}>
-      <PieChart>
-        <Pie
-          data={filtered}
-          cx="50%"
-          cy="45%"
-          innerRadius={55}
-          outerRadius={80}
-          dataKey="total"
-          nameKey="category"
-          paddingAngle={filtered.length > 1 ? 3 : 0}
-        >
-          {filtered.map((entry) => (
-            <Cell key={entry.category} fill={CATEGORY_COLORS[entry.category] ?? "#6b7280"} />
-          ))}
-        </Pie>
-        <Tooltip
-          formatter={(value: number) => formatCurrency(value)}
-          contentStyle={{
-            backgroundColor: "hsl(var(--popover))",
-            border: "1px solid hsl(var(--border))",
-            borderRadius: "8px",
-            fontSize: "12px",
-          }}
-        />
-        <Legend
-          verticalAlign="bottom"
-          height={50}
-          formatter={(value: string) => <span className="text-xs text-muted-foreground">{value}</span>}
-        />
-        <text x="50%" y="42%" textAnchor="middle" dominantBaseline="middle" className="fill-foreground text-lg font-bold">
-          {formatCurrency(total)}
-        </text>
-        <text x="50%" y="52%" textAnchor="middle" dominantBaseline="middle" className="fill-muted-foreground text-[10px]">
-          total gastos
-        </text>
-      </PieChart>
-    </ResponsiveContainer>
+    <div className="relative">
+      <ResponsiveContainer width="100%" height={260}>
+        <PieChart>
+          <Pie
+            data={filtered}
+            cx="50%"
+            cy="45%"
+            innerRadius={55}
+            outerRadius={80}
+            dataKey="total"
+            nameKey="category"
+            paddingAngle={filtered.length > 1 ? 3 : 0}
+          >
+            {filtered.map((entry) => (
+              <Cell key={entry.category} fill={CATEGORY_COLORS[entry.category] ?? "#6b7280"} />
+            ))}
+          </Pie>
+          <Tooltip
+            formatter={(value: number) => formatCurrency(value)}
+            contentStyle={{
+              backgroundColor: "hsl(var(--popover))",
+              border: "1px solid hsl(var(--border))",
+              borderRadius: "8px",
+              fontSize: "12px",
+            }}
+          />
+          <Legend
+            verticalAlign="bottom"
+            height={50}
+            formatter={(value: string) => <span className="text-xs text-muted-foreground">{value}</span>}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ paddingBottom: "50px" }}>
+        <span className="text-lg font-bold">{formatCurrency(total)}</span>
+        <span className="text-[10px] text-muted-foreground">total gastos</span>
+      </div>
+    </div>
   )
 }
 
