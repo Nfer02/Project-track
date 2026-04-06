@@ -60,7 +60,7 @@ const FAQ_CATEGORIES = [
       {
         question: "¿Cómo registro los cobros de mis clientes?",
         answer:
-          "Dentro de cada proyecto, haces clic en 'Nueva factura' y registras el importe con la base imponible. La app calcula automáticamente el IVA y la retención IRPF según la configuración del proyecto. Puedes marcar cada cobro como pendiente, pagado o vencido.",
+          "Dentro de cada proyecto, haces clic en 'Nueva factura' (registro de cobro) y anotas el importe con la base imponible. La app calcula automáticamente el IVA y la retención IRPF según la configuración del proyecto. Puedes marcar cada cobro como pendiente, pagado o vencido.",
       },
       {
         question: "¿Se detectan automáticamente las facturas vencidas?",
@@ -85,7 +85,7 @@ const FAQ_CATEGORIES = [
       {
         question: "¿Cómo funciona el reparto de gastos entre proyectos?",
         answer:
-          "Cuando compras material para varias obras en una sola factura, puedes repartir el importe entre los proyectos que corresponda. Por ejemplo: compras 1.000 euros en material, asignas 600 euros al Proyecto A y 400 euros al Proyecto B. Puedes indicar los importes a mano o usar el botón 'Repartir equitativamente'. El gasto aparece una sola vez en tu contabilidad general, pero cada proyecto muestra solo su parte.",
+          "Cuando compras material para varias obras en una sola factura, puedes repartir el importe entre los proyectos que corresponda. Por ejemplo: compras 1.000 euros en material, asignas 600 euros al Proyecto A y 400 euros al Proyecto B. Puedes indicar los importes a mano o usar el botón 'Repartir equitativamente'. El gasto aparece una sola vez en tu registro general de gastos, pero cada proyecto muestra solo su parte.",
       },
       {
         question: "¿Qué son los gastos generales?",

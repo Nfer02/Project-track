@@ -72,7 +72,7 @@ const TABS: FeatureTab[] = [
     label: "Fiscal",
     icon: Calculator,
     description:
-      "Estimación automática de IVA e IRPF trimestral. Sabe cuánto reservar para Hacienda y cuándo toca presentar.",
+      "Estimación automática de IVA e IRPF trimestral. Estima cuánto reservar para Hacienda y cuándo toca presentar.",
     highlights: [
       "IVA repercutido y soportado",
       "Pago fraccionado IRPF (20%)",

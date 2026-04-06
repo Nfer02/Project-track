@@ -26,7 +26,7 @@ const testimonials: Testimonial[] = [
     name: "Miguel Ángel Torres",
     role: "Instalador eléctrico",
     quote:
-      "La estimación fiscal me salvó. Ahora sé cuánto tengo que reservar para Hacienda cada trimestre sin sorpresas.",
+      "La estimación fiscal me salvó. Ahora tengo una idea clara de cuánto reservar para Hacienda cada trimestre sin sorpresas.",
   },
   {
     name: "Ana Belén Ruiz",

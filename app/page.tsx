@@ -15,13 +15,14 @@ import { Typewriter } from "@/components/landing/typewriter"
 import { FadeIn } from "@/components/landing/fade-in"
 import { FeatureTabs } from "@/components/landing/feature-tabs"
 import { Testimonials } from "@/components/landing/testimonials"
+import { CookieNotice } from "@/components/landing/cookie-notice"
 import { UserTypes } from "@/components/landing/user-types"
 // import { AppShowcase } from "@/components/landing/app-showcase"  // Se reemplazará por vídeo
 
 export const metadata = {
   title: "ProjectTrack — Gestion de proyectos y control financiero para autonomos",
   description:
-    "Controla tus proyectos, ingresos, gastos y obligaciones fiscales en un solo lugar. Disenado para autonomos y pequenas empresas en Espana.",
+    "Controla tus proyectos, ingresos, gastos y estimaciones fiscales en un solo lugar. Disenado para autonomos y pequenas empresas en Espana.",
 }
 
 const STARTER_FEATURES = [
@@ -42,7 +43,7 @@ const PRO_FEATURES = [
   { label: "OCR inteligente (escanear gastos con IA)", included: true },
   { label: "Reparto de gastos entre proyectos", included: true },
   { label: "Dashboard financiero avanzado", included: true },
-  { label: "Estimacion fiscal automatica (IVA + IRPF)", included: true },
+  { label: "Estimacion fiscal orientativa (IVA + IRPF)", included: true },
   { label: "Reportes para el contador", included: true },
   { label: "Soporte por email", included: true },
 ]
@@ -127,7 +128,7 @@ export default async function LandingPage() {
 
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
               Gestiona tus proyectos, controla ingresos y gastos, y ten siempre
-              claro cuanto reservar para Hacienda.
+              una estimación de cuánto reservar para Hacienda.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -510,12 +511,14 @@ export default async function LandingPage() {
                 &copy; 2026 ProjectTrack. Todos los derechos reservados.
               </p>
               <p className="text-[11px] text-muted-foreground/60 mt-1">
-                Hecho en Espana 🇪🇸
+                Hecho en España 🇪🇸 · <Link href="/terms" className="hover:text-foreground">Aviso legal</Link>
               </p>
             </div>
           </div>
         </div>
       </footer>
+
+      <CookieNotice />
     </div>
   )
 }

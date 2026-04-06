@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
-import { FileBarChart, TrendingUp, TrendingDown, Wallet } from "lucide-react"
+import { FileBarChart, TrendingUp, TrendingDown, Wallet, Info } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
@@ -129,10 +129,16 @@ export default async function ReportsPage({ searchParams }: Props) {
             Reportes trimestrales
           </h1>
           <p className="text-sm text-muted-foreground">
-            Resumen para la declaraci&oacute;n trimestral del aut&oacute;nomo
+            Resumen informativo para preparar la declaración trimestral
           </p>
         </div>
         <ReportExportButton rows={csvRows} quarterLabel={currentQValue} />
+      </div>
+
+      {/* Disclaimer */}
+      <div className="flex items-start gap-2 rounded-lg bg-muted/50 border px-4 py-3 text-xs text-muted-foreground">
+        <Info className="h-4 w-4 mt-0.5 shrink-0" />
+        <span>Este informe es un resumen orientativo de los datos registrados en ProjectTrack. No constituye un documento fiscal oficial ni sustituye la revisión de un asesor fiscal cualificado. Los datos dependen de la información introducida por el usuario.</span>
       </div>
 
       {/* Quarter selector */}
@@ -206,7 +212,7 @@ export default async function ReportsPage({ searchParams }: Props) {
       <div className="space-y-3">
         <h2 className="text-sm font-semibold flex items-center gap-2">
           <FileBarChart className="h-4 w-4 text-emerald-600" />
-          Facturas emitidas (declaradas)
+          Ingresos registrados (declarados)
         </h2>
         {income.length === 0 ? (
           <p className="text-sm text-muted-foreground rounded-lg border border-dashed p-8 text-center">

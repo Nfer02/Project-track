@@ -47,7 +47,7 @@ const SECTIONS = [
   {
     title: "8. Derechos del usuario",
     content:
-      "De acuerdo con el RGPD, el usuario tiene derecho de acceso a sus datos personales, rectificación de datos inexactos, supresión de sus datos (derecho al olvido), portabilidad de los datos en formato estructurado, oposición al tratamiento, y limitación del tratamiento. Para ejercer cualquiera de estos derechos, escríbenos a soporte@projecttrack.es. Responderemos en un plazo máximo de 30 días.",
+      "De acuerdo con el RGPD, el usuario tiene derecho de acceso a sus datos personales, rectificación de datos inexactos, supresión de sus datos (derecho al olvido), portabilidad de los datos en formato estructurado, oposición al tratamiento, y limitación del tratamiento. Para ejercer cualquiera de estos derechos, escríbenos a soporte@projecttrack.es. Responderemos en un plazo máximo de 30 días. También tienes derecho a presentar una reclamación ante la Agencia Española de Protección de Datos (www.aepd.es) si consideras que tus derechos no han sido atendidos correctamente.",
   },
   {
     title: "9. Conservación",

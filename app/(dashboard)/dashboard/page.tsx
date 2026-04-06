@@ -329,7 +329,7 @@ export default async function DashboardPage() {
       border: "border-l-4 border-l-violet-500",
     },
     {
-      label: "Facturas pendientes",
+      label: "Cobros pendientes",
       value: String(data.pendingCount),
       sub: data.pendingCount === 0 ? "Al d\u00EDa" : "Por cobrar",
       icon: ReceiptText,
@@ -337,7 +337,7 @@ export default async function DashboardPage() {
       border: "border-l-4 border-l-amber-500",
     },
     {
-      label: "Facturas vencidas",
+      label: "Cobros vencidos",
       value: String(data.overdueCount),
       sub: data.overdueCount === 0 ? "Sin alertas" : "Requieren atenci\u00F3n",
       icon: Clock,
@@ -549,8 +549,8 @@ export default async function DashboardPage() {
           <div className="rounded-lg bg-amber-500/10 border border-amber-500/20 p-3 text-xs flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
             <p className="font-medium text-amber-700 dark:text-amber-400">
-              Tienes {f.daysUntilDeadline} d&iacute;a{f.daysUntilDeadline !== 1 ? "s" : ""} para
-              presentar la declaraci&oacute;n trimestral
+              Faltan {f.daysUntilDeadline} d&iacute;a{f.daysUntilDeadline !== 1 ? "s" : ""} para
+              la fecha l&iacute;mite de presentaci&oacute;n (orientativo)
             </p>
           </div>
         )}
@@ -617,7 +617,7 @@ export default async function DashboardPage() {
 
         <p className="text-[11px] text-muted-foreground/70 italic">
           Estimaci&oacute;n orientativa asumiendo IVA al 21% e IRPF al 20%. Consulta con tu asesor
-          fiscal para el c&aacute;lculo exacto.
+          fiscal para el c&aacute;lculo definitivo.
         </p>
       </div>
 

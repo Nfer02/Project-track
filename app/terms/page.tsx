@@ -55,7 +55,17 @@ const SECTIONS = [
       "Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento. Los cambios significativos se comunicarán al usuario con una antelación mínima de 30 días a través del correo electrónico asociado a su cuenta. El uso continuado del servicio tras la entrada en vigor de los nuevos términos implica su aceptación.",
   },
   {
-    title: "10. Contacto",
+    title: "10. Ley aplicable y jurisdicción",
+    content:
+      "Estos términos se rigen por la legislación española. Para cualquier controversia derivada del uso de ProjectTrack, las partes se someten a los juzgados y tribunales competentes conforme a la normativa vigente en materia de consumidores y usuarios.",
+  },
+  {
+    title: "11. Derecho de desistimiento",
+    content:
+      "De conformidad con la normativa española de protección de consumidores (Real Decreto Legislativo 1/2007), el usuario dispone de un plazo de 14 días naturales desde la contratación del plan PRO para ejercer su derecho de desistimiento sin necesidad de justificación. Para ejercerlo, debe comunicarlo a soporte@projecttrack.es. En caso de que el usuario haya comenzado a utilizar el servicio durante dicho plazo, se le podrá cobrar la parte proporcional al tiempo de uso.",
+  },
+  {
+    title: "12. Contacto",
     content:
       "Para cualquier consulta relacionada con estos términos y condiciones, puedes escribirnos a soporte@projecttrack.es.",
   },
