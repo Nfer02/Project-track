@@ -55,7 +55,8 @@ model User {
   avatarUrl String?
   createdAt DateTime @default(now())
 
-  memberships WorkspaceMember[]
+  memberships    WorkspaceMember[]
+  supportTickets SupportTicket[]
 }
 
 model Workspace {
@@ -193,4 +194,21 @@ model Waitlist {
   name      String?
   source    String?  @default("landing")
   createdAt DateTime @default(now())
+}
+
+model SupportTicket {
+  id          String    @id @default(cuid())
+  userId      String?
+  email       String
+  name        String?
+  category    String // acceso, error, duda, facturacion, sugerencia, otro
+  subject     String
+  message     String
+  status      String    @default("open") // open, resolved
+  response    String?
+  respondedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }

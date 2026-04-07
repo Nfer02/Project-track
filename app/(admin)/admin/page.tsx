@@ -3,6 +3,7 @@ import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { prisma } from "@/lib/prisma"
 import { formatCurrency, formatDate } from "@/lib/format"
+import { AdminTickets } from "@/components/app/admin-tickets"
 import {
   Users,
   Package,
@@ -56,6 +57,7 @@ export default async function AdminPage() {
     allSubscriptions,
     registrosEstaSemana,
     registrosSemanaAnterior,
+    supportTickets,
     workspacesWithSector,
   ] = await Promise.all([
     prisma.user.count(),
@@ -79,6 +81,10 @@ export default async function AdminPage() {
     }),
     prisma.user.count({ where: { createdAt: { gte: thisWeekStart } } }),
     prisma.user.count({ where: { createdAt: { gte: lastWeekStart, lt: thisWeekStart } } }),
+    prisma.supportTicket.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 50,
+    }),
     prisma.workspace.findMany({
       where: { sector: { not: null } },
       select: { sector: true },
@@ -306,6 +312,24 @@ export default async function AdminPage() {
               </table>
             </div>
           </div>
+        </div>
+
+        {/* Tickets de soporte */}
+        <div className="mb-8">
+          <AdminTickets
+            tickets={supportTickets.map((t) => ({
+              id: t.id,
+              email: t.email,
+              name: t.name,
+              category: t.category,
+              subject: t.subject,
+              message: t.message,
+              status: t.status,
+              response: t.response,
+              createdAt: t.createdAt.toISOString(),
+              respondedAt: t.respondedAt?.toISOString() ?? null,
+            }))}
+          />
         </div>
 
         {/* Suscripciones activas */}

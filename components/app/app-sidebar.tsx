@@ -14,6 +14,7 @@ import {
   User,
   CreditCard,
   Shield,
+  HelpCircle,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
@@ -37,6 +38,7 @@ const SETTINGS_ITEMS = [
   { href: "/reports", label: "Reportes", icon: FileBarChart },
   { href: "/settings/members", label: "Colaboradores", icon: Users },
   { href: "/settings/billing", label: "Mi plan", icon: CreditCard },
+  { href: "/support", label: "Soporte", icon: HelpCircle },
 ]
 
 interface AppSidebarProps {

@@ -235,6 +235,21 @@ exports.Prisma.WaitlistScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SupportTicketScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  email: 'email',
+  name: 'name',
+  category: 'category',
+  subject: 'subject',
+  message: 'message',
+  status: 'status',
+  response: 'response',
+  respondedAt: 'respondedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -306,7 +321,8 @@ exports.Prisma.ModelName = {
   ExpenseAllocation: 'ExpenseAllocation',
   InvoiceFile: 'InvoiceFile',
   Subscription: 'Subscription',
-  Waitlist: 'Waitlist'
+  Waitlist: 'Waitlist',
+  SupportTicket: 'SupportTicket'
 };
 
 /**
