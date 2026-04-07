@@ -65,8 +65,8 @@ export async function POST(request: NextRequest) {
             </div>
             <hr style="border:none;border-top:1px solid #1e293b;margin:20px 0;" />
             <p style="color:#64748b;font-size:12px;text-align:center;">
-              Si necesitas más ayuda, responde a este email.<br/>
-              <a href="https://projecttrack.app" style="color:#3b82f6;text-decoration:none;">projecttrack.app</a>
+              Si necesitas más ayuda, abre un nuevo ticket desde la aplicación.<br/>
+              <a href="https://projecttrack.app/support" style="color:#3b82f6;text-decoration:none;">Ir a soporte</a>
             </p>
           </div>
         `,
