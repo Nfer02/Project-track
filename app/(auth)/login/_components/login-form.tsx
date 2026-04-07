@@ -102,12 +102,20 @@ export function LoginForm({ inviteToken }: LoginFormProps) {
         </form>
       </Form>
 
-      <p className="text-center text-sm text-muted-foreground">
-        ¿No tienes cuenta?{" "}
-        <Link href="/register" className="font-medium text-foreground hover:underline underline-offset-4">
-          Regístrate gratis
+      <div className="text-center space-y-2">
+        <Link
+          href="/forgot-password"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          ¿Olvidaste tu contraseña?
         </Link>
-      </p>
+        <p className="text-sm text-muted-foreground">
+          ¿No tienes cuenta?{" "}
+          <Link href="/register" className="font-medium text-foreground hover:underline underline-offset-4">
+            Regístrate gratis
+          </Link>
+        </p>
+      </div>
     </div>
   )
 }
