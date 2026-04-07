@@ -8,55 +8,67 @@ import {
   Package,
   Crown,
   TrendingUp,
-  FolderKanban,
   Clock,
-  ArrowUpRight,
-  ArrowDownRight,
+  Activity,
+  UserPlus,
   ArrowLeft,
+  BarChart3,
 } from "lucide-react"
 
 const ADMIN_EMAILS = ["nelsonfernandez1002@gmail.com"]
 
+const SECTOR_LABELS: Record<string, string> = {
+  reformas: "Reformas y construcción",
+  instalaciones: "Instalaciones y mantenimiento",
+  diseno: "Diseño y creatividad",
+  fotografia: "Fotografía y eventos",
+  consultoria: "Consultoría y formación",
+  tecnologia: "Tecnología y desarrollo",
+  hogar: "Proyectos personales / hogar",
+  otro: "Otro sector",
+  landing: "Landing (sin sector)",
+}
+
 export default async function AdminPage() {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
   if (!user || !ADMIN_EMAILS.includes(user.email ?? "")) {
     redirect("/dashboard")
   }
 
+  // Fecha de hace 7 días para "usuarios activos"
+  const sevenDaysAgo = new Date()
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
+  const thisWeekStart = new Date()
+  thisWeekStart.setDate(thisWeekStart.getDate() - 7)
+  const lastWeekStart = new Date()
+  lastWeekStart.setDate(lastWeekStart.getDate() - 14)
+
   const [
     totalUsers,
-    totalWorkspaces,
     freeWorkspaces,
     proWorkspaces,
-    totalProjects,
-    totalIncomeInvoices,
-    totalExpenseInvoices,
     totalWaitlist,
     waitlistEntries,
     recentUsers,
     allSubscriptions,
-    totalInvoiceAmount,
-    totalExpenseAmount,
+    registrosEstaSemana,
+    registrosSemanaAnterior,
+    workspacesWithSector,
   ] = await Promise.all([
     prisma.user.count(),
-    prisma.workspace.count(),
     prisma.workspace.count({ where: { plan: "FREE" } }),
     prisma.workspace.count({ where: { plan: "PRO" } }),
-    prisma.project.count(),
-    prisma.invoice.count({ where: { type: "INCOME" } }),
-    prisma.invoice.count({ where: { type: "EXPENSE" } }),
     prisma.waitlist.count(),
-    prisma.waitlist.findMany({ orderBy: { createdAt: "desc" }, take: 50 }),
+    prisma.waitlist.findMany({ orderBy: { createdAt: "desc" }, take: 100 }),
     prisma.user.findMany({
       orderBy: { createdAt: "desc" },
-      take: 20,
+      take: 30,
       include: {
         memberships: {
-          include: { workspace: { select: { name: true, plan: true } } },
+          include: { workspace: { select: { name: true, plan: true, sector: true } } },
           take: 1,
         },
       },
@@ -65,83 +77,52 @@ export default async function AdminPage() {
       where: { status: "ACTIVE" },
       include: { workspace: { select: { name: true } } },
     }),
-    prisma.invoice.aggregate({
-      where: { type: "INCOME", status: "PAID" },
-      _sum: { amount: true },
-    }),
-    prisma.invoice.aggregate({
-      where: { type: "EXPENSE", status: "PAID" },
-      _sum: { amount: true },
+    prisma.user.count({ where: { createdAt: { gte: thisWeekStart } } }),
+    prisma.user.count({ where: { createdAt: { gte: lastWeekStart, lt: thisWeekStart } } }),
+    prisma.workspace.findMany({
+      where: { sector: { not: null } },
+      select: { sector: true },
     }),
   ])
 
-  // Derived metrics
+  const totalWorkspaces = freeWorkspaces + proWorkspaces
   const mrr = proWorkspaces * 14.99
-  const conversionRate =
-    totalWorkspaces > 0
-      ? ((proWorkspaces / totalWorkspaces) * 100).toFixed(1)
-      : "0"
+  const conversionRate = totalWorkspaces > 0 ? ((proWorkspaces / totalWorkspaces) * 100).toFixed(1) : "0"
 
-  // Waitlist grouped by sector
-  const sectorCounts: Record<string, number> = {}
+  // Tendencia de registros
+  const registrosTendencia = registrosEstaSemana - registrosSemanaAnterior
+  const tendenciaTexto = registrosTendencia > 0
+    ? `+${registrosTendencia} vs semana anterior`
+    : registrosTendencia < 0
+      ? `${registrosTendencia} vs semana anterior`
+      : "Igual que la semana anterior"
+
+  // Waitlist por sector
+  const waitlistSectorCounts: Record<string, number> = {}
   for (const entry of waitlistEntries) {
-    const sector = entry.source ?? "Sin especificar"
-    sectorCounts[sector] = (sectorCounts[sector] ?? 0) + 1
+    const sector = entry.source ?? "landing"
+    waitlistSectorCounts[sector] = (waitlistSectorCounts[sector] ?? 0) + 1
   }
-  const sectorEntries = Object.entries(sectorCounts).sort(
-    ([, a], [, b]) => b - a
-  )
-  const maxSectorCount = sectorEntries.length > 0 ? sectorEntries[0][1] : 1
+  const waitlistSectors = Object.entries(waitlistSectorCounts).sort(([, a], [, b]) => b - a)
+  const maxWaitlistSector = waitlistSectors.length > 0 ? waitlistSectors[0][1] : 1
+
+  // Usuarios registrados por sector
+  const userSectorCounts: Record<string, number> = {}
+  for (const ws of workspacesWithSector) {
+    const sector = ws.sector ?? "otro"
+    userSectorCounts[sector] = (userSectorCounts[sector] ?? 0) + 1
+  }
+  const userSectors = Object.entries(userSectorCounts).sort(([, a], [, b]) => b - a)
+  const maxUserSector = userSectors.length > 0 ? userSectors[0][1] : 1
 
   const STATS = [
-    {
-      label: "Usuarios registrados",
-      value: totalUsers,
-      icon: Users,
-      color: "border-l-blue-500",
-    },
-    {
-      label: "Workspaces Free",
-      value: freeWorkspaces,
-      icon: Package,
-      color: "border-l-slate-400",
-    },
-    {
-      label: "Workspaces PRO",
-      value: proWorkspaces,
-      icon: Crown,
-      color: "border-l-amber-500",
-    },
-    {
-      label: "MRR (estimado)",
-      value: formatCurrency(mrr),
-      icon: TrendingUp,
-      color: "border-l-emerald-500",
-    },
-    {
-      label: "Proyectos totales",
-      value: totalProjects,
-      icon: FolderKanban,
-      color: "border-l-violet-500",
-    },
-    {
-      label: "Waitlist",
-      value: totalWaitlist,
-      icon: Clock,
-      color: "border-l-orange-500",
-    },
-    {
-      label: "Ingresos registrados",
-      value: formatCurrency(Number(totalInvoiceAmount._sum.amount ?? 0)),
-      icon: ArrowUpRight,
-      color: "border-l-emerald-500",
-    },
-    {
-      label: "Gastos registrados",
-      value: formatCurrency(Number(totalExpenseAmount._sum.amount ?? 0)),
-      icon: ArrowDownRight,
-      color: "border-l-rose-500",
-    },
+    { label: "Usuarios registrados", value: String(totalUsers), icon: Users, color: "border-l-blue-500" },
+    { label: "Workspaces Free", value: String(freeWorkspaces), icon: Package, color: "border-l-slate-400" },
+    { label: "Workspaces PRO", value: String(proWorkspaces), icon: Crown, color: "border-l-amber-500" },
+    { label: "MRR (estimado)", value: formatCurrency(mrr), icon: TrendingUp, color: "border-l-emerald-500" },
+    { label: "Waitlist", value: String(totalWaitlist), icon: Clock, color: "border-l-orange-500" },
+    { label: "Registros esta semana", value: String(registrosEstaSemana), sub: tendenciaTexto, icon: UserPlus, color: "border-l-violet-500" },
+    { label: "Tasa de conversión", value: `${conversionRate}%`, sub: "Free → PRO", icon: Activity, color: "border-l-cyan-500" },
   ]
 
   return (
@@ -149,68 +130,104 @@ export default async function AdminPage() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Volver al dashboard
-            </Link>
-          </div>
-          <h1 className="text-2xl font-bold text-foreground">
-            Panel de administraci&oacute;n
-          </h1>
-        </div>
-
-        {/* Conversion rate banner */}
-        <div className="mb-6 rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">Resumen:</span>{" "}
-          {totalUsers} usuarios, {totalWorkspaces} workspaces,{" "}
-          {totalIncomeInvoices} facturas emitidas, {totalExpenseInvoices} gastos.
-          Tasa de conversi&oacute;n Free → PRO:{" "}
-          <span className="font-semibold text-foreground">
-            {conversionRate}%
-          </span>
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Volver al dashboard
+          </Link>
+          <h1 className="text-xl sm:text-2xl font-bold">Panel de administración</h1>
         </div>
 
         {/* Stat cards */}
-        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           {STATS.map((stat) => {
             const Icon = stat.icon
             return (
-              <div
-                key={stat.label}
-                className={`rounded-lg border border-border bg-card p-4 border-l-4 ${stat.color}`}
-              >
+              <div key={stat.label} className={`rounded-xl border bg-card p-4 border-l-4 ${stat.color}`}>
                 <div className="flex items-center gap-2 text-muted-foreground mb-1">
                   <Icon className="h-4 w-4 shrink-0" />
-                  <span className="text-xs font-medium">{stat.label}</span>
+                  <span className="text-[11px] font-medium">{stat.label}</span>
                 </div>
-                <p className="text-2xl font-bold text-foreground">
-                  {stat.value}
-                </p>
+                <p className="text-xl sm:text-2xl font-bold">{stat.value}</p>
+                {"sub" in stat && stat.sub && (
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{stat.sub}</p>
+                )}
               </div>
             )
           })}
         </div>
 
-        {/* Two column: Waitlist + Recent users */}
+        {/* Sectores — 2 columnas */}
         <div className="mb-8 grid gap-6 lg:grid-cols-2">
-          {/* Waitlist table */}
-          <div className="rounded-lg border border-border bg-card">
-            <div className="border-b border-border p-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Waitlist
-              </h2>
-              <p className="text-xs text-muted-foreground">
-                &Uacute;ltimos {waitlistEntries.length} registros
-              </p>
+          {/* Waitlist por sector */}
+          <div className="rounded-xl border bg-card p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart3 className="h-4 w-4 text-orange-500" />
+              <h2 className="text-sm font-semibold">Waitlist por sector</h2>
+              <span className="text-xs text-muted-foreground ml-auto">{totalWaitlist} total</span>
             </div>
-            <div className="max-h-[400px] overflow-y-auto">
+            {waitlistSectors.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Sin datos</p>
+            ) : (
+              <div className="space-y-2.5">
+                {waitlistSectors.map(([sector, count]) => (
+                  <div key={sector} className="flex items-center gap-3">
+                    <span className="w-44 shrink-0 truncate text-xs">{SECTOR_LABELS[sector] ?? sector}</span>
+                    <div className="flex-1 h-5 rounded-full bg-muted overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-orange-500/70 transition-all"
+                        style={{ width: `${(count / maxWaitlistSector) * 100}%`, minWidth: "8px" }}
+                      />
+                    </div>
+                    <span className="w-8 text-right text-xs font-semibold">{count}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Usuarios registrados por sector */}
+          <div className="rounded-xl border bg-card p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart3 className="h-4 w-4 text-blue-500" />
+              <h2 className="text-sm font-semibold">Usuarios por sector</h2>
+              <span className="text-xs text-muted-foreground ml-auto">{workspacesWithSector.length} con sector</span>
+            </div>
+            {userSectors.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Sin datos todavía</p>
+            ) : (
+              <div className="space-y-2.5">
+                {userSectors.map(([sector, count]) => (
+                  <div key={sector} className="flex items-center gap-3">
+                    <span className="w-44 shrink-0 truncate text-xs">{SECTOR_LABELS[sector] ?? sector}</span>
+                    <div className="flex-1 h-5 rounded-full bg-muted overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-blue-500/70 transition-all"
+                        style={{ width: `${(count / maxUserSector) * 100}%`, minWidth: "8px" }}
+                      />
+                    </div>
+                    <span className="w-8 text-right text-xs font-semibold">{count}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Tablas — 2 columnas */}
+        <div className="mb-8 grid gap-6 lg:grid-cols-2">
+          {/* Waitlist */}
+          <div className="rounded-xl border bg-card">
+            <div className="border-b p-4">
+              <h2 className="text-sm font-semibold">Waitlist</h2>
+              <p className="text-[10px] text-muted-foreground">{waitlistEntries.length} registros más recientes</p>
+            </div>
+            <div className="max-h-[450px] overflow-y-auto">
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-card">
-                  <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                  <tr className="border-b text-left text-[10px] text-muted-foreground">
                     <th className="px-4 py-2 font-medium">Email</th>
                     <th className="px-4 py-2 font-medium">Sector</th>
                     <th className="px-4 py-2 font-medium">Fecha</th>
@@ -218,37 +235,21 @@ export default async function AdminPage() {
                 </thead>
                 <tbody>
                   {waitlistEntries.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={3}
-                        className="px-4 py-6 text-center text-muted-foreground"
-                      >
-                        Sin entradas en la waitlist
-                      </td>
-                    </tr>
+                    <tr><td colSpan={3} className="px-4 py-8 text-center text-muted-foreground text-xs">Sin entradas</td></tr>
                   ) : (
                     waitlistEntries.map((entry) => (
-                      <tr
-                        key={entry.id}
-                        className="border-b border-border/50 hover:bg-muted/50"
-                      >
-                        <td className="px-4 py-2 text-foreground truncate max-w-[200px]">
-                          {entry.email}
-                        </td>
+                      <tr key={entry.id} className="border-b border-border/30 hover:bg-muted/30">
+                        <td className="px-4 py-2 text-xs truncate max-w-[180px]">{entry.email}</td>
                         <td className="px-4 py-2">
-                          {entry.source ? (
-                            <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                              {entry.source}
+                          {entry.source && entry.source !== "landing" ? (
+                            <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                              {SECTOR_LABELS[entry.source] ?? entry.source}
                             </span>
                           ) : (
-                            <span className="text-xs text-muted-foreground">
-                              Sin especificar
-                            </span>
+                            <span className="text-[10px] text-muted-foreground">—</span>
                           )}
                         </td>
-                        <td className="px-4 py-2 text-muted-foreground whitespace-nowrap">
-                          {formatDate(entry.createdAt)}
-                        </td>
+                        <td className="px-4 py-2 text-[10px] text-muted-foreground whitespace-nowrap">{formatDate(entry.createdAt)}</td>
                       </tr>
                     ))
                   )}
@@ -257,58 +258,47 @@ export default async function AdminPage() {
             </div>
           </div>
 
-          {/* Recent users table */}
-          <div className="rounded-lg border border-border bg-card">
-            <div className="border-b border-border p-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                &Uacute;ltimos registros
-              </h2>
-              <p className="text-xs text-muted-foreground">
-                {recentUsers.length} usuarios m&aacute;s recientes
-              </p>
+          {/* Usuarios recientes */}
+          <div className="rounded-xl border bg-card">
+            <div className="border-b p-4">
+              <h2 className="text-sm font-semibold">Últimos registros</h2>
+              <p className="text-[10px] text-muted-foreground">{recentUsers.length} usuarios más recientes</p>
             </div>
-            <div className="max-h-[400px] overflow-y-auto">
+            <div className="max-h-[450px] overflow-y-auto">
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-card">
-                  <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                  <tr className="border-b text-left text-[10px] text-muted-foreground">
                     <th className="px-4 py-2 font-medium">Nombre</th>
                     <th className="px-4 py-2 font-medium">Email</th>
                     <th className="px-4 py-2 font-medium">Workspace</th>
                     <th className="px-4 py-2 font-medium">Plan</th>
+                    <th className="px-4 py-2 font-medium">Sector</th>
                     <th className="px-4 py-2 font-medium">Fecha</th>
                   </tr>
                 </thead>
                 <tbody>
                   {recentUsers.map((u) => {
-                    const membership = u.memberships[0]
+                    const m = u.memberships[0]
                     return (
-                      <tr
-                        key={u.id}
-                        className="border-b border-border/50 hover:bg-muted/50"
-                      >
-                        <td className="px-4 py-2 text-foreground truncate max-w-[120px]">
-                          {u.name ?? "—"}
-                        </td>
-                        <td className="px-4 py-2 text-foreground truncate max-w-[180px]">
-                          {u.email}
-                        </td>
-                        <td className="px-4 py-2 text-muted-foreground truncate max-w-[120px]">
-                          {membership?.workspace.name ?? "—"}
-                        </td>
+                      <tr key={u.id} className="border-b border-border/30 hover:bg-muted/30">
+                        <td className="px-4 py-2 text-xs truncate max-w-[100px]">{u.name ?? "—"}</td>
+                        <td className="px-4 py-2 text-xs truncate max-w-[150px]">{u.email}</td>
+                        <td className="px-4 py-2 text-[10px] text-muted-foreground truncate max-w-[100px]">{m?.workspace.name ?? "—"}</td>
                         <td className="px-4 py-2">
-                          {membership?.workspace.plan === "PRO" ? (
-                            <span className="inline-flex items-center rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-500">
-                              PRO
-                            </span>
+                          {m?.workspace.plan === "PRO" ? (
+                            <span className="inline-flex items-center rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-500">PRO</span>
                           ) : (
-                            <span className="inline-flex items-center rounded-full bg-slate-500/10 px-2 py-0.5 text-xs font-medium text-slate-400">
-                              FREE
-                            </span>
+                            <span className="inline-flex items-center rounded-full bg-slate-500/10 px-2 py-0.5 text-[10px] font-medium text-slate-400">FREE</span>
                           )}
                         </td>
-                        <td className="px-4 py-2 text-muted-foreground whitespace-nowrap">
-                          {formatDate(u.createdAt)}
+                        <td className="px-4 py-2">
+                          {m?.workspace.sector ? (
+                            <span className="text-[10px] text-muted-foreground">{SECTOR_LABELS[m.workspace.sector] ?? m.workspace.sector}</span>
+                          ) : (
+                            <span className="text-[10px] text-muted-foreground">—</span>
+                          )}
                         </td>
+                        <td className="px-4 py-2 text-[10px] text-muted-foreground whitespace-nowrap">{formatDate(u.createdAt)}</td>
                       </tr>
                     )
                   })}
@@ -318,92 +308,36 @@ export default async function AdminPage() {
           </div>
         </div>
 
-        {/* Active subscriptions */}
+        {/* Suscripciones activas */}
         {allSubscriptions.length > 0 && (
-          <div className="mb-8 rounded-lg border border-border bg-card">
-            <div className="border-b border-border p-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Suscripciones activas
-              </h2>
-              <p className="text-xs text-muted-foreground">
-                {allSubscriptions.length} suscripciones PRO
-              </p>
+          <div className="rounded-xl border bg-card">
+            <div className="border-b p-4">
+              <h2 className="text-sm font-semibold">Suscripciones PRO activas</h2>
+              <p className="text-[10px] text-muted-foreground">{allSubscriptions.length} suscripciones</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                  <tr className="border-b text-left text-[10px] text-muted-foreground">
                     <th className="px-4 py-2 font-medium">Workspace</th>
                     <th className="px-4 py-2 font-medium">Estado</th>
                     <th className="px-4 py-2 font-medium">Stripe ID</th>
-                    <th className="px-4 py-2 font-medium">
-                      Fin de periodo
-                    </th>
+                    <th className="px-4 py-2 font-medium">Fin de periodo</th>
                   </tr>
                 </thead>
                 <tbody>
                   {allSubscriptions.map((sub) => (
-                    <tr
-                      key={sub.id}
-                      className="border-b border-border/50 hover:bg-muted/50"
-                    >
-                      <td className="px-4 py-2 text-foreground">
-                        {sub.workspace.name}
-                      </td>
+                    <tr key={sub.id} className="border-b border-border/30 hover:bg-muted/30">
+                      <td className="px-4 py-2 text-xs">{sub.workspace.name}</td>
                       <td className="px-4 py-2">
-                        <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500">
-                          {sub.status}
-                        </span>
+                        <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-500">Activa</span>
                       </td>
-                      <td className="px-4 py-2 font-mono text-xs text-muted-foreground">
-                        {sub.stripeSubId ?? "—"}
-                      </td>
-                      <td className="px-4 py-2 text-muted-foreground whitespace-nowrap">
-                        {formatDate(sub.currentPeriodEnd)}
-                      </td>
+                      <td className="px-4 py-2 font-mono text-[10px] text-muted-foreground">{sub.stripeSubId ?? "—"}</td>
+                      <td className="px-4 py-2 text-[10px] text-muted-foreground whitespace-nowrap">{formatDate(sub.currentPeriodEnd)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-          </div>
-        )}
-
-        {/* Waitlist by sector */}
-        {sectorEntries.length > 0 && (
-          <div className="rounded-lg border border-border bg-card">
-            <div className="border-b border-border p-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Waitlist por sector
-              </h2>
-            </div>
-            <div className="p-4 space-y-3">
-              {sectorEntries.map(([sector, count]) => (
-                <div key={sector} className="flex items-center gap-3">
-                  <span className="w-32 shrink-0 truncate text-sm text-foreground">
-                    {sector}
-                  </span>
-                  <div className="flex-1">
-                    <div
-                      className="h-6 rounded bg-primary/20"
-                      style={{
-                        width: `${(count / maxSectorCount) * 100}%`,
-                        minWidth: "2rem",
-                      }}
-                    >
-                      <div
-                        className="h-full rounded bg-primary transition-all"
-                        style={{
-                          width: "100%",
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <span className="w-8 text-right text-sm font-semibold text-foreground">
-                    {count}
-                  </span>
-                </div>
-              ))}
             </div>
           </div>
         )}
