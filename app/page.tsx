@@ -99,7 +99,7 @@ export default async function LandingPage() {
         {/* --------------------------------------------------------------- */}
         {/* Hero                                                            */}
         {/* --------------------------------------------------------------- */}
-        <section className="relative overflow-hidden py-20 sm:py-28">
+        <section id="waitlist" className="relative overflow-hidden py-20 sm:py-28 scroll-mt-16">
           {/* Radial gradient background */}
           <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[600px] w-[1000px] rounded-full bg-primary/6 blur-3xl" />

@@ -53,7 +53,7 @@ export function WaitlistForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md space-y-3" id="waitlist">
+    <form onSubmit={handleSubmit} className="w-full max-w-md space-y-3">
       <div className="relative">
         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <input
