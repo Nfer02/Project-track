@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server"
 import { prisma } from "@/lib/prisma"
 import { formatCurrency, formatDate } from "@/lib/format"
 import { AdminTickets } from "@/components/app/admin-tickets"
+import { AdminWaitlistEmail } from "@/components/app/admin-waitlist-email"
 import {
   Users,
   Package,
@@ -170,6 +171,11 @@ export default async function AdminPage() {
               </div>
             )
           })}
+        </div>
+
+        {/* Enviar email a waitlist */}
+        <div className="mb-8">
+          <AdminWaitlistEmail totalWaitlist={totalWaitlist} />
         </div>
 
         {/* Sectores — 2 columnas */}

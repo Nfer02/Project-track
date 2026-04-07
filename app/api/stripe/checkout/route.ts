@@ -21,7 +21,7 @@ export async function POST(_request: NextRequest) {
 
     // Si ya es PRO, redirigir al portal
     if (workspace.plan === "PRO") {
-      return NextResponse.json({ error: "Ya tenés el plan PRO" }, { status: 400 })
+      return NextResponse.json({ error: "Ya tienes el plan PRO" }, { status: 400 })
     }
 
     // Obtener o crear customer de Stripe
@@ -64,12 +64,6 @@ export async function POST(_request: NextRequest) {
       success_url: `${baseUrl}/settings/billing?success=1`,
       cancel_url: `${baseUrl}/settings/billing?cancelled=1`,
       allow_promotion_codes: true,
-      invoice_creation: {
-        enabled: true,
-        invoice_data: {
-          description: "Suscripcion ProjectTrack PRO",
-        },
-      },
       metadata: {
         workspaceId: workspace.id,
       },
