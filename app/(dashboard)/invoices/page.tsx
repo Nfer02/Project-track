@@ -49,7 +49,7 @@ export default async function InvoicesPage() {
       </div>
 
       {invoices.length > 0 && (
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="rounded-xl border bg-card p-3 sm:p-4 space-y-1">
             <p className="text-[10px] sm:text-xs text-muted-foreground">Total facturado</p>
             <p className="text-base sm:text-xl font-semibold">{formatCurrency(totalAmount, "EUR")}</p>

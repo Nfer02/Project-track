@@ -34,7 +34,7 @@ export default async function InvoiceDetailPage({ params }: Props) {
   if (!invoice) notFound()
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-3xl">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-3xl">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Button

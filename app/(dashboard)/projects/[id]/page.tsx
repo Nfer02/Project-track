@@ -48,7 +48,7 @@ export default async function ProjectDetailPage({ params }: Props) {
   )
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-4xl">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-4xl">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Button variant="ghost" size="sm" className="-ml-1" render={<Link href="/projects" />}>
@@ -57,10 +57,10 @@ export default async function ProjectDetailPage({ params }: Props) {
         </Button>
       </div>
 
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">
               {project.name}
             </h1>
             <ProjectStatusBadge status={project.status} />
@@ -75,7 +75,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           )}
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 flex-wrap">
           <Button variant="outline" size="sm" render={<Link href={`/projects/${project.id}/finances`} />}>
             <BarChart2 className="h-4 w-4 mr-1" />
             Finanzas

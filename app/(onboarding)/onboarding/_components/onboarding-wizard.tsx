@@ -78,12 +78,12 @@ export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
   return (
     <div className="w-full max-w-md">
       {/* Indicador de pasos */}
-      <div className="flex items-center gap-3 mb-8">
+      <div className="flex items-center gap-2 sm:gap-3 mb-8">
         {STEPS.map((s, i) => (
-          <div key={s.id} className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
+          <div key={s.id} className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <div
-                className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
+                className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold transition-colors shrink-0 ${
                   step >= s.id
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted text-muted-foreground"
@@ -92,7 +92,7 @@ export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
                 {s.id}
               </div>
               <span
-                className={`text-sm font-medium transition-colors ${
+                className={`text-xs sm:text-sm font-medium transition-colors ${
                   step >= s.id ? "text-foreground" : "text-muted-foreground"
                 }`}
               >
@@ -100,7 +100,7 @@ export function OnboardingWizard({ defaultName }: { defaultName?: string }) {
               </span>
             </div>
             {i < STEPS.length - 1 && (
-              <div className={`h-px w-8 transition-colors ${step > s.id ? "bg-primary" : "bg-border"}`} />
+              <div className={`h-px w-4 sm:w-8 transition-colors ${step > s.id ? "bg-primary" : "bg-border"}`} />
             )}
           </div>
         ))}

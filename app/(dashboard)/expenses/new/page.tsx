@@ -13,7 +13,7 @@ export default async function NewExpensePage() {
   ])
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-2xl">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-2xl">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Nuevo gasto</h1>
         <p className="text-sm text-muted-foreground mt-1">

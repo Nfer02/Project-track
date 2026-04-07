@@ -161,7 +161,7 @@ export default async function ProjectFinancesPage({ params }: Props) {
       </div>
 
       <div className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Finanzas del proyecto</h1>
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">Finanzas del proyecto</h1>
         <p className="text-sm text-muted-foreground">
           Análisis financiero de <span className="font-medium text-foreground">{project.name}</span>
         </p>
@@ -175,7 +175,7 @@ export default async function ProjectFinancesPage({ params }: Props) {
               <p className="text-xs text-muted-foreground">{label}</p>
               <Icon className={`h-3.5 w-3.5 ${color}`} />
             </div>
-            <p className={`text-lg tabular-nums ${bold ? "font-bold" : "font-semibold"}`}>{value}</p>
+            <p className={`text-base sm:text-lg tabular-nums ${bold ? "font-bold" : "font-semibold"}`}>{value}</p>
           </div>
         ))}
       </div>
@@ -274,8 +274,8 @@ export default async function ProjectFinancesPage({ params }: Props) {
               <FiscalRow label="IRPF a pagar" value={formatCurrency(irpfAPagar, currency)} highlight />
             </div>
           </div>
-          <div className="flex items-center justify-between pt-2 border-t">
-            <span className="font-semibold">Total estimado a reservar para Hacienda</span>
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between pt-2 border-t">
+            <span className="font-semibold text-sm sm:text-base">Total estimado a reservar para Hacienda</span>
             <span className="font-bold text-lg">{formatCurrency(totalReserva, currency)}</span>
           </div>
           <div className="flex items-start gap-2 rounded-lg bg-muted/50 px-3 py-2 text-xs text-muted-foreground">

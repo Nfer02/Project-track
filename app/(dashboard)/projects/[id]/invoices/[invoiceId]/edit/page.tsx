@@ -31,7 +31,7 @@ export default async function EditInvoicePage({ params }: Props) {
   if (!invoice) notFound()
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-2xl">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-2xl">
       <div className="flex items-center gap-3">
         <Button
           variant="ghost"

@@ -36,7 +36,7 @@ export default async function ExpenseDetailPage({ params, searchParams }: Props)
   const unallocated = Number(expense.amount) - allocTotal
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-3xl">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-3xl">
       <div className="flex items-center gap-3">
         <Button variant="ghost" size="sm" className="-ml-1" render={<Link href={from ? `/projects/${from}` : "/expenses"} />}>
           <ArrowLeft className="h-4 w-4 mr-1" />
@@ -44,10 +44,10 @@ export default async function ExpenseDetailPage({ params, searchParams }: Props)
         </Button>
       </div>
 
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-1">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">
               Gasto #{expense.number}
             </h1>
             <InvoiceStatusBadge status={expense.status} />
@@ -117,7 +117,7 @@ export default async function ExpenseDetailPage({ params, searchParams }: Props)
         {allocations.length === 0 ? (
           <p className="text-sm text-muted-foreground">Todo el importe es gasto general (sin asignar a proyectos).</p>
         ) : (
-          <div className="rounded-xl border overflow-hidden">
+          <div className="rounded-xl border overflow-hidden overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="border-b bg-muted/50">
                 <tr>

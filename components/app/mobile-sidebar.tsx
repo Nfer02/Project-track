@@ -37,7 +37,7 @@ export function MobileSidebarToggle({ user, workspace }: MobileSidebarProps) {
             aria-hidden="true"
           />
           {/* Sidebar drawer */}
-          <div className="absolute inset-y-0 left-0 w-60 shadow-xl animate-in slide-in-from-left duration-200">
+          <div className="absolute inset-y-0 left-0 w-[75vw] max-w-[280px] shadow-xl animate-in slide-in-from-left duration-200">
             <div className="relative h-full">
               <AppSidebar
                 user={user}

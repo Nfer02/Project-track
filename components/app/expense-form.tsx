@@ -450,8 +450,8 @@ export function ExpenseForm({
 
             {/* Allocation rows */}
             {allocations.map((alloc, idx) => (
-              <div key={idx} className="flex items-end gap-2">
-                <div className="flex-1">
+              <div key={idx} className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_7rem_5rem_auto] items-end gap-2">
+                <div className="col-span-2 sm:col-span-1">
                   <label className="text-xs text-muted-foreground">Proyecto</label>
                   <select
                     value={alloc.projectId}
@@ -468,7 +468,7 @@ export function ExpenseForm({
                     ))}
                   </select>
                 </div>
-                <div className="w-28">
+                <div>
                   <label className="text-xs text-muted-foreground">Importe</label>
                   <Input
                     type="text"
@@ -485,7 +485,7 @@ export function ExpenseForm({
                     }}
                   />
                 </div>
-                <div className="w-20">
+                <div className="hidden sm:block">
                   <label className="text-xs text-muted-foreground">%</label>
                   <Input
                     type="text"

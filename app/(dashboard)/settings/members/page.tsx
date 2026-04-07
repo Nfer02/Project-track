@@ -34,7 +34,7 @@ export default async function MembersPage() {
   const canInvite = ctx.role === "OWNER" || ctx.role === "ADMIN"
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-3xl">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-3xl">
       <div className="flex items-center gap-3">
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
           <Users className="h-4 w-4 text-muted-foreground" />

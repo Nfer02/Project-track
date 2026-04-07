@@ -112,7 +112,7 @@ export default async function LandingPage() {
               Para autónomos y pymes en España
             </Badge>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
               Tus proyectos y finanzas,{" "}
               <span className="text-primary">
                 <Typewriter
@@ -161,7 +161,7 @@ export default async function LandingPage() {
         {/* --------------------------------------------------------------- */}
         <section className="border-y bg-muted/20">
           <FadeIn>
-            <div className="mx-auto max-w-4xl px-4 sm:px-6 py-10 grid grid-cols-3 gap-6 text-center">
+            <div className="mx-auto max-w-4xl px-4 sm:px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
               {[
                 { value: "3 min", label: "para configurar" },
                 { value: "+2M", label: "autónomos en España (mercado)" },
@@ -488,7 +488,7 @@ export default async function LandingPage() {
               ProjectTrack
             </div>
 
-            <nav className="flex items-center gap-6 text-xs">
+            <nav className="flex items-center gap-4 sm:gap-6 text-xs flex-wrap justify-center">
               <a href="#features" className="hover:text-foreground transition-colors">
                 Funciones
               </a>

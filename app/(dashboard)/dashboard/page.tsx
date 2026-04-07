@@ -351,9 +351,9 @@ export default async function DashboardPage() {
   return (
     <div className="flex flex-col gap-6 p-4 sm:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">Dashboard</h1>
           <p className="text-sm text-muted-foreground">
             Resumen financiero — {ctx.workspace.name}
           </p>
@@ -375,8 +375,8 @@ export default async function DashboardPage() {
               <Icon className={`h-4 w-4 ${color}`} />
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-semibold tabular-nums">{value}</p>
-              <p className="text-xs text-muted-foreground mt-1">{sub}</p>
+              <p className="text-lg sm:text-2xl font-semibold tabular-nums">{value}</p>
+              <p className="text-xs text-muted-foreground mt-1 hidden sm:block">{sub}</p>
             </CardContent>
           </Card>
         ))}
@@ -421,7 +421,7 @@ export default async function DashboardPage() {
 
           {/* Upcoming payments - justo arriba de las gráficas */}
           {data.upcomingPayments.length > 0 && (
-            <div className="rounded-xl border bg-card p-5">
+            <div className="rounded-xl border bg-card p-4 sm:p-5">
               <div className="mb-4 space-y-0.5">
                 <h2 className="text-sm font-semibold">Próximos cobros</h2>
               </div>
@@ -452,12 +452,12 @@ export default async function DashboardPage() {
                   }
 
                   return (
-                    <div key={inv.id} className="flex items-center justify-between py-3">
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono text-xs text-muted-foreground">#{inv.number}</span>
-                        <span className="text-sm">{inv.project?.name ?? "Sin proyecto"}</span>
+                    <div key={inv.id} className="flex items-center justify-between py-3 gap-2">
+                      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                        <span className="font-mono text-xs text-muted-foreground shrink-0">#{inv.number}</span>
+                        <span className="text-sm truncate">{inv.project?.name ?? "Sin proyecto"}</span>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                         <span className="text-sm font-semibold tabular-nums">
                           {formatCurrency(Number(inv.amount), "EUR")}
                         </span>
@@ -481,7 +481,7 @@ export default async function DashboardPage() {
 
           {/* Charts row 1 - 2 columns */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="rounded-xl border bg-card p-5">
+            <div className="rounded-xl border bg-card p-4 sm:p-5">
               <div className="mb-4 space-y-0.5">
                 <h2 className="text-sm font-semibold">Ingresos vs Gastos</h2>
                 <p className="text-xs text-muted-foreground">
@@ -490,7 +490,7 @@ export default async function DashboardPage() {
               </div>
               <IncomeExpenseBarChart data={data.incomeExpenseMonthly} />
             </div>
-            <div className="rounded-xl border bg-card p-5">
+            <div className="rounded-xl border bg-card p-4 sm:p-5">
               <div className="mb-4 space-y-0.5">
                 <h2 className="text-sm font-semibold">Gastos por categor&iacute;a</h2>
               </div>
@@ -500,7 +500,7 @@ export default async function DashboardPage() {
 
           {/* Charts row 2 - 2 columns */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="rounded-xl border bg-card p-5">
+            <div className="rounded-xl border bg-card p-4 sm:p-5">
               <div className="mb-4 space-y-0.5">
                 <h2 className="text-sm font-semibold">Beneficio mensual</h2>
                 <p className="text-xs text-muted-foreground">
@@ -509,7 +509,7 @@ export default async function DashboardPage() {
               </div>
               <NetProfitChart data={data.netProfitMonthly} />
             </div>
-            <div className="rounded-xl border bg-card p-5">
+            <div className="rounded-xl border bg-card p-4 sm:p-5">
               <div className="mb-4 space-y-0.5">
                 <h2 className="text-sm font-semibold">Reserva fiscal</h2>
                 <p className="text-xs text-muted-foreground">
@@ -529,7 +529,7 @@ export default async function DashboardPage() {
       )}
 
       {/* Estimacion fiscal del trimestre */}
-      <div className="rounded-xl border-l-4 border-l-indigo-500 border border-border bg-card p-5 space-y-4">
+      <div className="rounded-xl border-l-4 border-l-indigo-500 border border-border bg-card p-4 sm:p-5 space-y-4">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
             <Calculator className="h-5 w-5 text-indigo-500" />

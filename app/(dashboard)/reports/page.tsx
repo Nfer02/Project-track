@@ -121,11 +121,11 @@ export default async function ReportsPage({ searchParams }: Props) {
   }))
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-5xl">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 max-w-5xl">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">
             Reportes trimestrales
           </h1>
           <p className="text-sm text-muted-foreground">
@@ -159,7 +159,7 @@ export default async function ReportsPage({ searchParams }: Props) {
             <TrendingUp className="h-4 w-4 text-emerald-600" />
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold tabular-nums">
+            <p className="text-xl sm:text-2xl font-semibold tabular-nums">
               {formatCurrency(totalIncome, "EUR")}
             </p>
             <p className="text-xs text-muted-foreground mt-1">
@@ -177,7 +177,7 @@ export default async function ReportsPage({ searchParams }: Props) {
             <TrendingDown className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold tabular-nums">
+            <p className="text-xl sm:text-2xl font-semibold tabular-nums">
               {formatCurrency(totalExpenses, "EUR")}
             </p>
             <p className="text-xs text-muted-foreground mt-1">
@@ -195,7 +195,7 @@ export default async function ReportsPage({ searchParams }: Props) {
           </CardHeader>
           <CardContent>
             <p
-              className={`text-2xl font-semibold tabular-nums ${
+              className={`text-xl sm:text-2xl font-semibold tabular-nums ${
                 netProfit < 0 ? "text-red-600" : ""
               }`}
             >
