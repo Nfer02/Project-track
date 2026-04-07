@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import {
-  ArrowRight,
   Sparkles,
   Check,
   X,
@@ -21,9 +20,9 @@ import { UserTypes } from "@/components/landing/user-types"
 // import { AppShowcase } from "@/components/landing/app-showcase"  // Se reemplazará por vídeo
 
 export const metadata = {
-  title: "ProjectTrack — Gestión de proyectos y control financiero para autónomos",
+  title: "ProjectTrack — Gestión de proyectos y control financiero",
   description:
-    "Controla tus proyectos, ingresos, gastos y estimaciones fiscales en un solo lugar. Diseñado para autónomos y pequeñas empresas en España.",
+    "Controla tus proyectos, ingresos, gastos y estimaciones fiscales en un solo lugar. Para freelancers, negocios y cualquier persona con proyectos.",
 }
 
 const STARTER_FEATURES = [
@@ -89,8 +88,8 @@ export default async function LandingPage() {
             <Button variant="ghost" size="sm" render={<Link href="/login" />}>
               Iniciar sesión
             </Button>
-            <Button size="sm" className="rounded-full" render={<Link href="/register" />}>
-              Empieza gratis
+            <Button size="sm" className="rounded-full" render={<a href="#waitlist" />}>
+              Acceso anticipado
             </Button>
           </div>
         </div>
@@ -110,7 +109,7 @@ export default async function LandingPage() {
           <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
             <Badge variant="secondary" className="mb-6 inline-flex items-center gap-1.5">
               <TrendingUp className="h-3 w-3" />
-              Para autónomos y pymes en España
+              Para profesionales y negocios que trabajan por proyectos
             </Badge>
 
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
@@ -128,19 +127,13 @@ export default async function LandingPage() {
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-              Gestiona tus proyectos, controla ingresos y gastos, y ten siempre
-              una estimación de cuánto reservar para Hacienda.
+              Gestiona tus proyectos, controla ingresos y gastos, y ten una
+              estimación de cuánto reservar para Hacienda. Para freelancers,
+              negocios y cualquier persona con proyectos.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button
-                size="lg"
-                className="w-full sm:w-auto rounded-full"
-                render={<Link href="/register" />}
-              >
-                Empieza gratis
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+            <div className="flex flex-col items-center gap-4">
+              <WaitlistForm />
               <Button
                 variant="ghost"
                 size="lg"
@@ -150,10 +143,6 @@ export default async function LandingPage() {
                 Ver funciones &darr;
               </Button>
             </div>
-
-            <p className="mt-5 text-xs text-muted-foreground">
-              Sin tarjeta de crédito &middot; Plan gratuito para siempre
-            </p>
           </div>
         </section>
 
@@ -165,7 +154,7 @@ export default async function LandingPage() {
             <div className="mx-auto max-w-4xl px-4 sm:px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
               {[
                 { value: "3 min", label: "para configurar" },
-                { value: "+2M", label: "autónomos en España (mercado)" },
+                { value: "+2M", label: "profesionales en España" },
                 { value: "0 \u20AC", label: "para empezar" },
               ].map(({ value, label }) => (
                 <div key={label}>
@@ -269,7 +258,7 @@ export default async function LandingPage() {
                   Lo que dicen nuestros usuarios
                 </h2>
                 <p className="text-muted-foreground max-w-xl mx-auto">
-                  Autónomos y pymes que ya controlan sus proyectos y finanzas
+                  Profesionales y negocios que ya controlan sus proyectos y finanzas
                 </p>
               </div>
             </FadeIn>
@@ -393,9 +382,9 @@ export default async function LandingPage() {
                   <Button
                     variant="outline"
                     className="rounded-full"
-                    render={<Link href="/register" />}
+                    render={<a href="#waitlist" />}
                   >
-                    Empieza gratis
+                    Solicitar acceso
                   </Button>
                 </div>
               </FadeIn>
@@ -433,9 +422,9 @@ export default async function LandingPage() {
                     ))}
                   </ul>
 
-                  <Button className="rounded-full" render={<Link href="/register" />}>
+                  <Button className="rounded-full" render={<a href="#waitlist" />}>
                     <Sparkles className="mr-2 h-4 w-4" />
-                    Prueba PRO
+                    Solicitar acceso
                   </Button>
                 </div>
               </FadeIn>
@@ -458,24 +447,14 @@ export default async function LandingPage() {
                 PT
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
-                Empieza a controlar tus proyectos hoy
+                Estamos preparando algo grande
               </h2>
               <p className="text-muted-foreground mb-8 leading-relaxed">
-                Regístrate gratis en menos de 2 minutos. Sin tarjeta de crédito.
+                Sé de los primeros en probarlo. Déjanos tu email y tu sector, y te
+                avisaremos cuando esté listo.
               </p>
-              <Button
-                size="lg"
-                className="rounded-full"
-                render={<Link href="/register" />}
-              >
-                Empieza gratis
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <div className="mt-6">
-                <p className="text-sm text-muted-foreground mb-3">¿Aún no estás listo? Déjanos tu email y te avisamos:</p>
-                <div className="flex justify-center">
-                  <WaitlistForm />
-                </div>
+              <div className="flex justify-center">
+                <WaitlistForm />
               </div>
             </FadeIn>
           </div>

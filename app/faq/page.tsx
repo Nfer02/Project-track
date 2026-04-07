@@ -20,7 +20,7 @@ const FAQ_CATEGORIES = [
       {
         question: "¿Para qué tipo de negocios sirve?",
         answer:
-          "Para cualquier autónomo o pyme que trabaje por proyectos: reformas y construcción, instalaciones eléctricas o de fontanería, diseño gráfico y web, arquitectura, fotografía y vídeo, consultoría, desarrollo de software, jardinería, eventos, interiorismo, formación, y muchos más. Si tienes clientes, presupuestos y gastos asociados a cada trabajo, ProjectTrack te va a ayudar.",
+          "Para cualquier profesional o negocio que trabaje por proyectos: reformas y construcción, instalaciones eléctricas o de fontanería, diseño gráfico y web, arquitectura, fotografía y vídeo, consultoría, desarrollo de software, jardinería, eventos, interiorismo, formación, y muchos más. También para particulares que quieren controlar los gastos de proyectos personales, reformas en casa, o cualquier actividad que implique presupuesto y gastos. Si tienes clientes, presupuestos y gastos asociados a cada trabajo, ProjectTrack te va a ayudar.",
       },
       {
         question: "¿Necesito conocimientos de contabilidad?",

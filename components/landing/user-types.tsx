@@ -46,7 +46,7 @@ export function UserTypes() {
       {userTypes.map(({ Icon, title, description, color }) => (
         <Link
           key={title}
-          href="/register"
+          href="#waitlist"
           className="group rounded-2xl border bg-card p-6 flex flex-col gap-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/30"
         >
           <div
@@ -63,7 +63,7 @@ export function UserTypes() {
             </p>
           </div>
           <span className="inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity mt-auto">
-            Empezar gratis
+            Solicitar acceso
             <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
