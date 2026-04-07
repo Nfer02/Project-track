@@ -31,18 +31,25 @@ export function FadeIn({
     const el = ref.current
     if (!el) return
 
+    // Fallback: show after 2 seconds regardless
+    const fallback = setTimeout(() => setIsVisible(true), 2000)
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
           setIsVisible(true)
           observer.unobserve(el)
+          clearTimeout(fallback)
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0, rootMargin: "100px" }
     )
 
     observer.observe(el)
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      clearTimeout(fallback)
+    }
   }, [])
 
   return (
