@@ -13,6 +13,7 @@ import {
   Users,
   User,
   CreditCard,
+  Shield,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
@@ -156,6 +157,12 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
               <CreditCard className="mr-2 h-4 w-4" aria-hidden="true" />
               Mi plan
             </DropdownMenuItem>
+            {user?.email === "nelsonfernandez1002@gmail.com" && (
+              <DropdownMenuItem onClick={() => router.push("/admin")}>
+                <Shield className="mr-2 h-4 w-4" aria-hidden="true" />
+                Admin
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem
               className="text-destructive focus:text-destructive"
               onClick={() => logout()}
