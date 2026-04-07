@@ -1,12 +1,12 @@
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
-import { ArrowLeft, Pencil, Trash2 } from "lucide-react"
+import { ArrowLeft, Pencil } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
 import { InvoiceStatusBadge } from "@/components/app/invoice-status-badge"
 import { formatCurrency, formatDate } from "@/lib/format"
-import { deleteInvoice } from "@/app/(dashboard)/invoices/actions"
+import { DeleteExpenseButton } from "@/components/app/delete-expense-button"
 
 interface Props {
   params: Promise<{ id: string }>
@@ -62,17 +62,7 @@ export default async function ExpenseDetailPage({ params, searchParams }: Props)
             <Pencil className="h-4 w-4 mr-1" />
             Editar
           </Button>
-          <form action={async () => { "use server"; await deleteInvoice(id, "") }}>
-            <Button
-              variant="outline"
-              size="sm"
-              type="submit"
-              className="text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/30"
-            >
-              <Trash2 className="h-4 w-4 mr-1" />
-              Eliminar
-            </Button>
-          </form>
+          <DeleteExpenseButton expenseId={id} expenseNumber={expense.number} />
         </div>
       </div>
 

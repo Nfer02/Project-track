@@ -1,13 +1,13 @@
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
-import { ArrowLeft, Pencil, Trash2, ReceiptText, Plus, BarChart2, ShoppingCart } from "lucide-react"
+import { ArrowLeft, Pencil, ReceiptText, Plus, BarChart2, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { prisma } from "@/lib/prisma"
 import { ProjectStatusBadge } from "@/components/app/project-status-badge"
 import { InvoiceStatusBadge } from "@/components/app/invoice-status-badge"
 import { formatCurrency, formatDate } from "@/lib/format"
-import { deleteProject } from "../actions"
+import { DeleteProjectButton } from "@/components/app/delete-project-button"
 
 interface Props {
   params: Promise<{ id: string }>
@@ -84,22 +84,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             <Pencil className="h-4 w-4 mr-1" />
             Editar
           </Button>
-          <form
-            action={async () => {
-              "use server"
-              await deleteProject(project.id)
-            }}
-          >
-            <Button
-              variant="outline"
-              size="sm"
-              type="submit"
-              className="text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/30"
-            >
-              <Trash2 className="h-4 w-4 mr-1" />
-              Eliminar
-            </Button>
-          </form>
+          <DeleteProjectButton projectId={project.id} projectName={project.name} />
         </div>
       </div>
 

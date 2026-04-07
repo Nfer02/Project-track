@@ -64,6 +64,12 @@ export async function POST(_request: NextRequest) {
       success_url: `${baseUrl}/settings/billing?success=1`,
       cancel_url: `${baseUrl}/settings/billing?cancelled=1`,
       allow_promotion_codes: true,
+      invoice_creation: {
+        enabled: true,
+        invoice_data: {
+          description: "Suscripcion ProjectTrack PRO",
+        },
+      },
       metadata: {
         workspaceId: workspace.id,
       },
