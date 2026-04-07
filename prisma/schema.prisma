@@ -186,3 +186,11 @@ model Subscription {
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
+
+model Waitlist {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  source    String?  @default("landing")
+  createdAt DateTime @default(now())
+}

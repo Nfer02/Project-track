@@ -227,6 +227,14 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.WaitlistScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  name: 'name',
+  source: 'source',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -297,7 +305,8 @@ exports.Prisma.ModelName = {
   Invoice: 'Invoice',
   ExpenseAllocation: 'ExpenseAllocation',
   InvoiceFile: 'InvoiceFile',
-  Subscription: 'Subscription'
+  Subscription: 'Subscription',
+  Waitlist: 'Waitlist'
 };
 
 /**

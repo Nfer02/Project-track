@@ -16,6 +16,7 @@ import { FadeIn } from "@/components/landing/fade-in"
 import { FeatureTabs } from "@/components/landing/feature-tabs"
 import { Testimonials } from "@/components/landing/testimonials"
 import { CookieNotice } from "@/components/landing/cookie-notice"
+import { WaitlistForm } from "@/components/landing/waitlist-form"
 import { UserTypes } from "@/components/landing/user-types"
 // import { AppShowcase } from "@/components/landing/app-showcase"  // Se reemplazará por vídeo
 
@@ -470,6 +471,12 @@ export default async function LandingPage() {
                 Empieza gratis
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
+              <div className="mt-6">
+                <p className="text-sm text-muted-foreground mb-3">¿Aún no estás listo? Déjanos tu email y te avisamos:</p>
+                <div className="flex justify-center">
+                  <WaitlistForm />
+                </div>
+              </div>
             </FadeIn>
           </div>
         </section>
