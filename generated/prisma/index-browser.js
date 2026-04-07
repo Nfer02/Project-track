@@ -232,6 +232,8 @@ exports.Prisma.WaitlistScalarFieldEnum = {
   email: 'email',
   name: 'name',
   source: 'source',
+  invited: 'invited',
+  invitedAt: 'invitedAt',
   createdAt: 'createdAt'
 };
 

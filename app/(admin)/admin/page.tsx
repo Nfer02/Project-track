@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma"
 import { formatCurrency, formatDate } from "@/lib/format"
 import { AdminTickets } from "@/components/app/admin-tickets"
 import { AdminWaitlistEmail } from "@/components/app/admin-waitlist-email"
+import { AdminWaitlistTable } from "@/components/app/admin-waitlist-table"
 import {
   Users,
   Package,
@@ -238,44 +239,15 @@ export default async function AdminPage() {
         {/* Tablas — 2 columnas */}
         <div className="mb-8 grid gap-6 lg:grid-cols-2">
           {/* Waitlist */}
-          <div className="rounded-xl border bg-card">
-            <div className="border-b p-4">
-              <h2 className="text-sm font-semibold">Waitlist</h2>
-              <p className="text-[10px] text-muted-foreground">{waitlistEntries.length} registros más recientes</p>
-            </div>
-            <div className="max-h-[450px] overflow-y-auto">
-              <table className="w-full text-sm">
-                <thead className="sticky top-0 bg-card">
-                  <tr className="border-b text-left text-[10px] text-muted-foreground">
-                    <th className="px-4 py-2 font-medium">Email</th>
-                    <th className="px-4 py-2 font-medium">Sector</th>
-                    <th className="px-4 py-2 font-medium">Fecha</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {waitlistEntries.length === 0 ? (
-                    <tr><td colSpan={3} className="px-4 py-8 text-center text-muted-foreground text-xs">Sin entradas</td></tr>
-                  ) : (
-                    waitlistEntries.map((entry) => (
-                      <tr key={entry.id} className="border-b border-border/30 hover:bg-muted/30">
-                        <td className="px-4 py-2 text-xs truncate max-w-[180px]">{entry.email}</td>
-                        <td className="px-4 py-2">
-                          {entry.source && entry.source !== "landing" ? (
-                            <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-                              {SECTOR_LABELS[entry.source] ?? entry.source}
-                            </span>
-                          ) : (
-                            <span className="text-[10px] text-muted-foreground">—</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-2 text-[10px] text-muted-foreground whitespace-nowrap">{formatDate(entry.createdAt)}</td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <AdminWaitlistTable
+            entries={waitlistEntries.map((e) => ({
+              id: e.id,
+              email: e.email,
+              source: e.source,
+              invited: e.invited,
+              createdAt: e.createdAt.toISOString(),
+            }))}
+          />
 
           {/* Usuarios recientes */}
           <div className="rounded-xl border bg-card">

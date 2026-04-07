@@ -11604,6 +11604,8 @@ export namespace Prisma {
     email: string | null
     name: string | null
     source: string | null
+    invited: boolean | null
+    invitedAt: Date | null
     createdAt: Date | null
   }
 
@@ -11612,6 +11614,8 @@ export namespace Prisma {
     email: string | null
     name: string | null
     source: string | null
+    invited: boolean | null
+    invitedAt: Date | null
     createdAt: Date | null
   }
 
@@ -11620,6 +11624,8 @@ export namespace Prisma {
     email: number
     name: number
     source: number
+    invited: number
+    invitedAt: number
     createdAt: number
     _all: number
   }
@@ -11630,6 +11636,8 @@ export namespace Prisma {
     email?: true
     name?: true
     source?: true
+    invited?: true
+    invitedAt?: true
     createdAt?: true
   }
 
@@ -11638,6 +11646,8 @@ export namespace Prisma {
     email?: true
     name?: true
     source?: true
+    invited?: true
+    invitedAt?: true
     createdAt?: true
   }
 
@@ -11646,6 +11656,8 @@ export namespace Prisma {
     email?: true
     name?: true
     source?: true
+    invited?: true
+    invitedAt?: true
     createdAt?: true
     _all?: true
   }
@@ -11727,6 +11739,8 @@ export namespace Prisma {
     email: string
     name: string | null
     source: string | null
+    invited: boolean
+    invitedAt: Date | null
     createdAt: Date
     _count: WaitlistCountAggregateOutputType | null
     _min: WaitlistMinAggregateOutputType | null
@@ -11752,6 +11766,8 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     source?: boolean
+    invited?: boolean
+    invitedAt?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["waitlist"]>
 
@@ -11760,6 +11776,8 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     source?: boolean
+    invited?: boolean
+    invitedAt?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["waitlist"]>
 
@@ -11768,6 +11786,8 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     source?: boolean
+    invited?: boolean
+    invitedAt?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["waitlist"]>
 
@@ -11776,10 +11796,12 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     source?: boolean
+    invited?: boolean
+    invitedAt?: boolean
     createdAt?: boolean
   }
 
-  export type WaitlistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "source" | "createdAt", ExtArgs["result"]["waitlist"]>
+  export type WaitlistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "source" | "invited" | "invitedAt" | "createdAt", ExtArgs["result"]["waitlist"]>
 
   export type $WaitlistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Waitlist"
@@ -11789,6 +11811,8 @@ export namespace Prisma {
       email: string
       name: string | null
       source: string | null
+      invited: boolean
+      invitedAt: Date | null
       createdAt: Date
     }, ExtArgs["result"]["waitlist"]>
     composites: {}
@@ -12217,6 +12241,8 @@ export namespace Prisma {
     readonly email: FieldRef<"Waitlist", 'String'>
     readonly name: FieldRef<"Waitlist", 'String'>
     readonly source: FieldRef<"Waitlist", 'String'>
+    readonly invited: FieldRef<"Waitlist", 'Boolean'>
+    readonly invitedAt: FieldRef<"Waitlist", 'DateTime'>
     readonly createdAt: FieldRef<"Waitlist", 'DateTime'>
   }
     
@@ -15080,6 +15106,8 @@ export namespace Prisma {
     email: 'email',
     name: 'name',
     source: 'source',
+    invited: 'invited',
+    invitedAt: 'invitedAt',
     createdAt: 'createdAt'
   };
 
@@ -16053,6 +16081,8 @@ export namespace Prisma {
     email?: StringFilter<"Waitlist"> | string
     name?: StringNullableFilter<"Waitlist"> | string | null
     source?: StringNullableFilter<"Waitlist"> | string | null
+    invited?: BoolFilter<"Waitlist"> | boolean
+    invitedAt?: DateTimeNullableFilter<"Waitlist"> | Date | string | null
     createdAt?: DateTimeFilter<"Waitlist"> | Date | string
   }
 
@@ -16061,6 +16091,8 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
+    invited?: SortOrder
+    invitedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
   }
 
@@ -16072,6 +16104,8 @@ export namespace Prisma {
     NOT?: WaitlistWhereInput | WaitlistWhereInput[]
     name?: StringNullableFilter<"Waitlist"> | string | null
     source?: StringNullableFilter<"Waitlist"> | string | null
+    invited?: BoolFilter<"Waitlist"> | boolean
+    invitedAt?: DateTimeNullableFilter<"Waitlist"> | Date | string | null
     createdAt?: DateTimeFilter<"Waitlist"> | Date | string
   }, "id" | "email">
 
@@ -16080,6 +16114,8 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
+    invited?: SortOrder
+    invitedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: WaitlistCountOrderByAggregateInput
     _max?: WaitlistMaxOrderByAggregateInput
@@ -16094,6 +16130,8 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"Waitlist"> | string
     name?: StringNullableWithAggregatesFilter<"Waitlist"> | string | null
     source?: StringNullableWithAggregatesFilter<"Waitlist"> | string | null
+    invited?: BoolWithAggregatesFilter<"Waitlist"> | boolean
+    invitedAt?: DateTimeNullableWithAggregatesFilter<"Waitlist"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Waitlist"> | Date | string
   }
 
@@ -17053,6 +17091,8 @@ export namespace Prisma {
     email: string
     name?: string | null
     source?: string | null
+    invited?: boolean
+    invitedAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -17061,6 +17101,8 @@ export namespace Prisma {
     email: string
     name?: string | null
     source?: string | null
+    invited?: boolean
+    invitedAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -17069,6 +17111,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
+    invited?: BoolFieldUpdateOperationsInput | boolean
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -17077,6 +17121,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
+    invited?: BoolFieldUpdateOperationsInput | boolean
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -17085,6 +17131,8 @@ export namespace Prisma {
     email: string
     name?: string | null
     source?: string | null
+    invited?: boolean
+    invitedAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -17093,6 +17141,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
+    invited?: BoolFieldUpdateOperationsInput | boolean
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -17101,6 +17151,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
+    invited?: BoolFieldUpdateOperationsInput | boolean
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -18166,6 +18218,8 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     source?: SortOrder
+    invited?: SortOrder
+    invitedAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -18174,6 +18228,8 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     source?: SortOrder
+    invited?: SortOrder
+    invitedAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -18182,6 +18238,8 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     source?: SortOrder
+    invited?: SortOrder
+    invitedAt?: SortOrder
     createdAt?: SortOrder
   }
 

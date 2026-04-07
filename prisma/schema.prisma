@@ -190,11 +190,13 @@ model Subscription {
 }
 
 model Waitlist {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id        String    @id @default(cuid())
+  email     String    @unique
   name      String?
-  source    String?  @default("landing")
-  createdAt DateTime @default(now())
+  source    String?   @default("landing")
+  invited   Boolean   @default(false)
+  invitedAt DateTime?
+  createdAt DateTime  @default(now())
 }
 
 model SupportTicket {

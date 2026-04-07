@@ -28,12 +28,12 @@ const schema = z.object({
 
 type Values = z.infer<typeof schema>
 
-export function RegisterForm() {
+export function RegisterForm({ invitedEmail }: { invitedEmail?: string }) {
   const [serverError, setServerError] = useState<string | null>(null)
 
   const form = useForm<Values>({
     resolver: zodResolver(schema),
-    defaultValues: { name: "", email: "", password: "" },
+    defaultValues: { name: "", email: invitedEmail ?? "", password: "" },
   })
 
   const { isSubmitting } = form.formState
@@ -76,7 +76,7 @@ export function RegisterForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="tu@ejemplo.com" autoComplete="email" {...field} />
+                  <Input type="email" placeholder="tu@ejemplo.com" autoComplete="email" readOnly={!!invitedEmail} className={invitedEmail ? "bg-muted" : ""} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
