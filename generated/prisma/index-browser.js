@@ -250,6 +250,18 @@ exports.Prisma.SupportTicketScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BetaFeedbackScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  email: 'email',
+  easeOfUse: 'easeOfUse',
+  usefulFeatures: 'usefulFeatures',
+  improvements: 'improvements',
+  wouldRecommend: 'wouldRecommend',
+  comments: 'comments',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -322,7 +334,8 @@ exports.Prisma.ModelName = {
   InvoiceFile: 'InvoiceFile',
   Subscription: 'Subscription',
   Waitlist: 'Waitlist',
-  SupportTicket: 'SupportTicket'
+  SupportTicket: 'SupportTicket',
+  BetaFeedback: 'BetaFeedback'
 };
 
 /**

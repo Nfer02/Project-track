@@ -14,6 +14,8 @@ import {
   UserPlus,
   ArrowLeft,
   BarChart3,
+  Star,
+  MessageSquare,
 } from "lucide-react"
 
 const ADMIN_EMAILS = ["nelsonfernandez1002@gmail.com"]
@@ -59,6 +61,7 @@ export default async function AdminPage() {
     registrosSemanaAnterior,
     supportTickets,
     workspacesWithSector,
+    betaFeedback,
   ] = await Promise.all([
     prisma.user.count(),
     prisma.workspace.count({ where: { plan: "FREE" } }),
@@ -88,6 +91,10 @@ export default async function AdminPage() {
     prisma.workspace.findMany({
       where: { sector: { not: null } },
       select: { sector: true },
+    }),
+    prisma.betaFeedback.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 50,
     }),
   ])
 
@@ -331,6 +338,141 @@ export default async function AdminPage() {
             }))}
           />
         </div>
+
+        {/* Beta Feedback */}
+        {betaFeedback.length > 0 && (() => {
+          const avgRating = betaFeedback.reduce((s, f) => s + f.easeOfUse, 0) / betaFeedback.length
+          const yesCount = betaFeedback.filter(f => f.wouldRecommend === "yes").length
+          const maybeCount = betaFeedback.filter(f => f.wouldRecommend === "maybe").length
+          const noCount = betaFeedback.filter(f => f.wouldRecommend === "no").length
+
+          // Count features
+          const featureCounts: Record<string, number> = {}
+          for (const fb of betaFeedback) {
+            if (fb.usefulFeatures) {
+              for (const feat of fb.usefulFeatures.split(",")) {
+                const trimmed = feat.trim()
+                if (trimmed) featureCounts[trimmed] = (featureCounts[trimmed] ?? 0) + 1
+              }
+            }
+          }
+          const featureLabels: Record<string, string> = {
+            dashboard: "Dashboard financiero",
+            projects: "Gestion de proyectos",
+            expenses: "Control de gastos",
+            ocr: "Escaneo con IA (OCR)",
+            reports: "Reportes trimestrales",
+            fiscal: "Estimacion fiscal",
+          }
+          const sortedFeatures = Object.entries(featureCounts).sort(([, a], [, b]) => b - a)
+          const maxFeatureCount = sortedFeatures.length > 0 ? sortedFeatures[0][1] : 1
+
+          return (
+            <div className="mb-8 space-y-4">
+              <div className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5 text-amber-500" />
+                <h2 className="text-lg font-semibold">Beta Feedback</h2>
+                <span className="text-xs text-muted-foreground ml-auto">{betaFeedback.length} respuestas</span>
+              </div>
+
+              {/* Summary cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Average rating */}
+                <div className="rounded-xl border bg-card p-4">
+                  <p className="text-xs text-muted-foreground mb-1">Valoracion media</p>
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-0.5">
+                      {[1, 2, 3, 4, 5].map((n) => (
+                        <Star key={n} className={`h-5 w-5 ${n <= Math.round(avgRating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20"}`} />
+                      ))}
+                    </div>
+                    <span className="text-lg font-bold">{avgRating.toFixed(1)}</span>
+                  </div>
+                </div>
+
+                {/* Recommendation breakdown */}
+                <div className="rounded-xl border bg-card p-4">
+                  <p className="text-xs text-muted-foreground mb-2">Recomendarian?</p>
+                  <div className="flex gap-3 text-sm">
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                      Si {yesCount}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+                      Tal vez {maybeCount}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
+                      No {noCount}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Most voted features */}
+                <div className="rounded-xl border bg-card p-4">
+                  <p className="text-xs text-muted-foreground mb-2">Funcionalidades mas votadas</p>
+                  <div className="space-y-1.5">
+                    {sortedFeatures.slice(0, 4).map(([feat, count]) => (
+                      <div key={feat} className="flex items-center gap-2">
+                        <div className="flex-1 h-3 rounded-full bg-muted overflow-hidden">
+                          <div className="h-full rounded-full bg-primary/60" style={{ width: `${(count / maxFeatureCount) * 100}%`, minWidth: "4px" }} />
+                        </div>
+                        <span className="text-[10px] text-muted-foreground w-28 truncate">{featureLabels[feat] ?? feat}</span>
+                        <span className="text-[10px] font-semibold w-4 text-right">{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Feedback table */}
+              <div className="rounded-xl border bg-card">
+                <div className="border-b p-4">
+                  <h3 className="text-sm font-semibold">Respuestas de feedback</h3>
+                </div>
+                <div className="max-h-[500px] overflow-y-auto">
+                  <table className="w-full text-sm">
+                    <thead className="sticky top-0 bg-card">
+                      <tr className="border-b text-left text-[10px] text-muted-foreground">
+                        <th className="px-4 py-2 font-medium">Email</th>
+                        <th className="px-4 py-2 font-medium">Valoracion</th>
+                        <th className="px-4 py-2 font-medium">Recomienda</th>
+                        <th className="px-4 py-2 font-medium">Mejoras</th>
+                        <th className="px-4 py-2 font-medium">Fecha</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {betaFeedback.map((fb) => (
+                        <tr key={fb.id} className="border-b border-border/30 hover:bg-muted/30">
+                          <td className="px-4 py-2 text-xs truncate max-w-[180px]">{fb.email}</td>
+                          <td className="px-4 py-2">
+                            <div className="flex gap-0.5">
+                              {[1, 2, 3, 4, 5].map((n) => (
+                                <Star key={n} className={`h-3 w-3 ${n <= fb.easeOfUse ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20"}`} />
+                              ))}
+                            </div>
+                          </td>
+                          <td className="px-4 py-2">
+                            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                              fb.wouldRecommend === "yes" ? "bg-emerald-500/10 text-emerald-500" :
+                              fb.wouldRecommend === "maybe" ? "bg-amber-500/10 text-amber-500" :
+                              "bg-red-500/10 text-red-500"
+                            }`}>
+                              {fb.wouldRecommend === "yes" ? "Si" : fb.wouldRecommend === "maybe" ? "Tal vez" : "No"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-2 text-xs text-muted-foreground truncate max-w-[250px]">{fb.improvements ?? "—"}</td>
+                          <td className="px-4 py-2 text-[10px] text-muted-foreground whitespace-nowrap">{formatDate(fb.createdAt)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )
+        })()}
 
         {/* Suscripciones activas */}
         {allSubscriptions.length > 0 && (

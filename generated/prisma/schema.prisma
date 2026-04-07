@@ -57,6 +57,7 @@ model User {
 
   memberships    WorkspaceMember[]
   supportTickets SupportTicket[]
+  betaFeedback   BetaFeedback[]
 }
 
 model Workspace {
@@ -209,6 +210,20 @@ model SupportTicket {
   respondedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model BetaFeedback {
+  id             String   @id @default(cuid())
+  userId         String?
+  email          String
+  easeOfUse      Int // 1-5 rating
+  usefulFeatures String // comma-separated: dashboard,projects,expenses,ocr,reports,fiscal
+  improvements   String? // free text
+  wouldRecommend String // yes, no, maybe
+  comments       String? // free text
+  createdAt      DateTime @default(now())
 
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }

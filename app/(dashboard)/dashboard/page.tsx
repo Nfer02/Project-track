@@ -364,6 +364,20 @@ export default async function DashboardPage() {
         </Button>
       </div>
 
+      {/* Beta feedback banner */}
+      <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <span className="text-xl">&#x1F9EA;</span>
+          <div>
+            <p className="text-sm font-medium">Estas en la version beta</p>
+            <p className="text-xs text-muted-foreground">Tu opinion nos ayuda a mejorar. Nos das tu feedback?</p>
+          </div>
+        </div>
+        <Button size="sm" variant="outline" render={<Link href="/feedback" />}>
+          Dar feedback
+        </Button>
+      </div>
+
       {/* Stats cards - 2 rows */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {STATS.map(({ label, value, sub, icon: Icon, color, border }) => (

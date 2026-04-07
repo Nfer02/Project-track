@@ -63,6 +63,11 @@ export type Waitlist = $Result.DefaultSelection<Prisma.$WaitlistPayload>
  * 
  */
 export type SupportTicket = $Result.DefaultSelection<Prisma.$SupportTicketPayload>
+/**
+ * Model BetaFeedback
+ * 
+ */
+export type BetaFeedback = $Result.DefaultSelection<Prisma.$BetaFeedbackPayload>
 
 /**
  * Enums
@@ -368,6 +373,16 @@ export class PrismaClient<
     * ```
     */
   get supportTicket(): Prisma.SupportTicketDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.betaFeedback`: Exposes CRUD operations for the **BetaFeedback** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BetaFeedbacks
+    * const betaFeedbacks = await prisma.betaFeedback.findMany()
+    * ```
+    */
+  get betaFeedback(): Prisma.BetaFeedbackDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -811,7 +826,8 @@ export namespace Prisma {
     InvoiceFile: 'InvoiceFile',
     Subscription: 'Subscription',
     Waitlist: 'Waitlist',
-    SupportTicket: 'SupportTicket'
+    SupportTicket: 'SupportTicket',
+    BetaFeedback: 'BetaFeedback'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -827,7 +843,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "workspace" | "workspaceMember" | "project" | "invoice" | "expenseAllocation" | "invoiceFile" | "subscription" | "waitlist" | "supportTicket"
+      modelProps: "user" | "workspace" | "workspaceMember" | "project" | "invoice" | "expenseAllocation" | "invoiceFile" | "subscription" | "waitlist" | "supportTicket" | "betaFeedback"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1571,6 +1587,80 @@ export namespace Prisma {
           }
         }
       }
+      BetaFeedback: {
+        payload: Prisma.$BetaFeedbackPayload<ExtArgs>
+        fields: Prisma.BetaFeedbackFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BetaFeedbackFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BetaFeedbackFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload>
+          }
+          findFirst: {
+            args: Prisma.BetaFeedbackFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BetaFeedbackFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload>
+          }
+          findMany: {
+            args: Prisma.BetaFeedbackFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload>[]
+          }
+          create: {
+            args: Prisma.BetaFeedbackCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload>
+          }
+          createMany: {
+            args: Prisma.BetaFeedbackCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BetaFeedbackCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload>[]
+          }
+          delete: {
+            args: Prisma.BetaFeedbackDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload>
+          }
+          update: {
+            args: Prisma.BetaFeedbackUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload>
+          }
+          deleteMany: {
+            args: Prisma.BetaFeedbackDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BetaFeedbackUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BetaFeedbackUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload>[]
+          }
+          upsert: {
+            args: Prisma.BetaFeedbackUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BetaFeedbackPayload>
+          }
+          aggregate: {
+            args: Prisma.BetaFeedbackAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBetaFeedback>
+          }
+          groupBy: {
+            args: Prisma.BetaFeedbackGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BetaFeedbackGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BetaFeedbackCountArgs<ExtArgs>
+            result: $Utils.Optional<BetaFeedbackCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1689,6 +1779,7 @@ export namespace Prisma {
     subscription?: SubscriptionOmit
     waitlist?: WaitlistOmit
     supportTicket?: SupportTicketOmit
+    betaFeedback?: BetaFeedbackOmit
   }
 
   /* Types for Logging */
@@ -1771,11 +1862,13 @@ export namespace Prisma {
   export type UserCountOutputType = {
     memberships: number
     supportTickets: number
+    betaFeedback: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     memberships?: boolean | UserCountOutputTypeCountMembershipsArgs
     supportTickets?: boolean | UserCountOutputTypeCountSupportTicketsArgs
+    betaFeedback?: boolean | UserCountOutputTypeCountBetaFeedbackArgs
   }
 
   // Custom InputTypes
@@ -1801,6 +1894,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSupportTicketsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SupportTicketWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBetaFeedbackArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BetaFeedbackWhereInput
   }
 
 
@@ -2103,6 +2203,7 @@ export namespace Prisma {
     createdAt?: boolean
     memberships?: boolean | User$membershipsArgs<ExtArgs>
     supportTickets?: boolean | User$supportTicketsArgs<ExtArgs>
+    betaFeedback?: boolean | User$betaFeedbackArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2134,6 +2235,7 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     memberships?: boolean | User$membershipsArgs<ExtArgs>
     supportTickets?: boolean | User$supportTicketsArgs<ExtArgs>
+    betaFeedback?: boolean | User$betaFeedbackArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2144,6 +2246,7 @@ export namespace Prisma {
     objects: {
       memberships: Prisma.$WorkspaceMemberPayload<ExtArgs>[]
       supportTickets: Prisma.$SupportTicketPayload<ExtArgs>[]
+      betaFeedback: Prisma.$BetaFeedbackPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2547,6 +2650,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     memberships<T extends User$membershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkspaceMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     supportTickets<T extends User$supportTicketsArgs<ExtArgs> = {}>(args?: Subset<T, User$supportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    betaFeedback<T extends User$betaFeedbackArgs<ExtArgs> = {}>(args?: Subset<T, User$betaFeedbackArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3019,6 +3123,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SupportTicketScalarFieldEnum | SupportTicketScalarFieldEnum[]
+  }
+
+  /**
+   * User.betaFeedback
+   */
+  export type User$betaFeedbackArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+    where?: BetaFeedbackWhereInput
+    orderBy?: BetaFeedbackOrderByWithRelationInput | BetaFeedbackOrderByWithRelationInput[]
+    cursor?: BetaFeedbackWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BetaFeedbackScalarFieldEnum | BetaFeedbackScalarFieldEnum[]
   }
 
   /**
@@ -13635,6 +13763,1174 @@ export namespace Prisma {
 
 
   /**
+   * Model BetaFeedback
+   */
+
+  export type AggregateBetaFeedback = {
+    _count: BetaFeedbackCountAggregateOutputType | null
+    _avg: BetaFeedbackAvgAggregateOutputType | null
+    _sum: BetaFeedbackSumAggregateOutputType | null
+    _min: BetaFeedbackMinAggregateOutputType | null
+    _max: BetaFeedbackMaxAggregateOutputType | null
+  }
+
+  export type BetaFeedbackAvgAggregateOutputType = {
+    easeOfUse: number | null
+  }
+
+  export type BetaFeedbackSumAggregateOutputType = {
+    easeOfUse: number | null
+  }
+
+  export type BetaFeedbackMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    email: string | null
+    easeOfUse: number | null
+    usefulFeatures: string | null
+    improvements: string | null
+    wouldRecommend: string | null
+    comments: string | null
+    createdAt: Date | null
+  }
+
+  export type BetaFeedbackMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    email: string | null
+    easeOfUse: number | null
+    usefulFeatures: string | null
+    improvements: string | null
+    wouldRecommend: string | null
+    comments: string | null
+    createdAt: Date | null
+  }
+
+  export type BetaFeedbackCountAggregateOutputType = {
+    id: number
+    userId: number
+    email: number
+    easeOfUse: number
+    usefulFeatures: number
+    improvements: number
+    wouldRecommend: number
+    comments: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type BetaFeedbackAvgAggregateInputType = {
+    easeOfUse?: true
+  }
+
+  export type BetaFeedbackSumAggregateInputType = {
+    easeOfUse?: true
+  }
+
+  export type BetaFeedbackMinAggregateInputType = {
+    id?: true
+    userId?: true
+    email?: true
+    easeOfUse?: true
+    usefulFeatures?: true
+    improvements?: true
+    wouldRecommend?: true
+    comments?: true
+    createdAt?: true
+  }
+
+  export type BetaFeedbackMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    email?: true
+    easeOfUse?: true
+    usefulFeatures?: true
+    improvements?: true
+    wouldRecommend?: true
+    comments?: true
+    createdAt?: true
+  }
+
+  export type BetaFeedbackCountAggregateInputType = {
+    id?: true
+    userId?: true
+    email?: true
+    easeOfUse?: true
+    usefulFeatures?: true
+    improvements?: true
+    wouldRecommend?: true
+    comments?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type BetaFeedbackAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BetaFeedback to aggregate.
+     */
+    where?: BetaFeedbackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BetaFeedbacks to fetch.
+     */
+    orderBy?: BetaFeedbackOrderByWithRelationInput | BetaFeedbackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BetaFeedbackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BetaFeedbacks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BetaFeedbacks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BetaFeedbacks
+    **/
+    _count?: true | BetaFeedbackCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BetaFeedbackAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BetaFeedbackSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BetaFeedbackMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BetaFeedbackMaxAggregateInputType
+  }
+
+  export type GetBetaFeedbackAggregateType<T extends BetaFeedbackAggregateArgs> = {
+        [P in keyof T & keyof AggregateBetaFeedback]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBetaFeedback[P]>
+      : GetScalarType<T[P], AggregateBetaFeedback[P]>
+  }
+
+
+
+
+  export type BetaFeedbackGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BetaFeedbackWhereInput
+    orderBy?: BetaFeedbackOrderByWithAggregationInput | BetaFeedbackOrderByWithAggregationInput[]
+    by: BetaFeedbackScalarFieldEnum[] | BetaFeedbackScalarFieldEnum
+    having?: BetaFeedbackScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BetaFeedbackCountAggregateInputType | true
+    _avg?: BetaFeedbackAvgAggregateInputType
+    _sum?: BetaFeedbackSumAggregateInputType
+    _min?: BetaFeedbackMinAggregateInputType
+    _max?: BetaFeedbackMaxAggregateInputType
+  }
+
+  export type BetaFeedbackGroupByOutputType = {
+    id: string
+    userId: string | null
+    email: string
+    easeOfUse: number
+    usefulFeatures: string
+    improvements: string | null
+    wouldRecommend: string
+    comments: string | null
+    createdAt: Date
+    _count: BetaFeedbackCountAggregateOutputType | null
+    _avg: BetaFeedbackAvgAggregateOutputType | null
+    _sum: BetaFeedbackSumAggregateOutputType | null
+    _min: BetaFeedbackMinAggregateOutputType | null
+    _max: BetaFeedbackMaxAggregateOutputType | null
+  }
+
+  type GetBetaFeedbackGroupByPayload<T extends BetaFeedbackGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BetaFeedbackGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BetaFeedbackGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BetaFeedbackGroupByOutputType[P]>
+            : GetScalarType<T[P], BetaFeedbackGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BetaFeedbackSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    email?: boolean
+    easeOfUse?: boolean
+    usefulFeatures?: boolean
+    improvements?: boolean
+    wouldRecommend?: boolean
+    comments?: boolean
+    createdAt?: boolean
+    user?: boolean | BetaFeedback$userArgs<ExtArgs>
+  }, ExtArgs["result"]["betaFeedback"]>
+
+  export type BetaFeedbackSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    email?: boolean
+    easeOfUse?: boolean
+    usefulFeatures?: boolean
+    improvements?: boolean
+    wouldRecommend?: boolean
+    comments?: boolean
+    createdAt?: boolean
+    user?: boolean | BetaFeedback$userArgs<ExtArgs>
+  }, ExtArgs["result"]["betaFeedback"]>
+
+  export type BetaFeedbackSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    email?: boolean
+    easeOfUse?: boolean
+    usefulFeatures?: boolean
+    improvements?: boolean
+    wouldRecommend?: boolean
+    comments?: boolean
+    createdAt?: boolean
+    user?: boolean | BetaFeedback$userArgs<ExtArgs>
+  }, ExtArgs["result"]["betaFeedback"]>
+
+  export type BetaFeedbackSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    email?: boolean
+    easeOfUse?: boolean
+    usefulFeatures?: boolean
+    improvements?: boolean
+    wouldRecommend?: boolean
+    comments?: boolean
+    createdAt?: boolean
+  }
+
+  export type BetaFeedbackOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "email" | "easeOfUse" | "usefulFeatures" | "improvements" | "wouldRecommend" | "comments" | "createdAt", ExtArgs["result"]["betaFeedback"]>
+  export type BetaFeedbackInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | BetaFeedback$userArgs<ExtArgs>
+  }
+  export type BetaFeedbackIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | BetaFeedback$userArgs<ExtArgs>
+  }
+  export type BetaFeedbackIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | BetaFeedback$userArgs<ExtArgs>
+  }
+
+  export type $BetaFeedbackPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BetaFeedback"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string | null
+      email: string
+      easeOfUse: number
+      usefulFeatures: string
+      improvements: string | null
+      wouldRecommend: string
+      comments: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["betaFeedback"]>
+    composites: {}
+  }
+
+  type BetaFeedbackGetPayload<S extends boolean | null | undefined | BetaFeedbackDefaultArgs> = $Result.GetResult<Prisma.$BetaFeedbackPayload, S>
+
+  type BetaFeedbackCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BetaFeedbackFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BetaFeedbackCountAggregateInputType | true
+    }
+
+  export interface BetaFeedbackDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BetaFeedback'], meta: { name: 'BetaFeedback' } }
+    /**
+     * Find zero or one BetaFeedback that matches the filter.
+     * @param {BetaFeedbackFindUniqueArgs} args - Arguments to find a BetaFeedback
+     * @example
+     * // Get one BetaFeedback
+     * const betaFeedback = await prisma.betaFeedback.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BetaFeedbackFindUniqueArgs>(args: SelectSubset<T, BetaFeedbackFindUniqueArgs<ExtArgs>>): Prisma__BetaFeedbackClient<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BetaFeedback that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BetaFeedbackFindUniqueOrThrowArgs} args - Arguments to find a BetaFeedback
+     * @example
+     * // Get one BetaFeedback
+     * const betaFeedback = await prisma.betaFeedback.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BetaFeedbackFindUniqueOrThrowArgs>(args: SelectSubset<T, BetaFeedbackFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BetaFeedbackClient<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BetaFeedback that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BetaFeedbackFindFirstArgs} args - Arguments to find a BetaFeedback
+     * @example
+     * // Get one BetaFeedback
+     * const betaFeedback = await prisma.betaFeedback.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BetaFeedbackFindFirstArgs>(args?: SelectSubset<T, BetaFeedbackFindFirstArgs<ExtArgs>>): Prisma__BetaFeedbackClient<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BetaFeedback that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BetaFeedbackFindFirstOrThrowArgs} args - Arguments to find a BetaFeedback
+     * @example
+     * // Get one BetaFeedback
+     * const betaFeedback = await prisma.betaFeedback.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BetaFeedbackFindFirstOrThrowArgs>(args?: SelectSubset<T, BetaFeedbackFindFirstOrThrowArgs<ExtArgs>>): Prisma__BetaFeedbackClient<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BetaFeedbacks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BetaFeedbackFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BetaFeedbacks
+     * const betaFeedbacks = await prisma.betaFeedback.findMany()
+     * 
+     * // Get first 10 BetaFeedbacks
+     * const betaFeedbacks = await prisma.betaFeedback.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const betaFeedbackWithIdOnly = await prisma.betaFeedback.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BetaFeedbackFindManyArgs>(args?: SelectSubset<T, BetaFeedbackFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BetaFeedback.
+     * @param {BetaFeedbackCreateArgs} args - Arguments to create a BetaFeedback.
+     * @example
+     * // Create one BetaFeedback
+     * const BetaFeedback = await prisma.betaFeedback.create({
+     *   data: {
+     *     // ... data to create a BetaFeedback
+     *   }
+     * })
+     * 
+     */
+    create<T extends BetaFeedbackCreateArgs>(args: SelectSubset<T, BetaFeedbackCreateArgs<ExtArgs>>): Prisma__BetaFeedbackClient<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BetaFeedbacks.
+     * @param {BetaFeedbackCreateManyArgs} args - Arguments to create many BetaFeedbacks.
+     * @example
+     * // Create many BetaFeedbacks
+     * const betaFeedback = await prisma.betaFeedback.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BetaFeedbackCreateManyArgs>(args?: SelectSubset<T, BetaFeedbackCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BetaFeedbacks and returns the data saved in the database.
+     * @param {BetaFeedbackCreateManyAndReturnArgs} args - Arguments to create many BetaFeedbacks.
+     * @example
+     * // Create many BetaFeedbacks
+     * const betaFeedback = await prisma.betaFeedback.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BetaFeedbacks and only return the `id`
+     * const betaFeedbackWithIdOnly = await prisma.betaFeedback.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BetaFeedbackCreateManyAndReturnArgs>(args?: SelectSubset<T, BetaFeedbackCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BetaFeedback.
+     * @param {BetaFeedbackDeleteArgs} args - Arguments to delete one BetaFeedback.
+     * @example
+     * // Delete one BetaFeedback
+     * const BetaFeedback = await prisma.betaFeedback.delete({
+     *   where: {
+     *     // ... filter to delete one BetaFeedback
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BetaFeedbackDeleteArgs>(args: SelectSubset<T, BetaFeedbackDeleteArgs<ExtArgs>>): Prisma__BetaFeedbackClient<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BetaFeedback.
+     * @param {BetaFeedbackUpdateArgs} args - Arguments to update one BetaFeedback.
+     * @example
+     * // Update one BetaFeedback
+     * const betaFeedback = await prisma.betaFeedback.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BetaFeedbackUpdateArgs>(args: SelectSubset<T, BetaFeedbackUpdateArgs<ExtArgs>>): Prisma__BetaFeedbackClient<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BetaFeedbacks.
+     * @param {BetaFeedbackDeleteManyArgs} args - Arguments to filter BetaFeedbacks to delete.
+     * @example
+     * // Delete a few BetaFeedbacks
+     * const { count } = await prisma.betaFeedback.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BetaFeedbackDeleteManyArgs>(args?: SelectSubset<T, BetaFeedbackDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BetaFeedbacks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BetaFeedbackUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BetaFeedbacks
+     * const betaFeedback = await prisma.betaFeedback.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BetaFeedbackUpdateManyArgs>(args: SelectSubset<T, BetaFeedbackUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BetaFeedbacks and returns the data updated in the database.
+     * @param {BetaFeedbackUpdateManyAndReturnArgs} args - Arguments to update many BetaFeedbacks.
+     * @example
+     * // Update many BetaFeedbacks
+     * const betaFeedback = await prisma.betaFeedback.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BetaFeedbacks and only return the `id`
+     * const betaFeedbackWithIdOnly = await prisma.betaFeedback.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BetaFeedbackUpdateManyAndReturnArgs>(args: SelectSubset<T, BetaFeedbackUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BetaFeedback.
+     * @param {BetaFeedbackUpsertArgs} args - Arguments to update or create a BetaFeedback.
+     * @example
+     * // Update or create a BetaFeedback
+     * const betaFeedback = await prisma.betaFeedback.upsert({
+     *   create: {
+     *     // ... data to create a BetaFeedback
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BetaFeedback we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BetaFeedbackUpsertArgs>(args: SelectSubset<T, BetaFeedbackUpsertArgs<ExtArgs>>): Prisma__BetaFeedbackClient<$Result.GetResult<Prisma.$BetaFeedbackPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BetaFeedbacks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BetaFeedbackCountArgs} args - Arguments to filter BetaFeedbacks to count.
+     * @example
+     * // Count the number of BetaFeedbacks
+     * const count = await prisma.betaFeedback.count({
+     *   where: {
+     *     // ... the filter for the BetaFeedbacks we want to count
+     *   }
+     * })
+    **/
+    count<T extends BetaFeedbackCountArgs>(
+      args?: Subset<T, BetaFeedbackCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BetaFeedbackCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BetaFeedback.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BetaFeedbackAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BetaFeedbackAggregateArgs>(args: Subset<T, BetaFeedbackAggregateArgs>): Prisma.PrismaPromise<GetBetaFeedbackAggregateType<T>>
+
+    /**
+     * Group by BetaFeedback.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BetaFeedbackGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BetaFeedbackGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BetaFeedbackGroupByArgs['orderBy'] }
+        : { orderBy?: BetaFeedbackGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BetaFeedbackGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBetaFeedbackGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BetaFeedback model
+   */
+  readonly fields: BetaFeedbackFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BetaFeedback.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BetaFeedbackClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends BetaFeedback$userArgs<ExtArgs> = {}>(args?: Subset<T, BetaFeedback$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BetaFeedback model
+   */
+  interface BetaFeedbackFieldRefs {
+    readonly id: FieldRef<"BetaFeedback", 'String'>
+    readonly userId: FieldRef<"BetaFeedback", 'String'>
+    readonly email: FieldRef<"BetaFeedback", 'String'>
+    readonly easeOfUse: FieldRef<"BetaFeedback", 'Int'>
+    readonly usefulFeatures: FieldRef<"BetaFeedback", 'String'>
+    readonly improvements: FieldRef<"BetaFeedback", 'String'>
+    readonly wouldRecommend: FieldRef<"BetaFeedback", 'String'>
+    readonly comments: FieldRef<"BetaFeedback", 'String'>
+    readonly createdAt: FieldRef<"BetaFeedback", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BetaFeedback findUnique
+   */
+  export type BetaFeedbackFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter, which BetaFeedback to fetch.
+     */
+    where: BetaFeedbackWhereUniqueInput
+  }
+
+  /**
+   * BetaFeedback findUniqueOrThrow
+   */
+  export type BetaFeedbackFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter, which BetaFeedback to fetch.
+     */
+    where: BetaFeedbackWhereUniqueInput
+  }
+
+  /**
+   * BetaFeedback findFirst
+   */
+  export type BetaFeedbackFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter, which BetaFeedback to fetch.
+     */
+    where?: BetaFeedbackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BetaFeedbacks to fetch.
+     */
+    orderBy?: BetaFeedbackOrderByWithRelationInput | BetaFeedbackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BetaFeedbacks.
+     */
+    cursor?: BetaFeedbackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BetaFeedbacks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BetaFeedbacks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BetaFeedbacks.
+     */
+    distinct?: BetaFeedbackScalarFieldEnum | BetaFeedbackScalarFieldEnum[]
+  }
+
+  /**
+   * BetaFeedback findFirstOrThrow
+   */
+  export type BetaFeedbackFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter, which BetaFeedback to fetch.
+     */
+    where?: BetaFeedbackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BetaFeedbacks to fetch.
+     */
+    orderBy?: BetaFeedbackOrderByWithRelationInput | BetaFeedbackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BetaFeedbacks.
+     */
+    cursor?: BetaFeedbackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BetaFeedbacks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BetaFeedbacks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BetaFeedbacks.
+     */
+    distinct?: BetaFeedbackScalarFieldEnum | BetaFeedbackScalarFieldEnum[]
+  }
+
+  /**
+   * BetaFeedback findMany
+   */
+  export type BetaFeedbackFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter, which BetaFeedbacks to fetch.
+     */
+    where?: BetaFeedbackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BetaFeedbacks to fetch.
+     */
+    orderBy?: BetaFeedbackOrderByWithRelationInput | BetaFeedbackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BetaFeedbacks.
+     */
+    cursor?: BetaFeedbackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BetaFeedbacks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BetaFeedbacks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BetaFeedbacks.
+     */
+    distinct?: BetaFeedbackScalarFieldEnum | BetaFeedbackScalarFieldEnum[]
+  }
+
+  /**
+   * BetaFeedback create
+   */
+  export type BetaFeedbackCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BetaFeedback.
+     */
+    data: XOR<BetaFeedbackCreateInput, BetaFeedbackUncheckedCreateInput>
+  }
+
+  /**
+   * BetaFeedback createMany
+   */
+  export type BetaFeedbackCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BetaFeedbacks.
+     */
+    data: BetaFeedbackCreateManyInput | BetaFeedbackCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BetaFeedback createManyAndReturn
+   */
+  export type BetaFeedbackCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * The data used to create many BetaFeedbacks.
+     */
+    data: BetaFeedbackCreateManyInput | BetaFeedbackCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BetaFeedback update
+   */
+  export type BetaFeedbackUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BetaFeedback.
+     */
+    data: XOR<BetaFeedbackUpdateInput, BetaFeedbackUncheckedUpdateInput>
+    /**
+     * Choose, which BetaFeedback to update.
+     */
+    where: BetaFeedbackWhereUniqueInput
+  }
+
+  /**
+   * BetaFeedback updateMany
+   */
+  export type BetaFeedbackUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BetaFeedbacks.
+     */
+    data: XOR<BetaFeedbackUpdateManyMutationInput, BetaFeedbackUncheckedUpdateManyInput>
+    /**
+     * Filter which BetaFeedbacks to update
+     */
+    where?: BetaFeedbackWhereInput
+    /**
+     * Limit how many BetaFeedbacks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BetaFeedback updateManyAndReturn
+   */
+  export type BetaFeedbackUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * The data used to update BetaFeedbacks.
+     */
+    data: XOR<BetaFeedbackUpdateManyMutationInput, BetaFeedbackUncheckedUpdateManyInput>
+    /**
+     * Filter which BetaFeedbacks to update
+     */
+    where?: BetaFeedbackWhereInput
+    /**
+     * Limit how many BetaFeedbacks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BetaFeedback upsert
+   */
+  export type BetaFeedbackUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BetaFeedback to update in case it exists.
+     */
+    where: BetaFeedbackWhereUniqueInput
+    /**
+     * In case the BetaFeedback found by the `where` argument doesn't exist, create a new BetaFeedback with this data.
+     */
+    create: XOR<BetaFeedbackCreateInput, BetaFeedbackUncheckedCreateInput>
+    /**
+     * In case the BetaFeedback was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BetaFeedbackUpdateInput, BetaFeedbackUncheckedUpdateInput>
+  }
+
+  /**
+   * BetaFeedback delete
+   */
+  export type BetaFeedbackDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter which BetaFeedback to delete.
+     */
+    where: BetaFeedbackWhereUniqueInput
+  }
+
+  /**
+   * BetaFeedback deleteMany
+   */
+  export type BetaFeedbackDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BetaFeedbacks to delete
+     */
+    where?: BetaFeedbackWhereInput
+    /**
+     * Limit how many BetaFeedbacks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BetaFeedback.user
+   */
+  export type BetaFeedback$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * BetaFeedback without action
+   */
+  export type BetaFeedbackDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BetaFeedback
+     */
+    select?: BetaFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BetaFeedback
+     */
+    omit?: BetaFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BetaFeedbackInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -13806,6 +15102,21 @@ export namespace Prisma {
   };
 
   export type SupportTicketScalarFieldEnum = (typeof SupportTicketScalarFieldEnum)[keyof typeof SupportTicketScalarFieldEnum]
+
+
+  export const BetaFeedbackScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    email: 'email',
+    easeOfUse: 'easeOfUse',
+    usefulFeatures: 'usefulFeatures',
+    improvements: 'improvements',
+    wouldRecommend: 'wouldRecommend',
+    comments: 'comments',
+    createdAt: 'createdAt'
+  };
+
+  export type BetaFeedbackScalarFieldEnum = (typeof BetaFeedbackScalarFieldEnum)[keyof typeof BetaFeedbackScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -14043,6 +15354,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     memberships?: WorkspaceMemberListRelationFilter
     supportTickets?: SupportTicketListRelationFilter
+    betaFeedback?: BetaFeedbackListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -14053,6 +15365,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     memberships?: WorkspaceMemberOrderByRelationAggregateInput
     supportTickets?: SupportTicketOrderByRelationAggregateInput
+    betaFeedback?: BetaFeedbackOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -14066,6 +15379,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     memberships?: WorkspaceMemberListRelationFilter
     supportTickets?: SupportTicketListRelationFilter
+    betaFeedback?: BetaFeedbackListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -14873,6 +16187,83 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"SupportTicket"> | Date | string
   }
 
+  export type BetaFeedbackWhereInput = {
+    AND?: BetaFeedbackWhereInput | BetaFeedbackWhereInput[]
+    OR?: BetaFeedbackWhereInput[]
+    NOT?: BetaFeedbackWhereInput | BetaFeedbackWhereInput[]
+    id?: StringFilter<"BetaFeedback"> | string
+    userId?: StringNullableFilter<"BetaFeedback"> | string | null
+    email?: StringFilter<"BetaFeedback"> | string
+    easeOfUse?: IntFilter<"BetaFeedback"> | number
+    usefulFeatures?: StringFilter<"BetaFeedback"> | string
+    improvements?: StringNullableFilter<"BetaFeedback"> | string | null
+    wouldRecommend?: StringFilter<"BetaFeedback"> | string
+    comments?: StringNullableFilter<"BetaFeedback"> | string | null
+    createdAt?: DateTimeFilter<"BetaFeedback"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type BetaFeedbackOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    email?: SortOrder
+    easeOfUse?: SortOrder
+    usefulFeatures?: SortOrder
+    improvements?: SortOrderInput | SortOrder
+    wouldRecommend?: SortOrder
+    comments?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type BetaFeedbackWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: BetaFeedbackWhereInput | BetaFeedbackWhereInput[]
+    OR?: BetaFeedbackWhereInput[]
+    NOT?: BetaFeedbackWhereInput | BetaFeedbackWhereInput[]
+    userId?: StringNullableFilter<"BetaFeedback"> | string | null
+    email?: StringFilter<"BetaFeedback"> | string
+    easeOfUse?: IntFilter<"BetaFeedback"> | number
+    usefulFeatures?: StringFilter<"BetaFeedback"> | string
+    improvements?: StringNullableFilter<"BetaFeedback"> | string | null
+    wouldRecommend?: StringFilter<"BetaFeedback"> | string
+    comments?: StringNullableFilter<"BetaFeedback"> | string | null
+    createdAt?: DateTimeFilter<"BetaFeedback"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type BetaFeedbackOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    email?: SortOrder
+    easeOfUse?: SortOrder
+    usefulFeatures?: SortOrder
+    improvements?: SortOrderInput | SortOrder
+    wouldRecommend?: SortOrder
+    comments?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: BetaFeedbackCountOrderByAggregateInput
+    _avg?: BetaFeedbackAvgOrderByAggregateInput
+    _max?: BetaFeedbackMaxOrderByAggregateInput
+    _min?: BetaFeedbackMinOrderByAggregateInput
+    _sum?: BetaFeedbackSumOrderByAggregateInput
+  }
+
+  export type BetaFeedbackScalarWhereWithAggregatesInput = {
+    AND?: BetaFeedbackScalarWhereWithAggregatesInput | BetaFeedbackScalarWhereWithAggregatesInput[]
+    OR?: BetaFeedbackScalarWhereWithAggregatesInput[]
+    NOT?: BetaFeedbackScalarWhereWithAggregatesInput | BetaFeedbackScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BetaFeedback"> | string
+    userId?: StringNullableWithAggregatesFilter<"BetaFeedback"> | string | null
+    email?: StringWithAggregatesFilter<"BetaFeedback"> | string
+    easeOfUse?: IntWithAggregatesFilter<"BetaFeedback"> | number
+    usefulFeatures?: StringWithAggregatesFilter<"BetaFeedback"> | string
+    improvements?: StringNullableWithAggregatesFilter<"BetaFeedback"> | string | null
+    wouldRecommend?: StringWithAggregatesFilter<"BetaFeedback"> | string
+    comments?: StringNullableWithAggregatesFilter<"BetaFeedback"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"BetaFeedback"> | Date | string
+  }
+
   export type UserCreateInput = {
     id: string
     email: string
@@ -14881,6 +16272,7 @@ export namespace Prisma {
     createdAt?: Date | string
     memberships?: WorkspaceMemberCreateNestedManyWithoutUserInput
     supportTickets?: SupportTicketCreateNestedManyWithoutUserInput
+    betaFeedback?: BetaFeedbackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -14891,6 +16283,7 @@ export namespace Prisma {
     createdAt?: Date | string
     memberships?: WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
     supportTickets?: SupportTicketUncheckedCreateNestedManyWithoutUserInput
+    betaFeedback?: BetaFeedbackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -14901,6 +16294,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: WorkspaceMemberUpdateManyWithoutUserNestedInput
     supportTickets?: SupportTicketUpdateManyWithoutUserNestedInput
+    betaFeedback?: BetaFeedbackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -14911,6 +16305,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
     supportTickets?: SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+    betaFeedback?: BetaFeedbackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -15813,6 +17208,89 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type BetaFeedbackCreateInput = {
+    id?: string
+    email: string
+    easeOfUse: number
+    usefulFeatures: string
+    improvements?: string | null
+    wouldRecommend: string
+    comments?: string | null
+    createdAt?: Date | string
+    user?: UserCreateNestedOneWithoutBetaFeedbackInput
+  }
+
+  export type BetaFeedbackUncheckedCreateInput = {
+    id?: string
+    userId?: string | null
+    email: string
+    easeOfUse: number
+    usefulFeatures: string
+    improvements?: string | null
+    wouldRecommend: string
+    comments?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BetaFeedbackUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    easeOfUse?: IntFieldUpdateOperationsInput | number
+    usefulFeatures?: StringFieldUpdateOperationsInput | string
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    wouldRecommend?: StringFieldUpdateOperationsInput | string
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutBetaFeedbackNestedInput
+  }
+
+  export type BetaFeedbackUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    easeOfUse?: IntFieldUpdateOperationsInput | number
+    usefulFeatures?: StringFieldUpdateOperationsInput | string
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    wouldRecommend?: StringFieldUpdateOperationsInput | string
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BetaFeedbackCreateManyInput = {
+    id?: string
+    userId?: string | null
+    email: string
+    easeOfUse: number
+    usefulFeatures: string
+    improvements?: string | null
+    wouldRecommend: string
+    comments?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BetaFeedbackUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    easeOfUse?: IntFieldUpdateOperationsInput | number
+    usefulFeatures?: StringFieldUpdateOperationsInput | string
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    wouldRecommend?: StringFieldUpdateOperationsInput | string
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BetaFeedbackUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    easeOfUse?: IntFieldUpdateOperationsInput | number
+    usefulFeatures?: StringFieldUpdateOperationsInput | string
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    wouldRecommend?: StringFieldUpdateOperationsInput | string
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -15866,6 +17344,12 @@ export namespace Prisma {
     none?: SupportTicketWhereInput
   }
 
+  export type BetaFeedbackListRelationFilter = {
+    every?: BetaFeedbackWhereInput
+    some?: BetaFeedbackWhereInput
+    none?: BetaFeedbackWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -15876,6 +17360,10 @@ export namespace Prisma {
   }
 
   export type SupportTicketOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BetaFeedbackOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16742,6 +18230,50 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type BetaFeedbackCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    email?: SortOrder
+    easeOfUse?: SortOrder
+    usefulFeatures?: SortOrder
+    improvements?: SortOrder
+    wouldRecommend?: SortOrder
+    comments?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BetaFeedbackAvgOrderByAggregateInput = {
+    easeOfUse?: SortOrder
+  }
+
+  export type BetaFeedbackMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    email?: SortOrder
+    easeOfUse?: SortOrder
+    usefulFeatures?: SortOrder
+    improvements?: SortOrder
+    wouldRecommend?: SortOrder
+    comments?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BetaFeedbackMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    email?: SortOrder
+    easeOfUse?: SortOrder
+    usefulFeatures?: SortOrder
+    improvements?: SortOrder
+    wouldRecommend?: SortOrder
+    comments?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BetaFeedbackSumOrderByAggregateInput = {
+    easeOfUse?: SortOrder
+  }
+
   export type WorkspaceMemberCreateNestedManyWithoutUserInput = {
     create?: XOR<WorkspaceMemberCreateWithoutUserInput, WorkspaceMemberUncheckedCreateWithoutUserInput> | WorkspaceMemberCreateWithoutUserInput[] | WorkspaceMemberUncheckedCreateWithoutUserInput[]
     connectOrCreate?: WorkspaceMemberCreateOrConnectWithoutUserInput | WorkspaceMemberCreateOrConnectWithoutUserInput[]
@@ -16756,6 +18288,13 @@ export namespace Prisma {
     connect?: SupportTicketWhereUniqueInput | SupportTicketWhereUniqueInput[]
   }
 
+  export type BetaFeedbackCreateNestedManyWithoutUserInput = {
+    create?: XOR<BetaFeedbackCreateWithoutUserInput, BetaFeedbackUncheckedCreateWithoutUserInput> | BetaFeedbackCreateWithoutUserInput[] | BetaFeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BetaFeedbackCreateOrConnectWithoutUserInput | BetaFeedbackCreateOrConnectWithoutUserInput[]
+    createMany?: BetaFeedbackCreateManyUserInputEnvelope
+    connect?: BetaFeedbackWhereUniqueInput | BetaFeedbackWhereUniqueInput[]
+  }
+
   export type WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<WorkspaceMemberCreateWithoutUserInput, WorkspaceMemberUncheckedCreateWithoutUserInput> | WorkspaceMemberCreateWithoutUserInput[] | WorkspaceMemberUncheckedCreateWithoutUserInput[]
     connectOrCreate?: WorkspaceMemberCreateOrConnectWithoutUserInput | WorkspaceMemberCreateOrConnectWithoutUserInput[]
@@ -16768,6 +18307,13 @@ export namespace Prisma {
     connectOrCreate?: SupportTicketCreateOrConnectWithoutUserInput | SupportTicketCreateOrConnectWithoutUserInput[]
     createMany?: SupportTicketCreateManyUserInputEnvelope
     connect?: SupportTicketWhereUniqueInput | SupportTicketWhereUniqueInput[]
+  }
+
+  export type BetaFeedbackUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<BetaFeedbackCreateWithoutUserInput, BetaFeedbackUncheckedCreateWithoutUserInput> | BetaFeedbackCreateWithoutUserInput[] | BetaFeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BetaFeedbackCreateOrConnectWithoutUserInput | BetaFeedbackCreateOrConnectWithoutUserInput[]
+    createMany?: BetaFeedbackCreateManyUserInputEnvelope
+    connect?: BetaFeedbackWhereUniqueInput | BetaFeedbackWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -16810,6 +18356,20 @@ export namespace Prisma {
     deleteMany?: SupportTicketScalarWhereInput | SupportTicketScalarWhereInput[]
   }
 
+  export type BetaFeedbackUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BetaFeedbackCreateWithoutUserInput, BetaFeedbackUncheckedCreateWithoutUserInput> | BetaFeedbackCreateWithoutUserInput[] | BetaFeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BetaFeedbackCreateOrConnectWithoutUserInput | BetaFeedbackCreateOrConnectWithoutUserInput[]
+    upsert?: BetaFeedbackUpsertWithWhereUniqueWithoutUserInput | BetaFeedbackUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BetaFeedbackCreateManyUserInputEnvelope
+    set?: BetaFeedbackWhereUniqueInput | BetaFeedbackWhereUniqueInput[]
+    disconnect?: BetaFeedbackWhereUniqueInput | BetaFeedbackWhereUniqueInput[]
+    delete?: BetaFeedbackWhereUniqueInput | BetaFeedbackWhereUniqueInput[]
+    connect?: BetaFeedbackWhereUniqueInput | BetaFeedbackWhereUniqueInput[]
+    update?: BetaFeedbackUpdateWithWhereUniqueWithoutUserInput | BetaFeedbackUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BetaFeedbackUpdateManyWithWhereWithoutUserInput | BetaFeedbackUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BetaFeedbackScalarWhereInput | BetaFeedbackScalarWhereInput[]
+  }
+
   export type WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<WorkspaceMemberCreateWithoutUserInput, WorkspaceMemberUncheckedCreateWithoutUserInput> | WorkspaceMemberCreateWithoutUserInput[] | WorkspaceMemberUncheckedCreateWithoutUserInput[]
     connectOrCreate?: WorkspaceMemberCreateOrConnectWithoutUserInput | WorkspaceMemberCreateOrConnectWithoutUserInput[]
@@ -16836,6 +18396,20 @@ export namespace Prisma {
     update?: SupportTicketUpdateWithWhereUniqueWithoutUserInput | SupportTicketUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: SupportTicketUpdateManyWithWhereWithoutUserInput | SupportTicketUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: SupportTicketScalarWhereInput | SupportTicketScalarWhereInput[]
+  }
+
+  export type BetaFeedbackUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BetaFeedbackCreateWithoutUserInput, BetaFeedbackUncheckedCreateWithoutUserInput> | BetaFeedbackCreateWithoutUserInput[] | BetaFeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BetaFeedbackCreateOrConnectWithoutUserInput | BetaFeedbackCreateOrConnectWithoutUserInput[]
+    upsert?: BetaFeedbackUpsertWithWhereUniqueWithoutUserInput | BetaFeedbackUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BetaFeedbackCreateManyUserInputEnvelope
+    set?: BetaFeedbackWhereUniqueInput | BetaFeedbackWhereUniqueInput[]
+    disconnect?: BetaFeedbackWhereUniqueInput | BetaFeedbackWhereUniqueInput[]
+    delete?: BetaFeedbackWhereUniqueInput | BetaFeedbackWhereUniqueInput[]
+    connect?: BetaFeedbackWhereUniqueInput | BetaFeedbackWhereUniqueInput[]
+    update?: BetaFeedbackUpdateWithWhereUniqueWithoutUserInput | BetaFeedbackUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BetaFeedbackUpdateManyWithWhereWithoutUserInput | BetaFeedbackUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BetaFeedbackScalarWhereInput | BetaFeedbackScalarWhereInput[]
   }
 
   export type WorkspaceMemberCreateNestedManyWithoutWorkspaceInput = {
@@ -17374,6 +18948,22 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSupportTicketsInput, UserUpdateWithoutSupportTicketsInput>, UserUncheckedUpdateWithoutSupportTicketsInput>
   }
 
+  export type UserCreateNestedOneWithoutBetaFeedbackInput = {
+    create?: XOR<UserCreateWithoutBetaFeedbackInput, UserUncheckedCreateWithoutBetaFeedbackInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBetaFeedbackInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneWithoutBetaFeedbackNestedInput = {
+    create?: XOR<UserCreateWithoutBetaFeedbackInput, UserUncheckedCreateWithoutBetaFeedbackInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBetaFeedbackInput
+    upsert?: UserUpsertWithoutBetaFeedbackInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBetaFeedbackInput, UserUpdateWithoutBetaFeedbackInput>, UserUncheckedUpdateWithoutBetaFeedbackInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -17822,6 +19412,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BetaFeedbackCreateWithoutUserInput = {
+    id?: string
+    email: string
+    easeOfUse: number
+    usefulFeatures: string
+    improvements?: string | null
+    wouldRecommend: string
+    comments?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BetaFeedbackUncheckedCreateWithoutUserInput = {
+    id?: string
+    email: string
+    easeOfUse: number
+    usefulFeatures: string
+    improvements?: string | null
+    wouldRecommend: string
+    comments?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BetaFeedbackCreateOrConnectWithoutUserInput = {
+    where: BetaFeedbackWhereUniqueInput
+    create: XOR<BetaFeedbackCreateWithoutUserInput, BetaFeedbackUncheckedCreateWithoutUserInput>
+  }
+
+  export type BetaFeedbackCreateManyUserInputEnvelope = {
+    data: BetaFeedbackCreateManyUserInput | BetaFeedbackCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceMemberUpsertWithWhereUniqueWithoutUserInput = {
     where: WorkspaceMemberWhereUniqueInput
     update: XOR<WorkspaceMemberUpdateWithoutUserInput, WorkspaceMemberUncheckedUpdateWithoutUserInput>
@@ -17884,6 +19506,37 @@ export namespace Prisma {
     respondedAt?: DateTimeNullableFilter<"SupportTicket"> | Date | string | null
     createdAt?: DateTimeFilter<"SupportTicket"> | Date | string
     updatedAt?: DateTimeFilter<"SupportTicket"> | Date | string
+  }
+
+  export type BetaFeedbackUpsertWithWhereUniqueWithoutUserInput = {
+    where: BetaFeedbackWhereUniqueInput
+    update: XOR<BetaFeedbackUpdateWithoutUserInput, BetaFeedbackUncheckedUpdateWithoutUserInput>
+    create: XOR<BetaFeedbackCreateWithoutUserInput, BetaFeedbackUncheckedCreateWithoutUserInput>
+  }
+
+  export type BetaFeedbackUpdateWithWhereUniqueWithoutUserInput = {
+    where: BetaFeedbackWhereUniqueInput
+    data: XOR<BetaFeedbackUpdateWithoutUserInput, BetaFeedbackUncheckedUpdateWithoutUserInput>
+  }
+
+  export type BetaFeedbackUpdateManyWithWhereWithoutUserInput = {
+    where: BetaFeedbackScalarWhereInput
+    data: XOR<BetaFeedbackUpdateManyMutationInput, BetaFeedbackUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type BetaFeedbackScalarWhereInput = {
+    AND?: BetaFeedbackScalarWhereInput | BetaFeedbackScalarWhereInput[]
+    OR?: BetaFeedbackScalarWhereInput[]
+    NOT?: BetaFeedbackScalarWhereInput | BetaFeedbackScalarWhereInput[]
+    id?: StringFilter<"BetaFeedback"> | string
+    userId?: StringNullableFilter<"BetaFeedback"> | string | null
+    email?: StringFilter<"BetaFeedback"> | string
+    easeOfUse?: IntFilter<"BetaFeedback"> | number
+    usefulFeatures?: StringFilter<"BetaFeedback"> | string
+    improvements?: StringNullableFilter<"BetaFeedback"> | string | null
+    wouldRecommend?: StringFilter<"BetaFeedback"> | string
+    comments?: StringNullableFilter<"BetaFeedback"> | string | null
+    createdAt?: DateTimeFilter<"BetaFeedback"> | Date | string
   }
 
   export type WorkspaceMemberCreateWithoutWorkspaceInput = {
@@ -18202,6 +19855,7 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     supportTickets?: SupportTicketCreateNestedManyWithoutUserInput
+    betaFeedback?: BetaFeedbackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -18211,6 +19865,7 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     supportTickets?: SupportTicketUncheckedCreateNestedManyWithoutUserInput
+    betaFeedback?: BetaFeedbackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -18265,6 +19920,7 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     supportTickets?: SupportTicketUpdateManyWithoutUserNestedInput
+    betaFeedback?: BetaFeedbackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -18274,6 +19930,7 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     supportTickets?: SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+    betaFeedback?: BetaFeedbackUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WorkspaceUpsertWithoutMembersInput = {
@@ -19200,6 +20857,7 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     memberships?: WorkspaceMemberCreateNestedManyWithoutUserInput
+    betaFeedback?: BetaFeedbackCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSupportTicketsInput = {
@@ -19209,6 +20867,7 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     memberships?: WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+    betaFeedback?: BetaFeedbackUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSupportTicketsInput = {
@@ -19234,6 +20893,7 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: WorkspaceMemberUpdateManyWithoutUserNestedInput
+    betaFeedback?: BetaFeedbackUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSupportTicketsInput = {
@@ -19243,6 +20903,63 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+    betaFeedback?: BetaFeedbackUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutBetaFeedbackInput = {
+    id: string
+    email: string
+    name?: string | null
+    avatarUrl?: string | null
+    createdAt?: Date | string
+    memberships?: WorkspaceMemberCreateNestedManyWithoutUserInput
+    supportTickets?: SupportTicketCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutBetaFeedbackInput = {
+    id: string
+    email: string
+    name?: string | null
+    avatarUrl?: string | null
+    createdAt?: Date | string
+    memberships?: WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+    supportTickets?: SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutBetaFeedbackInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutBetaFeedbackInput, UserUncheckedCreateWithoutBetaFeedbackInput>
+  }
+
+  export type UserUpsertWithoutBetaFeedbackInput = {
+    update: XOR<UserUpdateWithoutBetaFeedbackInput, UserUncheckedUpdateWithoutBetaFeedbackInput>
+    create: XOR<UserCreateWithoutBetaFeedbackInput, UserUncheckedCreateWithoutBetaFeedbackInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutBetaFeedbackInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutBetaFeedbackInput, UserUncheckedUpdateWithoutBetaFeedbackInput>
+  }
+
+  export type UserUpdateWithoutBetaFeedbackInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    memberships?: WorkspaceMemberUpdateManyWithoutUserNestedInput
+    supportTickets?: SupportTicketUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutBetaFeedbackInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    memberships?: WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+    supportTickets?: SupportTicketUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WorkspaceMemberCreateManyUserInput = {
@@ -19267,6 +20984,17 @@ export namespace Prisma {
     respondedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type BetaFeedbackCreateManyUserInput = {
+    id?: string
+    email: string
+    easeOfUse: number
+    usefulFeatures: string
+    improvements?: string | null
+    wouldRecommend: string
+    comments?: string | null
+    createdAt?: Date | string
   }
 
   export type WorkspaceMemberUpdateWithoutUserInput = {
@@ -19339,6 +21067,39 @@ export namespace Prisma {
     respondedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BetaFeedbackUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    easeOfUse?: IntFieldUpdateOperationsInput | number
+    usefulFeatures?: StringFieldUpdateOperationsInput | string
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    wouldRecommend?: StringFieldUpdateOperationsInput | string
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BetaFeedbackUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    easeOfUse?: IntFieldUpdateOperationsInput | number
+    usefulFeatures?: StringFieldUpdateOperationsInput | string
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    wouldRecommend?: StringFieldUpdateOperationsInput | string
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BetaFeedbackUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    easeOfUse?: IntFieldUpdateOperationsInput | number
+    usefulFeatures?: StringFieldUpdateOperationsInput | string
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    wouldRecommend?: StringFieldUpdateOperationsInput | string
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WorkspaceMemberCreateManyWorkspaceInput = {
