@@ -20,9 +20,21 @@ import { UserTypes } from "@/components/landing/user-types"
 // import { AppShowcase } from "@/components/landing/app-showcase"  // Se reemplazará por vídeo
 
 export const metadata = {
-  title: "ProjectTrack — Gestión de proyectos y control financiero",
+  title: "ProjectTrack — Gestiona tus proyectos y finanzas",
   description:
     "Controla tus proyectos, ingresos, gastos y estimaciones fiscales en un solo lugar. Para freelancers, negocios y cualquier persona con proyectos.",
+  openGraph: {
+    title: "ProjectTrack — Gestiona tus proyectos y finanzas",
+    description: "Controla proyectos, ingresos y gastos. Para freelancers, negocios y cualquier persona que trabaje por proyectos.",
+    url: "https://projecttrack.app",
+    siteName: "ProjectTrack",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "ProjectTrack — Gestiona tus proyectos y finanzas",
+    description: "Controla proyectos, ingresos y gastos. Para freelancers, negocios y cualquier persona que trabaje por proyectos.",
+  },
 }
 
 const STARTER_FEATURES = [
