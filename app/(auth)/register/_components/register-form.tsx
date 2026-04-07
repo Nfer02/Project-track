@@ -8,6 +8,7 @@ import Link from "next/link"
 import { Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { PasswordStrength } from "@/components/app/password-strength"
 import { Input } from "@/components/ui/input"
 import {
   Form,
@@ -91,6 +92,7 @@ export function RegisterForm() {
                 <FormControl>
                   <Input type="password" autoComplete="new-password" {...field} />
                 </FormControl>
+                <PasswordStrength password={field.value} />
                 <FormMessage />
               </FormItem>
             )}

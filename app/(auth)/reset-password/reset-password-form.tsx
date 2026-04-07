@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Loader2, Lock, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { PasswordStrength } from "@/components/app/password-strength"
 import { Input } from "@/components/ui/input"
 import {
   Form,
@@ -95,6 +96,7 @@ export function ResetPasswordForm() {
                   />
                 </div>
               </FormControl>
+              <PasswordStrength password={field.value} />
               <FormMessage />
             </FormItem>
           )}
