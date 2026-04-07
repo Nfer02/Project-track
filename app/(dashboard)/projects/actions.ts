@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { z } from "zod"
 import { prisma } from "@/lib/prisma"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { ProjectStatus } from "@/generated/prisma"
@@ -31,6 +32,17 @@ async function requireWorkspace() {
 
 export async function createProject(values: ProjectFormValues) {
   const { workspace } = await requireWorkspace()
+
+  const parsed = z.object({
+    name: z.string().min(1),
+    currency: z.string().min(1),
+    vatRate: z.string().min(1),
+    irpfRate: z.string().min(1),
+  }).safeParse(values)
+
+  if (!parsed.success) {
+    return { error: "Datos inválidos. El nombre del proyecto es obligatorio." }
+  }
 
   await prisma.project.create({
     data: {

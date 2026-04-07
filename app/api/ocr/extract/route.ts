@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { getAnthropicClient, isSupportedMimeType } from "@/lib/anthropic"
+import { rateLimit } from "@/lib/rate-limit"
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024
 
@@ -11,6 +12,20 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
+    }
+
+    // Rate limiting: 20 requests per hour per user
+    const { success } = rateLimit(
+      `ocr:${user.id}`,
+      20,
+      60 * 60 * 1000
+    )
+
+    if (!success) {
+      return NextResponse.json(
+        { error: "Has alcanzado el límite de escaneos. Inténtalo de nuevo en una hora." },
+        { status: 429, headers: { "Retry-After": "3600" } }
+      )
     }
 
     const formData = await request.formData()

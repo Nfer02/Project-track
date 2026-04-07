@@ -1,5 +1,8 @@
 import { PrismaClient } from "../generated/prisma"
 import { PrismaPg } from "@prisma/adapter-pg"
+import { validateEnv } from "./env"
+
+validateEnv()
 
 function createPrismaClient() {
   const connectionString = process.env.DATABASE_URL!

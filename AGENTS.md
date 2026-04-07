@@ -57,3 +57,48 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Todas las estimaciones fiscales deben incluir un disclaimer: "orientativo, no sustituye asesoramiento profesional"
 - Los reportes CSV deben incluir disclaimer similar
 - Nunca presentar datos fiscales como definitivos o vinculantes
+
+---
+
+## Seguridad
+
+### 1. Rate Limiting
+- Implementar rate limiting en endpoint de OCR (`/api/ocr/extract`) — es el unico que cuesta dinero (llama a Claude AI)
+- Usar `@upstash/ratelimit` con Upstash Redis (free tier: 10K requests/dia) o rate limiting in-memory como alternativa
+- Limites recomendados:
+  - OCR: 20 peticiones por usuario/hora
+  - Auth (login/registro): gestionado por Supabase internamente
+  - API general: Vercel tiene proteccion DDoS basica incluida
+- Devolver error 429 (Too Many Requests) cuando se exceda el limite
+
+### 2. Variables de Entorno y Secretos
+- NUNCA escribir API keys, tokens o contrasenas en el codigo
+- Usar SIEMPRE variables de entorno (.env.local) para credenciales
+- `.env.local` debe estar en `.gitignore` (ya esta)
+- `.env.local.example` debe tener nombres sin valores reales (ya existe)
+- Validar al arrancar la app que todas las variables de entorno necesarias existen
+- Si falta alguna, la app no debe iniciar (mostrar error claro)
+
+### 3. Validacion de Inputs (Anti-Inyeccion)
+- Validar con Zod en el CLIENTE (formularios) Y en el SERVIDOR (server actions)
+- Prisma ORM previene SQL injection (nunca SQL crudo)
+- React escapa HTML por defecto — no usar `dangerouslySetInnerHTML`
+- Rechazar y loguear inputs que no pasen la validacion
+
+### 4. Headers de Seguridad
+- Configurar en `vercel.json` o `next.config.ts`:
+  - Content-Security-Policy (CSP) — permitir recharts (SVG), ui-avatars.com, Stripe
+  - X-Content-Type-Options: nosniff
+  - X-Frame-Options: DENY
+  - Strict-Transport-Security (HSTS)
+- `poweredByHeader: false` en next.config.ts (ya configurado)
+
+### 5. Autenticacion y Sesiones
+- Supabase Auth gestiona: cookies httpOnly/secure, bcrypt para contrasenas, CSRF via origin check
+- Next.js server actions tienen proteccion CSRF built-in
+- No implementar auth custom — usar Supabase
+
+### 6. Logging de Seguridad
+- `console.error` en catches de server actions (ya implementado)
+- Para escalar: integrar Axiom (gratis en Vercel) o Sentry
+- NUNCA loguear datos sensibles (contrasenas, tokens, datos personales)

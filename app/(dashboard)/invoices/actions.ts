@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { z } from "zod"
 import { prisma } from "@/lib/prisma"
 import { getCurrentWorkspace } from "@/lib/workspace"
 import { InvoiceStatus, InvoiceType } from "@/generated/prisma"
@@ -84,6 +85,18 @@ export async function createInvoice(
   values: InvoiceFormValues,
 ): Promise<{ error: string } | void> {
   const { workspace } = await requireWorkspace()
+
+  const parsed = z.object({
+    number: z.string().min(1),
+    amount: z.string().min(1),
+    currency: z.string().min(1),
+    status: z.string().min(1),
+    issueDate: z.string().min(1),
+  }).safeParse(values)
+
+  if (!parsed.success) {
+    return { error: "Datos inválidos. Revisa los campos obligatorios." }
+  }
 
   const project = await prisma.project.findFirst({
     where: { id: projectId, workspaceId: workspace.id },
@@ -199,6 +212,19 @@ export async function createExpense(
   redirectTo?: string,
 ): Promise<{ error: string } | void> {
   const { workspace } = await requireWorkspace()
+
+  const parsed = z.object({
+    number: z.string().min(1),
+    amount: z.string().min(1),
+    currency: z.string().min(1),
+    status: z.string().min(1),
+    issueDate: z.string().min(1),
+    vendorName: z.string().optional(),
+  }).safeParse(values)
+
+  if (!parsed.success) {
+    return { error: "Datos inválidos. Revisa los campos obligatorios." }
+  }
 
   // Validar que la suma de asignaciones no supere el importe total
   const totalAmount = parseFloat(values.amount)
