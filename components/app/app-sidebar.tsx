@@ -142,7 +142,7 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
                 {user?.name ?? "Usuario"}
               </p>
               <p className="truncate text-xs text-slate-500 leading-tight">
-                {user?.email ?? ""}
+                {workspace?.name ?? user?.email ?? ""}
               </p>
             </div>
           </DropdownMenuTrigger>
