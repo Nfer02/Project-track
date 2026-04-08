@@ -11,14 +11,14 @@ async function getSessionData() {
 
     const member = await prisma.workspaceMember.findFirst({
       where: { userId: user.id, acceptedAt: { not: null } },
-      include: { workspace: true },
+      include: { workspace: true, user: { select: { name: true, email: true } } },
       orderBy: { createdAt: "asc" },
     })
 
     return {
       user: {
-        name: user.user_metadata?.name,
-        email: user.email,
+        name: member?.user?.name ?? user.user_metadata?.name,
+        email: member?.user?.email ?? user.email,
       },
       workspace: member?.workspace,
     }
