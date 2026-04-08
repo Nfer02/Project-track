@@ -44,9 +44,9 @@ export async function POST(request: NextRequest) {
               <span style="display:inline-block;background-color:#3b82f6;color:white;font-weight:bold;font-size:14px;padding:6px 12px;border-radius:6px;">PT</span>
               <span style="font-size:18px;font-weight:bold;margin-left:8px;color:white;">ProjectTrack</span>
             </div>
-            <h2 style="color:white;font-size:20px;margin-bottom:10px;text-align:center;">Tu acceso esta listo</h2>
+            <h2 style="color:white;font-size:20px;margin-bottom:10px;text-align:center;">¡Tu acceso está listo!</h2>
             <p style="color:#94a3b8;font-size:14px;line-height:1.6;text-align:center;">
-              Te hemos seleccionado para probar ProjectTrack en su fase beta. Gestiona tus proyectos, controla ingresos y gastos, y ten una estimacion orientativa de tus obligaciones fiscales.
+              Has sido invitado a probar ProjectTrack antes que nadie. Crea tu cuenta y empieza a tener el control total de tus proyectos y finanzas.
             </p>
             <div style="text-align:center;margin:30px 0;">
               <a href="https://projecttrack.app/register?email=${encodeURIComponent(email)}" style="display:inline-block;background-color:#3b82f6;color:white;font-weight:600;font-size:14px;padding:12px 32px;border-radius:50px;text-decoration:none;">
@@ -54,24 +54,30 @@ export async function POST(request: NextRequest) {
               </a>
             </div>
             <div style="background-color:#1e293b;border-radius:8px;padding:16px;margin:20px 0;">
-              <p style="color:#e2e8f0;font-size:13px;margin:0 0 8px 0;font-weight:600;">Que puedes hacer?</p>
+              <p style="color:#e2e8f0;font-size:13px;margin:0 0 8px 0;font-weight:600;">¿Qué puedes hacer?</p>
               <ul style="color:#94a3b8;font-size:13px;line-height:1.8;margin:0;padding-left:20px;">
                 <li>Organizar tus proyectos con presupuesto y cliente</li>
                 <li>Registrar ingresos y gastos por proyecto</li>
-                <li>Escanear tickets con IA (el OCR extrae los datos)</li>
-                <li>Ver tu dashboard financiero con graficos</li>
-                <li>Obtener una estimacion orientativa de IVA e IRPF</li>
+                <li>Escanear facturas con IA (el OCR extrae los datos)</li>
+                <li>Ver tu dashboard financiero con gráficos</li>
+                <li>Obtener una estimación orientativa de IVA e IRPF</li>
               </ul>
             </div>
+            <div style="background-color:#1e3a5f;border-radius:8px;padding:16px;margin:20px 0;border:1px solid #3b82f6;">
+              <p style="color:#60a5fa;font-size:13px;margin:0 0 4px 0;font-weight:600;">🎁 Plan PRO activado durante la beta</p>
+              <p style="color:#94a3b8;font-size:12px;margin:0;line-height:1.5;">
+                Tendrás acceso a todas las funciones sin límites mientras dure la prueba. Después podrás seguir con el plan gratuito o continuar con PRO.
+              </p>
+            </div>
             <p style="color:#94a3b8;font-size:13px;line-height:1.6;text-align:center;">
-              Tu cuenta empieza en el plan gratuito. Si despues de la prueba quieres continuar, puedes cambiar tu contrasena y seguir usando el mismo usuario. Es tuyo!
+              Ahorra tiempo, ten las cuentas claras y dedícate a lo que de verdad importa: tu trabajo. ProjectTrack se encarga del resto.
             </p>
             <p style="color:#64748b;font-size:12px;text-align:center;margin-top:20px;">
-              Dentro de la app encontraras un boton de "Dar feedback". Tu opinion nos ayuda a mejorar.
+              Dentro de la app encontrarás un botón de "Dar feedback". Tu opinión nos ayuda a mejorar.
             </p>
             <hr style="border:none;border-top:1px solid #1e293b;margin:25px 0;" />
             <p style="color:#475569;font-size:11px;text-align:center;">
-              ProjectTrack — Gestion de proyectos y control financiero<br/>
+              ProjectTrack — Gestión de proyectos y control financiero<br/>
               <a href="https://projecttrack.app" style="color:#3b82f6;text-decoration:none;">projecttrack.app</a>
             </p>
           </div>
@@ -82,7 +88,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Invitado pero no se pudo enviar el email" }, { status: 207 })
     }
 
-    return NextResponse.json({ message: "Invitacion enviada" })
+    return NextResponse.json({ message: "Invitación enviada" })
   } catch (err) {
     console.error("[Waitlist Invite] Error:", err)
     return NextResponse.json({ error: "Error interno" }, { status: 500 })

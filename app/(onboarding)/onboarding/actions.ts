@@ -36,11 +36,17 @@ export async function createWorkspace(values: { name: string; sector: string; wo
     slug = `${baseSlug}-${attempt}`
   }
 
+  // Verificar si es beta tester invitado → asignar plan PRO
+  const isBetaTester = await prisma.waitlist.findFirst({
+    where: { email: user.email!, invited: true },
+  })
+
   // Crear workspace y asignar al usuario como OWNER
   const workspace = await prisma.workspace.create({
     data: {
       name: values.workspaceName,
       slug,
+      plan: isBetaTester ? "PRO" : "FREE",
       sector: values.sector,
       members: {
         create: { userId: user.id, role: "OWNER", acceptedAt: new Date() },

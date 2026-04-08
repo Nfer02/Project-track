@@ -6,6 +6,7 @@ import { formatCurrency, formatDate } from "@/lib/format"
 import { AdminTickets } from "@/components/app/admin-tickets"
 import { AdminWaitlistEmail } from "@/components/app/admin-waitlist-email"
 import { AdminWaitlistTable } from "@/components/app/admin-waitlist-table"
+import { AdminEndBeta } from "@/components/app/admin-end-beta"
 import {
   Users,
   Package,
@@ -18,6 +19,7 @@ import {
   BarChart3,
   Star,
   MessageSquare,
+  FlaskConical,
 } from "lucide-react"
 
 const ADMIN_EMAILS = ["nelsonfernandez1002@gmail.com"]
@@ -42,14 +44,17 @@ export default async function AdminPage() {
     redirect("/dashboard")
   }
 
-  // Fecha de hace 7 días para "usuarios activos"
-  const sevenDaysAgo = new Date()
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
-
   const thisWeekStart = new Date()
   thisWeekStart.setDate(thisWeekStart.getDate() - 7)
   const lastWeekStart = new Date()
   lastWeekStart.setDate(lastWeekStart.getDate() - 14)
+
+  // Pre-fetch beta tester emails for the count query
+  const betaInvited = await prisma.waitlist.findMany({
+    where: { invited: true },
+    select: { email: true },
+  })
+  const betaEmails = betaInvited.map((w) => w.email)
 
   const [
     totalUsers,
@@ -64,6 +69,7 @@ export default async function AdminPage() {
     supportTickets,
     workspacesWithSector,
     betaFeedback,
+    betaProCount,
   ] = await Promise.all([
     prisma.user.count(),
     prisma.workspace.count({ where: { plan: "FREE" } }),
@@ -98,13 +104,25 @@ export default async function AdminPage() {
       orderBy: { createdAt: "desc" },
       take: 50,
     }),
+    betaEmails.length > 0
+      ? prisma.workspace.count({
+          where: {
+            plan: "PRO",
+            members: {
+              some: {
+                role: "OWNER",
+                user: { email: { in: betaEmails } },
+              },
+            },
+          },
+        })
+      : Promise.resolve(0),
   ])
 
   const totalWorkspaces = freeWorkspaces + proWorkspaces
   const mrr = proWorkspaces * 14.99
   const conversionRate = totalWorkspaces > 0 ? ((proWorkspaces / totalWorkspaces) * 100).toFixed(1) : "0"
 
-  // Tendencia de registros
   const registrosTendencia = registrosEstaSemana - registrosSemanaAnterior
   const tendenciaTexto = registrosTendencia > 0
     ? `+${registrosTendencia} vs semana anterior`
@@ -135,7 +153,6 @@ export default async function AdminPage() {
     { label: "Workspaces Free", value: String(freeWorkspaces), icon: Package, color: "border-l-slate-400" },
     { label: "Workspaces PRO", value: String(proWorkspaces), icon: Crown, color: "border-l-amber-500" },
     { label: "MRR (estimado)", value: formatCurrency(mrr), icon: TrendingUp, color: "border-l-emerald-500" },
-    { label: "Waitlist", value: String(totalWaitlist), icon: Clock, color: "border-l-orange-500" },
     { label: "Registros esta semana", value: String(registrosEstaSemana), sub: tendenciaTexto, icon: UserPlus, color: "border-l-violet-500" },
     { label: "Tasa de conversión", value: `${conversionRate}%`, sub: "Free → PRO", icon: Activity, color: "border-l-cyan-500" },
   ]
@@ -155,8 +172,12 @@ export default async function AdminPage() {
           <h1 className="text-xl sm:text-2xl font-bold">Panel de administración</h1>
         </div>
 
+        {/* ═══════════════════════════════════════════════════════════════ */}
+        {/*  SECCIÓN PERMANENTE                                           */}
+        {/* ═══════════════════════════════════════════════════════════════ */}
+
         {/* Stat cards */}
-        <div className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
           {STATS.map((stat) => {
             const Icon = stat.icon
             return (
@@ -174,81 +195,8 @@ export default async function AdminPage() {
           })}
         </div>
 
-        {/* Enviar email a waitlist */}
-        <div className="mb-8">
-          <AdminWaitlistEmail totalWaitlist={totalWaitlist} />
-        </div>
-
-        {/* Sectores — 2 columnas */}
+        {/* Usuarios recientes + Usuarios por sector */}
         <div className="mb-8 grid gap-6 lg:grid-cols-2">
-          {/* Waitlist por sector */}
-          <div className="rounded-xl border bg-card p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <BarChart3 className="h-4 w-4 text-orange-500" />
-              <h2 className="text-sm font-semibold">Waitlist por sector</h2>
-              <span className="text-xs text-muted-foreground ml-auto">{totalWaitlist} total</span>
-            </div>
-            {waitlistSectors.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Sin datos</p>
-            ) : (
-              <div className="space-y-2.5">
-                {waitlistSectors.map(([sector, count]) => (
-                  <div key={sector} className="flex items-center gap-3">
-                    <span className="w-44 shrink-0 truncate text-xs">{SECTOR_LABELS[sector] ?? sector}</span>
-                    <div className="flex-1 h-5 rounded-full bg-muted overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-orange-500/70 transition-all"
-                        style={{ width: `${(count / maxWaitlistSector) * 100}%`, minWidth: "8px" }}
-                      />
-                    </div>
-                    <span className="w-8 text-right text-xs font-semibold">{count}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Usuarios registrados por sector */}
-          <div className="rounded-xl border bg-card p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <BarChart3 className="h-4 w-4 text-blue-500" />
-              <h2 className="text-sm font-semibold">Usuarios por sector</h2>
-              <span className="text-xs text-muted-foreground ml-auto">{workspacesWithSector.length} con sector</span>
-            </div>
-            {userSectors.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Sin datos todavía</p>
-            ) : (
-              <div className="space-y-2.5">
-                {userSectors.map(([sector, count]) => (
-                  <div key={sector} className="flex items-center gap-3">
-                    <span className="w-44 shrink-0 truncate text-xs">{SECTOR_LABELS[sector] ?? sector}</span>
-                    <div className="flex-1 h-5 rounded-full bg-muted overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-blue-500/70 transition-all"
-                        style={{ width: `${(count / maxUserSector) * 100}%`, minWidth: "8px" }}
-                      />
-                    </div>
-                    <span className="w-8 text-right text-xs font-semibold">{count}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Tablas — 2 columnas */}
-        <div className="mb-8 grid gap-6 lg:grid-cols-2">
-          {/* Waitlist */}
-          <AdminWaitlistTable
-            entries={waitlistEntries.map((e) => ({
-              id: e.id,
-              email: e.email,
-              source: e.source,
-              invited: e.invited,
-              createdAt: e.createdAt.toISOString(),
-            }))}
-          />
-
           {/* Usuarios recientes */}
           <div className="rounded-xl border bg-card">
             <div className="border-b p-4">
@@ -297,6 +245,33 @@ export default async function AdminPage() {
               </table>
             </div>
           </div>
+
+          {/* Usuarios por sector */}
+          <div className="rounded-xl border bg-card p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart3 className="h-4 w-4 text-blue-500" />
+              <h2 className="text-sm font-semibold">Usuarios por sector</h2>
+              <span className="text-xs text-muted-foreground ml-auto">{workspacesWithSector.length} con sector</span>
+            </div>
+            {userSectors.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Sin datos todavía</p>
+            ) : (
+              <div className="space-y-2.5">
+                {userSectors.map(([sector, count]) => (
+                  <div key={sector} className="flex items-center gap-3">
+                    <span className="w-44 shrink-0 truncate text-xs">{SECTOR_LABELS[sector] ?? sector}</span>
+                    <div className="flex-1 h-5 rounded-full bg-muted overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-blue-500/70 transition-all"
+                        style={{ width: `${(count / maxUserSector) * 100}%`, minWidth: "8px" }}
+                      />
+                    </div>
+                    <span className="w-8 text-right text-xs font-semibold">{count}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Tickets de soporte */}
@@ -317,144 +292,9 @@ export default async function AdminPage() {
           />
         </div>
 
-        {/* Beta Feedback */}
-        {betaFeedback.length > 0 && (() => {
-          const avgRating = betaFeedback.reduce((s, f) => s + f.easeOfUse, 0) / betaFeedback.length
-          const yesCount = betaFeedback.filter(f => f.wouldRecommend === "yes").length
-          const maybeCount = betaFeedback.filter(f => f.wouldRecommend === "maybe").length
-          const noCount = betaFeedback.filter(f => f.wouldRecommend === "no").length
-
-          // Count features
-          const featureCounts: Record<string, number> = {}
-          for (const fb of betaFeedback) {
-            if (fb.usefulFeatures) {
-              for (const feat of fb.usefulFeatures.split(",")) {
-                const trimmed = feat.trim()
-                if (trimmed) featureCounts[trimmed] = (featureCounts[trimmed] ?? 0) + 1
-              }
-            }
-          }
-          const featureLabels: Record<string, string> = {
-            dashboard: "Dashboard financiero",
-            projects: "Gestion de proyectos",
-            expenses: "Control de gastos",
-            ocr: "Escaneo con IA (OCR)",
-            reports: "Reportes trimestrales",
-            fiscal: "Estimacion fiscal",
-          }
-          const sortedFeatures = Object.entries(featureCounts).sort(([, a], [, b]) => b - a)
-          const maxFeatureCount = sortedFeatures.length > 0 ? sortedFeatures[0][1] : 1
-
-          return (
-            <div className="mb-8 space-y-4">
-              <div className="flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-amber-500" />
-                <h2 className="text-lg font-semibold">Beta Feedback</h2>
-                <span className="text-xs text-muted-foreground ml-auto">{betaFeedback.length} respuestas</span>
-              </div>
-
-              {/* Summary cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {/* Average rating */}
-                <div className="rounded-xl border bg-card p-4">
-                  <p className="text-xs text-muted-foreground mb-1">Valoracion media</p>
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-0.5">
-                      {[1, 2, 3, 4, 5].map((n) => (
-                        <Star key={n} className={`h-5 w-5 ${n <= Math.round(avgRating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20"}`} />
-                      ))}
-                    </div>
-                    <span className="text-lg font-bold">{avgRating.toFixed(1)}</span>
-                  </div>
-                </div>
-
-                {/* Recommendation breakdown */}
-                <div className="rounded-xl border bg-card p-4">
-                  <p className="text-xs text-muted-foreground mb-2">Recomendarian?</p>
-                  <div className="flex gap-3 text-sm">
-                    <span className="inline-flex items-center gap-1">
-                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-                      Si {yesCount}
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-                      Tal vez {maybeCount}
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
-                      No {noCount}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Most voted features */}
-                <div className="rounded-xl border bg-card p-4">
-                  <p className="text-xs text-muted-foreground mb-2">Funcionalidades mas votadas</p>
-                  <div className="space-y-1.5">
-                    {sortedFeatures.slice(0, 4).map(([feat, count]) => (
-                      <div key={feat} className="flex items-center gap-2">
-                        <div className="flex-1 h-3 rounded-full bg-muted overflow-hidden">
-                          <div className="h-full rounded-full bg-primary/60" style={{ width: `${(count / maxFeatureCount) * 100}%`, minWidth: "4px" }} />
-                        </div>
-                        <span className="text-[10px] text-muted-foreground w-28 truncate">{featureLabels[feat] ?? feat}</span>
-                        <span className="text-[10px] font-semibold w-4 text-right">{count}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Feedback table */}
-              <div className="rounded-xl border bg-card">
-                <div className="border-b p-4">
-                  <h3 className="text-sm font-semibold">Respuestas de feedback</h3>
-                </div>
-                <div className="max-h-[500px] overflow-y-auto">
-                  <table className="w-full text-sm">
-                    <thead className="sticky top-0 bg-card">
-                      <tr className="border-b text-left text-[10px] text-muted-foreground">
-                        <th className="px-4 py-2 font-medium">Email</th>
-                        <th className="px-4 py-2 font-medium">Valoracion</th>
-                        <th className="px-4 py-2 font-medium">Recomienda</th>
-                        <th className="px-4 py-2 font-medium">Mejoras</th>
-                        <th className="px-4 py-2 font-medium">Fecha</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {betaFeedback.map((fb) => (
-                        <tr key={fb.id} className="border-b border-border/30 hover:bg-muted/30">
-                          <td className="px-4 py-2 text-xs truncate max-w-[180px]">{fb.email}</td>
-                          <td className="px-4 py-2">
-                            <div className="flex gap-0.5">
-                              {[1, 2, 3, 4, 5].map((n) => (
-                                <Star key={n} className={`h-3 w-3 ${n <= fb.easeOfUse ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20"}`} />
-                              ))}
-                            </div>
-                          </td>
-                          <td className="px-4 py-2">
-                            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                              fb.wouldRecommend === "yes" ? "bg-emerald-500/10 text-emerald-500" :
-                              fb.wouldRecommend === "maybe" ? "bg-amber-500/10 text-amber-500" :
-                              "bg-red-500/10 text-red-500"
-                            }`}>
-                              {fb.wouldRecommend === "yes" ? "Si" : fb.wouldRecommend === "maybe" ? "Tal vez" : "No"}
-                            </span>
-                          </td>
-                          <td className="px-4 py-2 text-xs text-muted-foreground truncate max-w-[250px]">{fb.improvements ?? "—"}</td>
-                          <td className="px-4 py-2 text-[10px] text-muted-foreground whitespace-nowrap">{formatDate(fb.createdAt)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )
-        })()}
-
         {/* Suscripciones activas */}
         {allSubscriptions.length > 0 && (
-          <div className="rounded-xl border bg-card">
+          <div className="mb-8 rounded-xl border bg-card">
             <div className="border-b p-4">
               <h2 className="text-sm font-semibold">Suscripciones PRO activas</h2>
               <p className="text-[10px] text-muted-foreground">{allSubscriptions.length} suscripciones</p>
@@ -485,6 +325,193 @@ export default async function AdminPage() {
             </div>
           </div>
         )}
+
+        {/* ═══════════════════════════════════════════════════════════════ */}
+        {/*  SECCIÓN BETA (temporal)                                      */}
+        {/* ═══════════════════════════════════════════════════════════════ */}
+
+        <div className="mb-8 flex items-center gap-3 pt-4">
+          <FlaskConical className="h-5 w-5 text-amber-500" />
+          <h2 className="text-lg font-semibold">Zona Beta</h2>
+          <div className="flex-1 border-t border-amber-500/30" />
+          <span className="text-xs text-amber-500 font-medium">Temporal</span>
+        </div>
+
+        {/* Beta Feedback */}
+        {betaFeedback.length > 0 && (() => {
+          const avgRating = betaFeedback.reduce((s, f) => s + f.easeOfUse, 0) / betaFeedback.length
+          const yesCount = betaFeedback.filter(f => f.wouldRecommend === "yes").length
+          const maybeCount = betaFeedback.filter(f => f.wouldRecommend === "maybe").length
+          const noCount = betaFeedback.filter(f => f.wouldRecommend === "no").length
+
+          const featureCounts: Record<string, number> = {}
+          for (const fb of betaFeedback) {
+            if (fb.usefulFeatures) {
+              for (const feat of fb.usefulFeatures.split(",")) {
+                const trimmed = feat.trim()
+                if (trimmed) featureCounts[trimmed] = (featureCounts[trimmed] ?? 0) + 1
+              }
+            }
+          }
+          const featureLabels: Record<string, string> = {
+            dashboard: "Dashboard financiero",
+            projects: "Gestión de proyectos",
+            expenses: "Control de gastos",
+            ocr: "Escaneo con IA (OCR)",
+            reports: "Reportes trimestrales",
+            fiscal: "Estimación fiscal",
+          }
+          const sortedFeatures = Object.entries(featureCounts).sort(([, a], [, b]) => b - a)
+          const maxFeatureCount = sortedFeatures.length > 0 ? sortedFeatures[0][1] : 1
+
+          return (
+            <div className="mb-8 space-y-4">
+              <div className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5 text-amber-500" />
+                <h2 className="text-base font-semibold">Feedback de beta testers</h2>
+                <span className="text-xs text-muted-foreground ml-auto">{betaFeedback.length} respuestas</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="rounded-xl border bg-card p-4">
+                  <p className="text-xs text-muted-foreground mb-1">Valoración media</p>
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-0.5">
+                      {[1, 2, 3, 4, 5].map((n) => (
+                        <Star key={n} className={`h-5 w-5 ${n <= Math.round(avgRating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20"}`} />
+                      ))}
+                    </div>
+                    <span className="text-lg font-bold">{avgRating.toFixed(1)}</span>
+                  </div>
+                </div>
+
+                <div className="rounded-xl border bg-card p-4">
+                  <p className="text-xs text-muted-foreground mb-2">¿Recomendarían?</p>
+                  <div className="flex gap-3 text-sm">
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                      Sí {yesCount}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+                      Tal vez {maybeCount}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
+                      No {noCount}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="rounded-xl border bg-card p-4">
+                  <p className="text-xs text-muted-foreground mb-2">Funcionalidades más votadas</p>
+                  <div className="space-y-1.5">
+                    {sortedFeatures.slice(0, 4).map(([feat, count]) => (
+                      <div key={feat} className="flex items-center gap-2">
+                        <div className="flex-1 h-3 rounded-full bg-muted overflow-hidden">
+                          <div className="h-full rounded-full bg-primary/60" style={{ width: `${(count / maxFeatureCount) * 100}%`, minWidth: "4px" }} />
+                        </div>
+                        <span className="text-[10px] text-muted-foreground w-28 truncate">{featureLabels[feat] ?? feat}</span>
+                        <span className="text-[10px] font-semibold w-4 text-right">{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-xl border bg-card">
+                <div className="border-b p-4">
+                  <h3 className="text-sm font-semibold">Respuestas de feedback</h3>
+                </div>
+                <div className="max-h-[500px] overflow-y-auto">
+                  <table className="w-full text-sm">
+                    <thead className="sticky top-0 bg-card">
+                      <tr className="border-b text-left text-[10px] text-muted-foreground">
+                        <th className="px-4 py-2 font-medium">Email</th>
+                        <th className="px-4 py-2 font-medium">Valoración</th>
+                        <th className="px-4 py-2 font-medium">Recomienda</th>
+                        <th className="px-4 py-2 font-medium">Mejoras</th>
+                        <th className="px-4 py-2 font-medium">Fecha</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {betaFeedback.map((fb) => (
+                        <tr key={fb.id} className="border-b border-border/30 hover:bg-muted/30">
+                          <td className="px-4 py-2 text-xs truncate max-w-[180px]">{fb.email}</td>
+                          <td className="px-4 py-2">
+                            <div className="flex gap-0.5">
+                              {[1, 2, 3, 4, 5].map((n) => (
+                                <Star key={n} className={`h-3 w-3 ${n <= fb.easeOfUse ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20"}`} />
+                              ))}
+                            </div>
+                          </td>
+                          <td className="px-4 py-2">
+                            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                              fb.wouldRecommend === "yes" ? "bg-emerald-500/10 text-emerald-500" :
+                              fb.wouldRecommend === "maybe" ? "bg-amber-500/10 text-amber-500" :
+                              "bg-red-500/10 text-red-500"
+                            }`}>
+                              {fb.wouldRecommend === "yes" ? "Sí" : fb.wouldRecommend === "maybe" ? "Tal vez" : "No"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-2 text-xs text-muted-foreground truncate max-w-[250px]">{fb.improvements ?? "—"}</td>
+                          <td className="px-4 py-2 text-[10px] text-muted-foreground whitespace-nowrap">{formatDate(fb.createdAt)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )
+        })()}
+
+        {/* Waitlist: sector chart + tabla */}
+        <div className="mb-8 grid gap-6 lg:grid-cols-2">
+          {/* Waitlist por sector */}
+          <div className="rounded-xl border bg-card p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart3 className="h-4 w-4 text-orange-500" />
+              <h2 className="text-sm font-semibold">Waitlist por sector</h2>
+              <span className="text-xs text-muted-foreground ml-auto">{totalWaitlist} total</span>
+            </div>
+            {waitlistSectors.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Sin datos</p>
+            ) : (
+              <div className="space-y-2.5">
+                {waitlistSectors.map(([sector, count]) => (
+                  <div key={sector} className="flex items-center gap-3">
+                    <span className="w-44 shrink-0 truncate text-xs">{SECTOR_LABELS[sector] ?? sector}</span>
+                    <div className="flex-1 h-5 rounded-full bg-muted overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-orange-500/70 transition-all"
+                        style={{ width: `${(count / maxWaitlistSector) * 100}%`, minWidth: "8px" }}
+                      />
+                    </div>
+                    <span className="w-8 text-right text-xs font-semibold">{count}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Waitlist tabla */}
+          <AdminWaitlistTable
+            entries={waitlistEntries.map((e) => ({
+              id: e.id,
+              email: e.email,
+              source: e.source,
+              invited: e.invited,
+              createdAt: e.createdAt.toISOString(),
+            }))}
+          />
+        </div>
+
+        {/* Email a waitlist + Finalizar beta */}
+        <div className="mb-8 grid gap-6 lg:grid-cols-2">
+          <AdminWaitlistEmail totalWaitlist={totalWaitlist} />
+          <AdminEndBeta betaProCount={betaProCount} />
+        </div>
       </div>
     </div>
   )
