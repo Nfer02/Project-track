@@ -17,6 +17,7 @@ import {
   HelpCircle,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Logo } from "@/components/app/logo"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -62,12 +63,7 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
     >
       {/* Workspace selector */}
       <div className="flex h-14 items-center gap-2 px-4 border-b border-white/10">
-        <div
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-bold"
-          aria-hidden="true"
-        >
-          PT
-        </div>
+        <Logo size={26} className="shrink-0" />
         <span className="text-sm font-bold text-white truncate flex-1">
           {workspace?.name ?? "ProjectTrack"}
         </span>

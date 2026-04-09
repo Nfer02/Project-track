@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
 import { CheckCircle2, XCircle } from "lucide-react"
+import { Logo } from "@/components/app/logo"
 import { Button } from "@/components/ui/button"
 import { prisma } from "@/lib/prisma"
 import { createClient } from "@/lib/supabase/server"
@@ -163,9 +164,7 @@ function InviteLayout({ children }: { children: React.ReactNode }) {
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold">
-              PT
-            </div>
+            <Logo size={30} />
             <span className="font-semibold text-lg">ProjectTrack</span>
           </div>
         </div>

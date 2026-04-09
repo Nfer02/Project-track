@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { CheckCircle2 } from "lucide-react"
+import { Logo } from "@/components/app/logo"
 import { prisma } from "@/lib/prisma"
 import { RegisterForm } from "./_components/register-form"
 
@@ -46,9 +47,7 @@ export default async function RegisterPage({ searchParams }: Props) {
       >
         {/* Logotipo */}
         <Link href="/" className="flex items-center gap-2.5 w-fit">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold">
-            PT
-          </span>
+          <Logo size={30} />
           <span className="text-white font-semibold text-lg tracking-tight">ProjectTrack</span>
         </Link>
 
@@ -96,9 +95,7 @@ export default async function RegisterPage({ searchParams }: Props) {
       <div className="flex flex-col items-center justify-center px-6 py-12 bg-background">
         {/* Logo solo en mobile */}
         <Link href="/" className="flex items-center gap-2 mb-10 lg:hidden">
-          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-bold">
-            PT
-          </span>
+          <Logo size={26} />
           <span className="font-semibold">ProjectTrack</span>
         </Link>
 

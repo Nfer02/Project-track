@@ -17,6 +17,7 @@ import { Testimonials } from "@/components/landing/testimonials"
 import { CookieNotice } from "@/components/landing/cookie-notice"
 import { WaitlistForm } from "@/components/landing/waitlist-form"
 import { UserTypes } from "@/components/landing/user-types"
+import { Logo } from "@/components/app/logo"
 // import { AppShowcase } from "@/components/landing/app-showcase"  // Se reemplazará por vídeo
 
 export const metadata = {
@@ -78,9 +79,7 @@ export default async function LandingPage() {
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-lg transition-colors">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2 font-bold text-base">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-extrabold">
-              PT
-            </span>
+            <Logo size={28} />
             ProjectTrack
           </Link>
 
@@ -182,7 +181,7 @@ export default async function LandingPage() {
           </FadeIn>
         </section>
 
-        {/* Video Demo — deshabilitado hasta tener el video final
+        {/* Video Demo */}
         <section className="py-16 sm:py-24 bg-muted/20">
           <div className="mx-auto max-w-4xl px-4 sm:px-6">
             <FadeIn>
@@ -211,7 +210,6 @@ export default async function LandingPage() {
             </FadeIn>
           </div>
         </section>
-        */}
 
         {/* --------------------------------------------------------------- */}
         {/* Feature Tabs                                                    */}
