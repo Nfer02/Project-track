@@ -1,3 +1,5 @@
+import { EMAIL_LOGO_SVG } from "./logo-svg"
+
 interface InviteEmailOptions {
   inviterName: string
   workspaceName: string
@@ -38,8 +40,8 @@ export function buildInviteEmail({
             <td style="background:#1e40af;padding:28px 32px;">
               <table cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="background:#2563eb;border-radius:8px;width:32px;height:32px;text-align:center;vertical-align:middle;">
-                    <span style="color:#ffffff;font-weight:700;font-size:14px;">PT</span>
+                  <td style="width:32px;height:37px;vertical-align:middle;">
+                    ${EMAIL_LOGO_SVG}
                   </td>
                   <td style="padding-left:10px;">
                     <span style="color:#ffffff;font-weight:600;font-size:16px;">ProjectTrack</span>
