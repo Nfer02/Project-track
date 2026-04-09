@@ -1,11 +1,12 @@
+import { cache } from "react"
 import { createClient } from "@/lib/supabase/server"
 import { prisma } from "@/lib/prisma"
 
 /**
  * Obtiene el workspace activo del usuario autenticado.
- * Devuelve null si no hay sesión o workspace.
+ * Memoizado con React cache() para deduplicar llamadas dentro del mismo request.
  */
-export async function getCurrentWorkspace() {
+export const getCurrentWorkspace = cache(async function getCurrentWorkspace() {
   try {
     const supabase = await createClient()
     const {
@@ -25,4 +26,4 @@ export async function getCurrentWorkspace() {
   } catch {
     return null
   }
-}
+})
