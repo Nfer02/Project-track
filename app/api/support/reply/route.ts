@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { EMAIL_LOGO_SVG } from "@/lib/email/logo-svg"
 import { createClient } from "@/lib/supabase/server"
 import { prisma } from "@/lib/prisma"
 import { z } from "zod"
@@ -54,7 +55,7 @@ export async function POST(request: NextRequest) {
         html: `
           <div style="max-width:500px;margin:0 auto;font-family:system-ui,-apple-system,sans-serif;color:#f9fafb;background-color:#0f172a;padding:40px 30px;border-radius:12px;">
             <div style="text-align:center;margin-bottom:30px;">
-              <span style="display:inline-block;background-color:#3b82f6;color:white;font-weight:bold;font-size:14px;padding:6px 12px;border-radius:6px;">PT</span>
+              ${EMAIL_LOGO_SVG}
               <span style="font-size:18px;font-weight:bold;margin-left:8px;color:white;">ProjectTrack</span>
             </div>
             <h2 style="color:white;font-size:18px;margin-bottom:10px;">Respuesta a tu consulta</h2>
