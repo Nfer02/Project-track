@@ -182,9 +182,7 @@ export default async function LandingPage() {
           </FadeIn>
         </section>
 
-        {/* --------------------------------------------------------------- */}
-        {/* Video Demo                                                      */}
-        {/* --------------------------------------------------------------- */}
+        {/* Video Demo — deshabilitado hasta tener el video final
         <section className="py-16 sm:py-24 bg-muted/20">
           <div className="mx-auto max-w-4xl px-4 sm:px-6">
             <FadeIn>
@@ -213,6 +211,7 @@ export default async function LandingPage() {
             </FadeIn>
           </div>
         </section>
+        */}
 
         {/* --------------------------------------------------------------- */}
         {/* Feature Tabs                                                    */}
