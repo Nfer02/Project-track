@@ -457,8 +457,8 @@ export default async function LandingPage() {
 
           <div className="mx-auto max-w-2xl px-4 sm:px-6 text-center">
             <FadeIn>
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground text-xl font-extrabold mx-auto mb-6">
-                PT
+              <div className="flex items-center justify-center mx-auto mb-6">
+                <Logo size={52} />
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
                 Estamos preparando algo grande
