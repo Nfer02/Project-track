@@ -43,7 +43,7 @@ export default async function LoginPage({ searchParams }: Props) {
             <h2 className="text-4xl font-semibold leading-tight text-white">
               Tus proyectos,<br />
               tus finanzas,<br />
-              <span style={{ color: "oklch(0.75 0.18 55)" }}>bajo control.</span>
+              <span style={{ color: "#60a5fa", textShadow: "0 0 20px rgba(96,165,250,0.6)" }}>bajo control.</span>
             </h2>
           </div>
 
