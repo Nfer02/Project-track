@@ -55,7 +55,7 @@ export default async function RegisterPage({ searchParams }: Props) {
         <div className="space-y-8">
           <div className="space-y-4">
             <p className="text-xs font-semibold tracking-widest uppercase text-primary">
-              Para autonomos y freelancers
+              Para profesionales y negocios con proyectos
             </p>
             <h2 className="text-4xl font-semibold leading-tight text-white">
               Tus proyectos,<br />

@@ -12,7 +12,7 @@ const font = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "ProjectTrack",
-  description: "Gestión financiera de proyectos para autónomos",
+  description: "Controla tus proyectos, ingresos y gastos en un solo lugar. Para freelancers, negocios y cualquier persona que trabaje por proyectos.",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
