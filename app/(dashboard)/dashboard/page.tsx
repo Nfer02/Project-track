@@ -34,6 +34,8 @@ import { ExpenseCategoryChart } from "@/components/charts/expense-category-chart
 import { NetProfitChart } from "@/components/charts/net-profit-chart"
 import { FiscalGaugeChart } from "@/components/charts/fiscal-gauge-chart"
 import { ProjectStatusBadge } from "@/components/app/project-status-badge"
+import { EmptyDashboard } from "@/components/app/empty-dashboard"
+import { HelpTooltip } from "@/components/app/help-tooltip"
 
 /* ------------------------------------------------------------------ */
 /*  Fiscal helpers                                                     */
@@ -104,9 +106,10 @@ function getDaysRemaining(dueDate: Date | null) {
 /* ------------------------------------------------------------------ */
 
 async function getDashboardData(workspaceId: string) {
-  const [activeProjects, recentProjects, allInvoices, totalAllocated, upcomingPayments] =
+  const [activeProjects, totalProjects, recentProjects, allInvoices, totalAllocated, upcomingPayments] =
     await Promise.all([
       prisma.project.count({ where: { workspaceId, status: "ACTIVE" } }),
+      prisma.project.count({ where: { workspaceId } }),
       prisma.project.findMany({
         where: { workspaceId },
         orderBy: { updatedAt: "desc" },
@@ -221,6 +224,7 @@ async function getDashboardData(workspaceId: string) {
 
   return {
     activeProjects,
+    totalProjects,
     recentProjects,
     pendingCount: incomeInvoices.filter((i) => i.status === "PENDING").length,
     overdueCount: incomeInvoices.filter((i) => i.status === "OVERDUE").length,
@@ -261,6 +265,11 @@ export default async function DashboardPage() {
   }
 
   const data = await getDashboardData(ctx.workspace.id)
+
+  /* Si no hay ningún proyecto, mostrar pantalla de bienvenida */
+  if (data.totalProjects === 0) {
+    return <EmptyDashboard workspaceName={ctx.workspace.name} />
+  }
 
   const netProfit = data.revenueThisMonth - data.expensesThisMonth
   const isPositive = netProfit >= 0
@@ -351,14 +360,14 @@ export default async function DashboardPage() {
   return (
     <div className="flex flex-col gap-6 p-4 sm:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-between gap-3" data-tour-step="welcome-final">
         <div className="space-y-1">
           <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">Dashboard</h1>
           <p className="text-sm text-muted-foreground">
             Resumen financiero — {ctx.workspace.name}
           </p>
         </div>
-        <Button size="sm" render={<Link href="/projects/new" />}>
+        <Button size="sm" render={<Link href="/projects/new" />} data-tour-step="new-project-btn">
           <Plus className="mr-2 h-4 w-4" />
           Nuevo proyecto
         </Button>
@@ -379,7 +388,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats cards - 2 rows */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" data-tour-step="stats-cards">
         {STATS.map(({ label, value, sub, icon: Icon, color, border }) => (
           <Card key={label} className={border}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -396,27 +405,7 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      {data.activeProjects === 0 ? (
-        /* Empty state */
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 gap-3 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-            <FolderOpen className="h-5 w-5 text-muted-foreground" />
-          </div>
-          <div className="space-y-1">
-            <p className="text-sm font-medium">No hay proyectos todav&iacute;a</p>
-            <p className="text-sm text-muted-foreground max-w-xs">
-              Crea tu primer proyecto para empezar a registrar ingresos y
-              facturas.
-            </p>
-          </div>
-          <Button size="sm" render={<Link href="/projects/new" />}>
-            <Plus className="mr-2 h-4 w-4" />
-            Crear proyecto
-          </Button>
-        </div>
-      ) : (
-        <>
-          {/* Overdue alert */}
+      {/* Overdue alert */}
           {data.overdueCount > 0 && (
             <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-destructive shrink-0" />
@@ -495,9 +484,12 @@ export default async function DashboardPage() {
 
           {/* Charts row 1 - 2 columns */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="rounded-xl border bg-card p-4 sm:p-5">
+            <div className="rounded-xl border bg-card p-4 sm:p-5" data-tour-step="income-expense-chart">
               <div className="mb-4 space-y-0.5">
-                <h2 className="text-sm font-semibold">Ingresos vs Gastos</h2>
+                <div className="flex items-center gap-1.5">
+                  <h2 className="text-sm font-semibold">Ingresos vs Gastos</h2>
+                  <HelpTooltip content="Compara tus ingresos facturados con tus gastos registrados en los ultimos 6 meses." />
+                </div>
                 <p className="text-xs text-muted-foreground">
                   Últimos 6 meses
                 </p>
@@ -506,7 +498,10 @@ export default async function DashboardPage() {
             </div>
             <div className="rounded-xl border bg-card p-4 sm:p-5">
               <div className="mb-4 space-y-0.5">
-                <h2 className="text-sm font-semibold">Gastos por categor&iacute;a</h2>
+                <div className="flex items-center gap-1.5">
+                  <h2 className="text-sm font-semibold">Gastos por categoria</h2>
+                  <HelpTooltip content="Desglose de tus gastos por tipo: material, subcontratas, suministros, etc." />
+                </div>
               </div>
               <ExpenseCategoryChart data={data.categoryData} totalExpenses={data.totalExpensesAll} />
             </div>
@@ -516,16 +511,22 @@ export default async function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="rounded-xl border bg-card p-4 sm:p-5">
               <div className="mb-4 space-y-0.5">
-                <h2 className="text-sm font-semibold">Beneficio mensual</h2>
+                <div className="flex items-center gap-1.5">
+                  <h2 className="text-sm font-semibold">Beneficio mensual</h2>
+                  <HelpTooltip content="Beneficio bruto (antes de impuestos) frente al neto estimado tras IVA e IRPF." />
+                </div>
                 <p className="text-xs text-muted-foreground">
                   Bruto (antes de impuestos) vs Neto real (tras IVA + IRPF)
                 </p>
               </div>
               <NetProfitChart data={data.netProfitMonthly} />
             </div>
-            <div className="rounded-xl border bg-card p-4 sm:p-5">
+            <div className="rounded-xl border bg-card p-4 sm:p-5" data-tour-step="fiscal-gauge">
               <div className="mb-4 space-y-0.5">
-                <h2 className="text-sm font-semibold">Reserva fiscal</h2>
+                <div className="flex items-center gap-1.5">
+                  <h2 className="text-sm font-semibold">Reserva fiscal</h2>
+                  <HelpTooltip content="Porcentaje de tus ingresos que deberias reservar para impuestos trimestrales." />
+                </div>
                 <p className="text-xs text-muted-foreground">
                   {f.quarterLabel}
                 </p>
@@ -539,18 +540,18 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-        </>
-      )}
-
       {/* Estimacion fiscal del trimestre */}
       <div className="rounded-xl border-l-4 border-l-indigo-500 border border-border bg-card p-4 sm:p-5 space-y-4">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
             <Calculator className="h-5 w-5 text-indigo-500" />
             <div>
-              <h2 className="text-sm font-semibold">
-                Estimaci&oacute;n fiscal del trimestre
-              </h2>
+              <div className="flex items-center gap-1.5">
+                <h2 className="text-sm font-semibold">
+                  Estimacion fiscal del trimestre
+                </h2>
+                <HelpTooltip content="Calculo orientativo basado en IVA al 21% e IRPF al 20%. No sustituye el asesoramiento de un profesional fiscal." />
+              </div>
               <p className="text-xs text-muted-foreground">
                 {f.quarterLabel} — Presentaci&oacute;n: {f.filingDeadlineLabel}
               </p>

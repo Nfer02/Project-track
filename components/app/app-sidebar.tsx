@@ -15,6 +15,7 @@ import {
   CreditCard,
   Shield,
   HelpCircle,
+  CirclePlay,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Logo } from "@/components/app/logo"
@@ -107,6 +108,7 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
               href={href}
               onClick={onLinkClick}
               aria-current={isActive ? "page" : undefined}
+              {...(href === "/reports" ? { "data-tour-step": "reports-link" } : {})}
               className={cn(
                 "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 isActive
@@ -161,6 +163,15 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
                 Admin
               </DropdownMenuItem>
             )}
+            <DropdownMenuItem
+              onClick={() => {
+                localStorage.removeItem("product-tour-completed")
+                window.dispatchEvent(new Event("restart-tour"))
+              }}
+            >
+              <CirclePlay className="mr-2 h-4 w-4" aria-hidden="true" />
+              Repetir tour
+            </DropdownMenuItem>
             <DropdownMenuItem
               className="text-destructive focus:text-destructive"
               onClick={() => logout()}

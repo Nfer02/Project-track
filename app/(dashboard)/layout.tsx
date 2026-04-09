@@ -1,5 +1,6 @@
 import { AppSidebar } from "@/components/app/app-sidebar"
 import { MobileSidebarToggle } from "@/components/app/mobile-sidebar"
+import { ProductTour } from "@/components/app/product-tour"
 import { createClient } from "@/lib/supabase/server"
 import { prisma } from "@/lib/prisma"
 
@@ -34,9 +35,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <div className="flex h-svh overflow-hidden">
       {/* Desktop sidebar */}
-      <div className="hidden md:block">
+      <div className="hidden md:block" data-tour-step="sidebar">
         <AppSidebar user={user} workspace={workspace} />
       </div>
+
+      <ProductTour />
 
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Mobile top bar */}

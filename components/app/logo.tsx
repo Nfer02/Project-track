@@ -1,3 +1,7 @@
+"use client"
+
+import { useId } from "react"
+
 interface LogoProps {
   size?: number
   className?: string
@@ -5,7 +9,8 @@ interface LogoProps {
 
 export function Logo({ size = 32, className }: LogoProps) {
   const height = Math.round(size * (300 / 260))
-  const id = Math.random().toString(36).slice(2, 8)
+  const reactId = useId()
+  const id = reactId.replace(/:/g, "")
 
   return (
     <svg
