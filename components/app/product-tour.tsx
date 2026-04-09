@@ -88,7 +88,7 @@ export function ProductTour() {
   useEffect(() => {
     if (currentStep === null || !steps[currentStep]) return
     scrollToTarget(steps[currentStep].target)
-    const t = setTimeout(updateRect, 450)
+    const t = setTimeout(updateRect, 220)
     return () => clearTimeout(t)
   }, [currentStep, steps, updateRect])
 
@@ -222,11 +222,12 @@ export function ProductTour() {
     <>
       {/* Dark overlay */}
       <div
-        className="fixed inset-0 transition-all duration-300"
+        className="fixed inset-0"
         style={{
           zIndex: 9998,
           background: "rgba(0,0,0,0.82)",
           clipPath,
+          transition: "clip-path 0.35s cubic-bezier(0.4,0,0.2,1)",
         }}
         onClick={finish}
       />
@@ -234,7 +235,7 @@ export function ProductTour() {
       {/* Spotlight ring */}
       {targetRect && (
         <div
-          className="fixed pointer-events-none rounded-lg transition-all duration-300"
+          className="fixed pointer-events-none rounded-lg"
           style={{
             zIndex: 9999,
             top: targetRect.top - padding,
@@ -243,6 +244,7 @@ export function ProductTour() {
             height: targetRect.height + padding * 2,
             border: "2px solid hsl(var(--primary))",
             boxShadow: "0 0 0 4px hsl(var(--primary) / 0.25), 0 0 24px hsl(var(--primary) / 0.2)",
+            transition: "top 0.35s cubic-bezier(0.4,0,0.2,1), left 0.35s cubic-bezier(0.4,0,0.2,1), width 0.35s cubic-bezier(0.4,0,0.2,1), height 0.35s cubic-bezier(0.4,0,0.2,1)",
           }}
         />
       )}
@@ -250,8 +252,12 @@ export function ProductTour() {
       {/* Tour card */}
       <div
         ref={cardRef}
-        className="rounded-2xl bg-popover shadow-2xl ring-1 ring-foreground/10 animate-in fade-in-0 slide-in-from-bottom-3 duration-200 overflow-hidden"
-        style={{ ...cardStyle, width: isMobile ? undefined : 340 }}
+        className="rounded-2xl bg-popover shadow-2xl ring-1 ring-foreground/10 overflow-hidden"
+        style={{
+          ...cardStyle,
+          width: isMobile ? undefined : 340,
+          transition: "top 0.35s cubic-bezier(0.4,0,0.2,1), left 0.35s cubic-bezier(0.4,0,0.2,1), right 0.35s cubic-bezier(0.4,0,0.2,1), bottom 0.35s cubic-bezier(0.4,0,0.2,1)",
+        }}
       >
         {/* Top accent bar */}
         <div className="h-1 w-full bg-gradient-to-r from-[#60a5fa] to-[#3b82f6]" />
