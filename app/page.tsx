@@ -126,8 +126,8 @@ export default async function LandingPage() {
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
               Tus proyectos y finanzas,{" "}
               <span
-                className="bg-gradient-to-r from-[#60a5fa] to-[#3b82f6] bg-clip-text text-transparent"
-                style={{ filter: "drop-shadow(0 0 24px rgba(59,130,246,0.45))" }}
+                className="text-[#60a5fa]"
+                style={{ textShadow: "0 0 20px rgba(96,165,250,0.7), 0 0 40px rgba(59,130,246,0.4)" }}
               >
                 <Typewriter
                   words={[
