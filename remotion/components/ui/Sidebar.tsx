@@ -1,5 +1,6 @@
 // remotion/components/ui/Sidebar.tsx
 import { COLORS, FONTS, FONT_WEIGHTS } from '../../constants/theme'
+import { PTLogo } from './PTLogo'
 
 interface SidebarItem {
   label: string
@@ -34,14 +35,7 @@ export const Sidebar = ({ activeItem = 'Dashboard' }: SidebarProps) => (
       borderBottom: `1px solid ${COLORS.border}`,
       display: 'flex', alignItems: 'center', gap: 10,
     }}>
-      <div style={{
-        width: 32, height: 32,
-        background: `linear-gradient(135deg, ${COLORS.accent}, #2563eb)`,
-        borderRadius: 8,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 14, color: 'white', fontWeight: FONT_WEIGHTS.bold,
-        fontFamily: FONTS.display,
-      }}>P</div>
+      <PTLogo size={32} />
       <span style={{ fontFamily: FONTS.display, fontWeight: FONT_WEIGHTS.semibold, color: COLORS.textPrimary, fontSize: 15 }}>
         Estudio Martín
       </span>

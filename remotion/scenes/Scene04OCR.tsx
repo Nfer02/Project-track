@@ -39,8 +39,8 @@ export const Scene04OCR = () => {
         {/* App Frame con el formulario OCR */}
         <div style={{ opacity: appOpacity, width: '100%' }}>
           <AppFrame startFrame={0} width={1500} height={820}>
-            {/* OCRFormUI recibe el frame absoluto de inicio de la escena */}
-            <OCRFormUI startFrame={SCENES.ocr.start} />
+            {/* startFrame=0 porque dentro de Sequence los frames son relativos */}
+            <OCRFormUI startFrame={0} />
           </AppFrame>
         </div>
       </AbsoluteFill>

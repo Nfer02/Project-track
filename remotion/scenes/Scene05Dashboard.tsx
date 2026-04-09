@@ -28,7 +28,8 @@ export const Scene05Dashboard = () => {
           </KeywordPill>
         </div>
         <AppFrame startFrame={0} width={1500} height={820}>
-          <DashboardUI startFrame={SCENES.dashboard.start} />
+          {/* startFrame=0 porque dentro de Sequence los frames son relativos */}
+          <DashboardUI startFrame={0} />
         </AppFrame>
       </AbsoluteFill>
     </AbsoluteFill>

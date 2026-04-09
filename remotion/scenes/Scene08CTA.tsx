@@ -4,6 +4,7 @@ import { FPS } from '../constants/timing'
 import { COLORS, FONTS, FONT_WEIGHTS } from '../constants/theme'
 import { GlowBackground } from '../components/motion/GlowBackground'
 import { TypewriterText } from '../components/motion/TypewriterText'
+import { PTLogo } from '../components/ui/PTLogo'
 
 export const Scene08CTA = () => {
   const frame = useCurrentFrame()
@@ -30,17 +31,9 @@ export const Scene08CTA = () => {
         alignItems: 'center', justifyContent: 'center', gap: 32,
       }}>
         {/* Logo */}
-        <div style={{ transform: `scale(${logoScale})`, opacity: logoOpacity, display: 'flex', alignItems: 'center', gap: 20 }}>
-          <div style={{
-            width: 72, height: 72,
-            background: `linear-gradient(135deg, ${COLORS.accent}, #2563eb)`,
-            borderRadius: 18,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 32, color: 'white', fontWeight: FONT_WEIGHTS.extrabold,
-            boxShadow: `0 0 40px rgba(59,130,246,0.4)`,
-            fontFamily: FONTS.display,
-          }}>P</div>
-          <span style={{ fontFamily: FONTS.display, fontSize: 52, fontWeight: FONT_WEIGHTS.extrabold, color: COLORS.textPrimary }}>
+        <div style={{ transform: `scale(${logoScale})`, opacity: logoOpacity, display: 'flex', alignItems: 'center', gap: 24 }}>
+          <PTLogo size={90} />
+          <span style={{ fontFamily: FONTS.display, fontSize: 64, fontWeight: FONT_WEIGHTS.extrabold, color: COLORS.textPrimary, letterSpacing: '-1px' }}>
             ProjectTrack
           </span>
         </div>
