@@ -482,9 +482,7 @@ export default async function LandingPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2 font-medium text-foreground">
-              <span className="flex h-6 w-6 items-center justify-center rounded bg-primary text-primary-foreground text-[10px] font-extrabold">
-                PT
-              </span>
+              <Logo size={22} />
               ProjectTrack
             </div>
 

@@ -44,7 +44,7 @@ const testimonials: Testimonial[] = [
     name: "Patricia López",
     role: "Consultora de marketing",
     quote:
-      "Probé Quipu y Billin pero ninguno me dejaba controlar costes por proyecto. ProjectTrack es exactamente lo que necesitaba.",
+      "Por fin tengo todo en un solo sitio: proyectos, facturas y gastos. Antes perdía horas buscando datos entre hojas de cálculo.",
   },
 ]
 
@@ -78,7 +78,7 @@ export function Testimonials() {
 
   // Auto-rotate every 5 seconds
   useEffect(() => {
-    const timer = setInterval(next, 5000)
+    const timer = setInterval(next, 8000)
     return () => clearInterval(timer)
   }, [next])
 
@@ -119,7 +119,7 @@ export function Testimonials() {
         {/* Cards track */}
         <div className="px-12">
           <div
-            className="flex transition-transform duration-500 ease-in-out"
+            className="flex transition-transform duration-700 ease-in-out"
             style={{
               transform: `translateX(-${current * (100 / 3)}%)`,
             }}
