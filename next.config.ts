@@ -6,6 +6,13 @@ const nextConfig: NextConfig = {
 
   // No exponer "X-Powered-By: Next.js" en producción
   poweredByHeader: false,
+
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals = [...(config.externals || []), 'remotion']
+    }
+    return config
+  },
 }
 
 export default nextConfig
