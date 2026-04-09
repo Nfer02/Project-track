@@ -125,7 +125,10 @@ export default async function LandingPage() {
 
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
               Tus proyectos y finanzas,{" "}
-              <span className="text-primary">
+              <span
+                className="bg-gradient-to-r from-[#60a5fa] to-[#3b82f6] bg-clip-text text-transparent"
+                style={{ filter: "drop-shadow(0 0 24px rgba(59,130,246,0.45))" }}
+              >
                 <Typewriter
                   words={[
                     "bajo control",
@@ -133,6 +136,7 @@ export default async function LandingPage() {
                     "sin sorpresas",
                     "en un solo lugar",
                   ]}
+                  cursorColor="#60a5fa"
                 />
               </span>
             </h1>

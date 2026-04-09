@@ -6,11 +6,12 @@ import { cn } from "@/lib/utils"
 interface TypewriterProps {
   words: string[]
   className?: string
+  cursorColor?: string
 }
 
 type Phase = "typing" | "pausing" | "erasing"
 
-export function Typewriter({ words, className }: TypewriterProps) {
+export function Typewriter({ words, className, cursorColor }: TypewriterProps) {
   const [wordIndex, setWordIndex] = useState(0)
   const [charIndex, setCharIndex] = useState(0)
   const [phase, setPhase] = useState<Phase>("typing")
@@ -77,7 +78,10 @@ export function Typewriter({ words, className }: TypewriterProps) {
       {/* Visible animated text */}
       <span className="col-start-1 row-start-1 inline-flex items-baseline">
         <span>{displayText}</span>
-        <span className="ml-0.5 inline-block w-[2px] h-[0.8em] bg-current animate-pulse" />
+        <span
+          className="ml-0.5 inline-block w-[2px] h-[0.8em] animate-pulse"
+          style={{ backgroundColor: cursorColor ?? "currentColor" }}
+        />
       </span>
     </span>
   )
