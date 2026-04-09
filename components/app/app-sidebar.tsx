@@ -168,6 +168,7 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
               onClick={() => {
                 localStorage.removeItem("product-tour-completed")
                 localStorage.setItem(RESTART_KEY, "1")
+                window.dispatchEvent(new Event("restart-tour"))
                 router.push("/dashboard")
               }}
             >

@@ -64,20 +64,19 @@ export function ProductTour() {
     return () => clearTimeout(t)
   }, [pathname])
 
-  // Legacy restart event (for backward compat when already on /dashboard)
+  // Restart via event (fired by sidebar, works when already on /dashboard)
   useEffect(() => {
     function handleRestart() {
-      if (!pathname.startsWith("/dashboard")) return
       localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(RESTART_KEY)
       const visibleSteps = getVisibleSteps(DASHBOARD_TOUR_STEPS)
       setSteps(visibleSteps)
       setCurrentStep(null)
-      const t = setTimeout(() => setCurrentStep(0), 300)
-      return () => clearTimeout(t)
+      setTimeout(() => setCurrentStep(0), 400)
     }
     window.addEventListener("restart-tour", handleRestart)
     return () => window.removeEventListener("restart-tour", handleRestart)
-  }, [pathname])
+  }, [])
 
   const updateRect = useCallback(() => {
     if (currentStep === null || !steps[currentStep]) return
