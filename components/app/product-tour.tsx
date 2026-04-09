@@ -1,10 +1,12 @@
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
-import { X, ChevronRight } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import { X, ChevronRight, ChevronLeft } from "lucide-react"
 import { DASHBOARD_TOUR_STEPS, type TourStep } from "@/lib/tour-steps"
 
 const STORAGE_KEY = "product-tour-completed"
+const RESTART_KEY = "product-tour-restart"
 
 function getVisibleSteps(steps: TourStep[]): TourStep[] {
   if (typeof window === "undefined") return steps
@@ -33,38 +35,50 @@ function scrollToTarget(selector: string) {
 }
 
 export function ProductTour() {
+  const pathname = usePathname()
+  const router = useRouter()
   const [currentStep, setCurrentStep] = useState<number | null>(null)
   const [targetRect, setTargetRect] = useState<Rect | null>(null)
   const [steps, setSteps] = useState<TourStep[]>([])
   const cardRef = useRef<HTMLDivElement>(null)
 
-  // Initialize
+  // Initialize on first load (when no projects yet done tour)
   useEffect(() => {
     if (localStorage.getItem(STORAGE_KEY)) return
-
     const visibleSteps = getVisibleSteps(DASHBOARD_TOUR_STEPS)
     setSteps(visibleSteps)
-
-    // Delay to let dashboard render
-    const t = setTimeout(() => {
-      setCurrentStep(0)
-    }, 800)
+    const t = setTimeout(() => setCurrentStep(0), 900)
     return () => clearTimeout(t)
   }, [])
 
-  // Listen for restart event
+  // Handle restart via localStorage flag (set by sidebar, triggers after navigation to /dashboard)
+  useEffect(() => {
+    if (!pathname.startsWith("/dashboard")) return
+    const pending = localStorage.getItem(RESTART_KEY)
+    if (!pending) return
+    localStorage.removeItem(RESTART_KEY)
+    const visibleSteps = getVisibleSteps(DASHBOARD_TOUR_STEPS)
+    setSteps(visibleSteps)
+    setCurrentStep(null)
+    const t = setTimeout(() => setCurrentStep(0), 700)
+    return () => clearTimeout(t)
+  }, [pathname])
+
+  // Legacy restart event (for backward compat when already on /dashboard)
   useEffect(() => {
     function handleRestart() {
+      if (!pathname.startsWith("/dashboard")) return
       localStorage.removeItem(STORAGE_KEY)
       const visibleSteps = getVisibleSteps(DASHBOARD_TOUR_STEPS)
       setSteps(visibleSteps)
-      setCurrentStep(0)
+      setCurrentStep(null)
+      const t = setTimeout(() => setCurrentStep(0), 300)
+      return () => clearTimeout(t)
     }
     window.addEventListener("restart-tour", handleRestart)
     return () => window.removeEventListener("restart-tour", handleRestart)
-  }, [])
+  }, [pathname])
 
-  // Update target rect when step changes
   const updateRect = useCallback(() => {
     if (currentStep === null || !steps[currentStep]) return
     const step = steps[currentStep]
@@ -74,14 +88,11 @@ export function ProductTour() {
 
   useEffect(() => {
     if (currentStep === null || !steps[currentStep]) return
-
     scrollToTarget(steps[currentStep].target)
-    // Wait for scroll to finish then update rect
-    const t = setTimeout(updateRect, 400)
+    const t = setTimeout(updateRect, 450)
     return () => clearTimeout(t)
   }, [currentStep, steps, updateRect])
 
-  // Recalculate on resize/scroll
   useEffect(() => {
     if (currentStep === null) return
     window.addEventListener("resize", updateRect)
@@ -92,11 +103,12 @@ export function ProductTour() {
     }
   }, [currentStep, updateRect])
 
-  // ESC to close
   useEffect(() => {
     if (currentStep === null) return
     function handleKey(e: KeyboardEvent) {
       if (e.key === "Escape") finish()
+      if (e.key === "ArrowRight") next()
+      if (e.key === "ArrowLeft") prev()
     }
     window.addEventListener("keydown", handleKey)
     return () => window.removeEventListener("keydown", handleKey)
@@ -104,11 +116,13 @@ export function ProductTour() {
 
   function next() {
     if (currentStep === null) return
-    if (currentStep >= steps.length - 1) {
-      finish()
-    } else {
-      setCurrentStep(currentStep + 1)
-    }
+    if (currentStep >= steps.length - 1) finish()
+    else setCurrentStep(currentStep + 1)
+  }
+
+  function prev() {
+    if (currentStep === null || currentStep === 0) return
+    setCurrentStep(currentStep - 1)
   }
 
   function finish() {
@@ -121,85 +135,104 @@ export function ProductTour() {
 
   const step = steps[currentStep]
   const isLast = currentStep === steps.length - 1
-  const padding = 8
+  const isFirst = currentStep === 0
+  const padding = 10
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768
 
-  // Clip-path for spotlight cutout
   const clipPath = targetRect
     ? `polygon(evenodd, 0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, ${targetRect.left - padding}px ${targetRect.top - padding}px, ${targetRect.left + targetRect.width + padding}px ${targetRect.top - padding}px, ${targetRect.left + targetRect.width + padding}px ${targetRect.top + targetRect.height + padding}px, ${targetRect.left - padding}px ${targetRect.top + targetRect.height + padding}px, ${targetRect.left - padding}px ${targetRect.top - padding}px)`
     : undefined
 
-  // Card position
   let cardStyle: React.CSSProperties = {}
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768
 
   if (isMobile) {
     cardStyle = {
       position: "fixed",
-      bottom: 16,
+      bottom: 24,
       left: 16,
       right: 16,
       zIndex: 10001,
     }
   } else if (targetRect) {
+    const CARD_WIDTH = 340
+    const CARD_HEIGHT = 160
     const gap = 16
+    const vw = window.innerWidth
+    const vh = window.innerHeight
+
     switch (step.side) {
-      case "bottom":
+      case "bottom": {
+        let left = targetRect.left
+        if (left + CARD_WIDTH > vw - 16) left = vw - CARD_WIDTH - 16
+        if (left < 16) left = 16
         cardStyle = {
           position: "fixed",
-          top: targetRect.top + targetRect.height + padding + gap,
-          left: Math.max(16, targetRect.left),
+          top: Math.min(targetRect.top + targetRect.height + padding + gap, vh - CARD_HEIGHT - 16),
+          left,
           zIndex: 10001,
         }
         break
-      case "top":
+      }
+      case "top": {
+        let left = targetRect.left
+        if (left + CARD_WIDTH > vw - 16) left = vw - CARD_WIDTH - 16
+        if (left < 16) left = 16
         cardStyle = {
           position: "fixed",
-          bottom:
-            window.innerHeight -
-            targetRect.top +
-            padding +
-            gap,
-          left: Math.max(16, targetRect.left),
+          bottom: vh - targetRect.top + padding + gap,
+          left,
           zIndex: 10001,
         }
         break
-      case "right":
+      }
+      case "right": {
+        let top = targetRect.top
+        if (top + CARD_HEIGHT > vh - 16) top = vh - CARD_HEIGHT - 16
         cardStyle = {
           position: "fixed",
-          top: targetRect.top,
-          left: targetRect.left + targetRect.width + padding + gap,
+          top,
+          left: Math.min(targetRect.left + targetRect.width + padding + gap, vw - CARD_WIDTH - 16),
           zIndex: 10001,
         }
         break
-      case "left":
+      }
+      case "left": {
+        let top = targetRect.top
+        if (top + CARD_HEIGHT > vh - 16) top = vh - CARD_HEIGHT - 16
         cardStyle = {
           position: "fixed",
-          top: targetRect.top,
-          right:
-            window.innerWidth -
-            targetRect.left +
-            padding +
-            gap,
+          top,
+          right: vw - targetRect.left + padding + gap,
           zIndex: 10001,
         }
         break
+      }
+    }
+  } else {
+    // No target rect: center card
+    cardStyle = {
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: 10001,
     }
   }
 
   return (
     <>
-      {/* Dark overlay with spotlight cutout */}
+      {/* Dark overlay */}
       <div
         className="fixed inset-0 transition-all duration-300"
         style={{
           zIndex: 9998,
-          background: "rgba(0,0,0,0.6)",
+          background: "rgba(0,0,0,0.82)",
           clipPath,
         }}
         onClick={finish}
       />
 
-      {/* Highlight ring around target */}
+      {/* Spotlight ring */}
       {targetRect && (
         <div
           className="fixed pointer-events-none rounded-lg transition-all duration-300"
@@ -210,7 +243,7 @@ export function ProductTour() {
             width: targetRect.width + padding * 2,
             height: targetRect.height + padding * 2,
             border: "2px solid hsl(var(--primary))",
-            boxShadow: "0 0 0 4px hsl(var(--primary) / 0.2)",
+            boxShadow: "0 0 0 4px hsl(var(--primary) / 0.25), 0 0 24px hsl(var(--primary) / 0.2)",
           }}
         />
       )}
@@ -218,50 +251,89 @@ export function ProductTour() {
       {/* Tour card */}
       <div
         ref={cardRef}
-        className="w-80 rounded-xl bg-popover p-4 shadow-2xl ring-1 ring-foreground/10 animate-in fade-in-0 slide-in-from-bottom-2"
-        style={cardStyle}
+        className="rounded-2xl bg-popover shadow-2xl ring-1 ring-foreground/10 animate-in fade-in-0 slide-in-from-bottom-3 duration-200 overflow-hidden"
+        style={{ ...cardStyle, width: isMobile ? undefined : 340 }}
       >
-        {/* Header */}
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="text-sm font-semibold">{step.title}</h3>
-          <button
-            onClick={finish}
-            className="rounded-md p-0.5 text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Cerrar tour"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
+        {/* Top accent bar */}
+        <div className="h-1 w-full bg-gradient-to-r from-[#60a5fa] to-[#3b82f6]" />
 
-        {/* Description */}
-        <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-          {step.description}
-        </p>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] text-muted-foreground/70">
-            {currentStep + 1} de {steps.length}
-          </span>
-          <div className="flex items-center gap-2">
-            {!isLast && (
-              <button
-                onClick={finish}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Saltar
-              </button>
-            )}
+        <div className="p-5">
+          {/* Header */}
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary/15 text-primary text-[11px] font-bold shrink-0">
+                {currentStep + 1}
+              </span>
+              <h3 className="text-sm font-semibold leading-tight">{step.title}</h3>
+            </div>
             <button
-              onClick={next}
-              className="inline-flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+              onClick={finish}
+              className="rounded-md p-1 text-muted-foreground hover:text-foreground transition-colors shrink-0 ml-2"
+              aria-label="Cerrar tour"
             >
-              {isLast ? "Finalizar" : "Siguiente"}
-              {!isLast && <ChevronRight className="h-3 w-3" />}
+              <X className="h-3.5 w-3.5" />
             </button>
+          </div>
+
+          {/* Description */}
+          <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+            {step.description}
+          </p>
+
+          {/* Progress dots */}
+          <div className="flex items-center gap-1.5 mb-4">
+            {steps.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentStep(i)}
+                className="transition-all duration-200 rounded-full"
+                style={{
+                  width: i === currentStep ? 20 : 6,
+                  height: 6,
+                  backgroundColor: i === currentStep
+                    ? "hsl(var(--primary))"
+                    : i < currentStep
+                    ? "hsl(var(--primary) / 0.4)"
+                    : "hsl(var(--muted-foreground) / 0.3)",
+                }}
+                aria-label={`Ir al paso ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Footer buttons */}
+          <div className="flex items-center justify-between gap-2">
+            <button
+              onClick={prev}
+              disabled={isFirst}
+              className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="h-3.5 w-3.5" />
+              Anterior
+            </button>
+
+            <div className="flex items-center gap-2">
+              {!isLast && (
+                <button
+                  onClick={finish}
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1.5"
+                >
+                  Saltar
+                </button>
+              )}
+              <button
+                onClick={next}
+                className="inline-flex items-center gap-1 rounded-lg bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                {isLast ? "Finalizar" : "Siguiente"}
+                {!isLast && <ChevronRight className="h-3.5 w-3.5" />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </>
   )
 }
+
+export { RESTART_KEY }

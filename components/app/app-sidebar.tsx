@@ -28,6 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { logout } from "@/app/(auth)/actions"
+import { RESTART_KEY } from "@/components/app/product-tour"
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -166,7 +167,8 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
             <DropdownMenuItem
               onClick={() => {
                 localStorage.removeItem("product-tour-completed")
-                window.dispatchEvent(new Event("restart-tour"))
+                localStorage.setItem(RESTART_KEY, "1")
+                router.push("/dashboard")
               }}
             >
               <CirclePlay className="mr-2 h-4 w-4" aria-hidden="true" />
