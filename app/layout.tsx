@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Plus_Jakarta_Sans } from "next/font/google"
+import Script from "next/script"
 import "./globals.css"
 import { Providers } from "./providers"
 import { Toaster } from "@/components/ui/sonner"
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" suppressHydrationWarning>
+      <Script id="scroll-restore" strategy="beforeInteractive">{`history.scrollRestoration='manual'`}</Script>
       <body className={`${font.variable} font-sans antialiased`}>
         {/* Skip to main content — accesibilidad teclado */}
         <a
