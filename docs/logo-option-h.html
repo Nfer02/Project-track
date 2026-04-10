@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProjectTrack — Logo Option H: Isometric 3D</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 60px 40px 80px;
+  }
+
+  h1 {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 60px;
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .showcase {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+  }
+
+  .section {
+    text-align: center;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #475569;
+    margin-bottom: 32px;
+  }
+
+  /* ========================================
+     GLOW WRAPPER — contained, no overflow
+     ======================================== */
+  .glow-wrap {
+    display: inline-block;
+    position: relative;
+  }
+
+  .glow-wrap svg {
+    filter: drop-shadow(0 0 40px rgba(59,130,246,0.25)) drop-shadow(0 4px 20px rgba(59,130,246,0.15));
+  }
+
+  .glow-wrap svg {
+    display: block;
+  }
+
+  /* ========================================
+     HORIZONTAL LOCKUP
+     ======================================== */
+  .lockup-horizontal {
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .lockup-horizontal .brand-text {
+    text-align: left;
+  }
+
+  .brand-name {
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #f1f5f9;
+    line-height: 1;
+  }
+
+  .brand-name span {
+    color: #3b82f6;
+  }
+
+  .brand-tagline {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-top: 6px;
+  }
+
+  /* ========================================
+     WHITE CARD
+     ======================================== */
+  .white-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 36px 52px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+  }
+
+  .white-card .brand-name {
+    color: #0f172a;
+  }
+
+  .white-card .brand-tagline {
+    color: #94a3b8;
+  }
+
+  .white-card .glow-wrap svg {
+    filter: drop-shadow(0 2px 8px rgba(59,130,246,0.2));
+  }
+
+  /* ========================================
+     SIZE TEST
+     ======================================== */
+  .size-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .size-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .size-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;
+    letter-spacing: 1px;
+  }
+
+  /* ========================================
+     APP ICON MOCKS
+     ======================================== */
+  .app-icon-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .app-icon-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .app-icon {
+    width: 120px;
+    height: 120px;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .app-icon--dark {
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .app-icon--gradient {
+    background: linear-gradient(145deg, #2563eb 0%, #1e40af 100%);
+    box-shadow: 0 12px 40px rgba(37,99,235,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+
+  .app-icon--white {
+    background: #ffffff;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .app-icon-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #64748b;
+  }
+
+  /* ========================================
+     FLOAT ANIMATION
+     ======================================== */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .float-anim svg {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  /* ========================================
+     DIVIDER
+     ======================================== */
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #1e3a5f, transparent);
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<h1>Logo Concept</h1>
+<h2>Option H: Isometric 3D</h2>
+
+<div class="showcase">
+
+  <!-- ======== SECTION 1: Icon Only 150px ======== -->
+  <div class="section">
+    <div class="section-label">Icon Only &mdash; 150px</div>
+    <div class="glow-wrap float-anim">
+      <svg width="150" height="173" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- === ISOMETRIC "P" BLOCK ===
+             Built from stacked isometric cubes/blocks:
+             - Tall left column (vertical stroke of P)
+             - Upper right extension + return (bowl of P)
+             Three face colors create dimensional depth.
+        -->
+        <defs>
+          <linearGradient id="fTop" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#60a5fa"/>
+            <stop offset="100%" stop-color="#3b82f6"/>
+          </linearGradient>
+          <linearGradient id="fRight" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#2563eb"/>
+            <stop offset="100%" stop-color="#1d4ed8"/>
+          </linearGradient>
+          <linearGradient id="fLeft" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#1e40af"/>
+            <stop offset="100%" stop-color="#172554"/>
+          </linearGradient>
+          <linearGradient id="gArrow" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#10b981"/>
+            <stop offset="100%" stop-color="#34d399"/>
+          </linearGradient>
+        </defs>
+
+        <!-- ====== TALL LEFT COLUMN (vertical bar of P) ====== -->
+        <!-- Left face (darkest) -->
+        <polygon points="30,100 90,65 90,250 30,285" fill="url(#fLeft)"/>
+        <!-- Right face (medium) -->
+        <polygon points="90,65 130,85 130,270 90,250" fill="url(#fRight)"/>
+        <!-- Top face (lightest) -->
+        <polygon points="30,100 90,65 130,85 70,120" fill="url(#fTop)"/>
+
+        <!-- ====== UPPER BLOCK — bowl of P, top piece ====== -->
+        <!-- Top face -->
+        <polygon points="90,65 165,30 195,45 130,85" fill="url(#fTop)"/>
+        <!-- Right face -->
+        <polygon points="195,45 195,115 130,155 130,85" fill="url(#fRight)"/>
+        <!-- Front bottom edge of bowl top -->
+        <polygon points="165,30 195,45 195,115 165,100" fill="url(#fRight)" opacity="0.85"/>
+
+        <!-- ====== BOWL RETURN — bottom piece of P bowl ====== -->
+        <!-- Top face of return block -->
+        <polygon points="90,135 165,100 195,115 130,155" fill="url(#fTop)" opacity="0.75"/>
+        <!-- Left face of return block (connects back to column) -->
+        <polygon points="90,135 130,155 130,155 90,135" fill="url(#fLeft)"/>
+
+        <!-- ====== INNER SHADOW of bowl gap ====== -->
+        <!-- Dark gap between bowl top and return — gives the P its counter-space -->
+        <polygon points="130,85 130,155 90,135 90,65" fill="#0c1629" opacity="0.5"/>
+
+        <!-- ====== OUTER RIGHT FACE of the bowl (vertical drop) ====== -->
+        <polygon points="195,45 195,115 165,100 165,30" fill="url(#fRight)" opacity="0.9"/>
+
+        <!-- ====== STEP/LEDGE at base of column ====== -->
+        <!-- Left face -->
+        <polygon points="30,245 50,235 50,270 30,285" fill="url(#fLeft)" opacity="0.6"/>
+        <!-- Top face -->
+        <polygon points="30,245 50,235 90,250 70,262" fill="url(#fTop)" opacity="0.4"/>
+
+        <!-- ====== GREEN GROWTH ARROW on left face of column ====== -->
+        <line x1="180" y1="85" x2="175" y2="65" stroke="url(#gArrow)" stroke-width="4.5" stroke-linecap="round"/>
+        <polyline points="169,72 174,60 181,70" fill="none" stroke="url(#gArrow)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- ====== SHINE / HIGHLIGHT overlays ====== -->
+        <!-- Top face shine on column -->
+        <polygon points="30,100 90,65 130,85 70,120" fill="white" opacity="0.06"/>
+        <!-- Top face shine on bowl -->
+        <polygon points="90,65 165,30 195,45 130,85" fill="white" opacity="0.08"/>
+
+        <!-- ====== EDGE HIGHLIGHTS (crisp lines) ====== -->
+        <line x1="30" y1="100" x2="90" y2="65" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <line x1="90" y1="65" x2="165" y2="30" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+        <line x1="165" y1="30" x2="195" y2="45" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
+        <line x1="90" y1="65" x2="130" y2="85" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+
+        <!-- ====== AMBIENT SHADOW beneath entire shape ====== -->
+        <ellipse cx="135" cy="292" rx="80" ry="8" fill="rgba(59,130,246,0.08)"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ======== SECTION 2: Horizontal Lockup ======== -->
+  <div class="section">
+    <div class="section-label">Horizontal Lockup</div>
+    <div class="lockup-horizontal">
+      <div class="glow-wrap">
+        <svg width="72" height="83" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="fTop2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+            <linearGradient id="fRight2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+            <linearGradient id="fLeft2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#172554"/></linearGradient>
+            <linearGradient id="gA2" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient>
+          </defs>
+          <polygon points="30,100 90,65 90,250 30,285" fill="url(#fLeft2)"/>
+          <polygon points="90,65 130,85 130,270 90,250" fill="url(#fRight2)"/>
+          <polygon points="30,100 90,65 130,85 70,120" fill="url(#fTop2)"/>
+          <polygon points="90,65 165,30 195,45 130,85" fill="url(#fTop2)"/>
+          <polygon points="195,45 195,115 130,155 130,85" fill="url(#fRight2)"/>
+          <polygon points="165,30 195,45 195,115 165,100" fill="url(#fRight2)" opacity="0.85"/>
+          <polygon points="90,135 165,100 195,115 130,155" fill="url(#fTop2)" opacity="0.75"/>
+          <polygon points="130,85 130,155 90,135 90,65" fill="#0c1629" opacity="0.5"/>
+          <polygon points="195,45 195,115 165,100 165,30" fill="url(#fRight2)" opacity="0.9"/>
+          <polygon points="30,245 50,235 50,270 30,285" fill="url(#fLeft2)" opacity="0.6"/>
+          <polygon points="30,245 50,235 90,250 70,262" fill="url(#fTop2)" opacity="0.4"/>
+          <line x1="180" y1="85" x2="175" y2="65" stroke="url(#gA2)" stroke-width="5" stroke-linecap="round"/>
+          <polyline points="169,72 174,60 181,70" fill="none" stroke="url(#gA2)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <polygon points="90,65 165,30 195,45 130,85" fill="white" opacity="0.08"/>
+          <line x1="30" y1="100" x2="90" y2="65" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <line x1="90" y1="65" x2="200" y2="15" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <ellipse cx="135" cy="292" rx="80" ry="8" fill="rgba(59,130,246,0.08)"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">Project<span>Track</span></div>
+        <div class="brand-tagline">Financial Project Management</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ======== SECTION 3: White Background Card ======== -->
+  <div class="section">
+    <div class="section-label">On White Background</div>
+    <div class="white-card">
+      <svg width="56" height="65" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fTop3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+          <linearGradient id="fRight3" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+          <linearGradient id="fLeft3" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#172554"/></linearGradient>
+          <linearGradient id="gA3" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient>
+        </defs>
+        <polygon points="30,100 90,65 90,250 30,285" fill="url(#fLeft3)"/>
+        <polygon points="90,65 130,85 130,270 90,250" fill="url(#fRight3)"/>
+        <polygon points="30,100 90,65 130,85 70,120" fill="url(#fTop3)"/>
+        <polygon points="90,65 165,30 195,45 130,85" fill="url(#fTop3)"/>
+        <polygon points="195,45 195,115 130,155 130,85" fill="url(#fRight3)"/>
+        <polygon points="165,30 195,45 195,115 165,100" fill="url(#fRight3)" opacity="0.85"/>
+        <polygon points="90,135 165,100 195,115 130,155" fill="url(#fTop3)" opacity="0.75"/>
+        <polygon points="130,85 130,155 90,135 90,65" fill="#e2e8f0" opacity="0.3"/>
+        <polygon points="195,45 195,115 165,100 165,30" fill="url(#fRight3)" opacity="0.9"/>
+        <polygon points="30,245 50,235 50,270 30,285" fill="url(#fLeft3)" opacity="0.6"/>
+        <polygon points="30,245 50,235 90,250 70,262" fill="url(#fTop3)" opacity="0.4"/>
+        <line x1="180" y1="85" x2="175" y2="65" stroke="url(#gA3)" stroke-width="5" stroke-linecap="round"/>
+        <polyline points="169,72 174,60 181,70" fill="none" stroke="url(#gA3)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <polygon points="90,65 165,30 195,45 130,85" fill="white" opacity="0.12"/>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-name">Project<span>Track</span></div>
+        <div class="brand-tagline">Financial Project Management</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ======== SECTION 4: Size Test ======== -->
+  <div class="section">
+    <div class="section-label">Size Test</div>
+    <div class="size-row">
+      <div class="size-item">
+        <svg width="32" height="37" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ft4" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+            <linearGradient id="fr4" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+            <linearGradient id="fl4" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#172554"/></linearGradient>
+            <linearGradient id="g4" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient>
+          </defs>
+          <polygon points="30,100 90,65 90,250 30,285" fill="url(#fl4)"/>
+          <polygon points="90,65 130,85 130,270 90,250" fill="url(#fr4)"/>
+          <polygon points="30,100 90,65 130,85 70,120" fill="url(#ft4)"/>
+          <polygon points="90,65 165,30 195,45 130,85" fill="url(#ft4)"/>
+          <polygon points="195,45 195,115 130,155 130,85" fill="url(#fr4)"/>
+          <polygon points="165,30 195,45 195,115 165,100" fill="url(#fr4)" opacity="0.85"/>
+          <polygon points="90,135 165,100 195,115 130,155" fill="url(#ft4)" opacity="0.75"/>
+          <polygon points="130,85 130,155 90,135 90,65" fill="#0c1629" opacity="0.5"/>
+          <polygon points="195,45 195,115 165,100 165,30" fill="url(#fr4)" opacity="0.9"/>
+          <line x1="180" y1="85" x2="175" y2="65" stroke="url(#g4)" stroke-width="7" stroke-linecap="round"/>
+          <polyline points="215,58 225,43 235,58" fill="none" stroke="url(#g4)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="size-label">32px</div>
+      </div>
+
+      <div class="size-item">
+        <svg width="64" height="74" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ft5" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+            <linearGradient id="fr5" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+            <linearGradient id="fl5" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#172554"/></linearGradient>
+            <linearGradient id="g5" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient>
+          </defs>
+          <polygon points="30,100 90,65 90,250 30,285" fill="url(#fl5)"/>
+          <polygon points="90,65 130,85 130,270 90,250" fill="url(#fr5)"/>
+          <polygon points="30,100 90,65 130,85 70,120" fill="url(#ft5)"/>
+          <polygon points="90,65 165,30 195,45 130,85" fill="url(#ft5)"/>
+          <polygon points="195,45 195,115 130,155 130,85" fill="url(#fr5)"/>
+          <polygon points="165,30 195,45 195,115 165,100" fill="url(#fr5)" opacity="0.85"/>
+          <polygon points="90,135 165,100 195,115 130,155" fill="url(#ft5)" opacity="0.75"/>
+          <polygon points="130,85 130,155 90,135 90,65" fill="#0c1629" opacity="0.5"/>
+          <polygon points="195,45 195,115 165,100 165,30" fill="url(#fr5)" opacity="0.9"/>
+          <polygon points="30,245 50,235 50,270 30,285" fill="url(#fl5)" opacity="0.6"/>
+          <polygon points="30,245 50,235 90,250 70,262" fill="url(#ft5)" opacity="0.4"/>
+          <line x1="180" y1="85" x2="175" y2="65" stroke="url(#g5)" stroke-width="6" stroke-linecap="round"/>
+          <polyline points="216,57 225,44 234,57" fill="none" stroke="url(#g5)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="size-label">64px</div>
+      </div>
+
+      <div class="size-item">
+        <svg width="96" height="111" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ft6" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+            <linearGradient id="fr6" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+            <linearGradient id="fl6" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#172554"/></linearGradient>
+            <linearGradient id="g6" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient>
+          </defs>
+          <polygon points="30,100 90,65 90,250 30,285" fill="url(#fl6)"/>
+          <polygon points="90,65 130,85 130,270 90,250" fill="url(#fr6)"/>
+          <polygon points="30,100 90,65 130,85 70,120" fill="url(#ft6)"/>
+          <polygon points="90,65 165,30 195,45 130,85" fill="url(#ft6)"/>
+          <polygon points="195,45 195,115 130,155 130,85" fill="url(#fr6)"/>
+          <polygon points="165,30 195,45 195,115 165,100" fill="url(#fr6)" opacity="0.85"/>
+          <polygon points="90,135 165,100 195,115 130,155" fill="url(#ft6)" opacity="0.75"/>
+          <polygon points="130,85 130,155 90,135 90,65" fill="#0c1629" opacity="0.5"/>
+          <polygon points="195,45 195,115 165,100 165,30" fill="url(#fr6)" opacity="0.9"/>
+          <polygon points="30,245 50,235 50,270 30,285" fill="url(#fl6)" opacity="0.6"/>
+          <polygon points="30,245 50,235 90,250 70,262" fill="url(#ft6)" opacity="0.4"/>
+          <line x1="180" y1="85" x2="175" y2="65" stroke="url(#g6)" stroke-width="5" stroke-linecap="round"/>
+          <polyline points="169,72 174,60 181,70" fill="none" stroke="url(#g6)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <polygon points="90,65 165,30 195,45 130,85" fill="white" opacity="0.08"/>
+          <line x1="30" y1="100" x2="90" y2="65" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <line x1="90" y1="65" x2="200" y2="15" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+        </svg>
+        <div class="size-label">96px</div>
+      </div>
+
+      <div class="size-item">
+        <div class="glow-wrap">
+          <svg width="150" height="173" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ft7" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+              <linearGradient id="fr7" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+              <linearGradient id="fl7" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#172554"/></linearGradient>
+              <linearGradient id="g7" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient>
+            </defs>
+            <polygon points="30,100 90,65 90,250 30,285" fill="url(#fl7)"/>
+            <polygon points="90,65 130,85 130,270 90,250" fill="url(#fr7)"/>
+            <polygon points="30,100 90,65 130,85 70,120" fill="url(#ft7)"/>
+            <polygon points="90,65 165,30 195,45 130,85" fill="url(#ft7)"/>
+            <polygon points="195,45 195,115 130,155 130,85" fill="url(#fr7)"/>
+            <polygon points="165,30 195,45 195,115 165,100" fill="url(#fr7)" opacity="0.85"/>
+            <polygon points="90,135 165,100 195,115 130,155" fill="url(#ft7)" opacity="0.75"/>
+            <polygon points="130,85 130,155 90,135 90,65" fill="#0c1629" opacity="0.5"/>
+            <polygon points="195,45 195,115 165,100 165,30" fill="url(#fr7)" opacity="0.9"/>
+            <polygon points="30,245 50,235 50,270 30,285" fill="url(#fl7)" opacity="0.6"/>
+            <polygon points="30,245 50,235 90,250 70,262" fill="url(#ft7)" opacity="0.4"/>
+            <line x1="180" y1="85" x2="175" y2="65" stroke="url(#g7)" stroke-width="5" stroke-linecap="round"/>
+            <polyline points="169,72 174,60 181,70" fill="none" stroke="url(#g7)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <polygon points="90,65 165,30 195,45 130,85" fill="white" opacity="0.08"/>
+            <polygon points="30,100 90,65 130,85 70,120" fill="white" opacity="0.06"/>
+            <line x1="30" y1="100" x2="90" y2="65" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="90" y1="65" x2="200" y2="15" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <line x1="200" y1="15" x2="240" y2="35" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
+            <ellipse cx="135" cy="292" rx="80" ry="8" fill="rgba(59,130,246,0.08)"/>
+          </svg>
+        </div>
+        <div class="size-label">150px</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ======== SECTION 5: App Icon Variants ======== -->
+  <div class="section">
+    <div class="section-label">App Icon Variants</div>
+    <div class="app-icon-row">
+
+      <div class="app-icon-wrapper">
+        <div class="app-icon app-icon--dark">
+          <svg width="70" height="81" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ftA" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+              <linearGradient id="frA" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+              <linearGradient id="flA" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#172554"/></linearGradient>
+              <linearGradient id="gA" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient>
+            </defs>
+            <polygon points="30,100 90,65 90,250 30,285" fill="url(#flA)"/>
+            <polygon points="90,65 130,85 130,270 90,250" fill="url(#frA)"/>
+            <polygon points="30,100 90,65 130,85 70,120" fill="url(#ftA)"/>
+            <polygon points="90,65 165,30 195,45 130,85" fill="url(#ftA)"/>
+            <polygon points="195,45 195,115 130,155 130,85" fill="url(#frA)"/>
+            <polygon points="165,30 195,45 195,115 165,100" fill="url(#frA)" opacity="0.85"/>
+            <polygon points="90,135 165,100 195,115 130,155" fill="url(#ftA)" opacity="0.75"/>
+            <polygon points="130,85 130,155 90,135 90,65" fill="#0c1629" opacity="0.5"/>
+            <polygon points="195,45 195,115 165,100 165,30" fill="url(#frA)" opacity="0.9"/>
+            <line x1="180" y1="85" x2="175" y2="65" stroke="url(#gA)" stroke-width="5" stroke-linecap="round"/>
+            <polyline points="169,72 174,60 181,70" fill="none" stroke="url(#gA)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="app-icon-label">Dark</div>
+      </div>
+
+      <div class="app-icon-wrapper">
+        <div class="app-icon app-icon--gradient">
+          <svg width="70" height="81" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ftB" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient>
+              <linearGradient id="frB" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#dbeafe"/><stop offset="100%" stop-color="#bfdbfe"/></linearGradient>
+              <linearGradient id="flB" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+              <linearGradient id="gB" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#6ee7b7"/><stop offset="100%" stop-color="#a7f3d0"/></linearGradient>
+            </defs>
+            <polygon points="30,100 90,65 90,250 30,285" fill="url(#flB)"/>
+            <polygon points="90,65 130,85 130,270 90,250" fill="url(#frB)"/>
+            <polygon points="30,100 90,65 130,85 70,120" fill="url(#ftB)"/>
+            <polygon points="90,65 165,30 195,45 130,85" fill="url(#ftB)"/>
+            <polygon points="195,45 195,115 130,155 130,85" fill="url(#frB)"/>
+            <polygon points="165,30 195,45 195,115 165,100" fill="url(#frB)" opacity="0.85"/>
+            <polygon points="90,135 165,100 195,115 130,155" fill="url(#ftB)" opacity="0.75"/>
+            <polygon points="130,85 130,155 90,135 90,65" fill="#1e40af" opacity="0.4"/>
+            <polygon points="195,45 195,115 165,100 165,30" fill="url(#frB)" opacity="0.9"/>
+            <line x1="180" y1="85" x2="175" y2="65" stroke="url(#gB)" stroke-width="5" stroke-linecap="round"/>
+            <polyline points="169,72 174,60 181,70" fill="none" stroke="url(#gB)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="app-icon-label">Brand Blue</div>
+      </div>
+
+      <div class="app-icon-wrapper">
+        <div class="app-icon app-icon--white">
+          <svg width="70" height="81" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ftC" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+              <linearGradient id="frC" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+              <linearGradient id="flC" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#172554"/></linearGradient>
+              <linearGradient id="gC" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient>
+            </defs>
+            <polygon points="30,100 90,65 90,250 30,285" fill="url(#flC)"/>
+            <polygon points="90,65 130,85 130,270 90,250" fill="url(#frC)"/>
+            <polygon points="30,100 90,65 130,85 70,120" fill="url(#ftC)"/>
+            <polygon points="90,65 165,30 195,45 130,85" fill="url(#ftC)"/>
+            <polygon points="195,45 195,115 130,155 130,85" fill="url(#frC)"/>
+            <polygon points="165,30 195,45 195,115 165,100" fill="url(#frC)" opacity="0.85"/>
+            <polygon points="90,135 165,100 195,115 130,155" fill="url(#ftC)" opacity="0.75"/>
+            <polygon points="130,85 130,155 90,135 90,65" fill="#e2e8f0" opacity="0.3"/>
+            <polygon points="195,45 195,115 165,100 165,30" fill="url(#frC)" opacity="0.9"/>
+            <line x1="180" y1="85" x2="175" y2="65" stroke="url(#gC)" stroke-width="5" stroke-linecap="round"/>
+            <polyline points="169,72 174,60 181,70" fill="none" stroke="url(#gC)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="app-icon-label">White</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ======== SECTION 6: Design Notes ======== -->
+  <div class="section" style="max-width: 640px; margin: 0 auto; text-align: left;">
+    <div class="section-label" style="text-align: center;">Design Notes</div>
+    <div style="color: #94a3b8; font-size: 14px; line-height: 1.8;">
+      <p style="margin-bottom: 16px;">
+        <strong style="color: #e2e8f0;">Concept:</strong> An isometric block structure that reads as the letter "P" from the front. A tall vertical column forms the stem, while a cantilevered upper block extends right and returns, creating the bowl. The dark counter-space between bowl and stem gives the P its unmistakable silhouette.
+      </p>
+      <p style="margin-bottom: 16px;">
+        <strong style="color: #e2e8f0;">Three-face depth:</strong> Each visible face uses a different shade &mdash; light blue (#3b82f6) on top faces, medium blue (#2563eb) on right faces, dark blue (#1e40af) on left faces &mdash; creating true isometric dimension without any 3D rendering.
+      </p>
+      <p style="margin-bottom: 16px;">
+        <strong style="color: #e2e8f0;">Growth accent:</strong> A small green (#10b981) upward arrow on the bowl's right face represents financial growth and project tracking. Subtle but visible at all sizes.
+      </p>
+      <p style="margin-bottom: 16px;">
+        <strong style="color: #e2e8f0;">Architectural feel:</strong> The stepped base and block construction evoke building blocks &mdash; a metaphor for project management. The isometric perspective gives it a modern fintech/SaaS aesthetic.
+      </p>
+      <p>
+        <strong style="color: #e2e8f0;">Versatility:</strong> Works on dark backgrounds with the radial glow, on white with clean contrast, and inside rounded app icon containers. Readable even at 32px favicon scale.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

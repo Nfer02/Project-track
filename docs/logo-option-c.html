@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProjectTrack Logo — Option C: Modern Monogram</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    padding: 48px 32px;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .page-header h1 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 10px;
+  }
+
+  .page-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #f1f5f9;
+  }
+
+  .page-header p {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: 8px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  section {
+    max-width: 900px;
+    margin: 0 auto 48px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #475569;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #1e293b;
+  }
+
+  .icon-showcase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+  }
+
+  .lockup-showcase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    padding: 32px 0;
+    flex-wrap: wrap;
+  }
+
+  .lockup {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .lockup-text {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+
+  .lockup-text .track {
+    color: #94a3b8;
+    font-weight: 400;
+  }
+
+  .lockup-on-dark .lockup-text .project { color: #f1f5f9; }
+  .lockup-on-light .lockup-text .project { color: #0f172a; }
+  .lockup-on-light .lockup-text .track { color: #64748b; }
+
+  .lockup-on-light {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 32px 48px;
+  }
+
+  .size-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 32px;
+    padding: 32px 0;
+    flex-wrap: wrap;
+  }
+
+  .size-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .size-label {
+    font-size: 11px;
+    color: #475569;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .variant-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    padding: 32px 0;
+    flex-wrap: wrap;
+  }
+
+  .variant-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .variant-card span {
+    font-size: 11px;
+    color: #475569;
+    font-weight: 500;
+  }
+
+  .variant-swatch {
+    width: 88px;
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+  }
+
+  .swatch-dark { background: #0f172a; border: 1px solid #1e293b; }
+  .swatch-light { background: #f8fafc; }
+  .swatch-brand { background: #3b82f6; }
+
+  .construction-note {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 28px;
+    margin-top: 12px;
+  }
+
+  .construction-note h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 12px;
+  }
+
+  .construction-note ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .construction-note li {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.7;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .construction-note li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #3b82f6;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Logo Exploration</h1>
+  <h2>Option C: Modern Monogram</h2>
+  <p>The P and T merge into a single mark: a shared vertical stem anchors both letters, with the T crossbar at top and the P bowl on the upper-right, using negative space to keep both letters readable.</p>
+</div>
+
+<!--
+  MONOGRAM CONSTRUCTION (64x64 grid for precision):
+
+  The concept: P and T share one vertical stroke.
+  - The T is formed by: crossbar (full width, top) + left half of the vertical stem
+  - The P is formed by: the same vertical stem + a bowl shape on the right
+  - The bowl starts just below the crossbar and curves back to the stem at mid-height
+  - Negative space inside the bowl is cut out (evenodd fill rule)
+
+  This creates a single cohesive glyph where both letters are simultaneously legible.
+-->
+
+<!-- Hidden SVG defs -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;">
+  <defs>
+    <!-- Main monogram mark -->
+    <symbol id="pt-mark" viewBox="0 0 64 64">
+      <path fill="currentColor" fill-rule="evenodd" d="
+        M0 0 h64 v11 H24 v53 H11 V11 H0 Z
+        M24 16 h14 c12 0 19 6 19 14.5 S50 45 38 45 H24 Z
+        M24 25 v12 h13 c6 0 9.5-2.5 9.5-6 s-3.5-6-9.5-6 Z
+      "/>
+    </symbol>
+    <!-- Small-size optimized variant -->
+    <symbol id="pt-mark-sm" viewBox="0 0 64 64">
+      <path fill="currentColor" fill-rule="evenodd" d="
+        M0 0 h64 v13 H26 v51 H13 V13 H0 Z
+        M26 19 h12 c11 0 18 5.5 18 13 S49 45 38 45 H26 Z
+        M26 28 v9 h11 c5 0 8-1.8 8-4.5 S42 28 37 28 Z
+      "/>
+    </symbol>
+  </defs>
+</svg>
+
+
+<!-- ICON ONLY @ 120px -->
+<section>
+  <div class="section-label">Icon Only / 120px</div>
+  <div class="icon-showcase">
+    <svg width="120" height="120" viewBox="0 0 64 64" style="color:#3b82f6;">
+      <use href="#pt-mark"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- HORIZONTAL LOCKUP -->
+<section>
+  <div class="section-label">Horizontal Lockup</div>
+  <div class="lockup-showcase">
+    <div class="lockup lockup-on-dark">
+      <svg width="36" height="36" viewBox="0 0 64 64" style="color:#3b82f6;">
+        <use href="#pt-mark"/>
+      </svg>
+      <div class="lockup-text">
+        <span class="project">Project</span><span class="track">Track</span>
+      </div>
+    </div>
+    <div class="lockup lockup-on-light">
+      <svg width="36" height="36" viewBox="0 0 64 64" style="color:#3b82f6;">
+        <use href="#pt-mark"/>
+      </svg>
+      <div class="lockup-text">
+        <span class="project">Project</span><span class="track">Track</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SIZE TEST -->
+<section>
+  <div class="section-label">Size Test</div>
+  <div class="size-row">
+    <div class="size-item">
+      <svg width="16" height="16" viewBox="0 0 64 64" style="color:#3b82f6;"><use href="#pt-mark-sm"/></svg>
+      <span class="size-label">16px</span>
+    </div>
+    <div class="size-item">
+      <svg width="32" height="32" viewBox="0 0 64 64" style="color:#3b82f6;"><use href="#pt-mark"/></svg>
+      <span class="size-label">32px</span>
+    </div>
+    <div class="size-item">
+      <svg width="48" height="48" viewBox="0 0 64 64" style="color:#3b82f6;"><use href="#pt-mark"/></svg>
+      <span class="size-label">48px</span>
+    </div>
+    <div class="size-item">
+      <svg width="64" height="64" viewBox="0 0 64 64" style="color:#3b82f6;"><use href="#pt-mark"/></svg>
+      <span class="size-label">64px</span>
+    </div>
+    <div class="size-item">
+      <svg width="96" height="96" viewBox="0 0 64 64" style="color:#3b82f6;"><use href="#pt-mark"/></svg>
+      <span class="size-label">96px</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- COLOR VARIANTS -->
+<section>
+  <div class="section-label">Color Variants</div>
+  <div class="variant-row">
+    <div class="variant-card">
+      <div class="variant-swatch swatch-dark">
+        <svg width="44" height="44" viewBox="0 0 64 64" style="color:#3b82f6;"><use href="#pt-mark"/></svg>
+      </div>
+      <span>Blue on Dark</span>
+    </div>
+    <div class="variant-card">
+      <div class="variant-swatch swatch-light">
+        <svg width="44" height="44" viewBox="0 0 64 64" style="color:#3b82f6;"><use href="#pt-mark"/></svg>
+      </div>
+      <span>Blue on Light</span>
+    </div>
+    <div class="variant-card">
+      <div class="variant-swatch swatch-dark">
+        <svg width="44" height="44" viewBox="0 0 64 64" style="color:#f1f5f9;"><use href="#pt-mark"/></svg>
+      </div>
+      <span>White on Dark</span>
+    </div>
+    <div class="variant-card">
+      <div class="variant-swatch swatch-light">
+        <svg width="44" height="44" viewBox="0 0 64 64" style="color:#0f172a;"><use href="#pt-mark"/></svg>
+      </div>
+      <span>Black on Light</span>
+    </div>
+    <div class="variant-card">
+      <div class="variant-swatch swatch-brand">
+        <svg width="44" height="44" viewBox="0 0 64 64" style="color:#ffffff;"><use href="#pt-mark"/></svg>
+      </div>
+      <span>White on Brand</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONSTRUCTION NOTES -->
+<section>
+  <div class="section-label">Construction Notes</div>
+  <div class="construction-note">
+    <h4>Design Rationale</h4>
+    <ul>
+      <li>P and T share a single vertical stem, merging two letters into one unified mark</li>
+      <li>T crossbar spans the full width at the top, creating a strong horizontal anchor</li>
+      <li>P bowl extends right from the stem just below the crossbar, with a negative-space interior cutout</li>
+      <li>Both letters readable simultaneously: top-down reads T, left-to-right reads P</li>
+      <li>Built on a 64-unit grid for sub-pixel precision at standard icon sizes</li>
+      <li>Optimized small-size variant uses thicker strokes for legibility at 16px</li>
+      <li>Single flat fill, no gradients — works in any monochrome context</li>
+    </ul>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProjectTrack — Logo Option A: Geometric/Minimal</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f172a;
+    color: #94a3b8;
+    font-family: system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 24px;
+  }
+  h1 {
+    color: #e2e8f0;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 13px;
+    margin-bottom: 64px;
+    color: #64748b;
+  }
+  .variations {
+    display: flex;
+    gap: 100px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .variation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .variation-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #475569;
+    font-weight: 600;
+  }
+  .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+  }
+</style>
+</head>
+<body>
+
+<h1>ProjectTrack — Logo Option A</h1>
+<p class="subtitle">Geometric / Minimal — "PT" monogram in rounded square</p>
+
+<div class="variations">
+
+  <!-- ===================== VARIATION 1: Icon Only (120px) ===================== -->
+  <div class="variation">
+    <span class="variation-label">Icon only</span>
+    <div class="logo-container">
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bg1" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#60a5fa"/>
+            <stop offset="50%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#2563eb"/>
+          </linearGradient>
+          <linearGradient id="shine1" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="white" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+          </linearGradient>
+          <clipPath id="clip1">
+            <rect width="120" height="120" rx="28"/>
+          </clipPath>
+        </defs>
+
+        <!-- Background rounded square -->
+        <rect width="120" height="120" rx="28" fill="url(#bg1)"/>
+
+        <!-- Subtle top-left shine overlay -->
+        <rect width="120" height="120" rx="28" fill="url(#shine1)" clip-path="url(#clip1)"/>
+
+        <!--
+          PT MONOGRAM — Geometric construction
+          =====================================
+          The P and T interlock: P's vertical stem is shared,
+          the P bowl curves into the T crossbar in one continuous flow.
+          The T's descender has a diagonal cut at the bottom-right
+          creating an upward arrow motif (growth/progress).
+        -->
+        <g transform="translate(22, 24)" fill="white">
+          <!-- P vertical stem -->
+          <path d="M 0,4 C 0,1.8 1.8,0 4,0 L 8,0 C 10.2,0 12,1.8 12,4 L 12,68 C 12,70.2 10.2,72 8,72 L 4,72 C 1.8,72 0,70.2 0,68 Z"/>
+
+          <!-- P bowl — smooth rounded form -->
+          <path d="
+            M 12,0
+            L 38,0
+            C 52,0 58,8 58,18.5
+            C 58,29 52,36 38,36
+            L 12,36
+            L 12,26
+            L 36,26
+            C 44,26 47,23 47,18.5
+            C 47,14 44,11 36,11
+            L 12,11
+            Z
+          "/>
+
+          <!-- T crossbar — extends right from P bowl area, with rounded ends -->
+          <path d="
+            M 20,28
+            L 72,28
+            C 74.2,28 76,29.8 76,32
+            L 76,34
+            C 76,36.2 74.2,38 72,38
+            L 20,38
+            C 17.8,38 16,36.2 16,34
+            L 16,32
+            C 16,29.8 17.8,28 20,28
+            Z
+          "/>
+
+          <!-- T descender — with angular cut at bottom-right (arrow motif) -->
+          <path d="
+            M 42,38
+            L 54,38
+            L 54,58
+            L 64,72
+            L 52,72
+            C 46,72 42,70.2 42,68
+            Z
+          "/>
+
+          <!-- Accent: small notch that creates the arrow tip -->
+          <path d="M 54,58 L 54,72 L 64,72 Z" fill="url(#bg1)" opacity="0.5"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ===================== VARIATION 2: Icon + Text Horizontal ===================== -->
+  <div class="variation">
+    <span class="variation-label">Icon + text horizontal</span>
+    <div class="logo-container">
+      <svg width="380" height="56" viewBox="0 0 380 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bg2" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#60a5fa"/>
+            <stop offset="50%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#2563eb"/>
+          </linearGradient>
+          <linearGradient id="shine2" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="white" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+          </linearGradient>
+          <clipPath id="clip2">
+            <rect width="56" height="56" rx="13"/>
+          </clipPath>
+        </defs>
+
+        <!-- Small icon 56px -->
+        <rect width="56" height="56" rx="13" fill="url(#bg2)"/>
+        <rect width="56" height="56" rx="13" fill="url(#shine2)" clip-path="url(#clip2)"/>
+
+        <!-- PT monogram scaled down -->
+        <g transform="translate(10.2, 11.2) scale(0.467)" fill="white">
+          <path d="M 0,4 C 0,1.8 1.8,0 4,0 L 8,0 C 10.2,0 12,1.8 12,4 L 12,68 C 12,70.2 10.2,72 8,72 L 4,72 C 1.8,72 0,70.2 0,68 Z"/>
+          <path d="M 12,0 L 38,0 C 52,0 58,8 58,18.5 C 58,29 52,36 38,36 L 12,36 L 12,26 L 36,26 C 44,26 47,23 47,18.5 C 47,14 44,11 36,11 L 12,11 Z"/>
+          <path d="M 20,28 L 72,28 C 74.2,28 76,29.8 76,32 L 76,34 C 76,36.2 74.2,38 72,38 L 20,38 C 17.8,38 16,36.2 16,34 L 16,32 C 16,29.8 17.8,28 20,28 Z"/>
+          <path d="M 42,38 L 54,38 L 54,58 L 64,72 L 52,72 C 46,72 42,70.2 42,68 Z"/>
+          <path d="M 54,58 L 54,72 L 64,72 Z" fill="url(#bg2)" opacity="0.5"/>
+        </g>
+
+        <!-- "ProjectTrack" wordmark -->
+        <text x="72" y="37" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="-0.02em">
+          <tspan fill="white">Project</tspan><tspan fill="#60a5fa">Track</tspan>
+        </text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ===================== VARIATION 3: Icon + Text Stacked ===================== -->
+  <div class="variation">
+    <span class="variation-label">Icon + text stacked</span>
+    <div class="logo-container" style="min-height: 220px;">
+      <svg width="180" height="210" viewBox="0 0 180 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bg3" x1="30" y1="0" x2="150" y2="120" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#60a5fa"/>
+            <stop offset="50%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#2563eb"/>
+          </linearGradient>
+          <linearGradient id="shine3" x1="30" y1="0" x2="110" y2="80" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="white" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+          </linearGradient>
+          <clipPath id="clip3">
+            <rect x="30" y="0" width="120" height="120" rx="28"/>
+          </clipPath>
+        </defs>
+
+        <!-- Large icon centered -->
+        <rect x="30" y="0" width="120" height="120" rx="28" fill="url(#bg3)"/>
+        <rect x="30" y="0" width="120" height="120" rx="28" fill="url(#shine3)" clip-path="url(#clip3)"/>
+
+        <!-- PT monogram -->
+        <g transform="translate(52, 24)" fill="white">
+          <path d="M 0,4 C 0,1.8 1.8,0 4,0 L 8,0 C 10.2,0 12,1.8 12,4 L 12,68 C 12,70.2 10.2,72 8,72 L 4,72 C 1.8,72 0,70.2 0,68 Z"/>
+          <path d="M 12,0 L 38,0 C 52,0 58,8 58,18.5 C 58,29 52,36 38,36 L 12,36 L 12,26 L 36,26 C 44,26 47,23 47,18.5 C 47,14 44,11 36,11 L 12,11 Z"/>
+          <path d="M 20,28 L 72,28 C 74.2,28 76,29.8 76,32 L 76,34 C 76,36.2 74.2,38 72,38 L 20,38 C 17.8,38 16,36.2 16,34 L 16,32 C 16,29.8 17.8,28 20,28 Z"/>
+          <path d="M 42,38 L 54,38 L 54,58 L 64,72 L 52,72 C 46,72 42,70.2 42,68 Z"/>
+          <path d="M 54,58 L 54,72 L 64,72 Z" fill="url(#bg3)" opacity="0.5"/>
+        </g>
+
+        <!-- Wordmark below -->
+        <text x="90" y="160" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="24" font-weight="700" letter-spacing="-0.02em">
+          <tspan fill="white">Project</tspan><tspan fill="#60a5fa">Track</tspan>
+        </text>
+
+        <!-- Tagline -->
+        <text x="90" y="182" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="9.5" fill="#475569" letter-spacing="0.18em">FINANCIAL MANAGEMENT</text>
+      </svg>
+    </div>
+  </div>
+
+</div>
+
+<!-- Reference bar -->
+<p style="margin-top: 80px; font-size: 11px; color: #334155;">
+  Brand color: <span style="color: #3b82f6;">#3b82f6</span> &nbsp;|&nbsp;
+  Background: #0f172a &nbsp;|&nbsp;
+  Option A — Geometric / Minimal
+</p>
+
+</body>
+</html>

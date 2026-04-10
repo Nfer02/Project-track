@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Enfoque para el Video Remotion</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #0f1117; color: #e2e8f0; padding: 40px 32px; min-height: 100vh; }
+
+  h1 { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .subtitle { font-size: 15px; color: #6b7280; margin-bottom: 36px; }
+
+  /* Context box */
+  .context { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 12px; padding: 20px 24px; margin-bottom: 36px; display: flex; gap: 40px; }
+  .ctx-item { display: flex; flex-direction: column; gap: 4px; }
+  .ctx-label { font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; }
+  .ctx-value { font-size: 14px; color: #e2e8f0; font-weight: 500; }
+
+  /* Screens section */
+  .section-title { font-size: 13px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+
+  /* Approaches */
+  .approaches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+  .approach { background: #1a1f2e; border: 2px solid #2d3748; border-radius: 14px; padding: 24px; cursor: pointer; transition: all 0.2s; position: relative; }
+  .approach:hover { border-color: #3b82f6; transform: translateY(-2px); }
+  .approach.selected { border-color: #3b82f6; background: #1e2d4a; }
+  .approach.recommended::after { content: 'RECOMENDADO'; position: absolute; top: -10px; right: 16px; background: #3b82f6; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; padding: 3px 10px; border-radius: 20px; }
+  .approach-letter { width: 36px; height: 36px; border-radius: 50%; background: #252d3d; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #3b82f6; margin-bottom: 14px; }
+  .approach-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .approach-sub { font-size: 12px; color: #3b82f6; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .approach-desc { font-size: 13.5px; color: #9ca3af; line-height: 1.6; margin-bottom: 16px; }
+  .pros-cons { display: flex; flex-direction: column; gap: 6px; }
+  .pro, .con { font-size: 12.5px; line-height: 1.4; padding-left: 18px; position: relative; }
+  .pro { color: #4ade80; }
+  .pro::before { content: '✓'; position: absolute; left: 0; font-weight: 700; }
+  .con { color: #f87171; }
+  .con::before { content: '✕'; position: absolute; left: 0; font-weight: 700; }
+
+  /* Screens for video */
+  .screens-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 40px; }
+  .screen-card { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 10px; overflow: hidden; }
+  .screen-thumb { height: 80px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .screen-thumb.dashboard { background: linear-gradient(135deg, #0a0f1a 0%, #1a2744 100%); }
+  .screen-thumb.proyectos { background: linear-gradient(135deg, #0a0f1a 0%, #1a2440 100%); }
+  .screen-thumb.ocr { background: linear-gradient(135deg, #0a1a14 0%, #0d2d1e 100%); }
+  .screen-thumb.reportes { background: linear-gradient(135deg, #0a0f1a 0%, #1a1a2e 100%); }
+  .screen-info { padding: 10px 12px; }
+  .screen-name { font-size: 12px; font-weight: 600; color: #e2e8f0; }
+  .screen-time { font-size: 11px; color: #6b7280; margin-top: 2px; }
+
+  /* Quality comparison */
+  .quality { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 36px; }
+  .quality-card { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 12px; padding: 20px; }
+  .quality-title { font-size: 13px; font-weight: 700; color: #9ca3af; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .quality-value { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .quality-desc { font-size: 12px; color: #6b7280; }
+  .quality-card.good .quality-value { color: #4ade80; }
+  .quality-card.bad .quality-value { color: #f87171; }
+
+  /* CTA */
+  .cta { background: #1e2d4a; border: 1px solid #3b5bdb; border-radius: 12px; padding: 20px 24px; text-align: center; }
+  .cta-text { font-size: 14px; color: #93c5fd; line-height: 1.6; }
+  .cta-text strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<h1>Video Promocional · ProjectTrack</h1>
+<p class="subtitle">Con Remotion — Diseño y enfoque de implementación</p>
+
+<!-- Context -->
+<div class="context">
+  <div class="ctx-item">
+    <span class="ctx-label">Formato</span>
+    <span class="ctx-value">16:9 · 1920×1080</span>
+  </div>
+  <div class="ctx-item">
+    <span class="ctx-label">Duración</span>
+    <span class="ctx-value">~75 segundos</span>
+  </div>
+  <div class="ctx-item">
+    <span class="ctx-label">Destino</span>
+    <span class="ctx-value">Landing page (hero section)</span>
+  </div>
+  <div class="ctx-item">
+    <span class="ctx-label">Herramienta</span>
+    <span class="ctx-value">Remotion + React</span>
+  </div>
+  <div class="ctx-item">
+    <span class="ctx-label">Secciones capturadas</span>
+    <span class="ctx-value">Dashboard · Proyectos · Facturas · Gastos · OCR · Reportes</span>
+  </div>
+</div>
+
+<!-- Quality comparison -->
+<p class="section-title">Calidad de imagen actual vs objetivo</p>
+<div class="quality">
+  <div class="quality-card bad">
+    <div class="quality-title">Estado actual (Chrome MCP)</div>
+    <div class="quality-value">1568×698 px</div>
+    <div class="quality-desc">DPR 0.75 · Borroso en pantallas retina · No apto para video 1080p</div>
+  </div>
+  <div class="quality-card good">
+    <div class="quality-title">Objetivo (Puppeteer @2x)</div>
+    <div class="quality-value">3840×2160 px</div>
+    <div class="quality-desc">DPR 2.0 · Nítido en 4K · Downscale a 1920×1080 = perfecto en video</div>
+  </div>
+</div>
+
+<!-- Pantallas del video -->
+<p class="section-title">Pantallas incluidas en el video (basadas en el guion)</p>
+<div class="screens-grid">
+  <div class="screen-card">
+    <div class="screen-thumb dashboard">📊</div>
+    <div class="screen-info">
+      <div class="screen-name">Dashboard (KPIs)</div>
+      <div class="screen-time">Escenas 1 y 6 · 0:00 y 0:38</div>
+    </div>
+  </div>
+  <div class="screen-card">
+    <div class="screen-thumb proyectos">📁</div>
+    <div class="screen-info">
+      <div class="screen-name">Proyectos</div>
+      <div class="screen-time">Escena 4 · 0:18</div>
+    </div>
+  </div>
+  <div class="screen-card">
+    <div class="screen-thumb ocr">📷</div>
+    <div class="screen-info">
+      <div class="screen-name">OCR / Nuevo gasto</div>
+      <div class="screen-time">Escena 5 · 0:25 ← clave</div>
+    </div>
+  </div>
+  <div class="screen-card">
+    <div class="screen-thumb reportes">📄</div>
+    <div class="screen-info">
+      <div class="screen-name">Reportes + Export CSV</div>
+      <div class="screen-time">Escena 7 · 0:52</div>
+    </div>
+  </div>
+</div>
+
+<!-- Approaches -->
+<p class="section-title">Enfoque para las imágenes del video</p>
+<div class="approaches">
+
+  <div class="approach" onclick="this.classList.toggle('selected')">
+    <div class="approach-letter">A</div>
+    <div class="approach-title">HTML Mockups mejorados</div>
+    <div class="approach-sub">Rápido · Sin auth</div>
+    <div class="approach-desc">
+      Actualizo los 11 archivos HTML en <code>public/mockups/</code> para que reflejen exactamente el UI real (ya vi todas las pantallas). Puppeteer los captura a @2x → 3840×2160 nítidos.
+    </div>
+    <div class="pros-cons">
+      <span class="pro">Sin autenticación · Reproducible</span>
+      <span class="pro">Datos de demo limpios (sin datos reales)</span>
+      <span class="pro">Control total del contenido</span>
+      <span class="con">Requiere actualizar los HTMLs</span>
+    </div>
+  </div>
+
+  <div class="approach recommended" onclick="this.classList.toggle('selected')">
+    <div class="approach-letter">B</div>
+    <div class="approach-title">Puppeteer con sesión real</div>
+    <div class="approach-sub">Auténtico · Alta fidelidad</div>
+    <div class="approach-desc">
+      Exporto las cookies de Supabase de Chrome, las paso a Puppeteer, y capturo las páginas reales del dashboard autenticado a @2x. Las imágenes son idénticas a lo que ve el usuario.
+    </div>
+    <div class="pros-cons">
+      <span class="pro">100% fiel a la herramienta real</span>
+      <span class="pro">Datos reales de prueba</span>
+      <span class="pro">Una sola pasada, sin retoque manual</span>
+      <span class="con">Requiere exportar cookies de sesión</span>
+      <span class="con">Sesión caduca → hay que repetir</span>
+    </div>
+  </div>
+
+  <div class="approach" onclick="this.classList.toggle('selected')">
+    <div class="approach-letter">C</div>
+    <div class="approach-title">UI recreada en React/Remotion</div>
+    <div class="approach-sub">Máxima calidad · Más trabajo</div>
+    <div class="approach-desc">
+      Recreo las pantallas del dashboard directamente como componentes React dentro de Remotion. Los gráficos se animan solos, los números cuentan hacia arriba, el OCR simula el llenado campo a campo.
+    </div>
+    <div class="pros-cons">
+      <span class="pro">Calidad perfecta · Infinitamente editable</span>
+      <span class="pro">Animaciones nativas (counters, gráficos)</span>
+      <span class="pro">Sin dependencia de screenshots</span>
+      <span class="con">Semana de desarrollo · Más complejo</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="cta">
+  <p class="cta-text">
+    <strong>Mi recomendación:</strong> Enfoque B (sesión real con puppeteer) para las imágenes — fidelidad máxima con el mínimo esfuerzo.<br>
+    Combinado con Remotion para las animaciones de texto, transiciones y estructura del video.<br><br>
+    ¿Qué enfoque prefieres para las imágenes?
+  </p>
+</div>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-import { AbsoluteFill, Sequence } from 'remotion'
+import { AbsoluteFill, Audio, Sequence, staticFile } from 'remotion'
 import { SCENES, TRANSITION_FRAMES } from '../constants/timing'
 import { useFonts } from '../hooks/useFonts'
 import { Scene01Hook }      from '../scenes/Scene01Hook'
@@ -14,10 +14,21 @@ import { Scene08CTA }       from '../scenes/Scene08CTA'
 const dur = (scene: keyof typeof SCENES) =>
   SCENES[scene].end - SCENES[scene].start + TRANSITION_FRAMES
 
+// Narration starts 8 frames (~0.27s) into each scene — tight sync
+const NARR_DELAY = 8
+
 export const MainVideo = () => {
   useFonts()
   return (
     <AbsoluteFill style={{ background: '#0a0f1a' }}>
+      {/* Background music — full video, low volume */}
+      <Audio
+        src={staticFile('audio/bg_music.mp3')}
+        volume={0.12}
+        loop
+      />
+
+      {/* Visual scenes */}
       <Sequence from={SCENES.hook.start}      durationInFrames={dur('hook')}>
         <Scene01Hook />
       </Sequence>
@@ -41,6 +52,32 @@ export const MainVideo = () => {
       </Sequence>
       <Sequence from={SCENES.cta.start}       durationInFrames={dur('cta')}>
         <Scene08CTA />
+      </Sequence>
+
+      {/* Narration tracks — positioned at scene start + small delay */}
+      <Sequence from={SCENES.hook.start + NARR_DELAY}      durationInFrames={dur('hook')}>
+        <Audio src={staticFile('audio/narr_01_hook.mp3')}     volume={1} />
+      </Sequence>
+      <Sequence from={SCENES.problem.start + NARR_DELAY}   durationInFrames={dur('problem')}>
+        <Audio src={staticFile('audio/narr_02_problem.mp3')} volume={1} />
+      </Sequence>
+      <Sequence from={SCENES.twist.start + NARR_DELAY}     durationInFrames={dur('twist')}>
+        <Audio src={staticFile('audio/narr_03_twist.mp3')}  volume={1} />
+      </Sequence>
+      <Sequence from={SCENES.ocr.start + NARR_DELAY}       durationInFrames={dur('ocr')}>
+        <Audio src={staticFile('audio/narr_04_ocr.mp3')}    volume={1} />
+      </Sequence>
+      <Sequence from={SCENES.dashboard.start + NARR_DELAY} durationInFrames={dur('dashboard')}>
+        <Audio src={staticFile('audio/narr_05_dashboard.mp3')} volume={1} />
+      </Sequence>
+      <Sequence from={SCENES.export.start + NARR_DELAY}    durationInFrames={dur('export')}>
+        <Audio src={staticFile('audio/narr_06_export.mp3')} volume={1} />
+      </Sequence>
+      <Sequence from={SCENES.pricing.start + NARR_DELAY}   durationInFrames={dur('pricing')}>
+        <Audio src={staticFile('audio/narr_07_pricing.mp3')} volume={1} />
+      </Sequence>
+      <Sequence from={SCENES.cta.start + NARR_DELAY}       durationInFrames={dur('cta')}>
+        <Audio src={staticFile('audio/narr_08_cta.mp3')}   volume={1} />
       </Sequence>
     </AbsoluteFill>
   )

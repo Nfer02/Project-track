@@ -30,11 +30,13 @@ export const metadata = {
     url: "https://projecttrack.app",
     siteName: "ProjectTrack",
     type: "website",
+    images: [{ url: "https://projecttrack.app/opengraph-image", width: 1200, height: 630, alt: "ProjectTrack" }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "ProjectTrack — Gestiona tus proyectos y finanzas",
     description: "Controla proyectos, ingresos y gastos. Para freelancers, negocios y cualquier persona que trabaje por proyectos.",
+    images: ["https://projecttrack.app/opengraph-image"],
   },
 }
 

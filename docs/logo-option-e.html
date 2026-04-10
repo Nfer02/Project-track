@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProjectTrack — Logo Option E: Bold Lettermark</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 48px 24px;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: #64748b;
+    margin-bottom: 48px;
+    line-height: 1.6;
+  }
+
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #475569;
+    margin-bottom: 24px;
+  }
+
+  /* ---- Showcase grid ---- */
+  .showcase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 220px;
+  }
+
+  .card.full {
+    grid-column: 1 / -1;
+  }
+
+  .card.white-bg {
+    background: #ffffff;
+    border-color: #e2e8f0;
+  }
+
+  .card-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-top: 8px;
+  }
+
+  .card.white-bg .card-label {
+    color: #94a3b8;
+  }
+
+  /* ---- Horizontal lockup ---- */
+  .lockup {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .lockup-text {
+    font-size: 28px;
+    font-weight: 700;
+    color: #f1f5f9;
+    letter-spacing: -0.5px;
+  }
+
+  .lockup-text .track {
+    font-weight: 400;
+    color: #94a3b8;
+  }
+
+  .card.white-bg .lockup-text {
+    color: #0f172a;
+  }
+
+  .card.white-bg .lockup-text .track {
+    color: #64748b;
+  }
+
+  /* ---- Size test row ---- */
+  .size-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .size-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .size-label {
+    font-size: 11px;
+    color: #475569;
+    font-weight: 500;
+  }
+
+  /* ---- App icon simulation ---- */
+  .app-icon-wrap {
+    width: 120px;
+    height: 120px;
+    border-radius: 28px;
+    background: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+  }
+
+  /* ---- Design notes ---- */
+  .notes {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px 28px;
+  }
+
+  .notes p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #94a3b8;
+  }
+
+  .notes strong {
+    color: #cbd5e1;
+  }
+
+  @media (max-width: 640px) {
+    .showcase { grid-template-columns: 1fr; }
+    .size-row { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Logo Concept</h1>
+  <h2>Option E: Bold Lettermark</h2>
+  <p class="subtitle">
+    A geometric "P" whose counter space contains three ascending bars — the letter itself becomes a data story.
+    Single color, works at any size, app-icon ready.
+  </p>
+
+  <!-- ================================================ -->
+  <!-- PRIMARY MARK — ICON ONLY 120px                   -->
+  <!-- ================================================ -->
+  <div class="section">
+    <p class="section-label">Icon Only — 120px</p>
+    <div class="showcase">
+      <!-- Dark background -->
+      <div class="card">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Rounded square container -->
+          <rect width="120" height="120" rx="28" fill="#3b82f6"/>
+          <!-- P stem -->
+          <rect x="30" y="24" width="14" height="72" rx="2" fill="#ffffff"/>
+          <!-- P bowl — open arc -->
+          <path d="M44 24 H62 C78 24 90 34 90 48 C90 62 78 72 62 72 H44" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Three bars inside the counter space of P -->
+          <rect x="56" y="52" width="7" height="12" rx="1.5" fill="#3b82f6"/>
+          <rect x="66" y="45" width="7" height="19" rx="1.5" fill="#3b82f6"/>
+          <rect x="76" y="38" width="7" height="26" rx="1.5" fill="#3b82f6"/>
+        </svg>
+        <span class="card-label">Dark background</span>
+      </div>
+
+      <!-- White background -->
+      <div class="card white-bg">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="120" height="120" rx="28" fill="#3b82f6"/>
+          <rect x="30" y="24" width="14" height="72" rx="2" fill="#ffffff"/>
+          <path d="M44 24 H62 C78 24 90 34 90 48 C90 62 78 72 62 72 H44" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="56" y="52" width="7" height="12" rx="1.5" fill="#3b82f6"/>
+          <rect x="66" y="45" width="7" height="19" rx="1.5" fill="#3b82f6"/>
+          <rect x="76" y="38" width="7" height="26" rx="1.5" fill="#3b82f6"/>
+        </svg>
+        <span class="card-label">White background</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- FLAT MARK — no container                         -->
+  <!-- ================================================ -->
+  <div class="section">
+    <p class="section-label">Flat mark — no container</p>
+    <div class="showcase">
+      <div class="card">
+        <svg width="80" height="80" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- P stem -->
+          <rect x="16" y="12" width="16" height="96" rx="4" fill="#3b82f6"/>
+          <!-- P bowl -->
+          <path d="M32 12 H58 C82 12 104 28 104 52 C104 76 82 92 58 92 H32" fill="none" stroke="#3b82f6" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Bars in counter -->
+          <rect x="50" y="64" width="9" height="16" rx="2" fill="#3b82f6"/>
+          <rect x="64" y="52" width="9" height="28" rx="2" fill="#3b82f6"/>
+          <rect x="78" y="40" width="9" height="40" rx="2" fill="#3b82f6"/>
+        </svg>
+        <span class="card-label">Monochrome mark</span>
+      </div>
+
+      <div class="card white-bg">
+        <svg width="80" height="80" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="16" y="12" width="16" height="96" rx="4" fill="#3b82f6"/>
+          <path d="M32 12 H58 C82 12 104 28 104 52 C104 76 82 92 58 92 H32" fill="none" stroke="#3b82f6" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="50" y="64" width="9" height="16" rx="2" fill="#3b82f6"/>
+          <rect x="64" y="52" width="9" height="28" rx="2" fill="#3b82f6"/>
+          <rect x="78" y="40" width="9" height="40" rx="2" fill="#3b82f6"/>
+        </svg>
+        <span class="card-label">On white</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- HORIZONTAL LOCKUP                                -->
+  <!-- ================================================ -->
+  <div class="section">
+    <p class="section-label">Horizontal Lockup — Icon + Wordmark</p>
+    <div class="showcase">
+      <div class="card full">
+        <div class="lockup">
+          <svg width="48" height="48" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="120" rx="28" fill="#3b82f6"/>
+            <rect x="30" y="24" width="14" height="72" rx="2" fill="#ffffff"/>
+            <path d="M44 24 H62 C78 24 90 34 90 48 C90 62 78 72 62 72 H44" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="56" y="52" width="7" height="12" rx="1.5" fill="#3b82f6"/>
+            <rect x="66" y="45" width="7" height="19" rx="1.5" fill="#3b82f6"/>
+            <rect x="76" y="38" width="7" height="26" rx="1.5" fill="#3b82f6"/>
+          </svg>
+          <span class="lockup-text">Project<span class="track">Track</span></span>
+        </div>
+        <span class="card-label">Dark lockup</span>
+      </div>
+
+      <div class="card full white-bg">
+        <div class="lockup">
+          <svg width="48" height="48" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="120" rx="28" fill="#3b82f6"/>
+            <rect x="30" y="24" width="14" height="72" rx="2" fill="#ffffff"/>
+            <path d="M44 24 H62 C78 24 90 34 90 48 C90 62 78 72 62 72 H44" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="56" y="52" width="7" height="12" rx="1.5" fill="#3b82f6"/>
+            <rect x="66" y="45" width="7" height="19" rx="1.5" fill="#3b82f6"/>
+            <rect x="76" y="38" width="7" height="26" rx="1.5" fill="#3b82f6"/>
+          </svg>
+          <span class="lockup-text">Project<span class="track">Track</span></span>
+        </div>
+        <span class="card-label">Light lockup</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- SIZE TEST                                        -->
+  <!-- ================================================ -->
+  <div class="section">
+    <p class="section-label">Size Test — 16 / 32 / 48 / 64 / 96 px</p>
+    <div class="card full">
+      <div class="size-row">
+        <!-- 16px -->
+        <div class="size-item">
+          <svg width="16" height="16" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="120" rx="28" fill="#3b82f6"/>
+            <rect x="30" y="24" width="14" height="72" rx="2" fill="#fff"/>
+            <path d="M44 24 H62 C78 24 90 34 90 48 C90 62 78 72 62 72 H44" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="56" y="52" width="7" height="12" rx="1.5" fill="#3b82f6"/>
+            <rect x="66" y="45" width="7" height="19" rx="1.5" fill="#3b82f6"/>
+            <rect x="76" y="38" width="7" height="26" rx="1.5" fill="#3b82f6"/>
+          </svg>
+          <span class="size-label">16px</span>
+        </div>
+        <!-- 32px -->
+        <div class="size-item">
+          <svg width="32" height="32" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="120" rx="28" fill="#3b82f6"/>
+            <rect x="30" y="24" width="14" height="72" rx="2" fill="#fff"/>
+            <path d="M44 24 H62 C78 24 90 34 90 48 C90 62 78 72 62 72 H44" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="56" y="52" width="7" height="12" rx="1.5" fill="#3b82f6"/>
+            <rect x="66" y="45" width="7" height="19" rx="1.5" fill="#3b82f6"/>
+            <rect x="76" y="38" width="7" height="26" rx="1.5" fill="#3b82f6"/>
+          </svg>
+          <span class="size-label">32px</span>
+        </div>
+        <!-- 48px -->
+        <div class="size-item">
+          <svg width="48" height="48" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="120" rx="28" fill="#3b82f6"/>
+            <rect x="30" y="24" width="14" height="72" rx="2" fill="#fff"/>
+            <path d="M44 24 H62 C78 24 90 34 90 48 C90 62 78 72 62 72 H44" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="56" y="52" width="7" height="12" rx="1.5" fill="#3b82f6"/>
+            <rect x="66" y="45" width="7" height="19" rx="1.5" fill="#3b82f6"/>
+            <rect x="76" y="38" width="7" height="26" rx="1.5" fill="#3b82f6"/>
+          </svg>
+          <span class="size-label">48px</span>
+        </div>
+        <!-- 64px -->
+        <div class="size-item">
+          <svg width="64" height="64" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="120" rx="28" fill="#3b82f6"/>
+            <rect x="30" y="24" width="14" height="72" rx="2" fill="#fff"/>
+            <path d="M44 24 H62 C78 24 90 34 90 48 C90 62 78 72 62 72 H44" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="56" y="52" width="7" height="12" rx="1.5" fill="#3b82f6"/>
+            <rect x="66" y="45" width="7" height="19" rx="1.5" fill="#3b82f6"/>
+            <rect x="76" y="38" width="7" height="26" rx="1.5" fill="#3b82f6"/>
+          </svg>
+          <span class="size-label">64px</span>
+        </div>
+        <!-- 96px -->
+        <div class="size-item">
+          <svg width="96" height="96" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="120" rx="28" fill="#3b82f6"/>
+            <rect x="30" y="24" width="14" height="72" rx="2" fill="#fff"/>
+            <path d="M44 24 H62 C78 24 90 34 90 48 C90 62 78 72 62 72 H44" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="56" y="52" width="7" height="12" rx="1.5" fill="#3b82f6"/>
+            <rect x="66" y="45" width="7" height="19" rx="1.5" fill="#3b82f6"/>
+            <rect x="76" y="38" width="7" height="26" rx="1.5" fill="#3b82f6"/>
+          </svg>
+          <span class="size-label">96px</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- DESIGN NOTES                                     -->
+  <!-- ================================================ -->
+  <div class="section">
+    <p class="section-label">Design Notes</p>
+    <div class="notes">
+      <p>
+        <strong>Concept:</strong> The letter "P" is constructed with a bold geometric stem and an open bowl stroke.
+        Inside the counter space (the enclosed area of the P), three ascending bars form a mini bar chart —
+        embedding the "tracking/growth" concept directly into the letterform itself.
+      </p>
+      <br>
+      <p>
+        <strong>Why it works:</strong> At large sizes the bars are clearly visible, telling the brand story.
+        At small sizes (16-32px) the bars merge into the overall letter shape and the P remains
+        perfectly legible — it degrades gracefully without losing its identity.
+      </p>
+      <br>
+      <p>
+        <strong>Single color:</strong> The mark uses only #3b82f6. The bars are knocked out of the white bowl,
+        revealing the blue background beneath. This means the logo works in pure monochrome —
+        one color on any background.
+      </p>
+      <br>
+      <p>
+        <strong>App icon:</strong> The 28px corner radius on the container matches iOS icon specs.
+        The mark sits comfortably within the safe area with even optical padding on all sides.
+      </p>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

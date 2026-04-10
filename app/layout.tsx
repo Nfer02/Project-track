@@ -20,6 +20,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" suppressHydrationWarning>
       <Script id="scroll-restore" strategy="beforeInteractive">{`history.scrollRestoration='manual'`}</Script>
+      {/* JSON-LD: ayuda a Google a identificar el logo oficial */}
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "ProjectTrack",
+            url: "https://projecttrack.app",
+            logo: "https://projecttrack.app/opengraph-image",
+          }),
+        }}
+      />
       <body className={`${font.variable} font-sans antialiased`}>
         {/* Skip to main content — accesibilidad teclado */}
         <a

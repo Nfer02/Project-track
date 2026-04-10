@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProjectTrack — Conceptos de Logo Isometrico</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 24px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+      color: #f1f5f9;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 36px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 520px;
+      width: 100%;
+      margin-bottom: 48px;
+    }
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 20px 16px 16px;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: #475569; }
+    .card svg { display: block; margin-bottom: 12px; }
+    .card-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+    }
+    .card-desc {
+      font-size: 11px;
+      color: #64748b;
+      text-align: center;
+    }
+    .divider {
+      width: 100%;
+      max-width: 520px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #334155, transparent);
+      margin-bottom: 36px;
+    }
+    .lockup-section { text-align: center; }
+    .lockup-section h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+    .lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 20px 36px;
+    }
+    .lockup svg { display: block; }
+    .lockup-text {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #f1f5f9;
+    }
+    .lockup-text span { color: #3b82f6; }
+  </style>
+</head>
+<body>
+
+  <h1>ProjectTrack - Conceptos de Logo</h1>
+  <p class="subtitle">Isometrico 3D / Bloques poligonales / Colores de marca</p>
+
+  <div class="grid">
+
+    <!-- ============================================ -->
+    <!-- VARIATION 1: Isometric "PT" connected blocks -->
+    <!-- ============================================ -->
+    <div class="card">
+      <svg width="160" height="140" viewBox="15 25 150 140" xmlns="http://www.w3.org/2000/svg">
+        <!-- Shadow -->
+        <ellipse cx="85" cy="152" rx="45" ry="8" fill="#000" opacity="0.3"/>
+
+        <!-- === P vertical stem === -->
+        <!-- Left face -->
+        <polygon points="35,52 35,135 55,145 55,62" fill="#1e40af"/>
+        <!-- Right face -->
+        <polygon points="55,62 55,145 68,138 68,55" fill="#2563eb"/>
+        <!-- Top face -->
+        <polygon points="35,52 52,43 68,52 52,61" fill="#60a5fa"/>
+        <!-- Top highlight -->
+        <line x1="35" y1="52" x2="52" y2="43" stroke="white" stroke-opacity="0.12" stroke-width="0.7"/>
+        <line x1="52" y1="43" x2="68" y2="52" stroke="white" stroke-opacity="0.12" stroke-width="0.7"/>
+
+        <!-- === P bowl (compact, on left side) === -->
+        <!-- Bowl left face -->
+        <polygon points="25,48 25,78 35,83 35,52" fill="#1e40af"/>
+        <!-- Bowl front/bottom -->
+        <polygon points="25,78 35,83 52,76 52,62 42,57 25,48" fill="#1e40af" opacity="0.85"/>
+        <!-- Bowl top face -->
+        <polygon points="25,48 42,39 52,44 52,53 42,57 25,48" fill="#60a5fa" opacity="0.9"/>
+        <!-- Bowl right inner face -->
+        <polygon points="52,53 52,76 35,83 35,52" fill="#2563eb" opacity="0.5"/>
+        <!-- Top highlight -->
+        <line x1="25" y1="48" x2="42" y2="39" stroke="white" stroke-opacity="0.1" stroke-width="0.6"/>
+
+        <!-- Green accent dot in bowl center -->
+        <circle cx="38" cy="60" r="3.5" fill="#10b981"/>
+        <circle cx="38" cy="60" r="6" fill="#10b981" opacity="0.15"/>
+
+        <!-- === T vertical stem === -->
+        <!-- Left face -->
+        <polygon points="72,58 72,130 90,140 90,68" fill="#1e40af"/>
+        <!-- Right face -->
+        <polygon points="90,68 90,140 108,130 108,58" fill="#2563eb"/>
+        <!-- Top face -->
+        <polygon points="72,58 90,48 108,58 90,68" fill="#60a5fa"/>
+        <line x1="72" y1="58" x2="90" y2="48" stroke="white" stroke-opacity="0.12" stroke-width="0.7"/>
+        <line x1="90" y1="48" x2="108" y2="58" stroke="white" stroke-opacity="0.12" stroke-width="0.7"/>
+
+        <!-- === T horizontal crossbar === -->
+        <!-- Left face -->
+        <polygon points="58,46 58,56 90,71 90,61" fill="#1e40af"/>
+        <!-- Right face -->
+        <polygon points="90,61 90,71 130,51 130,41" fill="#2563eb"/>
+        <!-- Top face -->
+        <polygon points="58,46 90,28 130,46 90,64" fill="#60a5fa"/>
+        <line x1="58" y1="46" x2="90" y2="28" stroke="white" stroke-opacity="0.15" stroke-width="0.7"/>
+        <line x1="90" y1="28" x2="130" y2="46" stroke="white" stroke-opacity="0.15" stroke-width="0.7"/>
+
+        <!-- Connection wall between P and T (shared face) -->
+        <polygon points="68,55 68,138 72,135 72,58" fill="#1d3a80" opacity="0.7"/>
+      </svg>
+      <span class="card-label">Variacion 1</span>
+      <span class="card-desc">Bloques "PT" conectados</span>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- VARIATION 2: Isometric bar chart             -->
+    <!-- ============================================ -->
+    <div class="card">
+      <svg width="160" height="140" viewBox="15 20 150 145" xmlns="http://www.w3.org/2000/svg">
+        <!-- Shadow -->
+        <ellipse cx="88" cy="152" rx="48" ry="8" fill="#000" opacity="0.3"/>
+
+        <!-- Base platform (thin) -->
+        <polygon points="28,140 88,155 148,140 88,125" fill="#172554" opacity="0.6"/>
+        <polygon points="28,140 28,143 88,158 88,155" fill="#0f1d3d" opacity="0.4"/>
+        <polygon points="88,155 88,158 148,143 148,140" fill="#152044" opacity="0.4"/>
+
+        <!-- Bar 1 (shortest, left) height ~25 -->
+        <!-- Left face -->
+        <polygon points="38,115 38,140 56,149 56,124" fill="#1e40af"/>
+        <!-- Right face -->
+        <polygon points="56,124 56,149 74,140 74,115" fill="#2563eb"/>
+        <!-- Top face -->
+        <polygon points="38,115 56,106 74,115 56,124" fill="#60a5fa"/>
+        <line x1="38" y1="115" x2="56" y2="106" stroke="white" stroke-opacity="0.12" stroke-width="0.7"/>
+        <line x1="56" y1="106" x2="74" y2="115" stroke="white" stroke-opacity="0.12" stroke-width="0.7"/>
+
+        <!-- Bar 2 (medium, center) height ~50 -->
+        <!-- Left face -->
+        <polygon points="62,88 62,140 80,149 80,97" fill="#1e40af"/>
+        <!-- Right face -->
+        <polygon points="80,97 80,149 98,140 98,88" fill="#2563eb"/>
+        <!-- Top face -->
+        <polygon points="62,88 80,79 98,88 80,97" fill="#60a5fa"/>
+        <line x1="62" y1="88" x2="80" y2="79" stroke="white" stroke-opacity="0.12" stroke-width="0.7"/>
+        <line x1="80" y1="79" x2="98" y2="88" stroke="white" stroke-opacity="0.12" stroke-width="0.7"/>
+
+        <!-- Bar 3 (tallest, right) height ~85 -->
+        <!-- Left face -->
+        <polygon points="86,55 86,140 104,149 104,64" fill="#1e40af"/>
+        <!-- Right face -->
+        <polygon points="104,64 104,149 122,140 122,55" fill="#2563eb"/>
+        <!-- Top face -->
+        <polygon points="86,55 104,46 122,55 104,64" fill="#60a5fa"/>
+        <line x1="86" y1="55" x2="104" y2="46" stroke="white" stroke-opacity="0.15" stroke-width="0.7"/>
+        <line x1="104" y1="46" x2="122" y2="55" stroke="white" stroke-opacity="0.15" stroke-width="0.7"/>
+
+        <!-- Green checkmark floating above tallest bar -->
+        <polyline points="99,36 104,41 114,28" fill="none" stroke="#10b981" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Checkmark glow -->
+        <polyline points="99,36 104,41 114,28" fill="none" stroke="#10b981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.15"/>
+
+        <!-- Small trend line across bars -->
+        <polyline points="56,108 80,81 104,48" fill="none" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.35"/>
+      </svg>
+      <span class="card-label">Variacion 2</span>
+      <span class="card-desc">Grafico de barras ascendente</span>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- VARIATION 3: Isometric cube with P cutout    -->
+    <!-- ============================================ -->
+    <div class="card">
+      <svg width="160" height="140" viewBox="20 30 140 140" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow3">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feFlood flood-color="#10b981" flood-opacity="0.5" result="color"/>
+            <feComposite in="color" in2="blur" operator="in" result="glow"/>
+            <feMerge>
+              <feMergeNode in="glow"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- Shadow -->
+        <ellipse cx="90" cy="160" rx="44" ry="8" fill="#000" opacity="0.35"/>
+
+        <!-- Full cube — left face -->
+        <polygon points="40,80 40,140 90,165 90,105" fill="#1e40af"/>
+        <!-- Full cube — right face -->
+        <polygon points="90,105 90,165 140,140 140,80" fill="#2563eb"/>
+        <!-- Full cube — top face -->
+        <polygon points="40,80 90,55 140,80 90,105" fill="#60a5fa"/>
+
+        <!-- Top edge highlights -->
+        <line x1="40" y1="80" x2="90" y2="55" stroke="white" stroke-opacity="0.15" stroke-width="0.8"/>
+        <line x1="90" y1="55" x2="140" y2="80" stroke="white" stroke-opacity="0.15" stroke-width="0.8"/>
+        <line x1="40" y1="80" x2="90" y2="105" stroke="white" stroke-opacity="0.06" stroke-width="0.5"/>
+
+        <!-- === P cutout on LEFT face === -->
+        <!-- P stem cutout (vertical bar - shows background) -->
+        <polygon points="50,90 50,150 60,155 60,95" fill="#0f172a"/>
+        <!-- P bowl cutout (the rounded bump) -->
+        <polygon points="50,90 50,108 66,116 72,112 72,102 66,98 60,95 50,90" fill="#0f172a"/>
+
+        <!-- Inner back wall (depth illusion — slightly lighter) -->
+        <polygon points="53,93 53,148 58,150 58,97" fill="#172554" opacity="0.7"/>
+        <polygon points="53,93 53,106 64,113 69,110 69,103 64,100 58,97 53,93" fill="#172554" opacity="0.6"/>
+
+        <!-- Green glow inside the P cutout -->
+        <polygon points="51,92 51,148 59,153 59,96" fill="#10b981" opacity="0.08" filter="url(#glow3)"/>
+        <polygon points="51,92 51,107 65,114 70,111 70,103 65,99 59,96 51,92" fill="#10b981" opacity="0.1" filter="url(#glow3)"/>
+
+        <!-- Green edge lines on the P cutout -->
+        <polyline points="50,90 50,150 60,155" fill="none" stroke="#10b981" stroke-opacity="0.4" stroke-width="0.7"/>
+        <polyline points="50,90 60,95 66,98 72,102 72,112 66,116 50,108" fill="none" stroke="#10b981" stroke-opacity="0.35" stroke-width="0.7"/>
+        <line x1="60" y1="95" x2="60" y2="155" stroke="#10b981" stroke-opacity="0.2" stroke-width="0.5"/>
+
+        <!-- Subtle glow dot at center of bowl -->
+        <circle cx="58" cy="102" r="2" fill="#10b981" opacity="0.5"/>
+        <circle cx="58" cy="102" r="5" fill="#10b981" opacity="0.1"/>
+      </svg>
+      <span class="card-label">Variacion 3</span>
+      <span class="card-desc">Cubo con "P" calado</span>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- VARIATION 4: Isometric stacked layers        -->
+    <!-- ============================================ -->
+    <div class="card">
+      <svg width="160" height="140" viewBox="10 25 160 140" xmlns="http://www.w3.org/2000/svg">
+        <!-- Shadow -->
+        <ellipse cx="90" cy="155" rx="50" ry="8" fill="#000" opacity="0.3"/>
+
+        <!-- === Bottom layer (largest, darkest) === -->
+        <!-- Left face -->
+        <polygon points="22,118 22,132 90,160 90,146" fill="#1e3a5f"/>
+        <!-- Right face -->
+        <polygon points="90,146 90,160 158,132 158,118" fill="#1e4d8c"/>
+        <!-- Top face -->
+        <polygon points="22,118 90,90 158,118 90,146" fill="#2563eb"/>
+        <line x1="22" y1="118" x2="90" y2="90" stroke="white" stroke-opacity="0.06" stroke-width="0.7"/>
+        <line x1="90" y1="90" x2="158" y2="118" stroke="white" stroke-opacity="0.06" stroke-width="0.7"/>
+
+        <!-- === Middle layer (offset slightly right + up) === -->
+        <!-- Left face -->
+        <polygon points="34,92 34,106 96,132 96,118" fill="#1e40af"/>
+        <!-- Right face -->
+        <polygon points="96,118 96,132 148,108 148,94" fill="#2563eb"/>
+        <!-- Top face -->
+        <polygon points="34,92 96,66 148,92 96,118" fill="#3b82f6"/>
+        <line x1="34" y1="92" x2="96" y2="66" stroke="white" stroke-opacity="0.1" stroke-width="0.7"/>
+        <line x1="96" y1="66" x2="148" y2="92" stroke="white" stroke-opacity="0.1" stroke-width="0.7"/>
+
+        <!-- === Top layer (smallest, brightest, most offset) === -->
+        <!-- Left face -->
+        <polygon points="46,68 46,80 102,106 102,94" fill="#2563eb"/>
+        <!-- Right face -->
+        <polygon points="102,94 102,106 138,90 138,78" fill="#3b82f6"/>
+        <!-- Top face -->
+        <polygon points="46,68 102,44 138,68 102,94" fill="#60a5fa"/>
+        <line x1="46" y1="68" x2="102" y2="44" stroke="white" stroke-opacity="0.15" stroke-width="0.8"/>
+        <line x1="102" y1="44" x2="138" y2="68" stroke="white" stroke-opacity="0.15" stroke-width="0.8"/>
+
+        <!-- Green upward arrow on top layer -->
+        <line x1="102" y1="60" x2="102" y2="34" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="96,40 102,30 108,40" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Arrow glow -->
+        <line x1="102" y1="60" x2="102" y2="34" stroke="#10b981" stroke-width="6" stroke-linecap="round" opacity="0.15"/>
+        <polyline points="96,40 102,30 108,40" fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.12"/>
+
+        <!-- Subtle layer separation lines -->
+        <line x1="34" y1="92" x2="96" y2="118" stroke="white" stroke-opacity="0.05" stroke-width="0.4"/>
+        <line x1="46" y1="68" x2="102" y2="94" stroke="white" stroke-opacity="0.05" stroke-width="0.4"/>
+      </svg>
+      <span class="card-label">Variacion 4</span>
+      <span class="card-desc">Capas apiladas con tendencia</span>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Lockup section using Variation 2 (bar chart) -->
+  <div class="lockup-section">
+    <h2>Lockup horizontal recomendado</h2>
+    <div class="lockup">
+      <svg width="48" height="42" viewBox="28 20 100 140" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bar 1 -->
+        <polygon points="38,115 38,140 56,149 56,124" fill="#1e40af"/>
+        <polygon points="56,124 56,149 74,140 74,115" fill="#2563eb"/>
+        <polygon points="38,115 56,106 74,115 56,124" fill="#60a5fa"/>
+        <!-- Bar 2 -->
+        <polygon points="62,88 62,140 80,149 80,97" fill="#1e40af"/>
+        <polygon points="80,97 80,149 98,140 98,88" fill="#2563eb"/>
+        <polygon points="62,88 80,79 98,88 80,97" fill="#60a5fa"/>
+        <!-- Bar 3 -->
+        <polygon points="86,55 86,140 104,149 104,64" fill="#1e40af"/>
+        <polygon points="104,64 104,149 122,140 122,55" fill="#2563eb"/>
+        <polygon points="86,55 104,46 122,55 104,64" fill="#60a5fa"/>
+        <!-- Checkmark -->
+        <polyline points="99,36 104,41 114,28" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="lockup-text">Project<span>Track</span></span>
+    </div>
+  </div>
+
+</body>
+</html>

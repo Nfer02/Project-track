@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Diseño Composición Remotion</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #080c14; color: #e2e8f0; padding: 40px 32px; min-height: 100vh; }
+
+  h1 { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+  .subtitle { font-size: 15px; color: #6b7280; margin-bottom: 40px; }
+
+  /* Timeline */
+  .timeline { position: relative; margin-bottom: 48px; }
+  .tl-header { display: flex; gap: 0; margin-bottom: 8px; }
+  .tl-time { flex: 1; font-size: 11px; color: #4b5563; text-align: left; padding-left: 4px; }
+  .tl-bar { display: flex; gap: 3px; height: 52px; }
+  .tl-scene { display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 6px; cursor: default; transition: opacity 0.2s; font-size: 11px; font-weight: 600; text-align: center; padding: 0 6px; }
+  .tl-scene:hover { opacity: 0.85; }
+  .scene-hook     { background: #1e2235; border: 1px solid #374151; color: #9ca3af; flex: 7; }
+  .scene-problema { background: #1e2b1e; border: 1px solid #16a34a22; color: #4ade80; flex: 13; }
+  .scene-giro     { background: #1e1e35; border: 1px solid #3b5bdb44; color: #818cf8; flex: 5; }
+  .scene-ocr      { background: #14261a; border: 1px solid #00c89644; color: #34d399; flex: 13; }
+  .scene-dash     { background: #14202e; border: 1px solid #3b82f644; color: #60a5fa; flex: 14; }
+  .scene-export   { background: #1a1a2e; border: 1px solid #8b5cf644; color: #a78bfa; flex: 8; }
+  .scene-precio   { background: #1e1420; border: 1px solid #ec489944; color: #f9a8d4; flex: 5; }
+  .scene-cta      { background: #1a1a14; border: 1px solid #f59e0b44; color: #fbbf24; flex: 10; }
+
+  .tl-labels { display: flex; gap: 3px; margin-top: 8px; }
+  .tl-label { font-size: 10px; color: #6b7280; text-align: center; }
+  .tl-label.hook     { flex: 7; }
+  .tl-label.problema { flex: 13; }
+  .tl-label.giro     { flex: 5; }
+  .tl-label.ocr      { flex: 13; }
+  .tl-label.dash     { flex: 14; }
+  .tl-label.export   { flex: 8; }
+  .tl-label.precio   { flex: 5; }
+  .tl-label.cta      { flex: 10; }
+
+  /* Scene cards */
+  .scenes { display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px; }
+  .scene-card { background: #0f1520; border: 1px solid #1e2535; border-radius: 14px; padding: 20px 24px; display: grid; grid-template-columns: 140px 1fr 1fr; gap: 24px; align-items: start; }
+  .scene-card:hover { border-color: #2d3a52; }
+  .scene-header { display: flex; flex-direction: column; gap: 6px; }
+  .scene-num { font-size: 11px; font-weight: 700; color: #4b5563; text-transform: uppercase; letter-spacing: 0.08em; }
+  .scene-name { font-size: 15px; font-weight: 700; color: #fff; }
+  .scene-timing { font-size: 12px; color: #6b7280; font-family: 'JetBrains Mono', monospace; }
+  .scene-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-top: 8px; width: fit-content; }
+  .badge-key { background: #14261a; color: #34d399; border: 1px solid #34d39944; }
+  .badge-wow { background: #1e1430; color: #a78bfa; border: 1px solid #a78bfa44; }
+  .badge-std { background: #1a1f2e; color: #6b7280; border: 1px solid #374151; }
+
+  .scene-content { }
+  .scene-content h4 { font-size: 12px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .scene-content p { font-size: 13.5px; color: #d1d5db; line-height: 1.6; }
+
+  .scene-anims { }
+  .scene-anims h4 { font-size: 12px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .anim-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .anim-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .dot-spring { background: #3b82f6; }
+  .dot-stagger { background: #8b5cf6; }
+  .dot-counter { background: #10b981; }
+  .dot-draw { background: #f59e0b; }
+  .dot-fade { background: #6b7280; }
+  .anim-text { font-size: 13px; color: #9ca3af; line-height: 1.5; }
+
+  /* Tech stack */
+  .tech { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 48px; }
+  .tech-card { background: #0f1520; border: 1px solid #1e2535; border-radius: 12px; padding: 18px 20px; }
+  .tech-icon { font-size: 28px; margin-bottom: 10px; }
+  .tech-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .tech-desc { font-size: 12px; color: #6b7280; line-height: 1.5; }
+
+  /* Output specs */
+  .specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
+  .spec-card { background: #0f1520; border: 1px solid #1e2535; border-radius: 12px; padding: 18px 20px; }
+  .spec-label { font-size: 11px; font-weight: 600; color: #4b5563; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .spec-value { font-size: 20px; font-weight: 800; color: #3b82f6; }
+  .spec-detail { font-size: 12px; color: #6b7280; margin-top: 4px; }
+
+  .section-title { font-size: 13px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px; border-bottom: 1px solid #1e2535; padding-bottom: 10px; }
+
+  /* Highlight box */
+  .highlight { background: linear-gradient(135deg, #0a1e14 0%, #0d2030 100%); border: 1px solid #1d4ed844; border-radius: 14px; padding: 24px 28px; margin-bottom: 48px; }
+  .highlight h3 { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+  .highlight p { font-size: 14px; color: #9ca3af; line-height: 1.7; }
+  .highlight strong { color: #60a5fa; }
+</style>
+</head>
+<body>
+
+<h1>Composición Remotion — ProjectTrack Promo</h1>
+<p class="subtitle">75 segundos · 1920×1080 · 30fps · Opción C (React nativo — máxima calidad)</p>
+
+<!-- Timeline visual -->
+<p class="section-title">Timeline completo</p>
+<div class="timeline">
+  <div class="tl-bar">
+    <div class="tl-scene scene-hook">HOOK<br/>0–7s</div>
+    <div class="tl-scene scene-problema">PROBLEMA<br/>7–20s</div>
+    <div class="tl-scene scene-giro">GIRO<br/>20–25s</div>
+    <div class="tl-scene scene-ocr">OCR ★<br/>25–38s</div>
+    <div class="tl-scene scene-dash">DASHBOARD<br/>38–52s</div>
+    <div class="tl-scene scene-export">EXPORT<br/>52–60s</div>
+    <div class="tl-scene scene-precio">PRECIO<br/>60–65s</div>
+    <div class="tl-scene scene-cta">CTA FINAL<br/>65–75s</div>
+  </div>
+</div>
+
+<!-- Scene cards -->
+<p class="section-title">Escenas y animaciones React</p>
+<div class="scenes">
+
+  <!-- Scene 1 -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-num">Escena 1</span>
+      <span class="scene-name">El Hook</span>
+      <span class="scene-timing">0:00 → 0:07</span>
+      <span class="scene-badge badge-std">⬛ Narrativa</span>
+    </div>
+    <div class="scene-content">
+      <h4>Visual</h4>
+      <p>Fondo oscuro (#0a0f1a). Tres preguntas aparecen una a una con animación de escritura (typewriter). Silencio total. Tensión máxima antes de mostrar la app.</p>
+    </div>
+    <div class="scene-anims">
+      <h4>Animaciones React</h4>
+      <div class="anim-item"><div class="anim-dot dot-stagger"></div><span class="anim-text">Typewriter effect en cada pregunta — caracteres que aparecen uno a uno</span></div>
+      <div class="anim-item"><div class="anim-dot dot-fade"></div><span class="anim-text">Fade in suave del fondo, partículas flotantes sutiles</span></div>
+    </div>
+  </div>
+
+  <!-- Scene 2 -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-num">Escenas 2-3</span>
+      <span class="scene-name">El Problema</span>
+      <span class="scene-timing">0:07 → 0:20</span>
+      <span class="scene-badge badge-std">📊 Excel caótico</span>
+    </div>
+    <div class="scene-content">
+      <h4>Visual</h4>
+      <p>Componente React que imita Excel: filas de datos desorganizados, celdas con fórmulas, errores #REF. La pantalla se fragmenta con glitch sutil. Aparece "Fin de trimestre." en tipografía light.</p>
+    </div>
+    <div class="scene-anims">
+      <h4>Animaciones React</h4>
+      <div class="anim-item"><div class="anim-dot dot-stagger"></div><span class="anim-text">Filas de Excel que aparecen en stagger (una a una)</span></div>
+      <div class="anim-item"><div class="anim-dot dot-spring"></div><span class="anim-text">Glitch CSS sutil en celdas con "#ERROR" — animación loop</span></div>
+      <div class="anim-item"><div class="anim-dot dot-fade"></div><span class="anim-text">Texto "Fin de trimestre." en fade-in muy lento</span></div>
+    </div>
+  </div>
+
+  <!-- Scene 3: Giro -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-num">Escena 4</span>
+      <span class="scene-name">El Giro</span>
+      <span class="scene-timing">0:20 → 0:25</span>
+      <span class="scene-badge badge-wow">✨ Impacto visual</span>
+    </div>
+    <div class="scene-content">
+      <h4>Visual</h4>
+      <p>Split screen animado: izquierda = Excel caótico (se desvanece), derecha = dashboard de ProjectTrack que irrumpe. "Hay otra forma." en tipografía bold enorme con shimmer effect.</p>
+    </div>
+    <div class="scene-anims">
+      <h4>Animaciones React</h4>
+      <div class="anim-item"><div class="anim-dot dot-spring"></div><span class="anim-text">Split screen con spring animation — la app "empuja" el Excel hacia fuera</span></div>
+      <div class="anim-item"><div class="anim-dot dot-draw"></div><span class="anim-text">Shimmer/glimmer sobre el texto principal</span></div>
+      <div class="anim-item"><div class="anim-dot dot-fade"></div><span class="anim-text">Music fade-in sincronizado con el giro visual</span></div>
+    </div>
+  </div>
+
+  <!-- Scene 4: OCR -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-num">Escena 5</span>
+      <span class="scene-name">OCR en Acción ★</span>
+      <span class="scene-timing">0:25 → 0:38</span>
+      <span class="scene-badge badge-key">🤖 ESCENA CLAVE</span>
+    </div>
+    <div class="scene-content">
+      <h4>Visual</h4>
+      <p>Formulario real de "Nuevo gasto" recreado en React. Una imagen de ticket/factura aparece en el área de carga. Barra de progreso "Procesando con IA…". Los campos se rellenan solos: Proveedor → NIF → IVA → Importe. Badge "Claude AI" aparece discretamente.</p>
+    </div>
+    <div class="scene-anims">
+      <h4>Animaciones React</h4>
+      <div class="anim-item"><div class="anim-dot dot-spring"></div><span class="anim-text">Ticket image que "cae" sobre el upload zone con spring</span></div>
+      <div class="anim-item"><div class="anim-dot dot-draw"></div><span class="anim-text">Progress bar animada "Procesando con IA…" (0→100% en 1.5s)</span></div>
+      <div class="anim-item"><div class="anim-dot dot-stagger"></div><span class="anim-text">Campos que se rellenan en stagger: cada campo aparece con typewriter delay</span></div>
+      <div class="anim-item"><div class="anim-dot dot-spring"></div><span class="anim-text">Badge "Powered by Claude AI" pop-in con spring bounce</span></div>
+      <div class="anim-item"><div class="anim-dot dot-counter"></div><span class="anim-text">Highlight animado por cada campo rellenado (border flash verde)</span></div>
+    </div>
+  </div>
+
+  <!-- Scene 5: Dashboard -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-num">Escena 6</span>
+      <span class="scene-name">Dashboard</span>
+      <span class="scene-timing">0:38 → 0:52</span>
+      <span class="scene-badge badge-wow">📊 WOW Factor</span>
+    </div>
+    <div class="scene-content">
+      <h4>Visual</h4>
+      <p>Dashboard financiero completo recreado en React. KPIs que cuentan hacia arriba, gráfico de barras que crece desde cero, donut que se dibuja, gauge de reserva fiscal animado. "Tu negocio. De un vistazo."</p>
+    </div>
+    <div class="scene-anims">
+      <h4>Animaciones React</h4>
+      <div class="anim-item"><div class="anim-dot dot-counter"></div><span class="anim-text">Counters animados: 0 → 15.000€ / 0 → 12.430€ / etc. (spring easing)</span></div>
+      <div class="anim-item"><div class="anim-dot dot-draw"></div><span class="anim-text">Barras del gráfico que crecen desde la base (spring stagger)</span></div>
+      <div class="anim-item"><div class="anim-dot dot-draw"></div><span class="anim-text">Donut de gastos que se dibuja en arco (stroke-dasharray animation)</span></div>
+      <div class="anim-item"><div class="anim-dot dot-draw"></div><span class="anim-text">Gauge de reserva fiscal: aguja que gira de 0° al valor final</span></div>
+      <div class="anim-item"><div class="anim-dot dot-spring"></div><span class="anim-text">Cards KPI que entran en stagger desde abajo con spring</span></div>
+    </div>
+  </div>
+
+  <!-- Scene 6: Export -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-num">Escena 7</span>
+      <span class="scene-name">Exportar CSV</span>
+      <span class="scene-timing">0:52 → 1:00</span>
+      <span class="scene-badge badge-std">📄 Feature demo</span>
+    </div>
+    <div class="scene-content">
+      <h4>Visual</h4>
+      <p>Vista de Reportes con tabla de ingresos/gastos. Cursor animado que se mueve hacia "Exportar CSV", hace clic. Animación de descarga. Icono de hoja de cálculo que aparece. "Exporta. Envía. Listo."</p>
+    </div>
+    <div class="scene-anims">
+      <h4>Animaciones React</h4>
+      <div class="anim-item"><div class="anim-dot dot-spring"></div><span class="anim-text">Cursor SVG animado que se mueve al botón (interpolateKeyframes)</span></div>
+      <div class="anim-item"><div class="anim-dot dot-draw"></div><span class="anim-text">Progress bar de descarga animada tras el clic</span></div>
+      <div class="anim-item"><div class="anim-dot dot-spring"></div><span class="anim-text">Icono CSV que hace pop-in con bounce spring</span></div>
+    </div>
+  </div>
+
+  <!-- Scene 7+8: Precio + CTA -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-num">Escenas 8-9</span>
+      <span class="scene-name">Precio + CTA Final</span>
+      <span class="scene-timing">1:00 → 1:15</span>
+      <span class="scene-badge badge-wow">🎯 Conversión</span>
+    </div>
+    <div class="scene-content">
+      <h4>Visual</h4>
+      <p>Tarjetas de precio flotantes (Starter gratis / PRO 14,99€) con animación de entrada. CTA final: logo centrado, URL animada que se escribe sola, tagline "Sin tarjeta. Sin complicaciones." Fade a negro con silencio.</p>
+    </div>
+    <div class="scene-anims">
+      <h4>Animaciones React</h4>
+      <div class="anim-item"><div class="anim-dot dot-spring"></div><span class="anim-text">Tarjetas de precio: slide-up + fade con spring stagger</span></div>
+      <div class="anim-item"><div class="anim-dot dot-stagger"></div><span class="anim-text">URL "projecttrack.app" que se escribe letra a letra</span></div>
+      <div class="anim-item"><div class="anim-dot dot-fade"></div><span class="anim-text">Fade a negro total en los últimos 2 segundos</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Tech stack -->
+<p class="section-title">Stack técnico</p>
+<div class="tech">
+  <div class="tech-card">
+    <div class="tech-icon">🎬</div>
+    <div class="tech-name">Remotion 4.x</div>
+    <div class="tech-desc">Framework principal. Composición React → MP4. Renderizado en Node.js con Puppeteer headless.</div>
+  </div>
+  <div class="tech-card">
+    <div class="tech-icon">⚛️</div>
+    <div class="tech-name">React + TypeScript</div>
+    <div class="tech-desc">Cada escena es un componente React. Props tipadas para duración, timing y datos.</div>
+  </div>
+  <div class="tech-card">
+    <div class="tech-icon">🎨</div>
+    <div class="tech-name">Recharts (inline)</div>
+    <div class="tech-desc">Misma lib que usa la app real. Los gráficos en el video serán idénticos a los del dashboard.</div>
+  </div>
+  <div class="tech-card">
+    <div class="tech-icon">✨</div>
+    <div class="tech-name">@remotion/animation-utils</div>
+    <div class="tech-desc">spring(), interpolate(), useCurrentFrame() para todas las animaciones fluidas.</div>
+  </div>
+</div>
+
+<!-- Output specs -->
+<p class="section-title">Especificaciones de salida</p>
+<div class="specs">
+  <div class="spec-card">
+    <div class="spec-label">Resolución</div>
+    <div class="spec-value">1920×1080</div>
+    <div class="spec-detail">Full HD · 16:9 · Perfecto para landing page</div>
+  </div>
+  <div class="spec-card">
+    <div class="spec-label">Frame rate</div>
+    <div class="spec-value">30 fps</div>
+    <div class="spec-detail">Animaciones fluidas · Estándar web</div>
+  </div>
+  <div class="spec-card">
+    <div class="spec-label">Duración</div>
+    <div class="spec-value">75 s</div>
+    <div class="spec-detail">2250 frames totales · Optimizado para web</div>
+  </div>
+  <div class="spec-card">
+    <div class="spec-label">Codec</div>
+    <div class="spec-value">H.264</div>
+    <div class="spec-detail">Máxima compatibilidad de navegadores</div>
+  </div>
+  <div class="spec-card">
+    <div class="spec-label">Tipografía</div>
+    <div class="spec-value">Plus Jakarta</div>
+    <div class="spec-detail">+ Inter + JetBrains Mono · Google Fonts</div>
+  </div>
+  <div class="spec-card">
+    <div class="spec-label">Colores</div>
+    <div class="spec-value">#0a0f1a</div>
+    <div class="spec-detail">+ #3b82f6 · #00c896 · #f59e0b · marca exacta</div>
+  </div>
+</div>
+
+<!-- Highlight -->
+<div class="highlight">
+  <h3>🎯 Por qué esto es impactante para el visitante</h3>
+  <p>
+    Los visitantes de la landing verán <strong>el mismo dashboard que usarán</strong> — no mockups genéricos, sino los gráficos reales de Recharts, los mismos colores, la misma tipografía. Los <strong>contadores animados</strong> (0€ → 15.000€) activan el "efecto cifra" en el cerebro: el visitante visualiza sus propios números en pantalla. El <strong>OCR en acción</strong> — el campo rellenándose solo mientras "la IA trabaja" — es la escena que hace que la gente se diga "esto lo necesito". Y todo renderizado a <strong>1920×1080 nativo en React</strong>, sin pixelado, sin compresión de capturas.
+  </p>
+</div>
+
+</body>
+</html>

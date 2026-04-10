@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProjectTrack — Logo Option B: Abstract Symbol</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f172a;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 24px;
+  }
+  h1 {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 48px;
+  }
+  .variations {
+    display: flex;
+    gap: 80px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 80px;
+  }
+  .variation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .variation-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #475569;
+    padding: 6px 14px;
+    border: 1px solid #1e293b;
+    border-radius: 100px;
+  }
+  .showcase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+  }
+  .sizes-section {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .sizes-section h3 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #475569;
+    margin-bottom: 32px;
+  }
+  .sizes {
+    display: flex;
+    gap: 48px;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .size-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .size-label {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+  }
+  .dark-card {
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 48px 56px;
+    border: 1px solid #334155;
+  }
+  .light-card {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 48px 56px;
+    border: 1px solid #e2e8f0;
+  }
+  .context-row {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 60px;
+  }
+  .context-row .showcase {
+    min-height: auto;
+  }
+</style>
+</head>
+<body>
+
+<h1>Logo Option B</h1>
+<h2>Abstract Symbol</h2>
+
+<!-- ============================================================
+     SVG DEFS — shared gradients and the icon symbol
+     ============================================================ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <!-- Primary gradient: bottom-left to top-right -->
+    <linearGradient id="grad-main" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+    <!-- Accent gradient for the check/arrow stroke -->
+    <linearGradient id="grad-accent" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#93c5fd"/>
+    </linearGradient>
+    <!-- Subtle highlight gradient -->
+    <linearGradient id="grad-highlight" x1="0.5" y1="1" x2="0.5" y2="0">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </linearGradient>
+
+    <!--
+      THE SYMBOL — viewBox 0 0 64 64
+      Concept: Three ascending bars (project phases / financial growth)
+      with a sweeping upward arc that ends in a forward-pointing arrow,
+      symbolizing momentum, tracking, and completion.
+      The bars are rounded and staggered; the arc ties them together.
+    -->
+    <symbol id="pt-icon" viewBox="0 0 64 64">
+      <!-- Bar 1 — shortest, left -->
+      <rect x="8" y="38" width="12" height="20" rx="4" fill="url(#grad-main)" opacity="0.55"/>
+      <!-- Bar 2 — medium, center -->
+      <rect x="26" y="26" width="12" height="32" rx="4" fill="url(#grad-main)" opacity="0.78"/>
+      <!-- Bar 3 — tallest, right -->
+      <rect x="44" y="14" width="12" height="44" rx="4" fill="url(#grad-main)"/>
+      <!-- Upward arc + arrow — the "track" line -->
+      <path
+        d="M10 50 C18 42, 28 24, 38 18 L50 8"
+        fill="none"
+        stroke="url(#grad-accent)"
+        stroke-width="3.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <!-- Arrow head at end of arc -->
+      <path
+        d="M46 6 L52 8 L48 14"
+        fill="none"
+        stroke="url(#grad-accent)"
+        stroke-width="3.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <!-- Small glow dot at the arrow tip for polish -->
+      <circle cx="51" cy="8" r="2.2" fill="#93c5fd" opacity="0.7"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============================================================
+     VARIATION 1 — Icon Only
+     ============================================================ -->
+<div class="variations">
+  <div class="variation">
+    <span class="variation-label">Icon Only</span>
+    <div class="showcase">
+      <svg width="120" height="120" viewBox="0 0 64 64" aria-label="ProjectTrack icon">
+        <use href="#pt-icon"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       VARIATION 2 — Icon + Text Horizontal
+       ============================================================ -->
+  <div class="variation">
+    <span class="variation-label">Horizontal</span>
+    <div class="showcase">
+      <svg width="320" height="64" viewBox="0 0 320 64" aria-label="ProjectTrack logo horizontal">
+        <!-- Icon -->
+        <use href="#pt-icon" width="56" height="56" x="0" y="4"/>
+        <!-- Wordmark -->
+        <text x="66" y="29" fill="#f1f5f9" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="24" font-weight="700" letter-spacing="-0.5">
+          Project<tspan fill="#60a5fa">Track</tspan>
+        </text>
+        <!-- Tagline -->
+        <text x="67" y="47" fill="#64748b" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="500" letter-spacing="2">
+          FINANCIAL PROJECT MGMT
+        </text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       VARIATION 3 — Icon + Text Stacked
+       ============================================================ -->
+  <div class="variation">
+    <span class="variation-label">Stacked</span>
+    <div class="showcase">
+      <svg width="180" height="160" viewBox="0 0 180 160" aria-label="ProjectTrack logo stacked">
+        <!-- Icon centered -->
+        <use href="#pt-icon" width="72" height="72" x="54" y="4"/>
+        <!-- Wordmark centered below -->
+        <text x="90" y="104" text-anchor="middle" fill="#f1f5f9" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="22" font-weight="700" letter-spacing="-0.3">
+          Project<tspan fill="#60a5fa">Track</tspan>
+        </text>
+        <!-- Tagline -->
+        <text x="90" y="122" text-anchor="middle" fill="#64748b" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="500" letter-spacing="2">
+          FINANCIAL PROJECT MGMT
+        </text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SIZE SCALING TEST
+     ============================================================ -->
+<div class="sizes-section">
+  <h3>Scale Test</h3>
+  <div class="sizes">
+    <div class="size-item">
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#pt-icon"/></svg>
+      <span class="size-label">16px favicon</span>
+    </div>
+    <div class="size-item">
+      <svg width="24" height="24" viewBox="0 0 64 64"><use href="#pt-icon"/></svg>
+      <span class="size-label">24px nav</span>
+    </div>
+    <div class="size-item">
+      <svg width="32" height="32" viewBox="0 0 64 64"><use href="#pt-icon"/></svg>
+      <span class="size-label">32px toolbar</span>
+    </div>
+    <div class="size-item">
+      <svg width="48" height="48" viewBox="0 0 64 64"><use href="#pt-icon"/></svg>
+      <span class="size-label">48px sidebar</span>
+    </div>
+    <div class="size-item">
+      <svg width="64" height="64" viewBox="0 0 64 64"><use href="#pt-icon"/></svg>
+      <span class="size-label">64px card</span>
+    </div>
+    <div class="size-item">
+      <svg width="96" height="96" viewBox="0 0 64 64"><use href="#pt-icon"/></svg>
+      <span class="size-label">96px hero</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CONTEXT: Dark Card + Light Card
+     ============================================================ -->
+<div class="context-row">
+  <div class="dark-card">
+    <div class="showcase">
+      <svg width="240" height="52" viewBox="0 0 320 64" aria-label="ProjectTrack on dark">
+        <use href="#pt-icon" width="48" height="48" x="0" y="8"/>
+        <text x="58" y="29" fill="#f1f5f9" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="22" font-weight="700" letter-spacing="-0.5">
+          Project<tspan fill="#60a5fa">Track</tspan>
+        </text>
+        <text x="59" y="46" fill="#64748b" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="9.5" font-weight="500" letter-spacing="2">
+          FINANCIAL PROJECT MGMT
+        </text>
+      </svg>
+    </div>
+  </div>
+  <div class="light-card">
+    <div class="showcase">
+      <svg width="240" height="52" viewBox="0 0 320 64" aria-label="ProjectTrack on light">
+        <!-- Redefine icon colors for light background inline -->
+        <defs>
+          <linearGradient id="grad-main-dark" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1d4ed8"/>
+            <stop offset="100%" stop-color="#3b82f6"/>
+          </linearGradient>
+          <linearGradient id="grad-accent-dark" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#2563eb"/>
+            <stop offset="100%" stop-color="#3b82f6"/>
+          </linearGradient>
+        </defs>
+        <g transform="translate(0,8)">
+          <rect x="6" y="30" width="9.4" height="15.6" rx="3.1" fill="url(#grad-main-dark)" opacity="0.5"/>
+          <rect x="20.3" y="21.6" width="9.4" height="24" rx="3.1" fill="url(#grad-main-dark)" opacity="0.75"/>
+          <rect x="34.4" y="10.9" width="9.4" height="34.4" rx="3.1" fill="url(#grad-main-dark)"/>
+          <path d="M7.8 39 C14 33, 21.9 18.8, 29.7 14 L39 6.3" fill="none" stroke="url(#grad-accent-dark)" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M36 4.7 L40.7 6.3 L37.6 10.9" fill="none" stroke="url(#grad-accent-dark)" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="40" cy="6.3" r="1.7" fill="#3b82f6" opacity="0.6"/>
+        </g>
+        <text x="58" y="29" fill="#0f172a" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="22" font-weight="700" letter-spacing="-0.5">
+          Project<tspan fill="#2563eb">Track</tspan>
+        </text>
+        <text x="59" y="46" fill="#94a3b8" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="9.5" font-weight="500" letter-spacing="2">
+          FINANCIAL PROJECT MGMT
+        </text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
