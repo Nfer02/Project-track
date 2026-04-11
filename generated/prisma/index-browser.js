@@ -134,6 +134,15 @@ exports.Prisma.WorkspaceScalarFieldEnum = {
   slug: 'slug',
   plan: 'plan',
   sector: 'sector',
+  nif: 'nif',
+  legalName: 'legalName',
+  legalForm: 'legalForm',
+  vatRegime: 'vatRegime',
+  defaultVatRate: 'defaultVatRate',
+  defaultIrpfRate: 'defaultIrpfRate',
+  isIspApplicable: 'isIspApplicable',
+  employeeCount: 'employeeCount',
+  autonomoQuota: 'autonomoQuota',
   createdAt: 'createdAt'
 };
 

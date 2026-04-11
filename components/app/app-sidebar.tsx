@@ -16,6 +16,7 @@ import {
   Shield,
   HelpCircle,
   CirclePlay,
+  Building2,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Logo } from "@/components/app/logo"
@@ -39,6 +40,7 @@ const NAV_ITEMS = [
 
 const SETTINGS_ITEMS = [
   { href: "/reports", label: "Reportes", icon: FileBarChart },
+  { href: "/settings/empresa", label: "Mi empresa", icon: Building2 },
   { href: "/settings/members", label: "Colaboradores", icon: Users },
   { href: "/settings/billing", label: "Mi plan", icon: CreditCard },
   { href: "/support", label: "Soporte", icon: HelpCircle },
@@ -149,6 +151,10 @@ export function AppSidebar({ user, workspace, onLinkClick }: AppSidebarProps) {
             <DropdownMenuItem onClick={() => router.push("/settings/profile")}>
               <User className="mr-2 h-4 w-4" aria-hidden="true" />
               Mi perfil
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/settings/empresa")}>
+              <Building2 className="mr-2 h-4 w-4" aria-hidden="true" />
+              Mi empresa
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => router.push("/settings/members")}>
               <Users className="mr-2 h-4 w-4" aria-hidden="true" />

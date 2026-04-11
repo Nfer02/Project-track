@@ -3174,8 +3174,24 @@ export namespace Prisma {
 
   export type AggregateWorkspace = {
     _count: WorkspaceCountAggregateOutputType | null
+    _avg: WorkspaceAvgAggregateOutputType | null
+    _sum: WorkspaceSumAggregateOutputType | null
     _min: WorkspaceMinAggregateOutputType | null
     _max: WorkspaceMaxAggregateOutputType | null
+  }
+
+  export type WorkspaceAvgAggregateOutputType = {
+    defaultVatRate: number | null
+    defaultIrpfRate: number | null
+    employeeCount: number | null
+    autonomoQuota: Decimal | null
+  }
+
+  export type WorkspaceSumAggregateOutputType = {
+    defaultVatRate: number | null
+    defaultIrpfRate: number | null
+    employeeCount: number | null
+    autonomoQuota: Decimal | null
   }
 
   export type WorkspaceMinAggregateOutputType = {
@@ -3184,6 +3200,15 @@ export namespace Prisma {
     slug: string | null
     plan: $Enums.Plan | null
     sector: string | null
+    nif: string | null
+    legalName: string | null
+    legalForm: string | null
+    vatRegime: string | null
+    defaultVatRate: number | null
+    defaultIrpfRate: number | null
+    isIspApplicable: boolean | null
+    employeeCount: number | null
+    autonomoQuota: Decimal | null
     createdAt: Date | null
   }
 
@@ -3193,6 +3218,15 @@ export namespace Prisma {
     slug: string | null
     plan: $Enums.Plan | null
     sector: string | null
+    nif: string | null
+    legalName: string | null
+    legalForm: string | null
+    vatRegime: string | null
+    defaultVatRate: number | null
+    defaultIrpfRate: number | null
+    isIspApplicable: boolean | null
+    employeeCount: number | null
+    autonomoQuota: Decimal | null
     createdAt: Date | null
   }
 
@@ -3202,10 +3236,33 @@ export namespace Prisma {
     slug: number
     plan: number
     sector: number
+    nif: number
+    legalName: number
+    legalForm: number
+    vatRegime: number
+    defaultVatRate: number
+    defaultIrpfRate: number
+    isIspApplicable: number
+    employeeCount: number
+    autonomoQuota: number
     createdAt: number
     _all: number
   }
 
+
+  export type WorkspaceAvgAggregateInputType = {
+    defaultVatRate?: true
+    defaultIrpfRate?: true
+    employeeCount?: true
+    autonomoQuota?: true
+  }
+
+  export type WorkspaceSumAggregateInputType = {
+    defaultVatRate?: true
+    defaultIrpfRate?: true
+    employeeCount?: true
+    autonomoQuota?: true
+  }
 
   export type WorkspaceMinAggregateInputType = {
     id?: true
@@ -3213,6 +3270,15 @@ export namespace Prisma {
     slug?: true
     plan?: true
     sector?: true
+    nif?: true
+    legalName?: true
+    legalForm?: true
+    vatRegime?: true
+    defaultVatRate?: true
+    defaultIrpfRate?: true
+    isIspApplicable?: true
+    employeeCount?: true
+    autonomoQuota?: true
     createdAt?: true
   }
 
@@ -3222,6 +3288,15 @@ export namespace Prisma {
     slug?: true
     plan?: true
     sector?: true
+    nif?: true
+    legalName?: true
+    legalForm?: true
+    vatRegime?: true
+    defaultVatRate?: true
+    defaultIrpfRate?: true
+    isIspApplicable?: true
+    employeeCount?: true
+    autonomoQuota?: true
     createdAt?: true
   }
 
@@ -3231,6 +3306,15 @@ export namespace Prisma {
     slug?: true
     plan?: true
     sector?: true
+    nif?: true
+    legalName?: true
+    legalForm?: true
+    vatRegime?: true
+    defaultVatRate?: true
+    defaultIrpfRate?: true
+    isIspApplicable?: true
+    employeeCount?: true
+    autonomoQuota?: true
     createdAt?: true
     _all?: true
   }
@@ -3273,6 +3357,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: WorkspaceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WorkspaceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: WorkspaceMinAggregateInputType
@@ -3303,6 +3399,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: WorkspaceCountAggregateInputType | true
+    _avg?: WorkspaceAvgAggregateInputType
+    _sum?: WorkspaceSumAggregateInputType
     _min?: WorkspaceMinAggregateInputType
     _max?: WorkspaceMaxAggregateInputType
   }
@@ -3313,8 +3411,19 @@ export namespace Prisma {
     slug: string
     plan: $Enums.Plan
     sector: string | null
+    nif: string | null
+    legalName: string | null
+    legalForm: string | null
+    vatRegime: string | null
+    defaultVatRate: number
+    defaultIrpfRate: number
+    isIspApplicable: boolean
+    employeeCount: number | null
+    autonomoQuota: Decimal | null
     createdAt: Date
     _count: WorkspaceCountAggregateOutputType | null
+    _avg: WorkspaceAvgAggregateOutputType | null
+    _sum: WorkspaceSumAggregateOutputType | null
     _min: WorkspaceMinAggregateOutputType | null
     _max: WorkspaceMaxAggregateOutputType | null
   }
@@ -3339,6 +3448,15 @@ export namespace Prisma {
     slug?: boolean
     plan?: boolean
     sector?: boolean
+    nif?: boolean
+    legalName?: boolean
+    legalForm?: boolean
+    vatRegime?: boolean
+    defaultVatRate?: boolean
+    defaultIrpfRate?: boolean
+    isIspApplicable?: boolean
+    employeeCount?: boolean
+    autonomoQuota?: boolean
     createdAt?: boolean
     members?: boolean | Workspace$membersArgs<ExtArgs>
     projects?: boolean | Workspace$projectsArgs<ExtArgs>
@@ -3353,6 +3471,15 @@ export namespace Prisma {
     slug?: boolean
     plan?: boolean
     sector?: boolean
+    nif?: boolean
+    legalName?: boolean
+    legalForm?: boolean
+    vatRegime?: boolean
+    defaultVatRate?: boolean
+    defaultIrpfRate?: boolean
+    isIspApplicable?: boolean
+    employeeCount?: boolean
+    autonomoQuota?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["workspace"]>
 
@@ -3362,6 +3489,15 @@ export namespace Prisma {
     slug?: boolean
     plan?: boolean
     sector?: boolean
+    nif?: boolean
+    legalName?: boolean
+    legalForm?: boolean
+    vatRegime?: boolean
+    defaultVatRate?: boolean
+    defaultIrpfRate?: boolean
+    isIspApplicable?: boolean
+    employeeCount?: boolean
+    autonomoQuota?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["workspace"]>
 
@@ -3371,10 +3507,19 @@ export namespace Prisma {
     slug?: boolean
     plan?: boolean
     sector?: boolean
+    nif?: boolean
+    legalName?: boolean
+    legalForm?: boolean
+    vatRegime?: boolean
+    defaultVatRate?: boolean
+    defaultIrpfRate?: boolean
+    isIspApplicable?: boolean
+    employeeCount?: boolean
+    autonomoQuota?: boolean
     createdAt?: boolean
   }
 
-  export type WorkspaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "plan" | "sector" | "createdAt", ExtArgs["result"]["workspace"]>
+  export type WorkspaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "plan" | "sector" | "nif" | "legalName" | "legalForm" | "vatRegime" | "defaultVatRate" | "defaultIrpfRate" | "isIspApplicable" | "employeeCount" | "autonomoQuota" | "createdAt", ExtArgs["result"]["workspace"]>
   export type WorkspaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | Workspace$membersArgs<ExtArgs>
     projects?: boolean | Workspace$projectsArgs<ExtArgs>
@@ -3399,6 +3544,15 @@ export namespace Prisma {
       slug: string
       plan: $Enums.Plan
       sector: string | null
+      nif: string | null
+      legalName: string | null
+      legalForm: string | null
+      vatRegime: string | null
+      defaultVatRate: number
+      defaultIrpfRate: number
+      isIspApplicable: boolean
+      employeeCount: number | null
+      autonomoQuota: Prisma.Decimal | null
       createdAt: Date
     }, ExtArgs["result"]["workspace"]>
     composites: {}
@@ -3832,6 +3986,15 @@ export namespace Prisma {
     readonly slug: FieldRef<"Workspace", 'String'>
     readonly plan: FieldRef<"Workspace", 'Plan'>
     readonly sector: FieldRef<"Workspace", 'String'>
+    readonly nif: FieldRef<"Workspace", 'String'>
+    readonly legalName: FieldRef<"Workspace", 'String'>
+    readonly legalForm: FieldRef<"Workspace", 'String'>
+    readonly vatRegime: FieldRef<"Workspace", 'String'>
+    readonly defaultVatRate: FieldRef<"Workspace", 'Int'>
+    readonly defaultIrpfRate: FieldRef<"Workspace", 'Int'>
+    readonly isIspApplicable: FieldRef<"Workspace", 'Boolean'>
+    readonly employeeCount: FieldRef<"Workspace", 'Int'>
+    readonly autonomoQuota: FieldRef<"Workspace", 'Decimal'>
     readonly createdAt: FieldRef<"Workspace", 'DateTime'>
   }
     
@@ -14987,6 +15150,15 @@ export namespace Prisma {
     slug: 'slug',
     plan: 'plan',
     sector: 'sector',
+    nif: 'nif',
+    legalName: 'legalName',
+    legalForm: 'legalForm',
+    vatRegime: 'vatRegime',
+    defaultVatRate: 'defaultVatRate',
+    defaultIrpfRate: 'defaultIrpfRate',
+    isIspApplicable: 'isIspApplicable',
+    employeeCount: 'employeeCount',
+    autonomoQuota: 'autonomoQuota',
     createdAt: 'createdAt'
   };
 
@@ -15236,6 +15408,41 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal[]'
+   */
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+  /**
    * Reference to a field of type 'MemberRole'
    */
   export type EnumMemberRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MemberRole'>
@@ -15260,41 +15467,6 @@ export namespace Prisma {
    * Reference to a field of type 'ProjectStatus[]'
    */
   export type ListEnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Decimal'
-   */
-  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-  /**
-   * Reference to a field of type 'Decimal[]'
-   */
-  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -15441,6 +15613,15 @@ export namespace Prisma {
     slug?: StringFilter<"Workspace"> | string
     plan?: EnumPlanFilter<"Workspace"> | $Enums.Plan
     sector?: StringNullableFilter<"Workspace"> | string | null
+    nif?: StringNullableFilter<"Workspace"> | string | null
+    legalName?: StringNullableFilter<"Workspace"> | string | null
+    legalForm?: StringNullableFilter<"Workspace"> | string | null
+    vatRegime?: StringNullableFilter<"Workspace"> | string | null
+    defaultVatRate?: IntFilter<"Workspace"> | number
+    defaultIrpfRate?: IntFilter<"Workspace"> | number
+    isIspApplicable?: BoolFilter<"Workspace"> | boolean
+    employeeCount?: IntNullableFilter<"Workspace"> | number | null
+    autonomoQuota?: DecimalNullableFilter<"Workspace"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     members?: WorkspaceMemberListRelationFilter
     projects?: ProjectListRelationFilter
@@ -15454,6 +15635,15 @@ export namespace Prisma {
     slug?: SortOrder
     plan?: SortOrder
     sector?: SortOrderInput | SortOrder
+    nif?: SortOrderInput | SortOrder
+    legalName?: SortOrderInput | SortOrder
+    legalForm?: SortOrderInput | SortOrder
+    vatRegime?: SortOrderInput | SortOrder
+    defaultVatRate?: SortOrder
+    defaultIrpfRate?: SortOrder
+    isIspApplicable?: SortOrder
+    employeeCount?: SortOrderInput | SortOrder
+    autonomoQuota?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     members?: WorkspaceMemberOrderByRelationAggregateInput
     projects?: ProjectOrderByRelationAggregateInput
@@ -15470,6 +15660,15 @@ export namespace Prisma {
     name?: StringFilter<"Workspace"> | string
     plan?: EnumPlanFilter<"Workspace"> | $Enums.Plan
     sector?: StringNullableFilter<"Workspace"> | string | null
+    nif?: StringNullableFilter<"Workspace"> | string | null
+    legalName?: StringNullableFilter<"Workspace"> | string | null
+    legalForm?: StringNullableFilter<"Workspace"> | string | null
+    vatRegime?: StringNullableFilter<"Workspace"> | string | null
+    defaultVatRate?: IntFilter<"Workspace"> | number
+    defaultIrpfRate?: IntFilter<"Workspace"> | number
+    isIspApplicable?: BoolFilter<"Workspace"> | boolean
+    employeeCount?: IntNullableFilter<"Workspace"> | number | null
+    autonomoQuota?: DecimalNullableFilter<"Workspace"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     members?: WorkspaceMemberListRelationFilter
     projects?: ProjectListRelationFilter
@@ -15483,10 +15682,21 @@ export namespace Prisma {
     slug?: SortOrder
     plan?: SortOrder
     sector?: SortOrderInput | SortOrder
+    nif?: SortOrderInput | SortOrder
+    legalName?: SortOrderInput | SortOrder
+    legalForm?: SortOrderInput | SortOrder
+    vatRegime?: SortOrderInput | SortOrder
+    defaultVatRate?: SortOrder
+    defaultIrpfRate?: SortOrder
+    isIspApplicable?: SortOrder
+    employeeCount?: SortOrderInput | SortOrder
+    autonomoQuota?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: WorkspaceCountOrderByAggregateInput
+    _avg?: WorkspaceAvgOrderByAggregateInput
     _max?: WorkspaceMaxOrderByAggregateInput
     _min?: WorkspaceMinOrderByAggregateInput
+    _sum?: WorkspaceSumOrderByAggregateInput
   }
 
   export type WorkspaceScalarWhereWithAggregatesInput = {
@@ -15498,6 +15708,15 @@ export namespace Prisma {
     slug?: StringWithAggregatesFilter<"Workspace"> | string
     plan?: EnumPlanWithAggregatesFilter<"Workspace"> | $Enums.Plan
     sector?: StringNullableWithAggregatesFilter<"Workspace"> | string | null
+    nif?: StringNullableWithAggregatesFilter<"Workspace"> | string | null
+    legalName?: StringNullableWithAggregatesFilter<"Workspace"> | string | null
+    legalForm?: StringNullableWithAggregatesFilter<"Workspace"> | string | null
+    vatRegime?: StringNullableWithAggregatesFilter<"Workspace"> | string | null
+    defaultVatRate?: IntWithAggregatesFilter<"Workspace"> | number
+    defaultIrpfRate?: IntWithAggregatesFilter<"Workspace"> | number
+    isIspApplicable?: BoolWithAggregatesFilter<"Workspace"> | boolean
+    employeeCount?: IntNullableWithAggregatesFilter<"Workspace"> | number | null
+    autonomoQuota?: DecimalNullableWithAggregatesFilter<"Workspace"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Workspace"> | Date | string
   }
 
@@ -16376,6 +16595,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
@@ -16389,6 +16617,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -16402,6 +16639,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
@@ -16415,6 +16661,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -16428,6 +16683,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
   }
 
@@ -16437,6 +16701,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16446,6 +16719,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -17500,6 +17782,44 @@ export namespace Prisma {
     not?: NestedEnumPlanFilter<$PrismaModel> | $Enums.Plan
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
   export type ProjectListRelationFilter = {
     every?: ProjectWhereInput
     some?: ProjectWhereInput
@@ -17531,7 +17851,23 @@ export namespace Prisma {
     slug?: SortOrder
     plan?: SortOrder
     sector?: SortOrder
+    nif?: SortOrder
+    legalName?: SortOrder
+    legalForm?: SortOrder
+    vatRegime?: SortOrder
+    defaultVatRate?: SortOrder
+    defaultIrpfRate?: SortOrder
+    isIspApplicable?: SortOrder
+    employeeCount?: SortOrder
+    autonomoQuota?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type WorkspaceAvgOrderByAggregateInput = {
+    defaultVatRate?: SortOrder
+    defaultIrpfRate?: SortOrder
+    employeeCount?: SortOrder
+    autonomoQuota?: SortOrder
   }
 
   export type WorkspaceMaxOrderByAggregateInput = {
@@ -17540,6 +17876,15 @@ export namespace Prisma {
     slug?: SortOrder
     plan?: SortOrder
     sector?: SortOrder
+    nif?: SortOrder
+    legalName?: SortOrder
+    legalForm?: SortOrder
+    vatRegime?: SortOrder
+    defaultVatRate?: SortOrder
+    defaultIrpfRate?: SortOrder
+    isIspApplicable?: SortOrder
+    employeeCount?: SortOrder
+    autonomoQuota?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -17549,7 +17894,23 @@ export namespace Prisma {
     slug?: SortOrder
     plan?: SortOrder
     sector?: SortOrder
+    nif?: SortOrder
+    legalName?: SortOrder
+    legalForm?: SortOrder
+    vatRegime?: SortOrder
+    defaultVatRate?: SortOrder
+    defaultIrpfRate?: SortOrder
+    isIspApplicable?: SortOrder
+    employeeCount?: SortOrder
+    autonomoQuota?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type WorkspaceSumOrderByAggregateInput = {
+    defaultVatRate?: SortOrder
+    defaultIrpfRate?: SortOrder
+    employeeCount?: SortOrder
+    autonomoQuota?: SortOrder
   }
 
   export type EnumPlanWithAggregatesFilter<$PrismaModel = never> = {
@@ -17560,6 +17921,62 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPlanFilter<$PrismaModel>
     _max?: NestedEnumPlanFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type EnumMemberRoleFilter<$PrismaModel = never> = {
@@ -17657,44 +18074,6 @@ export namespace Prisma {
     in?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumProjectStatusFilter<$PrismaModel> | $Enums.ProjectStatus
-  }
-
-  export type DecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type ExpenseAllocationListRelationFilter = {
@@ -17797,62 +18176,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProjectStatusFilter<$PrismaModel>
     _max?: NestedEnumProjectStatusFilter<$PrismaModel>
-  }
-
-  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumInvoiceTypeFilter<$PrismaModel = never> = {
@@ -18528,6 +18851,34 @@ export namespace Prisma {
     set?: $Enums.Plan
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
   export type WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput = {
     create?: XOR<WorkspaceMemberCreateWithoutWorkspaceInput, WorkspaceMemberUncheckedCreateWithoutWorkspaceInput> | WorkspaceMemberCreateWithoutWorkspaceInput[] | WorkspaceMemberUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: WorkspaceMemberCreateOrConnectWithoutWorkspaceInput | WorkspaceMemberCreateOrConnectWithoutWorkspaceInput[]
@@ -18706,34 +19057,6 @@ export namespace Prisma {
 
   export type EnumProjectStatusFieldUpdateOperationsInput = {
     set?: $Enums.ProjectStatus
-  }
-
-  export type NullableDecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string | null
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type WorkspaceUpdateOneRequiredWithoutProjectsNestedInput = {
@@ -19138,6 +19461,22 @@ export namespace Prisma {
     not?: NestedEnumPlanFilter<$PrismaModel> | $Enums.Plan
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
   export type NestedEnumPlanWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Plan | EnumPlanFieldRefInput<$PrismaModel>
     in?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
@@ -19146,6 +19485,84 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPlanFilter<$PrismaModel>
     _max?: NestedEnumPlanFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumMemberRoleFilter<$PrismaModel = never> = {
@@ -19197,22 +19614,6 @@ export namespace Prisma {
     not?: NestedEnumProjectStatusFilter<$PrismaModel> | $Enums.ProjectStatus
   }
 
-  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedEnumProjectStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ProjectStatus | EnumProjectStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
@@ -19221,84 +19622,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProjectStatusFilter<$PrismaModel>
     _max?: NestedEnumProjectStatusFilter<$PrismaModel>
-  }
-
-  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedEnumInvoiceTypeFilter<$PrismaModel = never> = {
@@ -19937,6 +20260,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
     invoices?: InvoiceCreateNestedManyWithoutWorkspaceInput
@@ -19949,6 +20281,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -20008,6 +20349,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
     invoices?: InvoiceUpdateManyWithoutWorkspaceNestedInput
@@ -20020,6 +20370,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -20032,6 +20391,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
     invoices?: InvoiceCreateNestedManyWithoutWorkspaceInput
@@ -20044,6 +20412,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -20160,6 +20537,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
     invoices?: InvoiceUpdateManyWithoutWorkspaceNestedInput
@@ -20172,6 +20558,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -20228,6 +20623,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
@@ -20240,6 +20644,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -20375,6 +20788,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
@@ -20387,6 +20809,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -20850,6 +21281,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     members?: WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
@@ -20862,6 +21302,15 @@ export namespace Prisma {
     slug: string
     plan?: $Enums.Plan
     sector?: string | null
+    nif?: string | null
+    legalName?: string | null
+    legalForm?: string | null
+    vatRegime?: string | null
+    defaultVatRate?: number
+    defaultIrpfRate?: number
+    isIspApplicable?: boolean
+    employeeCount?: number | null
+    autonomoQuota?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     members?: WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -20890,6 +21339,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
@@ -20902,6 +21360,15 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     sector?: NullableStringFieldUpdateOperationsInput | string | null
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    legalName?: NullableStringFieldUpdateOperationsInput | string | null
+    legalForm?: NullableStringFieldUpdateOperationsInput | string | null
+    vatRegime?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultVatRate?: IntFieldUpdateOperationsInput | number
+    defaultIrpfRate?: IntFieldUpdateOperationsInput | number
+    isIspApplicable?: BoolFieldUpdateOperationsInput | boolean
+    employeeCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autonomoQuota?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput

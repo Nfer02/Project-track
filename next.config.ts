@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   // No exponer "X-Powered-By: Next.js" en producción
   poweredByHeader: false,
 
+  // Silencia el warning de webpack vs Turbopack (remotion solo se usa en scripts de render, no en la app)
+  turbopack: {},
+
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals = [...(config.externals || []), 'remotion']

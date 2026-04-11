@@ -61,11 +61,23 @@ model User {
 }
 
 model Workspace {
-  id        String   @id @default(cuid())
-  name      String
-  slug      String   @unique
-  plan      Plan     @default(FREE)
-  sector    String? // Sector del negocio (reformas, diseño, instalaciones, etc.)
+  id     String  @id @default(cuid())
+  name   String
+  slug   String  @unique
+  plan   Plan    @default(FREE)
+  sector String? // Sector del negocio (reformas, diseño, instalaciones, etc.)
+
+  // ── Datos fiscales / empresariales ──────────────────────────────────────────
+  nif             String? // NIF/CIF de la empresa o autónomo
+  legalName       String? // Razón social completa (si difiere del nombre comercial)
+  legalForm       String? // Forma jurídica: autonomo | sl | sa | otro
+  vatRegime       String?  @default("general") // Régimen IVA: general | recargo | exento
+  defaultVatRate  Int      @default(21) // % IVA por defecto en nuevas facturas (0, 10, 21)
+  defaultIrpfRate Int      @default(0) // % Retención IRPF por defecto (0, 7, 15, 19)
+  isIspApplicable Boolean  @default(false) // ¿Aplica Inversión Sujeto Pasivo? (art. 84.1.2F)
+  employeeCount   Int? // Número de empleados en plantilla
+  autonomoQuota   Decimal? @db.Decimal(10, 2) // Cuota mensual Seguridad Social autónomo (€)
+
   createdAt DateTime @default(now())
 
   members      WorkspaceMember[]
