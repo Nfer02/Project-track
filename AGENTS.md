@@ -58,6 +58,31 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Los reportes CSV deben incluir disclaimer similar
 - Nunca presentar datos fiscales como definitivos o vinculantes
 
+### Filtro de trimestre en Dashboard
+- URL param: `?q=2025-Q3` (uno) o `?q=2025-Q3,2025-Q2` (varios, separados por coma)
+- Componente: `components/app/dashboard-period-filter.tsx` — dropdown con checkboxes, multi-seleccion
+- Helper `parseQuarterParams(q)` en dashboard/page.tsx parsea el param y devuelve `{year, month}[]`
+- Helper `getMonthsInPeriod(ranges)` convierte rangos de trimestres en lista de meses para las graficas
+- Las graficas SIEMPRE deben usar `buildIncomeExpenseForMonths()` / `buildNetProfitForMonths()` con los meses del periodo — NUNCA `buildIncomeExpenseMonthly()` (esta hardcodea "ultimos N desde hoy")
+- Stats y graficas filtran por el mismo periodo; estimacion fiscal usa el trimestre mas reciente del array
+
+### Formularios con Zod y react-hook-form
+- Para campos opcionales en schemas Zod: usar `z.string()` SIN `.default()` ni `.optional()`
+- Los valores por defecto van en el objeto `defaultValues` de `useForm()`, no en el schema
+- `.optional().default()` hace que TypeScript infiera `string | undefined` aunque haya default — rompe el tipado del resolver
+
+### Workspace — campos fiscales
+- Modelo `Workspace` tiene: `nif`, `legalName`, `legalForm`, `vatRegime`, `defaultVatRate`, `defaultIrpfRate`, `isIspApplicable`, `employeeCount`, `autonomoQuota`
+- Se editan en `app/(dashboard)/settings/empresa/` (page + form + actions)
+- Se capturan opcionalmente en el onboarding (paso 4 de 4, con boton "Omitir por ahora")
+- La action `updateWorkspaceFiscal` requiere rol OWNER o ADMIN
+
+### Prisma — migraciones en produccion
+- La DB de Supabase fue creada sin historial de migraciones → `prisma migrate dev` falla con "drift detected"
+- Usar `prisma db push` para aplicar cambios de schema sin historial de migraciones
+- Ejecutar con variable DIRECT_URL exportada: `DIRECT_URL="postgresql://..." npx prisma db push`
+- Despues de `db push`, ejecutar `npx prisma generate` para regenerar el cliente
+
 ---
 
 ## Seguridad
