@@ -205,17 +205,14 @@ export function buildCategorySummary(invoices: InvoiceForChart[]) {
 }
 
 /**
- * Calcula ingresos vs gastos por mes.
+ * Calcula ingresos vs gastos para una lista específica de meses {year, month}.
+ * Usado cuando el dashboard tiene un filtro de trimestre activo.
  */
-export function buildIncomeExpenseMonthly(invoices: InvoiceForChart[], months = 6) {
-  const now = new Date()
-  const result: { month: string; income: number; expenses: number }[] = []
-
-  for (let i = months - 1; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
-    const year = d.getFullYear()
-    const month = d.getMonth()
-
+export function buildIncomeExpenseForMonths(
+  invoices: InvoiceForChart[],
+  months: { year: number; month: number }[]
+) {
+  return months.map(({ year, month }) => {
     const monthInvoices = invoices.filter((inv) => {
       const issued = new Date(inv.issueDate)
       return issued.getFullYear() === year && issued.getMonth() === month
@@ -229,30 +226,37 @@ export function buildIncomeExpenseMonthly(invoices: InvoiceForChart[], months = 
       .filter((i) => i.type === "EXPENSE" && i.status === "PAID")
       .reduce((s, i) => s + Number(i.amount), 0)
 
-    result.push({
+    return {
       month: MONTH_LABELS[month],
       income: Math.round(income),
       expenses: Math.round(expenses),
-    })
-  }
-
-  return result
+    }
+  })
 }
 
 /**
- * Calcula beneficio bruto y neto tras impuestos por mes.
- * Bruto = ingresos - gastos
- * Neto = bruto - IVA estimado (21%) - IRPF estimado (20%)
+ * Calcula ingresos vs gastos por mes (últimos N meses desde hoy).
  */
-export function buildNetProfitMonthly(invoices: InvoiceForChart[], months = 6, vatRate = 0.21, irpfRate = 0.20) {
+export function buildIncomeExpenseMonthly(invoices: InvoiceForChart[], months = 6) {
   const now = new Date()
-  const result: { month: string; income: number; expenses: number; net: number; netAfterTax: number }[] = []
-
+  const monthList: { year: number; month: number }[] = []
   for (let i = months - 1; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
-    const year = d.getFullYear()
-    const month = d.getMonth()
+    monthList.push({ year: d.getFullYear(), month: d.getMonth() })
+  }
+  return buildIncomeExpenseForMonths(invoices, monthList)
+}
 
+/**
+ * Calcula beneficio para una lista específica de meses.
+ */
+export function buildNetProfitForMonths(
+  invoices: InvoiceForChart[],
+  months: { year: number; month: number }[],
+  vatRate = 0.21,
+  irpfRate = 0.20
+) {
+  return months.map(({ year, month }) => {
     const monthInvoices = invoices.filter((inv) => {
       const issued = new Date(inv.issueDate)
       return issued.getFullYear() === year && issued.getMonth() === month
@@ -267,20 +271,29 @@ export function buildNetProfitMonthly(invoices: InvoiceForChart[], months = 6, v
       .reduce((s, i) => s + Number(i.amount), 0)
 
     const bruto = income - expenses
-    // IVA estimado = IVA repercutido (sobre ingresos) - IVA soportado (sobre gastos)
-    const ivaEstimado = (income * vatRate) - (expenses * vatRate)
-    // IRPF estimado = 20% sobre el beneficio bruto (si es positivo)
+    const ivaEstimado = income * vatRate - expenses * vatRate
     const irpfEstimado = bruto > 0 ? bruto * irpfRate : 0
     const netAfterTax = bruto - ivaEstimado - irpfEstimado
 
-    result.push({
+    return {
       month: MONTH_LABELS[month],
       income: Math.round(income),
       expenses: Math.round(expenses),
       net: Math.round(bruto),
       netAfterTax: Math.round(netAfterTax),
-    })
-  }
+    }
+  })
+}
 
-  return result
+/**
+ * Calcula beneficio bruto y neto tras impuestos por mes (últimos N meses desde hoy).
+ */
+export function buildNetProfitMonthly(invoices: InvoiceForChart[], months = 6, vatRate = 0.21, irpfRate = 0.20) {
+  const now = new Date()
+  const monthList: { year: number; month: number }[] = []
+  for (let i = months - 1; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    monthList.push({ year: d.getFullYear(), month: d.getMonth() })
+  }
+  return buildNetProfitForMonths(invoices, monthList, vatRate, irpfRate)
 }

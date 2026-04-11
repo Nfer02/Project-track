@@ -25,8 +25,8 @@ import { prisma } from "@/lib/prisma"
 import { formatCurrency } from "@/lib/format"
 import {
   buildInvoiceSummary,
-  buildIncomeExpenseMonthly,
-  buildNetProfitMonthly,
+  buildIncomeExpenseForMonths,
+  buildNetProfitForMonths,
   buildCategorySummary,
 } from "@/lib/chart-data"
 import { IncomeExpenseBarChart } from "@/components/charts/income-expense-bar-chart"
@@ -99,6 +99,26 @@ function inAnySelectedQuarter(
   ranges: { start: Date; end: Date }[]
 ): boolean {
   return ranges.some(({ start, end }) => date >= start && date <= end)
+}
+
+/** Devuelve los meses (year+month) que cubren los rangos seleccionados, ordenados cronológicamente */
+function getMonthsInPeriod(ranges: { start: Date; end: Date }[]): { year: number; month: number }[] {
+  const seen = new Set<string>()
+  const result: { year: number; month: number }[] = []
+
+  for (const { start, end } of ranges) {
+    const cur = new Date(start.getFullYear(), start.getMonth(), 1)
+    while (cur <= end) {
+      const key = `${cur.getFullYear()}-${cur.getMonth()}`
+      if (!seen.has(key)) {
+        seen.add(key)
+        result.push({ year: cur.getFullYear(), month: cur.getMonth() })
+      }
+      cur.setMonth(cur.getMonth() + 1)
+    }
+  }
+
+  return result.sort((a, b) => a.year !== b.year ? a.year - b.year : a.month - b.month)
 }
 
 function buildPeriodLabel(quarters: { year: number; quarter: number }[]): string {
@@ -187,20 +207,29 @@ async function getDashboardData(
   const expenseInvoices = processedInvoices.filter((i) => i.type === "EXPENSE")
 
   const { totalPaid, totalPending, totalOverdue } = buildInvoiceSummary(incomeInvoices)
-  const incomeExpenseMonthly = buildIncomeExpenseMonthly(processedInvoices, 6)
-  const netProfitMonthly = buildNetProfitMonthly(processedInvoices, 6)
-  const categoryData = buildCategorySummary(expenseInvoices)
-  const totalExpensesAll = expenseInvoices.reduce((s, i) => s + Number(i.amount), 0)
 
   // ---- Período seleccionado ----
   const periodRanges = selectedQuarters.map(({ year, quarter }) => quarterRange(year, quarter))
+  const periodMonths = getMonthsInPeriod(periodRanges)
 
+  // BUG FIX: gráficas usan los meses exactos del período, no "últimos 6 desde hoy"
+  const incomeExpenseMonthly = buildIncomeExpenseForMonths(processedInvoices, periodMonths)
+  const netProfitMonthly = buildNetProfitForMonths(processedInvoices, periodMonths)
+
+  // BUG FIX: categorías y total solo del período seleccionado
+  const expenseInvoicesInPeriod = expenseInvoices.filter((i) =>
+    inAnySelectedQuarter(new Date(i.issueDate), periodRanges)
+  )
+  const categoryData = buildCategorySummary(expenseInvoicesInPeriod)
+  const totalExpensesAll = expenseInvoicesInPeriod.reduce((s, i) => s + Number(i.amount), 0)
+
+  // BUG FIX: ingresos y gastos del período — ambos filtran por PAID para coherencia
   const revenueInPeriod = incomeInvoices
     .filter((i) => i.status === "PAID" && inAnySelectedQuarter(new Date(i.issueDate), periodRanges))
     .reduce((s, i) => s + Number(i.amount), 0)
 
   const expensesInPeriod = expenseInvoices
-    .filter((i) => inAnySelectedQuarter(new Date(i.issueDate), periodRanges))
+    .filter((i) => i.status === "PAID" && inAnySelectedQuarter(new Date(i.issueDate), periodRanges))
     .reduce((s, i) => s + Number(i.amount), 0)
 
   // Gastos generales del período = gastos sin proyecto asignado
@@ -208,20 +237,15 @@ async function getDashboardData(
     .filter((i) => !i.projectId && inAnySelectedQuarter(new Date(i.issueDate), periodRanges))
     .reduce((s, i) => s + Number(i.amount), 0)
 
-  // All-time gastos generales (para fallback si no hay datos en período)
-  const totalExpenses = expenseInvoices.reduce((s, i) => s + Number(i.amount), 0)
-  const allocatedAmount = Number(totalAllocated._sum.amount ?? 0)
-  const generalExpensesAllTime = totalExpenses - allocatedAmount
-
-  // ---- Estimación fiscal: usar el trimestre más reciente seleccionado ----
-  const fiscalQ = selectedQuarters[0] // ya viene ordenado: más reciente primero
+  // BUG FIX: estimación fiscal usa processedInvoices (con OVERDUE detectado) en vez de allInvoices
+  const fiscalQ = selectedQuarters[0]
   const fiscalRange = quarterRange(fiscalQ.year, fiscalQ.quarter)
 
-  const quarterIncomes = allInvoices.filter((i) => {
+  const quarterIncomes = processedInvoices.filter((i) => {
     const d = new Date(i.issueDate)
     return d >= fiscalRange.start && d <= fiscalRange.end && i.type === "INCOME" && i.isDeclared
   })
-  const quarterExpenses = allInvoices.filter((i) => {
+  const quarterExpenses = processedInvoices.filter((i) => {
     const d = new Date(i.issueDate)
     return d >= fiscalRange.start && d <= fiscalRange.end && i.type === "EXPENSE" && i.isDeclared
   })
@@ -252,7 +276,6 @@ async function getDashboardData(
     revenueInPeriod,
     expensesInPeriod,
     generalExpensesInPeriod,
-    generalExpensesAllTime,
     totalPaid,
     totalPending,
     totalOverdue,
@@ -501,9 +524,9 @@ export default async function DashboardPage({ searchParams }: Props) {
           <div className="mb-4 space-y-0.5">
             <div className="flex items-center gap-1.5">
               <h2 className="text-sm font-semibold">Ingresos vs Gastos</h2>
-              <HelpTooltip content="Compara tus ingresos facturados con tus gastos registrados en los ultimos 6 meses." />
+              <HelpTooltip content="Compara tus ingresos cobrados con tus gastos pagados en el período seleccionado." />
             </div>
-            <p className="text-xs text-muted-foreground">Últimos 6 meses</p>
+            <p className="text-xs text-muted-foreground">{periodLabel}</p>
           </div>
           <IncomeExpenseBarChart data={data.incomeExpenseMonthly} />
         </div>
